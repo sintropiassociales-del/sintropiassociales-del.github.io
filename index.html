@@ -1460,7 +1460,8 @@ body,html{ background:#ffffff !important; }
       if (!canvas) return;
 
       // Use filtered data
-      var citas = mapData;
+      // Map uses ALL citas, not the guest-limited filtered subset
+      var citas = (typeof allCitas !== 'undefined' && allCitas.length > 0) ? allCitas : mapData;
       if (!citas || !citas.length) return;
 
       // Size canvas
@@ -1742,7 +1743,7 @@ body,html{ background:#ffffff !important; }
       if (!ct) return;
       var panel   = document.getElementById('mapPanel');
       var content = document.getElementById('mapPanelContent');
-      var cat    = ct['Categoria'] || ct['Categoría'] || '';
+      var cat    = ct['Indicador'] || ct['Poblacion'] || ct['Población'] || '';
       var year   = ct['Anio'] || ct['Año'] || '';
       var cita   = ct['Cita'] || '';
       var autor  = ct['Autor'] || '';
