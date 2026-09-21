@@ -92,7 +92,7 @@ var SINTRO_NAV_HTML = `
   </a>
   <ul class="ss-nav-links" id="ss-nav-links">
     <li><a href="inicio.html" data-navkey="inicio">Inicio</a></li>
-    <li><a href="index.html" data-navkey="index">Repositorio</a></li>
+    
     <li>
       <div class="ss-dd" id="dd-herr">
         <button class="ss-dd-btn" onclick="ssDD('dd-herr')" data-navkey="herramientas">Herramientas
@@ -100,10 +100,6 @@ var SINTRO_NAV_HTML = `
         </button>
         <div class="ss-dd-panel">
           <a href="herramientas.html" data-navkey="herramientas">Ver todas las herramientas</a>
-          <div style="height:1px;background:rgba(99,30,235,.1);margin:4px 0;"></div>
-          <a href="diagnostico.html" data-navkey="diagnostico">Diagnóstico Social</a>
-          <a href="dashboard.html" data-navkey="dashboard">Dashboard Interactivo</a>
-          <a href="pdfcitas.html" data-navkey="pdfcitas">Buscador de citas PDF</a>
         </div>
       </div>
     </li>
