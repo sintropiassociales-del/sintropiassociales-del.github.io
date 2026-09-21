@@ -1577,7 +1577,7 @@ body,html{ background:#ffffff !important; }
       // Draw
       ctx.clearRect(0, 0, W, H);
 
-      // Edges
+      // Edges — draw from hub center to cita
       mapEdges.forEach(function(e) {
         var from = mapNodes.find(function(n){ return n.id === e.from; });
         var to   = mapNodes.find(function(n){ return n.id === e.to; });
@@ -1585,8 +1585,8 @@ body,html{ background:#ffffff !important; }
         ctx.beginPath();
         ctx.moveTo(from.x, from.y);
         ctx.lineTo(to.x, to.y);
-        ctx.strokeStyle = e.color + '33';
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = e.color + '55';
+        ctx.lineWidth = 1.5;
         ctx.stroke();
       });
 
@@ -1594,12 +1594,16 @@ body,html{ background:#ffffff !important; }
       nodes.forEach(function(n) {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
-        ctx.fillStyle = n.color + (n.type === 'cat' ? 'ee' : '99');
+        // Check if this hub has any connected citas in current view
+        var hasCitas = n.type === 'cita' || mapEdges.some(function(e){ return e.from===n.id; });
+        ctx.fillStyle = n.color + (n.type === 'cat' ? (hasCitas?'dd':'66') : '99');
         ctx.fill();
         if (n.type === 'cat') {
           ctx.strokeStyle = n.color;
-          ctx.lineWidth = 2;
+          ctx.lineWidth = hasCitas ? 2.5 : 1.5;
+          if (!hasCitas) ctx.setLineDash([4,4]);
           ctx.stroke();
+          ctx.setLineDash([]);
         }
       });
 
