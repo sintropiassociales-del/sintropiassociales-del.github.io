@@ -576,7 +576,7 @@ function renderEjes(){
       html += '<div class="svc-card" id="card-'+cardId+'">';
       html += '  <button class="svc-row" onclick="toggleCard(\''+cardId+'\')">';
       html += '    <div class="svc-row-main"><h3>'+escapeHtml(s.nombre)+'</h3><p>'+escapeHtml(teaser)+'</p></div>';
-      html += '    <div class="svc-price">'+fmtPrecio(s.precio)+'<small>'+escapeHtml(s.tiempo||'')+'</small></div>';
+      html += '    <div class="svc-price" style="font-size:.78rem;color:var(--tx-light);">'+escapeHtml(s.tiempo||'')+'</div>';
       html += '    <svg class="svc-chevron" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
       html += '  </button>';
       html += '  <div class="svc-detail"><div class="svc-detail-inner">';
