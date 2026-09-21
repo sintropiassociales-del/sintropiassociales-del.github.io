@@ -1485,19 +1485,19 @@ body,html{ background:#ffffff !important; }
       mapEdges = [];
       catColorMap = {};
 
-      // Category hub nodes — arranged in a circle
-      var cx = W / 2, cy = H / 2;
-      var R = Math.min(W, H) * 0.32;
+      // Category hub nodes — scattered randomly, physics will separate them
       catNames.forEach(function(cat, i) {
-        var angle = (2 * Math.PI * i / nc) - Math.PI / 2;
-        var x = cx + R * Math.cos(angle);
-        var y = cy + R * Math.sin(angle);
+        // Start from random positions spread across canvas
+        var margin = 80;
+        var x = margin + Math.random() * (W - margin * 2);
+        var y = margin + Math.random() * (H - margin * 2);
         var color = getCatColor(cat);
+        // Size by number of citas
+        var r = Math.max(18, Math.min(38, 12 + cats[cat].length * 0.6));
         mapNodes.push({
           id: 'cat_' + i, type: 'cat', label: cat,
-          x: x, y: y, vx: 0, vy: 0,
-          r: Math.max(18, Math.min(30, 10 + cats[cat].length * 0.8)),
-          color: color, data: null
+          x: x, y: y, vx: (Math.random()-.5)*2, vy: (Math.random()-.5)*2,
+          r: r, color: color, data: null, fixed: false
         });
       });
 
@@ -1536,32 +1536,42 @@ body,html{ background:#ffffff !important; }
       var nodes = mapNodes;
       var k = 0.012, damping = 0.85;
 
-      // Apply forces
+      // Apply forces — hubs repel each other, citas attracted to hub
+      var damping = 0.82;
       nodes.forEach(function(n) {
-        if (n.type === 'cat') return; // cat hubs are fixed
-        // Repulsion between cita nodes
+        // Repulsion from ALL other nodes
         nodes.forEach(function(m) {
-          if (m === n || m.type === 'cat') return;
+          if (m === n) return;
           var dx = n.x - m.x, dy = n.y - m.y;
           var dist = Math.sqrt(dx*dx + dy*dy) || 1;
-          if (dist < 28) {
-            var force = (28 - dist) * 0.06;
+          var minDist = (n.type==='cat' && m.type==='cat')
+            ? n.r + m.r + 55
+            : n.r + m.r + 10;
+          if (dist < minDist) {
+            var force = (minDist - dist) * (n.type==='cat' ? 0.14 : 0.05);
             n.vx += (dx/dist) * force;
             n.vy += (dy/dist) * force;
           }
         });
-        // Attraction to cat hub
-        var catNode = mapNodes.find(function(nn){ return nn.id === n.catId; });
-        if (catNode) {
-          var dx2 = catNode.x - n.x, dy2 = catNode.y - n.y;
-          var dist2 = Math.sqrt(dx2*dx2 + dy2*dy2) || 1;
-          n.vx += dx2 * k;
-          n.vy += dy2 * k;
+        if (n.type === 'cita') {
+          // Attraction to own cat hub
+          var catNode = mapNodes.find(function(nn){ return nn.id === n.catId; });
+          if (catNode) {
+            var dx2 = catNode.x - n.x, dy2 = catNode.y - n.y;
+            var dist2 = Math.sqrt(dx2*dx2 + dy2*dy2) || 1;
+            var ideal = catNode.r + n.r + 16;
+            if (dist2 > ideal) {
+              n.vx += (dx2/dist2) * 0.02 * (dist2 - ideal);
+              n.vy += (dy2/dist2) * 0.02 * (dist2 - ideal);
+            }
+          }
         }
+        // Weak gravity toward center keeps hubs visible
+        n.vx += (W/2 - n.x) * 0.0008;
+        n.vy += (H/2 - n.y) * 0.0008;
         n.vx *= damping; n.vy *= damping;
-        n.x += n.vx; n.y += n.vy;
-        n.x = Math.max(8, Math.min(W-8, n.x));
-        n.y = Math.max(8, Math.min(H-8, n.y));
+        n.x = Math.max(n.r+4, Math.min(W-n.r-4, n.x + n.vx));
+        n.y = Math.max(n.r+4, Math.min(H-n.r-4, n.y + n.vy));
       });
 
       // Draw
@@ -1592,6 +1602,21 @@ body,html{ background:#ffffff !important; }
           ctx.stroke();
         }
       });
+
+      // Highlight/dim based on active filter
+      if (mapActiveFilter) {
+        nodes.forEach(function(n) {
+          var inFilter = n.type === 'cat'
+            ? mapActiveFilter[n.label]
+            : (function(){ var ind = (n.data && (n.data['Indicador']||n.data['Poblacion']||n.data['Población']||'Sin indicador')); return mapActiveFilter[ind]; })();
+          if (!inFilter) {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(250,250,252,0.72)';
+            ctx.fill();
+          }
+        });
+      }
 
       // Category labels
       nodes.forEach(function(n) {
@@ -1781,6 +1806,13 @@ body,html{ background:#ffffff !important; }
       // Initialize toggle state
       document.getElementById('btn-lista').classList.add('active');
       document.getElementById('btn-mapa').classList.remove('active');
+      // Track what indicadores are in current filter
+      var indicSet = {};
+      (citas||[]).forEach(function(ct){
+        var ind = ct['Indicador']||ct['Poblacion']||ct['Población']||'Sin indicador';
+        indicSet[ind] = true;
+      });
+      mapActiveFilter = Object.keys(indicSet).length > 0 ? indicSet : null;
     };
     // ── FIN VISTA DE MAPA ──────────────────────────────────
 
