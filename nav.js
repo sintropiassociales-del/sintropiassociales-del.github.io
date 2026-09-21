@@ -99,7 +99,9 @@ var SINTRO_NAV_HTML = `
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <div class="ss-dd-panel">
-          <a href="diagnostico.html" data-navkey="diagnostico">Diagnostico Social</a>
+          <a href="herramientas.html" data-navkey="herramientas">Ver todas las herramientas</a>
+          <div style="height:1px;background:rgba(99,30,235,.1);margin:4px 0;"></div>
+          <a href="diagnostico.html" data-navkey="diagnostico">Diagnóstico Social</a>
           <a href="dashboard.html" data-navkey="dashboard">Dashboard Interactivo</a>
           <a href="pdfcitas.html" data-navkey="pdfcitas">Buscador de citas PDF</a>
         </div>
