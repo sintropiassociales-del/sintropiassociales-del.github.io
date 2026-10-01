@@ -1,2022 +1,1711 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.paypal.com https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.paypal.com https://cdnjs.cloudflare.com; frame-src https://www.paypal.com; base-uri 'self'; object-src 'none';">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sintropía Social — Repositorio Bibliográfico</title>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<link rel="stylesheet" href="sintro-shared.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Repositorio Bibliográfico — Sintropía Social</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Open+Sauce+One:wght@400;700;900&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-:root{--bg:#ffffff}
-    :root {
-      --primary: #631EEB;
-      --primary-light: #8b5cf6;
-      --primary-dark: #4a13b8;
-      --accent: #FF7929;
-      --accent-light: #f08a4a;
-      --bg: #ffffff;
-      --bg-alt: #f0efe9;
-      --bg-card: #ffffff;
-      --text: #2c2c2c;
-      --text-light: #666666;
-      --white: #fff;
-      --border: #e0ddd5;
-      --success: #28a745;
-      --error: #dc3545;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: var(--font-body);
-      background: #ffffff;
-      color: var(--text);
-      line-height: 1.6;
-    }
-    .serif { font-family: var(--font-display); }
-    
-    /* Navigation */
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: #ffffff;
-      border-bottom: 1px solid var(--border);
-      z-index: 1000;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-    }
-    .logo img {
-      height: 40px;
-      width: auto;
-    }
-    .logo-text {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--accent);
-    }
-    .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-links a {
-      color: var(--text-light);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--primary); }
-    .btn {
-      display: inline-block;
-      padding: 0.6rem 1.25rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-    }
-    .btn-primary {
-      background: var(--primary);
-      color: #ffffff;
-    }
-    .btn-primary:hover { background: var(--primary-light); }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--primary);
-      color: var(--primary);
-    }
-    .btn-outline:hover { background: var(--primary); color: var(--white); }
-    .btn-accent {
-      background: var(--accent);
-      color: var(--white);
-    }
-    .btn-accent:hover { background: var(--accent-light); }
+/* ═══════════════════════════════════════════════
+   SINTROPÍA — REPOSITORIO BIBLIOGRÁFICO
+   Shell: Editorial Beluga-inspired
+   ═══════════════════════════════════════════════ */
+:root {
+  --purple:       #631EEB;
+  --orange:       #FF7929;
+  --purple-dk:    #4912C2;
+  --orange-lt:    #FF9A5C;
+  --bg:           #F5F4F1;
+  --bg-card:      #FFFFFF;
+  --bg-dark:      #0E0C18;
+  --bg-purple:    #631EEB;
+  --fg:           #0E0C18;
+  --fg-muted:     #5C5670;
+  --fg-on-dark:   #F5F4F1;
+  --fg-on-purple: #FFFFFF;
+  --line:         #D8D5CC;
+  --line-strong:  #0E0C18;
+  --font-display: 'Open Sauce One', 'Open Sans', sans-serif;
+  --font-body:    'Open Sans', system-ui, sans-serif;
+  --r-sm: 4px; --r-md: 8px; --r-lg: 16px;
+  --u: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:         #0E0C18; --bg-card:    #1A1728;
+    --bg-dark:    #050408; --fg:         #F0EEF8;
+    --fg-muted:   #9B96B8; --line:       #2C2840;
+    --line-strong:#F0EEF8; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:         #0E0C18; --bg-card:    #1A1728;
+  --bg-dark:    #050408; --fg:         #F0EEF8;
+  --fg-muted:   #9B96B8; --line:       #2C2840;
+  --line-strong:#F0EEF8; color-scheme: dark;
+}
 
-    /* Hero */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 6rem 2rem 4rem;
-      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%);
-    }
-    .hero-content { max-width: 800px; }
-    .hero-badge {
-      display: inline-block;
-      background: var(--primary);
-      color: var(--white);
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      margin-bottom: 1.5rem;
-    }
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: 3.5rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 1.5rem;
-      line-height: 1.2;
-    }
-    .hero h1 em { font-style: italic; color: var(--accent); }
-    .hero p {
-      font-size: 1.2rem;
-      color: var(--text-light);
-      margin-bottom: 2rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 3rem;
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-    }
-    .stat { text-align: center; }
-    .stat-value {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--accent);
-    }
-    .stat-label { font-size: 0.85rem; color: var(--text-light); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
 
-    /* Repository Section */
-    .section {
-      padding: 5rem 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .section-header {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    .section-header h2 {
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      color: var(--text);
-      margin-bottom: 1rem;
-    }
-    .section-header p { color: var(--text-light); max-width: 600px; margin: 0 auto; }
+/* ─── NAV SINTROPÍA ─── */
+#sintro-nav { position: relative; z-index: 200; }
 
-    /* Guest Banner */
-    .guest-banner {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: var(--white);
-      padding: 1.5rem 2rem;
-      border-radius: 12px;
-      margin-bottom: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .guest-banner p { margin: 0; }
-    .guest-banner .btn { background: var(--accent); }
+/* ─── TYPOGRAPHY ─── */
+.display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  font-weight: 900;
+  line-height: .94;
+  letter-spacing: -.03em;
+  text-wrap: balance;
+}
+.display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: .96;
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+.display-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+}
+.label-upper {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.body-lg { font-size: 1.1rem; line-height: 1.65; color: var(--fg-muted); }
 
-    /* Filters */
-    .filters {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      align-items: center;
-      background: var(--bg-card);
-      padding: 1.5rem;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-    .filter-group { flex: 1; min-width: 150px; }
-    .filter-group label {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--text-light);
-      margin-bottom: 0.3rem;
-    }
-    .filter-group select {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 0.9rem;
-      background: var(--white);
-      color: var(--text);
-    }
-    .filter-actions { display: flex; gap: 0.5rem; align-items: flex-end; }
+/* ─── LAYOUT ─── */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+.section { padding: clamp(60px, 10vw, 120px) 0; }
+.bg-alt { background: color-mix(in srgb, var(--bg) 85%, var(--line)); }
 
-    /* Citation Cards */
-    .citations-container {
-      background: transparent;
-      border: none;
-    }
-    .citations-count {
-      margin-bottom: 1.5rem;
-      color: var(--text-light);
-      font-size: 0.95rem;
-    }
-    .citations-count span { color: var(--accent); font-weight: 600; }
-    .citations-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-    @media (max-width: 1100px) { .citations-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 700px) { .citations-grid { grid-template-columns: 1fr; } }
-    
-    .citation-card {
-      background: var(--bg-card);
-      border-radius: 12px;
-      padding: 1.25rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-    }
-    .citation-tags {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-    }
-    .citation-tag {
-      padding: 0.25rem 0.6rem;
-      border-radius: 15px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-    .tag-categoria { background: rgba(123, 104, 238, 0.15); color: #6B5DD3; }
-    .tag-year { background: rgba(232, 115, 44, 0.15); color: #D4621F; }
-    .tag-poblacion { background: rgba(59, 130, 246, 0.15); color: #2563eb; }
-    
-    .citation-quote {
-      border-left: 3px solid var(--accent);
-      padding-left: 1rem;
-      margin: 0.75rem 0;
-      font-style: italic;
-      font-size: 0.9rem;
-      line-height: 1.5;
-      color: var(--text);
-      flex-grow: 1;
-    }
-    .citation-author {
-      font-size: 0.85rem;
-      color: var(--text);
-      margin-bottom: 0.5rem;
-    }
-    .citation-author strong { font-weight: 600; }
-    .citation-author em { color: var(--text-light); font-size: 0.8rem; }
-    
-    .citation-comment {
-      background: var(--bg-alt);
-      padding: 0.75rem;
-      border-radius: 6px;
-      margin: 0.5rem 0;
-      font-size: 0.8rem;
-      color: var(--text-light);
-      line-height: 1.4;
-    }
-    .citation-comment::before { content: "💬 "; }
-    
-    .citation-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-top: 0.75rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border);
-      gap: 0.5rem;
-    }
-    .citation-apa {
-      font-style: italic;
-      font-size: 0.75rem;
-      color: var(--text-light);
-      flex: 1;
-      line-height: 1.3;
-    }
-    .copy-apa-btn {
-      background: transparent;
-      border: 1.5px solid var(--primary);
-      color: var(--primary);
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 0.75rem;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-    .copy-apa-btn:hover {
-      background: var(--primary);
-      color: var(--white);
-    }
-    
-    .loading {
-      text-align: center;
-      padding: 3rem;
-      color: var(--text-light);
-    }
-    .error-msg {
-      background: #fee;
-      color: var(--error);
-      padding: 1rem;
-      border-radius: 8px;
-      margin: 1rem 0;
-    }
-
-    /* About Section */
-    .about {
-      background: var(--bg-alt);
-      padding: 5rem 2rem;
-    }
-    .about-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-    .about-text h3 {
-      color: var(--accent);
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 0.5rem;
-    }
-    .about-text h2 {
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      color: var(--text);
-      margin-bottom: 1.5rem;
-    }
-    .about-text p {
-      color: var(--text-light);
-      margin-bottom: 1rem;
-    }
-    .about-card {
-      background: var(--bg-card);
-      padding: 2.5rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-      border: 1px solid var(--border);
-    }
-    .about-card h4 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--text);
-      margin-bottom: 1rem;
-    }
-    .price {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-    }
-    .price span { font-size: 1rem; color: var(--text-light); }
-
-    /* Download Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal.active { display: flex; }
-    .modal-content {
-      background: var(--bg-card);
-      padding: 2.5rem;
-      border-radius: 16px;
-      max-width: 500px;
-      width: 90%;
-      position: relative;
-      border: 1px solid var(--border);
-    }
-    .modal-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--text-light);
-    }
-    .modal h3 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      color: var(--text);
-      margin-bottom: 1rem;
-    }
-    #paypal-button-container { margin: 1.5rem 0; }
-    .download-section {
-      background: var(--bg-alt);
-      padding: 1.5rem;
-      border-radius: 8px;
-      text-align: center;
-      margin-top: 1rem;
-    }
-
-    /* Footer */
-    footer {
-      background: var(--bg-alt);
-      color: var(--text-light);
-      padding: 3rem 2rem;
-      text-align: center;
-      border-top: 1px solid var(--border);
-    }
-    footer a { color: var(--accent); }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 2.5rem; }
-      .stats { flex-direction: column; gap: 1.5rem; }
-      .about-content { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .filters { flex-direction: column; }
-    }
-  
-/* ── ADMIN FLOATING BAR ── */
-#ss-admin-bar {
-  display: none;
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  z-index: 800;
-  background: #1a1033;
-  border-top: 2px solid #631EEB;
-  padding: .6rem 1.5rem;
+/* ─── HERO ─── */
+.hero {
+  background: var(--bg-dark);
+  color: var(--fg-on-dark);
+  padding: 120px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 65% 50%, rgba(99,30,235,.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px);
   align-items: center;
-  gap: 1rem;
+}
+@media (max-width: 768px) { .hero-inner { grid-template-columns: 1fr; } }
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.hero-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+.hero-kicker {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(240,238,248,.55);
+}
+.hero h1 { color: var(--fg-on-dark); margin-bottom: 24px; }
+.hero h1 em { font-style: normal; color: var(--orange); }
+.hero-desc {
+  font-size: 1.05rem;
+  color: rgba(240,238,248,.72);
+  line-height: 1.65;
+  margin-bottom: 36px;
+  max-width: 42ch;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ─── BUTTONS ─── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--orange);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .02em;
+  padding: 13px 28px;
+  border-radius: 50px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background .18s, transform .12s;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--orange-lt); transform: translateY(-1px); }
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--fg-on-dark);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .88rem;
+  padding: 12px 24px;
+  border-radius: 50px;
+  border: 1.5px solid rgba(240,238,248,.3);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color .18s, background .18s;
+  white-space: nowrap;
+}
+.btn-ghost:hover { border-color: var(--fg-on-dark); background: rgba(240,238,248,.06); }
+.btn-outline-purple {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--purple);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .85rem;
+  padding: 10px 22px;
+  border-radius: 50px;
+  border: 1.5px solid var(--purple);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .18s, color .18s;
+  white-space: nowrap;
+}
+.btn-outline-purple:hover { background: var(--purple); color: #fff; }
+
+/* ─── HERO RIGHT PANEL ─── */
+.hero-stats-panel {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(240,238,248,.12);
+  border-radius: var(--r-lg);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+@media (max-width: 768px) { .hero-stats-panel { display: none; } }
+.hero-stat { border-bottom: 1px solid rgba(240,238,248,.1); padding-bottom: 20px; }
+.hero-stat:last-child { border-bottom: none; padding-bottom: 0; }
+.hero-stat-num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--fg-on-dark);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.hero-stat-num span { color: var(--orange); }
+.hero-stat-label { font-size: .78rem; color: rgba(240,238,248,.5); margin-top: 4px; }
+
+/* ─── STATS BAR ─── */
+.stats-bar {
+  background: var(--bg-purple);
+  color: var(--fg-on-purple);
+  padding: 0;
+}
+.stats-inner {
+  display: flex;
+  justify-content: center;
   flex-wrap: wrap;
 }
-#ss-admin-bar.show { display: flex; }
-.adm-bar-label {
-  font-size: .7rem; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; color: #FF7929;
-  white-space: nowrap; flex-shrink: 0;
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px clamp(20px, 4vw, 52px);
+  border-right: 1px solid rgba(255,255,255,.15);
+  gap: 2px;
 }
-.adm-bar-actions { display: flex; gap: .5rem; flex-wrap: wrap; flex: 1; }
-.adm-btn {
-  padding: .4rem .9rem; border-radius: 6px; font-size: .78rem;
-  font-weight: 600; cursor: pointer; border: none;
-  font-family: inherit; transition: all .18s; white-space: nowrap;
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 900;
+  color: var(--fg-on-purple);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
-.adm-btn-primary { background: #631EEB; color: white; }
-.adm-btn-primary:hover { background: #4a13b8; }
-.adm-btn-naranja { background: #FF7929; color: white; }
-.adm-btn-naranja:hover { background: #e05a00; }
-.adm-btn-outline { background: transparent; color: rgba(255,255,255,.75); border: 1px solid rgba(255,255,255,.25); }
-.adm-btn-outline:hover { background: rgba(255,255,255,.1); color: white; }
-.adm-btn-danger { background: transparent; color: #f87171; border: 1px solid #f87171; }
-.adm-btn-danger:hover { background: rgba(248,113,113,.15); }
-.adm-bar-sep { width: 1px; height: 24px; background: rgba(255,255,255,.15); flex-shrink: 0; }
-.adm-bar-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,.4); cursor: pointer; font-size: 1rem; padding: .2rem .4rem; flex-shrink: 0; }
-.adm-bar-close:hover { color: white; }
-
-/* Admin mode indicator */
-body.admin-mode::after {
-  content: 'MODO ADMIN';
-  position: fixed; top: 64px; right: 0;
-  background: #FF7929; color: white;
-  font-size: .62rem; font-weight: 700; letter-spacing: .1em;
-  padding: .2rem .6rem; z-index: 700;
-  border-radius: 0 0 0 6px;
+.stat-label {
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.65);
 }
 
-/* Inline edit mode */
-.admin-editable {
-  outline: 2px dashed rgba(99,30,235,.3);
-  border-radius: 4px; cursor: text;
-  transition: outline .2s;
+/* ─── MARQUEE ─── */
+.marquee-section {
+  background: var(--orange);
+  overflow: hidden;
+  padding: 14px 0;
 }
-.admin-editable:hover { outline-color: #631EEB; }
-.admin-editable:focus { outline: 2px solid #631EEB; background: rgba(99,30,235,.04); }
-
-/* Admin panel slide-up */
-.adm-panel {
-  position: fixed; bottom: 48px; left: 0; right: 0;
-  background: #fff; border-top: 1px solid #e0d9f7;
-  box-shadow: 0 -8px 32px rgba(99,30,235,.15);
-  padding: 1.5rem 2rem; z-index: 799;
-  display: none; max-height: 70vh; overflow-y: auto;
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+  gap: 0;
 }
-.adm-panel.open { display: block; }
-.adm-panel-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1.25rem;
+.marquee-track:hover { animation-play-state: paused; }
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 32px;
+  font-family: var(--font-display);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,.25);
 }
-.adm-panel-header h3 { font-size: 1rem; font-weight: 700; color: #631EEB; }
-.adm-panel-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #888; }
+.marquee-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.6);
+  flex-shrink: 0;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
 
-.ss-footer, footer { padding-bottom: 60px; }
-body,html{ background:#ffffff !important; }
+/* ─── TASKLIVE FEATURE BAND ─── */
+.tasklive-band {
+  background: var(--bg-dark);
+  color: var(--fg-on-dark);
+  padding: clamp(60px, 8vw, 100px) 0;
+  position: relative;
+  overflow: hidden;
+}
+.tasklive-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,121,41,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.tasklive-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px,6vw,80px);
+  align-items: start;
+}
+@media (max-width: 768px) { .tasklive-inner { grid-template-columns: 1fr; } }
+.tasklive-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.tl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--orange);
+  color: #fff;
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 50px;
+}
+.tl-pulse {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: tl-pulse 1.6s ease-in-out infinite;
+}
+@keyframes tl-pulse {
+  0%,100% { opacity: 1; } 50% { opacity: .35; }
+}
+.tasklive-band h2 { color: var(--fg-on-dark); margin-bottom: 16px; }
+.tasklive-desc {
+  font-size: 1rem;
+  color: rgba(240,238,248,.7);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  max-width: 44ch;
+}
+.tasklive-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+.tasklive-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: .9rem;
+  color: rgba(240,238,248,.78);
+  line-height: 1.4;
+}
+.tl-feat-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+.tasklive-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-content: start;
+}
+.tl-card {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r-md);
+  padding: 20px;
+}
+.tl-card-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.tl-card-label {
+  font-size: .75rem;
+  color: rgba(240,238,248,.5);
+  line-height: 1.3;
+}
 
-/* ── VISTA DE MAPA ── */
-#btn-lista.active { background: #631EEB; color: #fff; border-color: #631EEB; }
-#btn-mapa.active  { background: #631EEB; color: #fff; border-color: #631EEB; }
-#btn-lista:not(.active) { background: #fff; color: #631EEB; border-color: #E6E2F5; }
-#btn-mapa:not(.active)  { background: #fff; color: #631EEB; border-color: #E6E2F5; }
-#mapCanvas { display: block; }
+/* ─── REPO SECTION ─── */
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.eyebrow-num {
+  font-family: var(--font-display);
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .15em;
+  color: var(--purple);
+  border: 1.5px solid var(--purple);
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+}
+.eyebrow-line { flex: 1; max-width: 48px; height: 1px; background: var(--line); }
+.eyebrow-text {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
 
+/* ─── GUEST BANNER ─── */
+.guest-banner {
+  background: var(--purple);
+  color: #fff;
+  border-radius: var(--r-md);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-size: .92rem;
+}
+.guest-banner p { margin: 0; }
+.guest-banner strong { color: var(--orange-lt); }
+
+/* ─── FILTERS ─── */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+}
+.filter-group { flex: 1; min-width: 140px; }
+.filter-group label {
+  display: block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 6px;
+}
+.filter-group select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: .88rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  appearance: none;
+  cursor: pointer;
+}
+.filter-group select:focus { outline: 2px solid var(--purple); outline-offset: -1px; }
+.filter-actions { display: flex; gap: 8px; align-items: flex-end; flex-shrink: 0; }
+.btn-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 18px;
+  border-radius: var(--r-sm);
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  transition: all .15s;
+  white-space: nowrap;
+}
+.btn-filter:hover { border-color: var(--purple); color: var(--purple); }
+.btn-filter-accent {
+  background: var(--orange);
+  color: #fff;
+  border-color: var(--orange);
+}
+.btn-filter-accent:hover { background: var(--orange-lt); border-color: var(--orange-lt); color: #fff; }
+
+/* ─── CITATION CARDS ─── */
+.citations-count {
+  margin-bottom: 16px;
+  font-size: .88rem;
+  color: var(--fg-muted);
+}
+.citations-count span { color: var(--purple); font-weight: 700; }
+.citations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+@media (max-width: 1100px) { .citations-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px)  { .citations-grid { grid-template-columns: 1fr; } }
+.citation-card {
+  background: var(--bg-card);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: background .15s;
+}
+.citation-card:hover { background: var(--bg); }
+.citation-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.citation-tag {
+  padding: 3px 8px;
+  border-radius: 50px;
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.tag-categoria { background: rgba(99,30,235,.1); color: var(--purple); }
+.tag-year      { background: rgba(255,121,41,.12); color: var(--orange); }
+.tag-poblacion { background: rgba(59,130,246,.1); color: #2563eb; }
+.citation-quote {
+  border-left: 3px solid var(--orange);
+  padding-left: 12px;
+  margin: 10px 0;
+  font-style: italic;
+  font-size: .88rem;
+  line-height: 1.55;
+  color: var(--fg);
+  flex-grow: 1;
+}
+.citation-author { font-size: .82rem; color: var(--fg); margin-bottom: 6px; }
+.citation-author strong { font-weight: 700; }
+.citation-author em { color: var(--fg-muted); font-size: .78rem; }
+.citation-comment {
+  background: var(--bg);
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  margin: 6px 0;
+  font-size: .78rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+  border-left: 2px solid var(--line);
+}
+.citation-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  gap: 8px;
+}
+.citation-apa {
+  font-style: italic;
+  font-size: .72rem;
+  color: var(--fg-muted);
+  flex: 1;
+  line-height: 1.3;
+}
+.copy-apa-btn {
+  background: transparent;
+  border: 1.5px solid var(--purple);
+  color: var(--purple);
+  padding: 5px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .7rem;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  transition: all .15s;
+}
+.copy-apa-btn:hover { background: var(--purple); color: #fff; }
+
+/* ─── LOADING / ERROR ─── */
+.loading {
+  text-align: center;
+  padding: 48px;
+  color: var(--fg-muted);
+  font-size: .95rem;
+}
+.error-msg {
+  background: #fee;
+  color: #c00;
+  padding: 12px 16px;
+  border-radius: var(--r-sm);
+  margin: 12px 0;
+  font-size: .88rem;
+  border-left: 3px solid #c00;
+}
+.error-msg.show { display: block; }
+
+/* ─── MODALS ─── */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(14,12,24,.7);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal.active { display: flex; }
+.modal-content {
+  background: var(--bg-card);
+  padding: 36px;
+  border-radius: var(--r-lg);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  border: 1px solid var(--line);
+  color: var(--fg);
+}
+.modal-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--fg-muted);
+  line-height: 1;
+}
+.modal h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 8px;
+}
+.modal p { font-size: .9rem; color: var(--fg-muted); margin-bottom: 20px; }
+.form-group { margin-bottom: 14px; }
+.form-group label {
+  display: block;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: .92rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+}
+.form-group input:focus { outline: 2px solid var(--purple); outline-offset: -1px; }
+.download-section {
+  background: var(--bg);
+  padding: 20px;
+  border-radius: var(--r-sm);
+  text-align: center;
+  margin-top: 16px;
+  border: 1px solid var(--line);
+}
+
+/* ─── ABOUT / APOYO ─── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px,6vw,80px);
+  align-items: center;
+}
+@media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
+.about-kicker {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 12px;
+}
+.about-text h2 { margin-bottom: 20px; }
+.about-text p { color: var(--fg-muted); margin-bottom: 12px; font-size: .95rem; line-height: 1.65; }
+.about-text a { color: var(--purple); }
+.apoyo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 36px;
+}
+.apoyo-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.apoyo-card p { font-size: .88rem; color: var(--fg-muted); line-height: 1.6; margin-bottom: 10px; }
+.apoyo-check {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.apoyo-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .88rem;
+  color: var(--fg-muted);
+}
+.apoyo-check-item::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
+
+/* ─── SERVICIOS ─── */
+.servicios-section { background: var(--bg); }
+.servicios-intro { text-align: center; margin-bottom: 48px; }
+.servicios-intro .label-upper { margin-bottom: 12px; display: block; }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.service-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color .18s;
+}
+.service-card:hover { border-color: var(--purple); }
+.service-card h4 {
+  font-family: var(--font-display);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--fg);
+}
+.service-card p { font-size: .82rem; color: var(--fg-muted); line-height: 1.55; flex: 1; }
+.service-card-footer { display: flex; justify-content: flex-end; margin-top: auto; }
+.btn-contratar {
+  display: inline-block;
+  background: var(--orange);
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .78rem;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.btn-contratar:hover { background: var(--orange-lt); }
+.servicios-cat-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  margin-top: 32px;
+}
+.servicios-cat-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.servicios-cat-title h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--fg);
+}
+.suscripcion-band {
+  background: var(--purple);
+  border-radius: var(--r-lg);
+  padding: 32px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+.suscripcion-band-left { flex: 1; }
+.suscripcion-kicker {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 8px;
+}
+.suscripcion-band h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.suscripcion-band p { font-size: .88rem; color: rgba(255,255,255,.72); line-height: 1.55; max-width: 44ch; }
+.suscripcion-price { text-align: center; }
+.suscripcion-price .price-big {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+.suscripcion-price .price-period { font-size: .78rem; color: rgba(255,255,255,.5); margin-bottom: 14px; }
+
+/* ─── DONATE BAND ─── */
+.donate-band {
+  background: var(--bg-card);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 32px 0;
+  text-align: center;
+}
+.donate-band p { font-size: .95rem; color: var(--fg-muted); margin-bottom: 16px; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--bg-dark);
+  color: rgba(240,238,248,.5);
+  padding: 48px 0;
+  text-align: center;
+}
+footer a { color: var(--orange); text-decoration: none; }
+footer .footer-inner { display: flex; flex-direction: column; gap: 8px; }
+footer strong { color: var(--fg-on-dark); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .stat-item { padding: 20px 16px; }
+  .hero { padding: 100px 0 60px; }
+  .tasklive-right { grid-template-columns: 1fr 1fr; }
+  .suscripcion-band { flex-direction: column; }
+}
+
+/* ─── SS-NAV COMPATIBILITY ─── */
+.ss-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; background: rgba(14,12,24,.95); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(99,30,235,.25); font-family: var(--font-body); }
+.ss-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px,4vw,40px); height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.ss-nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; flex-shrink: 0; }
+.ss-nav-logo img { height: 32px; width: auto; }
+.ss-nav-logo span { font-family: var(--font-display); font-size: 1rem; color: var(--orange); letter-spacing: .07em; font-weight: 700; }
+.ss-nav-links { display: flex; align-items: center; gap: .2rem; }
+.ss-nav-links > a { text-decoration: none; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .45rem .8rem; border-radius: 8px; transition: all .18s; white-space: nowrap; }
+.ss-nav-links > a:hover { color: #fff; background: rgba(255,255,255,.07); }
+.ss-dd { position: relative; }
+.ss-dd-btn { display: flex; align-items: center; gap: .3rem; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .45rem .8rem; border-radius: 8px; cursor: pointer; transition: all .18s; background: none; border: none; font-family: inherit; white-space: nowrap; }
+.ss-dd-btn:hover,.ss-dd.open .ss-dd-btn { color: #fff; background: rgba(255,255,255,.07); }
+.ss-dd-btn svg { width: 11px; height: 11px; transition: transform .18s; flex-shrink: 0; color: rgba(240,238,248,.35); }
+.ss-dd.open .ss-dd-btn svg { transform: rotate(180deg); }
+.ss-dd-panel { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: var(--bg-dark); border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .6rem; box-shadow: 0 10px 36px rgba(0,0,0,.4); z-index: 600; }
+.ss-dd.open .ss-dd-panel { display: block; }
+.ss-dd-panel.herr { min-width: 240px; }
+.ss-dd-panel.herr a { display: block; padding: .55rem .9rem; border-radius: 9px; text-decoration: none; transition: background .15s; }
+.ss-dd-panel.herr a:hover { background: rgba(255,255,255,.06); }
+.ss-dd-panel.herr a .t { display: block; font-size: .84rem; font-weight: 600; color: var(--fg-on-dark); }
+.ss-dd-panel.herr a .s { display: block; font-size: .75rem; color: rgba(240,238,248,.45); margin-top: .1rem; }
+.ss-dd-hr { height: 1px; background: rgba(255,255,255,.08); margin: .35rem .4rem; }
+.ss-dd-panel.serv { min-width: 280px; max-width: 320px; }
+.ss-serv-group { margin-bottom: .2rem; }
+.ss-serv-group-title { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--purple); padding: .4rem .9rem .2rem; }
+.ss-serv-item { border-radius: 9px; overflow: hidden; }
+.ss-serv-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: .5rem .9rem; background: none; border: none; cursor: pointer; font-family: inherit; border-radius: 9px; transition: background .15s; }
+.ss-serv-trigger:hover,.ss-serv-item.open .ss-serv-trigger { background: rgba(255,255,255,.06); }
+.ss-serv-trigger span { font-size: .84rem; font-weight: 500; color: var(--fg-on-dark); text-align: left; }
+.ss-serv-trigger svg { width: 10px; height: 10px; flex-shrink: 0; color: rgba(240,238,248,.3); transition: transform .15s; }
+.ss-serv-item.open .ss-serv-trigger svg { transform: rotate(180deg); }
+.ss-serv-body { display: none; padding: .4rem .9rem .7rem 1.1rem; }
+.ss-serv-item.open .ss-serv-body { display: block; }
+.ss-serv-body p { font-size: .78rem; color: rgba(240,238,248,.55); line-height: 1.55; margin-bottom: .55rem; }
+.ss-serv-body a { display: inline-block; background: var(--purple); color: white; padding: 5px 14px; border-radius: 50px; text-decoration: none; font-size: .76rem; font-weight: 600; }
+.ss-serv-body a:hover { background: var(--purple-dk); }
+.ss-nav-cta { background: var(--purple) !important; color: white !important; padding: .45rem 1.1rem !important; border-radius: 50px !important; font-weight: 600 !important; font-size: .83rem !important; }
+.ss-nav-cta:hover { background: var(--purple-dk) !important; color: white !important; }
+.ss-hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: .4rem; background: none; border: none; }
+.ss-hamburger span { display: block; width: 22px; height: 2px; background: rgba(240,238,248,.6); border-radius: 2px; transition: all .2s; }
+@media(max-width:860px) {
+  .ss-nav-links { display: none; position: fixed; top: 62px; left: 0; right: 0; background: var(--bg-dark); border-bottom: 1px solid rgba(99,30,235,.25); flex-direction: column; align-items: stretch; padding: 1rem; gap: .2rem; box-shadow: 0 8px 24px rgba(0,0,0,.4); max-height: 80vh; overflow-y: auto; }
+  .ss-nav-links.open { display: flex; }
+  .ss-nav-links > a,.ss-dd-btn { padding: .65rem 1rem; border-radius: 10px; font-size: .92rem; width: 100%; }
+  .ss-dd { width: 100%; }
+  .ss-dd-panel { position: static; border: none; box-shadow: none; background: rgba(255,255,255,.04); margin-top: .25rem; border-radius: 10px; }
+  .ss-dd.open .ss-dd-panel { display: block; }
+  .ss-hamburger { display: flex; }
+  .ss-nav-inner { padding: 0 1.25rem; }
+}
+body { padding-top: 62px; }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Open+Sauce+One:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 </head>
 <body>
-<div id="sintro-nav"></div>
 
-
-<section class="hero">
-    <div class="hero-content">
-      <span class="hero-badge">Red Bibliográfica de Ciencias Sociales</span>
-      <h1>El conocimiento social, <em>organizado</em> y compartido</h1>
-      <p>Repositorio colaborativo con más de 836 citas sistematizadas de investigadores en ciencias sociales, antropología, educación, virtualidad y más.</p>
-      <div class="hero-buttons">
-        <a href="#repo" class="btn btn-primary">Explorar repositorio</a>
-        <a href="registro.html" class="btn btn-outline">Unirme gratis</a>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-value" id="stat-citas">—</div>
-          <div class="stat-label">Citas</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="stat-autores">—</div>
-          <div class="stat-label">Autores</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="stat-categorias">—</div>
-          <div class="stat-label">Categorías</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" id="stat-indicadores">—</div>
-          <div class="stat-label">Indicadores</div>
+<!-- ════════ NAV ════════ -->
+<nav class="ss-nav">
+  <div class="ss-nav-inner">
+    <a href="inicio.html" class="ss-nav-logo">
+      <img src="logo.png" alt="Sintropía Social" onerror="this.style.display='none'">
+      <span>SINTROPÍA SOCIAL</span>
+    </a>
+    <div class="ss-nav-links" id="ss-nav-links">
+      <a href="index.html" style="color:#fff;">Repositorio</a>
+      <div class="ss-dd" id="dd-herr">
+        <button class="ss-dd-btn" onclick="ssToggleDD('dd-herr')">
+          Herramientas
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ss-dd-panel herr">
+          <a href="diagnostico.html"><span class="t">Diagnóstico Social Rápido</span><span class="s">Árbol de problemas, marco lógico y más</span></a>
+          <a href="dashboard.html"><span class="t">Dashboard Interactivo</span><span class="s">Visualiza y exporta datos de investigación</span></a>
+          <a href="pdfcitas.html"><span class="t">Buscador de Citas PDF</span><span class="s">Extrae citas de PDFs por palabra clave</span></a>
+          <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank"><span class="t" style="color:var(--orange);">Task live — Salas grupales</span><span class="s">Colaboración en vivo sin cuentas</span></a>
+          <div class="ss-dd-hr"></div>
+          <a href="herramientas.html"><span class="t" style="color:var(--purple);">Ver todas las herramientas →</span></a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section id="repo" class="section">
-    <div class="section-header">
-      <h2>Explorar el repositorio</h2>
-      <p>Datos en vivo desde Google Sheets. Filtra por categoría, indicador, autor o año.</p>
-    </div>
-
-    <div id="guest-banner" class="guest-banner" style="display:none;">
-      <p style="color:#fff;font-size:.93rem;line-height:1.5;">
-        Estás viendo el <strong style="color:#fff;">2% del repositorio.</strong>
-        Aplica un filtro para ver el 5%, o suscríbete por <strong style="color:#FF7929;">$99 MXN/año</strong> para las 836+ citas completas.
-      </p>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
-        <a href="pago.html" style="background:#FF7929;color:#fff;padding:7px 18px;border-radius:50px;text-decoration:none;font-weight:700;font-size:.82rem;white-space:nowrap;border:2px solid #FF7929;">Suscribirme $99/año →</a>
-        <a href="registro.html" style="background:rgba(255,255,255,.15);color:#fff;padding:7px 18px;border-radius:50px;text-decoration:none;font-weight:600;font-size:.82rem;white-space:nowrap;border:2px solid rgba(255,255,255,.5);">Registrarme gratis</a>
-      </div>
-    </div>
-
-    <div class="filters">
-      <div class="filter-group">
-        <label>Categoría</label>
-        <select id="filter-categoria" data-testid="filter-categoria">
-          <option value="">Todas</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>Indicador</label>
-        <select id="filter-indicador" data-testid="filter-indicador">
-          <option value="">Todos</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>Autor</label>
-        <select id="filter-autor" data-testid="filter-autor">
-          <option value="">Todos</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>Año</label>
-        <select id="filter-year" data-testid="filter-year">
-          <option value="">Todos</option>
-        </select>
-      </div>
-      <div class="filter-actions">
-        <button class="btn btn-outline" onclick="clearFilters()" data-testid="clear-filters-btn">↺ Limpiar</button>
-        <button class="btn btn-accent" onclick="openDownloadModal()" data-testid="download-btn">⬇ Descargar PDF</button>
-      </div>
-    </div>
-
-    <!-- Vista toggle -->
-    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1.25rem;">
-      <button id="btn-lista" onclick="setVista('lista')" style="padding:6px 16px;border-radius:50px;border:1.5px solid #631EEB;background:#631EEB;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s;">Vista de lista</button>
-      <button id="btn-mapa" onclick="setVista('mapa')" style="padding:6px 16px;border-radius:50px;border:1.5px solid #E6E2F5;background:#fff;color:#631EEB;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .18s;">Vista de mapa</button>
-    </div>
-
-    <div class="citations-container">
-      <div id="loading" class="loading">Cargando citas desde Google Sheets…</div>
-      <div id="error-container"></div>
-      <p id="citations-count" class="citations-count" style="display:none;">Mostrando <span id="showing-count">0</span> de <span id="total-count">0</span> citas <span id="guest-limit-msg" style="color:var(--accent);">(regístrate para ver todas)</span></p>
-      <div class="citations-grid" id="citations-grid" style="display:none;"></div>
-      <!-- Vista de mapa -->
-      <div id="citations-map" style="display:none;position:relative;">
-        <canvas id="mapCanvas" style="width:100%;border-radius:12px;background:#fafafa;border:1px solid #E6E2F5;cursor:grab;touch-action:none;"></canvas>
-        <!-- Tooltip flotante -->
-        <div id="mapTooltip" style="display:none;position:fixed;z-index:500;max-width:340px;background:#fff;border:1.5px solid #631EEB;border-radius:12px;padding:1rem 1.1rem;box-shadow:0 8px 32px rgba(99,30,235,.18);pointer-events:none;"></div>
-        <!-- Panel cita seleccionada -->
-        <div id="mapPanel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:600;background:#fff;border-top:2px solid #631EEB;padding:1.25rem 1.5rem;box-shadow:0 -4px 24px rgba(99,30,235,.12);max-height:52vh;overflow-y:auto;">
-          <button onclick="document.getElementById('mapPanel').style.display='none'" style="position:absolute;top:.75rem;right:1rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#888;">×</button>
-          <div id="mapPanelContent"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="about">
-    <div class="about-content">
-      <div class="about-text">
-        <h3>SINTROPÍA SOCIAL</h3>
-        <h2>Conocimiento colectivo para ciencias sociales</h2>
-        <p>Sistematizamos el pensamiento de investigadores en ciencias sociales. Cada cita y reflexión construye una red de conocimiento que crece con cada miembro.</p>
-        <p>La consulta y la descarga de citas filtradas son <strong>libres</strong> para toda la comunidad. Si este repositorio te aporta valor, considera <a href="https://www.paypal.com/donate/?hosted_button_id=84RDSWN99GWCN" target="_blank" rel="noopener">apoyar el proyecto con una donación</a>.</p>
-        <p>¿Preguntas? <a href="mailto:contacto@sintropiasocial.com">contacto@sintropiasocial.com</a></p>
-        <a href="registro.html" class="btn btn-primary">Únete →</a>
-      </div>
-      <div class="about-card">
-        <h4>Apoya el proyecto</h4>
-
-        <div>
-          <p style="font-weight:600;color:var(--primary);">Conocimiento abierto</p>
-          <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:0.75rem;">Sintropía Social es un proyecto independiente y gratuito. Tu donación nos permite mantener vivo este repositorio y construir nuevas herramientas para la comunidad.</p>
-          <p style="font-size:0.9rem;color:var(--text-light);margin-bottom:1rem;">✓ Sin planes ni suscripciones<br>✓ Acceso completo y descargas libres<br>✓ Cualquier monto suma</p>
-          <a href="https://www.paypal.com/donate/?hosted_button_id=84RDSWN99GWCN" target="_blank" rel="noopener" class="btn btn-accent" style="width:100%;text-align:center;display:block;" data-testid="donate-btn-card">❤ Donar con PayPal</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- User Profile Modal -->
-  <div id="profile-modal" class="modal">
-    <div class="modal-content" style="max-width:550px;">
-      <button class="modal-close" onclick="closeProfileModal()">&times;</button>
-      <h3 style="margin-bottom:1.5rem;">Mi Perfil</h3>
-      <div id="profile-content">
-        <div style="background:var(--bg-alt);padding:1.5rem;border-radius:12px;margin-bottom:1.5rem;">
-          <p style="margin:0;font-size:1.25rem;font-weight:600;color:var(--primary);" id="profile-nombre"></p>
-          <p style="margin:0.25rem 0 0;color:var(--text-light);" id="profile-email"></p>
-          <p style="margin:0.5rem 0 0;font-size:0.9rem;" id="profile-institucion"></p>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
-          <div style="background:var(--white);border:1px solid var(--border);padding:1rem;border-radius:8px;text-align:center;">
-            <p style="font-size:2rem;font-weight:700;color:var(--primary);margin:0;" id="profile-descargas">0</p>
-            <p style="font-size:0.85rem;color:var(--text-light);margin:0;">Descargas</p>
+      <div class="ss-dd" id="dd-serv">
+        <button class="ss-dd-btn" onclick="ssToggleDD('dd-serv')">
+          Servicios
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ss-dd-panel serv">
+          <div class="ss-serv-group">
+            <div class="ss-serv-group-title">Investigación Social</div>
+            <div class="ss-serv-item" id="si-1"><button class="ss-serv-trigger" onclick="ssToggleServ('si-1')"><span>Investigación de Mercados Laborales</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Análisis riguroso del empleo en territorios específicos: sectores, informalidad, género y juventudes.</p><a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank">Contratar servicio</a></div></div>
+            <div class="ss-serv-item" id="si-2"><button class="ss-serv-trigger" onclick="ssToggleServ('si-2')"><span>Estudios de Prospectiva Laboral</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Escenarios del futuro del trabajo ante IA y automatización. Mapeo de ocupaciones emergentes.</p><a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank">Contratar servicio</a></div></div>
+            <div class="ss-serv-item" id="si-3"><button class="ss-serv-trigger" onclick="ssToggleServ('si-3')"><span>Evaluación de Programas</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Evaluamos diseño e impacto de programas con metodologías mixtas y recomendaciones claras.</p><a href="https://www.paypal.com/ncp/payment/MU42VRBPV359A" target="_blank">Contratar servicio</a></div></div>
+            <div class="ss-serv-item" id="si-4"><button class="ss-serv-trigger" onclick="ssToggleServ('si-4')"><span>Diseño de Encuestas Laborales</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Instrumentos cuantitativos y cualitativos con análisis y visualizaciones para toma de decisiones.</p><a href="https://www.paypal.com/ncp/payment/WRCZ8EQEAEB7S" target="_blank">Contratar servicio</a></div></div>
           </div>
-          <div style="background:var(--white);border:1px solid var(--border);padding:1rem;border-radius:8px;text-align:center;">
-            <p style="font-size:2rem;font-weight:700;color:var(--accent);margin:0;" id="profile-fecha"></p>
-            <p style="font-size:0.85rem;color:var(--text-light);margin:0;">Miembro desde</p>
+          <div class="ss-dd-hr"></div>
+          <div class="ss-serv-group">
+            <div class="ss-serv-group-title">Educación</div>
+            <div class="ss-serv-item" id="si-5"><button class="ss-serv-trigger" onclick="ssToggleServ('si-5')"><span>Diseño Curricular por Competencias</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Programas educativos desde primaria hasta universidad con enfoque crítico y socioemocional.</p><a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank">Contratar servicio</a></div></div>
+            <div class="ss-serv-item" id="si-6"><button class="ss-serv-trigger" onclick="ssToggleServ('si-6')"><span>Diseño Instruccional de Cursos</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Experiencias didácticas para formatos presenciales, virtuales o híbridos con pedagogía crítica.</p><a href="https://www.paypal.com/ncp/payment/VX6JVXRTACJLS" target="_blank">Contratar servicio</a></div></div>
+            <div class="ss-serv-item" id="si-7"><button class="ss-serv-trigger" onclick="ssToggleServ('si-7')"><span>Capacitación y Talleres</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Talleres vivenciales sobre enseñanza participativa, evaluación alternativa e inclusión educativa.</p><a href="https://www.paypal.com/ncp/payment/SQ5L48FEBNG9C" target="_blank">Contratar servicio</a></div></div>
           </div>
-        </div>
-        <h4 style="margin-bottom:0.75rem;color:var(--primary);">Historial de descargas</h4>
-        <div id="profile-historial" style="max-height:200px;overflow-y:auto;"></div>
-        <button class="btn btn-outline" onclick="cerrarSesion()" style="width:100%;margin-top:1.5rem;">Cerrar sesión</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Login Modal -->
-  <div id="login-modal" class="modal">
-    <div class="modal-content" style="max-width:400px;">
-      <button class="modal-close" onclick="closeLoginModal()">&times;</button>
-      <h3 style="margin-bottom:0.5rem;">Iniciar sesión</h3>
-      <p style="color:var(--text-light);margin-bottom:1.5rem;">Accede a tu cuenta para ver el repositorio completo.</p>
-      <div id="login-error" class="error-msg"></div>
-      <form id="login-form-modal">
-        <div class="form-group" style="margin-bottom:1rem;">
-          <label style="display:block;margin-bottom:0.3rem;font-size:0.85rem;">Email</label>
-          <input type="email" id="login-email" required style="width:100%;padding:0.75rem;border:1px solid var(--border);border-radius:6px;">
-        </div>
-        <div class="form-group" style="margin-bottom:1.5rem;">
-          <label style="display:block;margin-bottom:0.3rem;font-size:0.85rem;">Contraseña</label>
-          <input type="password" id="login-password" required style="width:100%;padding:0.75rem;border:1px solid var(--border);border-radius:6px;">
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;" id="login-submit-btn">Entrar</button>
-      </form>
-      <p style="text-align:center;margin-top:1rem;font-size:0.9rem;color:var(--text-light);">
-        ¿No tienes cuenta? <a href="registro.html" style="color:var(--primary);">Regístrate gratis</a>
-      </p>
-    </div>
-  </div>
-
-  <!-- Download Modal -->
-  <div id="download-modal" class="modal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeDownloadModal()" data-testid="close-modal-btn">×</button>
-      <h3>Descargar citas filtradas</h3>
-      <div id="download-info" style="background:var(--bg-alt);padding:1rem;border-radius:8px;margin:1rem 0;">
-        <p style="margin:0;"><strong id="download-count">0</strong> citas seleccionadas</p>
-        <p style="margin:0.5rem 0 0;font-size:0.85rem;color:var(--text-light);" id="download-filters"></p>
-      </div>
-
-      <div id="payment-section">
-        <p style="color:var(--success);font-weight:500;">✓ Descarga libre y gratuita</p>
-        <p style="font-size:0.85rem;color:var(--text-light);margin:0.5rem 0 1rem;">
-          Tu PDF se generará y descargará al instante. Sin pagos, sin registros obligatorios.
-        </p>
-        <button class="btn btn-primary" onclick="descargarYRegistrar()" style="width:100%;" data-testid="download-pdf-btn">⬇ Descargar PDF ahora</button>
-
-        <div style="background:var(--bg-alt);border-radius:8px;padding:1rem;margin-top:1.25rem;text-align:center;">
-          <p style="margin:0 0 0.75rem;font-size:0.9rem;color:var(--text);"><strong>¿Te fue útil?</strong> Apoya este proyecto independiente con una donación.</p>
-          <a href="https://www.paypal.com/donate/?hosted_button_id=84RDSWN99GWCN" target="_blank" rel="noopener" class="btn btn-accent" style="text-decoration:none;" data-testid="donate-btn-modal">❤ Donar con PayPal</a>
-        </div>
-      </div>
-
-      <div id="download-ready" class="download-section" style="display:none;">
-        <p style="color:var(--success);font-weight:500;">✓ ¡Descarga iniciada!</p>
-        <p style="font-size:0.9rem;color:var(--text-light);">Tu PDF se está descargando. Gracias por usar Sintropía Social.</p>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://www.paypal.com/sdk/js?client-id=BAADNWafE2xUH09mKvDiejlkmXxK9XQx1oa-ujzF7TF-pQNLf1a58OhHRUMUNoDx9dgXzhDclHdQhukdW0&components=hosted-buttons&disable-funding=venmo&currency=MXN"></script>
-
-    <!-- SECCIÓN SERVICIOS -->
-    <section id="servicios" style="background:#f0ebff;padding:5rem 0;margin-top:2rem;">
-      <div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
-        <div style="text-align:center;margin-bottom:3rem;">
-          <span style="display:inline-block;background:rgba(255,107,26,.12);color:#FF7929;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;padding:5px 16px;border-radius:50px;font-weight:600;margin-bottom:12px;">Acceso al repositorio</span>
-          <h2 style="font-family: var(--font-display);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:#1a0f33;margin-bottom:.75rem;">Suscripción al Dashboard</h2>
-          <p style="color:#4a4458;font-size:.97rem;max-width:520px;margin:0 auto;line-height:1.7;">Acceso completo al repositorio de citas bibliográficas de ciencias sociales.</p>
-        </div>
-
-        <!-- SUSCRIPCIÓN DESTACADA -->
-        <div style="background:linear-gradient(135deg,#631EEB,#8b5cf6);border-radius:20px;padding:2.5rem;margin-bottom:3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
-          <div style="flex:1;">
-            <div style="font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.5rem;">⭐ Acceso al repositorio completo</div>
-            <h3 style="font-family: var(--font-display);font-size:1.5rem;color:white;margin-bottom:.5rem;">Suscripción al Dashboard Bibliográfico</h3>
-            <p style="color:rgba(255,255,255,.82);font-size:.9rem;line-height:1.6;max-width:500px;">836+ citas de ciencias sociales sistematizadas. Filtra por categoría, indicador, autor y año. Acceso completo sin restricciones. Requiere registro previo.</p>
+          <div class="ss-dd-hr"></div>
+          <div class="ss-serv-group">
+            <div class="ss-serv-group-title">Comunidad</div>
+            <div class="ss-serv-item" id="si-8"><button class="ss-serv-trigger" onclick="ssToggleServ('si-8')"><span>Intervención Comunitaria</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Guías, dinámicas y formatos para planificar, implementar y evaluar acciones en comunidades.</p><a href="https://www.paypal.com/ncp/payment/HHSC3TJXG826Y" target="_blank">Contratar servicio</a></div></div>
+            <div class="ss-serv-item" id="si-9"><button class="ss-serv-trigger" onclick="ssToggleServ('si-9')"><span>Consultoría (6 sesiones/mes)</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Acompañamiento en investigación, educación, comunidad y empleabilidad. Diagnóstico + plan de acción.</p><a href="https://www.paypal.com/ncp/payment/ZUX6CD4QZ2D8L" target="_blank">Contratar servicio</a></div></div>
           </div>
-          <div style="text-align:center;min-width:160px;">
-            <div style="font-size:2.8rem;font-weight:900;color:white;line-height:1;font-family: var(--font-display);">$99</div>
-            <div style="color:rgba(255,255,255,.65);font-size:.82rem;margin-bottom:1rem;">MXN / año</div>
-            <a href="pago.html" style="display:inline-block;background:#FF7929;color:white;padding:11px 24px;border-radius:50px;text-decoration:none;font-weight:700;font-size:.88rem;">Suscribirme →</a>
-          </div>
+          <div class="ss-dd-hr"></div>
+          <div style="padding:.4rem .9rem .3rem;"><a href="mailto:contacto@sintropiasocial.com" style="display:block;text-align:center;padding:.55rem;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--purple);text-decoration:none;background:rgba(99,30,235,.1);">Contacta a Sintropía Social →</a></div>
         </div>
-
-        <!-- CTA FINAL -->
-        <div style="text-align:center;padding:2.5rem;background:white;border-radius:16px;border:1px solid rgba(99,30,235,.15);">
-          <h3 style="font-family: var(--font-display);font-size:1.4rem;color:#1a0f33;margin-bottom:.6rem;">¿Necesitas algo a la medida?</h3>
-          <p style="color:#4a4458;font-size:.9rem;margin-bottom:1.25rem;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.6;">Cada organización tiene desafíos únicos. Diseñamos propuestas adaptadas a tu contexto y presupuesto.</p>
-          <a href="mailto:dsalgado@sintropiasocial.com" style="display:inline-block;background:#631EEB;color:white;padding:11px 26px;border-radius:50px;text-decoration:none;font-weight:600;font-size:.9rem;">Contacta a Sintropía Social →</a>
-        </div>
-
       </div>
-    </section>
-    <!-- FIN SERVICIOS -->
-
-    <footer>
-    <p><strong>Sintropía Social</strong> · Repositorio Bibliográfico de Ciencias Sociales</p>
-    <p><a href="mailto:contacto@sintropiasocial.com">contacto@sintropiasocial.com</a></p>
-  </footer>
-
-  <script src="config.js"></script>
-<script src="nav.js"></script>
-  <script>
-    var allCitas = [];
-    var filteredCitas = [];
-    var paymentCompleted = false;
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Check if user is logged in
-      var user = Auth.getUser();
-      updateNavUser(user);
-      
-      if (!user) {
-        document.getElementById('guest-banner').style.display = 'flex';
-      }
-      
-      // Setup filter listeners
-      setupFilterListeners();
-      
-      // Load citations
-      await loadCitas();
-      
-      // Setup PayPal button
-      setupPayPal();
-      
-      // Setup login form
-      setupLoginForm();
-    });
-
-    function updateNavUser(user) {
-      var navSection = document.getElementById('nav-user-section');
-      var ssNavUser  = document.getElementById('ss-nav-user');
-      if (user && user.token) {
-        var label = user.nombre || 'Mi cuenta';
-        if(navSection) navSection.innerHTML = '<a href="#" onclick="openProfileModal();return false;" class="btn btn-primary" style="color:#ffffff !important;">' + label + '</a>';
-        if(ssNavUser)  ssNavUser.innerHTML  = '<button onclick="openProfileModal()" style="background:#631EEB;color:white;padding:.42rem .95rem;border-radius:50px;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600;"> ' + label + '</button>';
-      } else {
-        if(navSection) navSection.innerHTML = '<a href="#" onclick="openLoginModal();return false;" style="margin-right:0.5rem;">Entrar</a><a href="registro.html" class="btn btn-primary" style="color:#ffffff !important;">Unirme</a>';
-        if(ssNavUser)  ssNavUser.innerHTML  = '<a href="#" onclick="openLoginModal();return false;" style="font-size:.86rem;font-weight:500;color:#4a4458;padding:.45rem .8rem;border-radius:8px;text-decoration:none;">Entrar</a><a href="registro.html" class="ss-nav-cta">Únete gratis</a>';
-      }
-    }
-
-    function openLoginModal() {
-      document.getElementById('login-modal').classList.add('active');
-    }
-
-    function closeLoginModal() {
-      document.getElementById('login-modal').classList.remove('active');
-      document.getElementById('login-error').classList.remove('show');
-    }
-
-    function openProfileModal() {
-      document.getElementById('profile-modal').classList.add('active');
-      loadUserProfile();
-    }
-
-    function closeProfileModal() {
-      document.getElementById('profile-modal').classList.remove('active');
-    }
-
-    async function loadUserProfile() {
-      var user = Auth.getUser();
-      if (!user || !user.token) return;
-
-      document.getElementById('profile-nombre').textContent = (user.nombre || '') + ' ' + (user.apellido || '');
-      document.getElementById('profile-email').textContent = user.email || '';
-      document.getElementById('profile-institucion').textContent = user.institucion || '';
-
-      var result = await api('getPerfilUsuario', { userToken: user.token });
-      if (result.ok) {
-        document.getElementById('profile-descargas').textContent = result.usuario.totalDescargas || 0;
-        var fecha = new Date(result.usuario.fechaRegistro);
-        document.getElementById('profile-fecha').textContent = fecha.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
-
-        var historial = document.getElementById('profile-historial');
-        if (result.descargas && result.descargas.length > 0) {
-          historial.innerHTML = result.descargas.map(function(d) {
-            var f = new Date(d.fecha);
-            return '<div style="padding:0.75rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">' +
-              '<span>' + f.toLocaleDateString('es-MX') + '</span>' +
-              '<span style="color:var(--text-light);">' + d.cantidadCitas + ' citas</span>' +
-              '<span style="font-weight:600;color:var(--primary);">$' + d.monto + '</span>' +
-            '</div>';
-          }).join('');
-        } else {
-          historial.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:1rem;">No tienes descargas aún.</p>';
-        }
-      }
-    }
-
-    function setupLoginForm() {
-      document.getElementById('login-form-modal').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        var email = document.getElementById('login-email').value.trim().toLowerCase();
-        var password = document.getElementById('login-password').value;
-        var btn = document.getElementById('login-submit-btn');
-        var errorEl = document.getElementById('login-error');
-
-        errorEl.classList.remove('show');
-        btn.disabled = true;
-        btn.textContent = 'Entrando...';
-
-        try {
-          var passHash = await sha256(password);
-          var result = await api('loginUsuario', { email: email, passHash: passHash });
-
-          if (result.ok) {
-            Auth.setUser({
-              token: result.token || ('user_' + result.id),
-              nombre: (result.user && result.user.nombre) || result.nombre || '',
-              apellido: (result.user && result.user.apellido) || result.apellido || '',
-              email: (result.user && result.user.email) || result.email || '',
-              institucion: (result.user && result.user.institucion) || result.institucion || '',
-              isAdmin: result.isAdmin || false
-            });
-            closeLoginModal();
-            updateNavUser(Auth.getUser());
-            document.getElementById('guest-banner').style.display = 'none';
-            filterCitas();
-          } else {
-            errorEl.textContent = result.error || 'Credenciales incorrectas';
-            errorEl.classList.add('show');
-          }
-        } catch(err) {
-          errorEl.textContent = 'Error de conexión';
-          errorEl.classList.add('show');
-        }
-
-        btn.disabled = false;
-        btn.textContent = 'Entrar';
-      });
-    }
-
-    function cerrarSesion() {
-      Auth.logout();
-      closeProfileModal();
-      updateNavUser(null);
-      document.getElementById('guest-banner').style.display = 'flex';
-      filterCitas();
-    }
-
-    async function loadCitas() {
-      var loading = document.getElementById('loading');
-      var errorContainer = document.getElementById('error-container');
-      var table = document.getElementById('citations-table');
-      
-      loading.style.display = 'block';
-      errorContainer.innerHTML = '';
-      
-      var result = await api('getCitas');
-      
-      loading.style.display = 'none';
-      
-      if (!result.ok) {
-        errorContainer.innerHTML = '<div class="error-msg">Error: ' + (result.error || 'No se pudieron cargar las citas') + '</div>';
-        return;
-      }
-      
-      allCitas = result.data || [];
-      
-      // Update stats
-      document.getElementById('stat-citas').textContent = allCitas.length;
-      var autores = [...new Set(allCitas.map(c => c['Autor']).filter(Boolean))];
-      var categorias = [...new Set(allCitas.map(c => c['Categoria'] || c['Categoría']).filter(Boolean))];
-      var indicadores = [...new Set(allCitas.map(c => c['Indicador']).filter(Boolean))];
-      
-      document.getElementById('stat-autores').textContent = autores.length;
-      document.getElementById('stat-categorias').textContent = categorias.length;
-      document.getElementById('stat-indicadores').textContent = indicadores.length;
-      
-      // Initialize filters with all options
-      populateFilter('filter-categoria', categorias);
-      populateFilter('filter-autor', autores);
-      populateFilter('filter-indicador', indicadores);
-      
-      var years = [...new Set(allCitas.map(c => c['Anio'] || c['Año']).filter(Boolean))].sort((a,b) => b-a);
-      populateFilter('filter-year', years);
-      
-      // Show citations
-      filterCitas();
-      document.getElementById('citations-grid').style.display = 'grid';
-    }
-
-    function populateFilter(id, values) {
-      var select = document.getElementById(id);
-      var current = select.value;
-      select.innerHTML = '<option value="">Todos</option>';
-      values.sort().forEach(function(v) {
-        if (v) {
-          var opt = document.createElement('option');
-          opt.value = v;
-          opt.textContent = v;
-          select.appendChild(opt);
-        }
-      });
-      select.value = current;
-    }
-
-    function filterCitas() {
-      var categoria = document.getElementById('filter-categoria').value;
-      var indicador = document.getElementById('filter-indicador').value;
-      var autor = document.getElementById('filter-autor').value;
-      var year = document.getElementById('filter-year').value;
-      
-      filteredCitas = allCitas.filter(function(c) {
-        var cat = c['Categoria'] || c['Categoría'] || '';
-        var ind = c['Indicador'] || '';
-        var aut = c['Autor'] || '';
-        var yr = String(c['Anio'] || c['Año'] || '');
-        
-        if (categoria && cat !== categoria) return false;
-        if (indicador && ind !== indicador) return false;
-        if (autor && aut !== autor) return false;
-        if (year && yr !== year) return false;
-        return true;
-      });
-      
-      // Update other filters based on current filtered results
-      updateDynamicFilters();
-      
-      // Check if user is logged in
-      // Guests: 2% base, 5% if any filter active, 100% if subscribed
-      var user = Auth.getUser();
-      var displayCitas = filteredCitas;
-      if (!user || !user.token) {
-        // Check if any filter is active
-        var cat = document.getElementById('filter-categoria') ? document.getElementById('filter-categoria').value : '';
-        var ind = document.getElementById('filter-indicador') ? document.getElementById('filter-indicador').value : '';
-        var aut = document.getElementById('filter-autor') ? document.getElementById('filter-autor').value : '';
-        var yr  = document.getElementById('filter-anio') ? document.getElementById('filter-anio').value : '';
-        var hasFilter = (cat || ind || aut || yr);
-        var guestPct = hasFilter ? 0.05 : 0.02;
-        var limit = Math.max(1, Math.floor(filteredCitas.length * guestPct));
-        displayCitas = filteredCitas.slice(0, limit);
-      } else if (!user.subscribed) {
-        // Registered but not subscribed: 10%
-        var limit = Math.max(1, Math.floor(filteredCitas.length * 0.10));
-        displayCitas = filteredCitas.slice(0, limit);
-      }
-      
-      renderCitas(displayCitas, filteredCitas.length);
-    }
-
-    function updateDynamicFilters() {
-      var categoria = document.getElementById('filter-categoria').value;
-      var indicador = document.getElementById('filter-indicador').value;
-      var autor = document.getElementById('filter-autor').value;
-      var year = document.getElementById('filter-year').value;
-      
-      // Get available options from filtered data
-      var availableCategorias = new Set();
-      var availableIndicadores = new Set();
-      var availableAutores = new Set();
-      var availableYears = new Set();
-      
-      allCitas.forEach(function(c) {
-        var cat = c['Categoria'] || c['Categoría'] || '';
-        var ind = c['Indicador'] || '';
-        var aut = c['Autor'] || '';
-        var yr = String(c['Anio'] || c['Año'] || '');
-        
-        // Check if this citation matches current filters (except the one we're updating)
-        var matchCategoria = !categoria || cat === categoria;
-        var matchIndicador = !indicador || ind === indicador;
-        var matchAutor = !autor || aut === autor;
-        var matchYear = !year || yr === year;
-        
-        // Add to available options if it matches all OTHER filters
-        if (matchIndicador && matchAutor && matchYear && cat) availableCategorias.add(cat);
-        if (matchCategoria && matchAutor && matchYear && ind) availableIndicadores.add(ind);
-        if (matchCategoria && matchIndicador && matchYear && aut) availableAutores.add(aut);
-        if (matchCategoria && matchIndicador && matchAutor && yr) availableYears.add(yr);
-      });
-      
-      // Update filter dropdowns with available options
-      updateFilterOptions('filter-categoria', availableCategorias, categoria);
-      updateFilterOptions('filter-indicador', availableIndicadores, indicador);
-      updateFilterOptions('filter-autor', availableAutores, autor);
-      updateFilterOptions('filter-year', availableYears, year, true);
-    }
-
-    function updateFilterOptions(selectId, availableOptions, currentValue, isYear) {
-      var select = document.getElementById(selectId);
-      var options = Array.from(availableOptions).sort();
-      if (isYear) options.sort(function(a, b) { return b - a; }); // Years descending
-      
-      select.innerHTML = '<option value="">Todos</option>';
-      options.forEach(function(opt) {
-        var option = document.createElement('option');
-        option.value = opt;
-        option.textContent = opt;
-        if (opt === currentValue) option.selected = true;
-        select.appendChild(option);
-      });
-    }
-
-    function renderCitas(citas, totalCount) {
-      var grid = document.getElementById('citations-grid');
-      var countEl = document.getElementById('citations-count');
-      var showingEl = document.getElementById('showing-count');
-      var totalEl = document.getElementById('total-count');
-      
-      grid.innerHTML = '';
-      
-      totalEl.textContent = totalCount || citas.length;
-      showingEl.textContent = citas.length;
-      countEl.style.display = 'block';
-      
-      // Show/hide guest limit message
-      var user = Auth.getUser();
-      var guestMsg = document.getElementById('guest-limit-msg');
-      if (guestMsg) {
-        guestMsg.style.display = (user && user.token) ? 'none' : 'inline';
-      }
-      
-      if (citas.length === 0) {
-        grid.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--text-light);grid-column:1/-1;">No se encontraron citas con los filtros seleccionados.</p>';
-        return;
-      }
-      
-      citas.forEach(function(c) {
-        var categoria = c['Categoria'] || c['Categoría'] || '';
-        var year = c['Anio'] || c['Año'] || '';
-        var poblacion = c['Poblacion'] || c['Población'] || '';
-        var autor = c['Autor'] || '';
-        var cita = c['Cita'] || '';
-        var comentarios = c['Comentarios'] || '';
-        var publicacion = c['Publicacion'] || c['Publicación'] || '';
-        var pagina = c['Pagina'] || c['Página'] || '';
-        var citaApa = c['Cita Apa'] || c['Cita APA'] || '';
-        
-        // Truncate quote for compact view
-        var shortQuote = cita.length > 180 ? cita.substring(0, 180) + '...' : cita;
-        var shortComment = comentarios && comentarios.length > 120 ? comentarios.substring(0, 120) + '...' : comentarios;
-        
-        var card = document.createElement('div');
-        card.className = 'citation-card';
-        
-        var html = '<div class="citation-tags">';
-        if (categoria) html += '<span class="citation-tag tag-categoria">' + categoria + '</span>';
-        if (year) html += '<span class="citation-tag tag-year">' + year + '</span>';
-        if (poblacion) html += '<span class="citation-tag tag-poblacion">' + poblacion + '</span>';
-        html += '</div>';
-        
-        html += '<blockquote class="citation-quote">' + shortQuote + '</blockquote>';
-        
-        html += '<p class="citation-author">— <strong>' + autor + '</strong>';
-        if (publicacion) html += ', <em>' + publicacion + '</em>';
-        if (pagina) html += ', p. ' + pagina;
-        html += '</p>';
-        
-        if (shortComment && shortComment.trim() !== '') {
-          html += '<div class="citation-comment">' + shortComment + '</div>';
-        }
-        
-        var apaText = citaApa || autor + ' (' + year + '). ' + publicacion + '.';
-        html += '<div class="citation-footer">';
-        html += '<p class="citation-apa">' + apaText.substring(0, 80) + (apaText.length > 80 ? '...' : '') + '</p>';
-        html += '<button class="copy-apa-btn" onclick="copyAPA(this, \'' + escapeQuotes(apaText) + '\')">Copiar APA</button>';
-        html += '</div>';
-        
-        card.innerHTML = html;
-        grid.appendChild(card);
-      });
-    }
-
-    function escapeQuotes(str) {
-      return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-    }
-
-    function copyAPA(btn, apa) {
-      navigator.clipboard.writeText(apa).then(function() {
-        btn.textContent = '✓ Copiado';
-        setTimeout(function() { btn.textContent = '📋 Copiar'; }, 2000);
-      });
-    }
-
-    function clearFilters() {
-      document.getElementById('filter-categoria').value = '';
-      document.getElementById('filter-indicador').value = '';
-      document.getElementById('filter-autor').value = '';
-      document.getElementById('filter-year').value = '';
-      filterCitas();
-    }
-
-    // Filter change listeners
-    function setupFilterListeners() {
-      ['filter-categoria', 'filter-indicador', 'filter-autor', 'filter-year'].forEach(function(id) {
-        var el = document.getElementById(id);
-        if (el) {
-          el.addEventListener('change', filterCitas);
-        }
-      });
-    }
-
-    // Subscription/Download payment removed — descarga libre con donación opcional
-
-    function closeDownloadModal() {
-      document.getElementById('download-modal').classList.remove('active');
-    }
-
-    function descargarYRegistrar() {
-      try {
-        descargarPDF();
-        registrarDescargaEnServidor();
-        document.getElementById('payment-section').style.display = 'none';
-        document.getElementById('download-ready').style.display = 'block';
-        setTimeout(function(){ closeDownloadModal(); }, 2500);
-      } catch (e) {
-        console.error('Error al generar PDF:', e);
-        alert('Hubo un error al generar el PDF. Por favor intenta nuevamente.');
-      }
-    }
-
-    function registrarDescargaEnServidor() {
-      // Registro opcional en servidor - NO bloquea la descarga
-      var user = Auth.getUser();
-      var count = filteredCitas.length > 0 ? filteredCitas.length : allCitas.length;
-
-      if (user && user.token) {
-        api('registrarDescarga', {
-          userToken: user.token,
-          tipoPago: 'libre',
-          monto: '0',
-          filtros: document.getElementById('download-filters').textContent,
-          cantidadCitas: count
-        }).then(function(result) {
-          console.log('Descarga registrada en servidor:', result);
-        }).catch(function(err) {
-          console.log('No se pudo registrar en servidor (no afecta descarga):', err);
-        });
-      } else {
-        console.log('Descarga realizada por usuario invitado:', {
-          cantidadCitas: count,
-          fecha: new Date().toISOString()
-        });
-      }
-    }
-
-    function descargarPDF() {
-      var { jsPDF } = window.jspdf;
-      var doc = new jsPDF();
-      
-      var dataToExport = filteredCitas.length > 0 ? filteredCitas : allCitas;
-      var pageWidth = doc.internal.pageSize.getWidth();
-      var margin = 15;
-      var yPos = 20;
-      var lineHeight = 6;
-      
-      // Title
-      doc.setFontSize(18);
-      doc.setTextColor(26, 58, 47);
-      doc.text('Sintropia Social', margin, yPos);
-      yPos += 8;
-      
-      doc.setFontSize(12);
-      doc.setTextColor(100);
-      doc.text('Repositorio Bibliografico de Ciencias Sociales', margin, yPos);
-      yPos += 6;
-      
-      doc.setFontSize(10);
-      doc.text('Generado: ' + new Date().toLocaleDateString('es-MX'), margin, yPos);
-      yPos += 10;
-      
-      // Filters info
-      var filtersText = document.getElementById('download-filters').textContent;
-      if (filtersText) {
-        doc.setFontSize(9);
-        doc.setTextColor(120);
-        doc.text('Filtros: ' + filtersText, margin, yPos);
-        yPos += 8;
-      }
-      
-      doc.setDrawColor(200);
-      doc.line(margin, yPos, pageWidth - margin, yPos);
-      yPos += 10;
-      
-      // Citations
-      doc.setFontSize(10);
-      dataToExport.forEach(function(c, index) {
-        if (yPos > 270) {
-          doc.addPage();
-          yPos = 20;
-        }
-        
-        var categoria = c['Categoria'] || c['Categoría'] || '';
-        var year = c['Anio'] || c['Año'] || '';
-        var autor = c['Autor'] || '';
-        var cita = c['Cita'] || '';
-        var citaApa = c['Cita Apa'] || c['Cita APA'] || '';
-        
-        // Category and year badge
-        doc.setFontSize(8);
-        doc.setTextColor(124, 58, 237);
-        doc.text((categoria + ' | ' + year).toUpperCase(), margin, yPos);
-        yPos += 5;
-        
-        // Quote
-        doc.setFontSize(10);
-        doc.setTextColor(40);
-        var citaLines = doc.splitTextToSize('"' + cita + '"', pageWidth - margin * 2 - 5);
-        citaLines.forEach(function(line) {
-          if (yPos > 275) {
-            doc.addPage();
-            yPos = 20;
-          }
-          doc.text(line, margin + 5, yPos);
-          yPos += lineHeight;
-        });
-        
-        // Author
-        doc.setFontSize(9);
-        doc.setTextColor(80);
-        doc.text('— ' + autor, margin + 5, yPos);
-        yPos += 6;
-        
-        // APA
-        if (citaApa) {
-          doc.setFontSize(8);
-          doc.setTextColor(120);
-          var apaLines = doc.splitTextToSize('APA: ' + citaApa, pageWidth - margin * 2 - 10);
-          apaLines.forEach(function(line) {
-            if (yPos > 275) {
-              doc.addPage();
-              yPos = 20;
-            }
-            doc.text(line, margin + 5, yPos);
-            yPos += 5;
-          });
-        }
-        
-        yPos += 8;
-        
-        // Separator
-        if (index < dataToExport.length - 1) {
-          doc.setDrawColor(220);
-          doc.line(margin, yPos - 3, pageWidth - margin, yPos - 3);
-        }
-      });
-      
-      // Footer on last page
-      doc.setFontSize(8);
-      doc.setTextColor(150);
-      doc.text('www.sintropiasocial.com | contacto@sintropiasocial.com', pageWidth / 2, 290, { align: 'center' });
-      
-      // Download
-      doc.save('sintropia_social_citas_' + new Date().toISOString().slice(0, 10) + '.pdf');
-    }
-
-    function setupPayPal() {
-      // Pagos eliminados — descarga libre con donación opcional
-    }
-
-    function openDownloadModal() {
-      // Check if at least one filter is selected
-      var categoria = document.getElementById('filter-categoria').value;
-      var indicador = document.getElementById('filter-indicador').value;
-      var autor = document.getElementById('filter-autor').value;
-      var year = document.getElementById('filter-year').value;
-
-      if (!categoria && !indicador && !autor && !year) {
-        alert('Por favor selecciona al menos un filtro (Categoría, Indicador, Autor o Año) antes de descargar.');
-        return;
-      }
-
-      var count = filteredCitas.length;
-      document.getElementById('download-count').textContent = count;
-
-      // Show active filters
-      var filtersText = [];
-      if (categoria) filtersText.push('Categoría: ' + categoria);
-      if (indicador) filtersText.push('Indicador: ' + indicador);
-      if (autor) filtersText.push('Autor: ' + autor);
-      if (year) filtersText.push('Año: ' + year);
-      document.getElementById('download-filters').textContent = filtersText.join(' • ');
-
-      document.getElementById('payment-section').style.display = 'block';
-      document.getElementById('download-ready').style.display = 'none';
-      document.getElementById('download-modal').classList.add('active');
-    }
-
-    function downloadCSV() {
-      if (!paymentCompleted) {
-        alert('Por favor completa el pago primero.');
-        return;
-      }
-      
-      var dataToExport = filteredCitas.length > 0 ? filteredCitas : allCitas;
-      var headers = ['No', 'Categoria', 'Indicador', 'Poblacion', 'Anio', 'Autor', 'Cita', 'Comentarios', 'Publicacion', 'Pagina', 'Cita Apa', 'Link'];
-      
-      var csv = headers.join(',') + '\n';
-      dataToExport.forEach(function(row) {
-        var line = headers.map(function(h) {
-          var val = row[h] || '';
-          // Escape quotes and wrap in quotes
-          return '"' + String(val).replace(/"/g, '""') + '"';
-        }).join(',');
-        csv += line + '\n';
-      });
-      
-      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      var link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'sintropia_social_citas_' + new Date().toISOString().slice(0,10) + '.csv';
-      link.click();
-      
-      closeDownloadModal();
-    }
-  
-
-    // ── VISTA DE MAPA ──────────────────────────────────────
-    var vistaActual = 'lista';
-    var mapData = [];       // citas cargadas
-    var mapNodes = [];      // nodos del canvas
-    var mapEdges = [];      // conexiones categoria→cita
-    var mapAnimId = null;
-    var mapDrag = null;
-    var mapOffset = {x:0,y:0};
-    var mapScale = 1;
-    var lastPan = null;
-
-    // Colores por categoría — paleta Sintropía
-    var CAT_COLORS = [
-      '#631EEB','#FF7929','#8b5cf6','#e05a00','#4a13b8',
-      '#a78bfa','#ff8c4a','#312e81','#fdba74','#7c3aed',
-      '#c084fc','#fb923c','#1d4ed8','#60a5fa','#15803d'
-    ];
-    var catColorMap = {};
-
-    function getCatColor(cat) {
-      if (!catColorMap[cat]) {
-        var keys = Object.keys(catColorMap);
-        catColorMap[cat] = CAT_COLORS[keys.length % CAT_COLORS.length];
-      }
-      return catColorMap[cat];
-    }
-
-    function setVista(v) {
-      vistaActual = v;
-      var grid = document.getElementById('citations-grid');
-      var map  = document.getElementById('citations-map');
-      var btnL = document.getElementById('btn-lista');
-      var btnM = document.getElementById('btn-mapa');
-      if (v === 'lista') {
-        if (grid) grid.style.display = 'grid';
-        if (map)  map.style.display  = 'none';
-        btnL.classList.add('active');
-        btnM.classList.remove('active');
-        if (mapAnimId) { cancelAnimationFrame(mapAnimId); mapAnimId = null; }
-      } else {
-        if (grid) grid.style.display = 'none';
-        if (map)  map.style.display  = 'block';
-        btnL.classList.remove('active');
-        btnM.classList.add('active');
-        setTimeout(buildMap, 60);
-      }
-    }
-
-    function buildMap() {
-      var canvas = document.getElementById('mapCanvas');
-      if (!canvas) return;
-
-      // Use filtered data
-      // Map uses ALL citas, not the guest-limited filtered subset
-      var citas = (typeof allCitas !== 'undefined' && allCitas.length > 0) ? allCitas : mapData;
-      if (!citas || !citas.length) return;
-
-      // Size canvas
-      var W = canvas.parentElement.clientWidth || 900;
-      var H = Math.max(520, Math.min(W * 0.65, 700));
-      canvas.width  = W;
-      canvas.height = H;
-      canvas.style.height = H + 'px';
-
-      // Build category centers
-      var cats = {};
-      citas.forEach(function(ct) {
-        var cat = ct['Categoria'] || ct['Categoría'] || 'Sin categoría';
-        if (!cats[cat]) cats[cat] = [];
-        cats[cat].push(ct);
-      });
-
-      var catNames = Object.keys(cats);
-      var nc = catNames.length;
-      mapNodes = [];
-      mapEdges = [];
-      catColorMap = {};
-
-      // Category hub nodes — scattered randomly, physics will separate them
-      catNames.forEach(function(cat, i) {
-        // Start from random positions spread across canvas
-        var margin = 80;
-        var x = margin + Math.random() * (W - margin * 2);
-        var y = margin + Math.random() * (H - margin * 2);
-        var color = getCatColor(cat);
-        // Size by number of citas
-        var r = Math.max(18, Math.min(38, 12 + cats[cat].length * 0.6));
-        mapNodes.push({
-          id: 'cat_' + i, type: 'cat', label: cat,
-          x: x, y: y, vx: (Math.random()-.5)*2, vy: (Math.random()-.5)*2,
-          r: r, color: color, data: null, fixed: false
-        });
-      });
-
-      // Citation nodes — distributed around their category hub
-      var maxCitas = 120; // cap for performance
-      var shown = citas.slice(0, maxCitas);
-      shown.forEach(function(ct, i) {
-        var cat = ct['Categoria'] || ct['Categoría'] || 'Sin categoría';
-        var catIdx = catNames.indexOf(cat);
-        var catNode = mapNodes[catIdx];
-        var angle = (2 * Math.PI * i / shown.length);
-        var spread = Math.min(W, H) * 0.14 + Math.random() * Math.min(W, H) * 0.06;
-        var x = catNode.x + spread * Math.cos(angle) + (Math.random()-0.5)*30;
-        var y = catNode.y + spread * Math.sin(angle) + (Math.random()-0.5)*30;
-        x = Math.max(12, Math.min(W-12, x));
-        y = Math.max(12, Math.min(H-12, y));
-        var color = getCatColor(cat);
-        mapNodes.push({
-          id: 'cita_' + i, type: 'cita', label: '',
-          x: x, y: y, vx: 0, vy: 0, r: 6,
-          color: color, data: ct, catId: 'cat_' + catIdx
-        });
-        mapEdges.push({ from: 'cat_' + catIdx, to: 'cita_' + i, color: color });
-      });
-
-      if (mapAnimId) cancelAnimationFrame(mapAnimId);
-      setupMapEvents(canvas);
-      animateMap(canvas);
-    }
-
-    function animateMap(canvas) {
-      var ctx = canvas.getContext('2d');
-      var W = canvas.width, H = canvas.height;
-
-      // Physics
-      var nodes = mapNodes;
-      var k = 0.012, damping = 0.85;
-
-      // Apply forces — hubs repel each other, citas attracted to hub
-      var damping = 0.82;
-      nodes.forEach(function(n) {
-        // Repulsion from ALL other nodes
-        nodes.forEach(function(m) {
-          if (m === n) return;
-          var dx = n.x - m.x, dy = n.y - m.y;
-          var dist = Math.sqrt(dx*dx + dy*dy) || 1;
-          var minDist = (n.type==='cat' && m.type==='cat')
-            ? n.r + m.r + 55
-            : n.r + m.r + 10;
-          if (dist < minDist) {
-            var force = (minDist - dist) * (n.type==='cat' ? 0.14 : 0.05);
-            n.vx += (dx/dist) * force;
-            n.vy += (dy/dist) * force;
-          }
-        });
-        if (n.type === 'cita') {
-          // Attraction to own cat hub
-          var catNode = mapNodes.find(function(nn){ return nn.id === n.catId; });
-          if (catNode) {
-            var dx2 = catNode.x - n.x, dy2 = catNode.y - n.y;
-            var dist2 = Math.sqrt(dx2*dx2 + dy2*dy2) || 1;
-            var ideal = catNode.r + n.r + 16;
-            if (dist2 > ideal) {
-              n.vx += (dx2/dist2) * 0.02 * (dist2 - ideal);
-              n.vy += (dy2/dist2) * 0.02 * (dist2 - ideal);
-            }
-          }
-        }
-        // Weak gravity toward center keeps hubs visible
-        n.vx += (W/2 - n.x) * 0.0008;
-        n.vy += (H/2 - n.y) * 0.0008;
-        n.vx *= damping; n.vy *= damping;
-        n.x = Math.max(n.r+4, Math.min(W-n.r-4, n.x + n.vx));
-        n.y = Math.max(n.r+4, Math.min(H-n.r-4, n.y + n.vy));
-      });
-
-      // Draw
-      ctx.clearRect(0, 0, W, H);
-
-      // Edges — draw from hub center to cita
-      mapEdges.forEach(function(e) {
-        var from = mapNodes.find(function(n){ return n.id === e.from; });
-        var to   = mapNodes.find(function(n){ return n.id === e.to; });
-        if (!from || !to) return;
-        ctx.beginPath();
-        ctx.moveTo(from.x, from.y);
-        ctx.lineTo(to.x, to.y);
-        ctx.strokeStyle = e.color + '55';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-      });
-
-      // Nodes
-      nodes.forEach(function(n) {
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
-        // Check if this hub has any connected citas in current view
-        var hasCitas = n.type === 'cita' || mapEdges.some(function(e){ return e.from===n.id; });
-        ctx.fillStyle = n.color + (n.type === 'cat' ? (hasCitas?'dd':'66') : '99');
-        ctx.fill();
-        if (n.type === 'cat') {
-          ctx.strokeStyle = n.color;
-          ctx.lineWidth = hasCitas ? 2.5 : 1.5;
-          if (!hasCitas) ctx.setLineDash([4,4]);
-          ctx.stroke();
-          ctx.setLineDash([]);
-        }
-      });
-
-      // Highlight/dim based on active filter
-      if (mapActiveFilter) {
-        nodes.forEach(function(n) {
-          var inFilter = n.type === 'cat'
-            ? mapActiveFilter[n.label]
-            : (function(){ var ind = (n.data && (n.data['Indicador']||n.data['Poblacion']||n.data['Población']||'Sin indicador')); return mapActiveFilter[ind]; })();
-          if (!inFilter) {
-            ctx.beginPath();
-            ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
-            ctx.fillStyle = 'rgba(250,250,252,0.72)';
-            ctx.fill();
-          }
-        });
-      }
-
-      // Category labels
-      nodes.forEach(function(n) {
-        if (n.type !== 'cat') return;
-        ctx.font = 'bold 11px "Open Sans", sans-serif';
-        ctx.fillStyle = '#1a1033';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        // wrap long labels
-        var words = n.label.split(' ');
-        var line = '', lines = [], maxW = 90;
-        words.forEach(function(w) {
-          var test = line ? line+' '+w : w;
-          if (ctx.measureText(test).width > maxW && line) {
-            lines.push(line); line = w;
-          } else { line = test; }
-        });
-        if (line) lines.push(line);
-        var yOff = n.r + 4;
-        lines.forEach(function(l, i) {
-          ctx.fillText(l, n.x, n.y + yOff + i*13);
-        });
-      });
-
-      mapAnimId = requestAnimationFrame(function(){ animateMap(canvas); });
-    }
-
-    function setupMapEvents(canvas) {
-      // Remove old listeners
-      canvas.onmousedown = null; canvas.onmousemove = null;
-      canvas.onmouseup   = null; canvas.onclick     = null;
-
-      var dragging = false, moved = false;
-      var startX, startY;
-
-      canvas.addEventListener('mousedown', function(e) {
-        dragging = true; moved = false;
-        startX = e.clientX; startY = e.clientY;
-        canvas.style.cursor = 'grabbing';
-      });
-
-      canvas.addEventListener('mousemove', function(e) {
-        if (!dragging) {
-          // Hover tooltip
-          var node = hitTest(canvas, e);
-          showTooltip(node, e);
-          canvas.style.cursor = node ? 'pointer' : 'grab';
-          return;
-        }
-        var dx = e.clientX - startX, dy = e.clientY - startY;
-        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-          moved = true;
-          // Pan: shift all nodes
-          mapNodes.forEach(function(n) { n.x += dx*0.4; n.y += dy*0.4; });
-          startX = e.clientX; startY = e.clientY;
-        }
-      });
-
-      canvas.addEventListener('mouseup', function(e) {
-        dragging = false;
-        canvas.style.cursor = 'grab';
-        if (!moved) {
-          var node = hitTest(canvas, e);
-          if (node && node.type === 'cita') showCitaPanel(node.data);
-        }
-      });
-
-      canvas.addEventListener('mouseleave', function() {
-        dragging = false;
-        document.getElementById('mapTooltip').style.display = 'none';
-      });
-
-      // Touch support
-      canvas.addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        startX = e.touches[0].clientX; startY = e.touches[0].clientY;
-        moved = false;
-      }, {passive:false});
-
-      canvas.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-        var dx = e.touches[0].clientX - startX;
-        var dy = e.touches[0].clientY - startY;
-        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
-          moved = true;
-          mapNodes.forEach(function(n) { n.x += dx*0.4; n.y += dy*0.4; });
-          startX = e.touches[0].clientX; startY = e.touches[0].clientY;
-        }
-      }, {passive:false});
-
-      canvas.addEventListener('touchend', function(e) {
-        if (!moved) {
-          var node = hitTestTouch(canvas, e.changedTouches[0]);
-          if (node && node.type === 'cita') showCitaPanel(node.data);
-        }
-      });
-    }
-
-    function hitTest(canvas, e) {
-      var rect = canvas.getBoundingClientRect();
-      var mx = (e.clientX - rect.left) * (canvas.width / rect.width);
-      var my = (e.clientY - rect.top)  * (canvas.height / rect.height);
-      return hitTestCoords(mx, my);
-    }
-
-    function hitTestTouch(canvas, touch) {
-      var rect = canvas.getBoundingClientRect();
-      var mx = (touch.clientX - rect.left) * (canvas.width / rect.width);
-      var my = (touch.clientY - rect.top)  * (canvas.height / rect.height);
-      return hitTestCoords(mx, my);
-    }
-
-    function hitTestCoords(mx, my) {
-      var hit = null;
-      mapNodes.forEach(function(n) {
-        var dx = mx - n.x, dy = my - n.y;
-        if (Math.sqrt(dx*dx+dy*dy) <= n.r + 4) hit = n;
-      });
-      return hit;
-    }
-
-    function showTooltip(node, e) {
-      var tt = document.getElementById('mapTooltip');
-      if (!node || node.type === 'cat') { tt.style.display = 'none'; return; }
-      var ct = node.data;
-      var cat = ct['Categoria'] || ct['Categoría'] || '';
-      var cita = ct['Cita'] || '';
-      var autor = ct['Autor'] || '';
-      var year  = ct['Anio'] || ct['Año'] || '';
-      tt.innerHTML =
-        (cat ? '<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#631EEB;margin-bottom:.35rem;">'+escapeHtml(cat)+'</div>' : '') +
-        '<div style="font-size:.82rem;font-style:italic;color:#3d3560;line-height:1.55;margin-bottom:.4rem;">' +
-          escapeHtml(cita.substring(0,120)) + (cita.length>120?'…':'') +
-        '</div>' +
-        '<div style="font-size:.75rem;color:#7b7095;">— '+escapeHtml(autor)+(year?' · '+year:'')+'</div>' +
-        '<div style="font-size:.7rem;color:#631EEB;margin-top:.4rem;font-weight:600;">Clic para ver completa</div>';
-      tt.style.display = 'block';
-      tt.style.left = (e.clientX + 14) + 'px';
-      tt.style.top  = (e.clientY - 10) + 'px';
-      // Keep inside viewport
-      var tw = tt.offsetWidth, th = tt.offsetHeight;
-      if (e.clientX + 14 + tw > window.innerWidth - 10)
-        tt.style.left = (e.clientX - tw - 14) + 'px';
-      if (e.clientY - 10 + th > window.innerHeight - 10)
-        tt.style.top  = (window.innerHeight - th - 10) + 'px';
-    }
-
-    function showCitaPanel(ct) {
-      if (!ct) return;
-      var panel   = document.getElementById('mapPanel');
-      var content = document.getElementById('mapPanelContent');
-      var cat    = ct['Indicador'] || ct['Poblacion'] || ct['Población'] || '';
-      var year   = ct['Anio'] || ct['Año'] || '';
-      var cita   = ct['Cita'] || '';
-      var autor  = ct['Autor'] || '';
-      var pub    = ct['Publicacion'] || ct['Publicación'] || '';
-      var pag    = ct['Pagina'] || ct['Página'] || '';
-      var apa    = ct['Cita Apa'] || ct['Cita APA'] || (autor+' ('+year+'). '+pub+'.');
-      var color  = getCatColor(cat);
-
-      content.innerHTML =
-        '<div style="display:flex;align-items:flex-start;gap:.75rem;flex-wrap:wrap;">' +
-          (cat ? '<span style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:'+color+';background:'+color+'20;padding:.2rem .65rem;border-radius:50px;">'+escapeHtml(cat)+'</span>' : '') +
-          (year ? '<span style="font-size:.68rem;font-weight:700;color:#FF7929;background:#FF792920;padding:.2rem .65rem;border-radius:50px;">'+escapeHtml(year)+'</span>' : '') +
-        '</div>' +
-        '<blockquote style="border-left:3px solid '+color+';padding-left:.9rem;margin:1rem 0;font-style:italic;font-size:.9rem;line-height:1.65;color:#2c2c2c;">'+escapeHtml(cita)+'</blockquote>' +
-        '<p style="font-size:.85rem;color:#2c2c2c;margin-bottom:.35rem;">— <strong>'+escapeHtml(autor)+'</strong>' +
-          (pub ? ', <em>'+escapeHtml(pub)+'</em>' : '') +
-          (pag ? ', p. '+escapeHtml(pag) : '') +
-        '</p>' +
-        '<p style="font-style:italic;font-size:.78rem;color:#7b7095;line-height:1.4;margin-bottom:.85rem;">'+escapeHtml(apa)+'</p>' +
-        '<button onclick="copyAPA(this,\'' + apa.replace(/'/g,"\'") + '\')" style="background:transparent;border:1.5px solid #631EEB;color:#631EEB;padding:.4rem .85rem;border-radius:6px;cursor:pointer;font-weight:600;font-size:.8rem;font-family:inherit;transition:all .18s;">Copiar APA</button>';
-
-      panel.style.display = 'block';
-      document.getElementById('mapTooltip').style.display = 'none';
-    }
-
-    function escapeHtml(s) {
-      return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-
-    // Hook into existing data load — store data for map
-    var _origRenderCitas = renderCitas;
-    renderCitas = function(citas, totalCount) {
-      mapData = citas || [];
-      _origRenderCitas(citas, totalCount);
-      // Initialize toggle state
-      document.getElementById('btn-lista').classList.add('active');
-      document.getElementById('btn-mapa').classList.remove('active');
-      // Track what indicadores are in current filter
-      var indicSet = {};
-      (citas||[]).forEach(function(ct){
-        var ind = ct['Indicador']||ct['Poblacion']||ct['Población']||'Sin indicador';
-        indicSet[ind] = true;
-      });
-      mapActiveFilter = Object.keys(indicSet).length > 0 ? indicSet : null;
-    };
-    // ── FIN VISTA DE MAPA ──────────────────────────────────
-
-    </script>
-
-<script>SintroNav.render('#sintro-nav','index');</script>
-
-<!-- ADMIN BAR: Repositorio -->
-<div id="ss-admin-bar">
-  <span class="adm-bar-label">Admin · Repositorio</span>
-  <div class="adm-bar-actions">
-    <button class="adm-btn adm-btn-primary" onclick="ssToggleAdmPanel('adm-panel-pendientes')">Revisar pendientes</button>
-    <button class="adm-btn adm-btn-naranja" onclick="ssToggleAdmPanel('adm-panel-nueva-cita')">Nueva cita</button>
-    <div class="adm-bar-sep"></div>
-    <button class="adm-btn adm-btn-outline" onclick="window.location.href='admin.html'">Panel admin</button>
-  </div>
-  <button class="adm-bar-close" onclick="document.getElementById('ss-admin-bar').classList.remove('show')" title="Ocultar">✕</button>
-</div>
-
-<!-- PANEL: Pendientes -->
-<div class="adm-panel" id="adm-panel-pendientes">
-  <div class="adm-panel-header">
-    <h3>Citas pendientes de aprobación</h3>
-    <button class="adm-panel-close" onclick="ssCloseAdmPanels()">✕</button>
-  </div>
-  <div id="adm-pendientes-loading" style="color:#888;font-size:.85rem;">Cargando pendientes...</div>
-  <div id="adm-pendientes-list"></div>
-</div>
-
-<!-- PANEL: Nueva cita manual -->
-<div class="adm-panel" id="adm-panel-nueva-cita">
-  <div class="adm-panel-header">
-    <h3>Agregar cita al repositorio</h3>
-    <button class="adm-panel-close" onclick="ssCloseAdmPanels()">✕</button>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem;">
-    <div class="campo"><label>Categoría</label>
-      <select id="adm-new-cat">
-        <option>Sociología</option><option>Antropología</option><option>Psicología</option>
-        <option>Educación</option><option>Virtualidad</option><option>Administración</option>
-        <option>Mercados Laborales</option><option>Historia</option><option>Filosofía</option>
-        <option>Investigación Social</option><option>Metodología</option>
-        <option>Intervención Comunitaria</option><option>Empleabilidad</option><option>Otra</option>
-      </select>
+      <a href="blog.html">Blog</a>
+      <a href="contribuir.html">Contribuir</a>
+      <span id="ss-nav-user">
+        <a href="registro.html" class="ss-nav-cta">Únete</a>
+      </span>
     </div>
-    <div class="campo"><label>Indicador</label><input id="adm-new-ind" placeholder="Ej: Cultura, Empleo..."/></div>
-    <div class="campo"><label>Autor(es)</label><input id="adm-new-aut" placeholder="Apellido, N."/></div>
-    <div class="campo"><label>Año</label><input id="adm-new-year" placeholder="2024" type="number"/></div>
-    <div class="campo"><label>Publicación</label><input id="adm-new-pub" placeholder="Título del libro o artículo"/></div>
-    <div class="campo"><label>Página</label><input id="adm-new-pag" placeholder="45"/></div>
+    <button class="ss-hamburger" onclick="ssMobileNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-  <div class="campo" style="margin-bottom:.75rem;">
-    <label>Cita textual *</label>
-    <textarea id="adm-new-cita" rows="4" placeholder="Escribe o pega la cita aquí..."></textarea>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem;">
-    <div class="campo"><label>Cita APA</label><input id="adm-new-apa" placeholder="Se genera automáticamente..." readonly style="background:#f9f8ff;"/></div>
-    <div class="campo"><label>Link (opcional)</label><input id="adm-new-link" placeholder="https://..."/></div>
-  </div>
-  <button class="adm-btn adm-btn-primary" onclick="admPublicarCita()" style="font-size:.88rem;padding:.6rem 1.5rem;">Publicar en repositorio</button>
-</div>
-
+</nav>
 <script>
-// ── ADMIN: Load pendientes in index ──
-(function(){
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded', admLoadPendientes);
-  } else {
-    admLoadPendientes();
-  }
-})();
-
-function admLoadPendientes(){
-  if(!window.ssAdminIsAdmin || !ssAdminIsAdmin()) return;
-  var list = document.getElementById('adm-pendientes-list');
-  var loading = document.getElementById('adm-pendientes-loading');
-  if(!list) return;
-
-  // Load from localStorage (PDF citas)
-  var raw = JSON.parse(localStorage.getItem('ss_pdf_pendientes')||'[]');
-  var pending = raw.filter(function(p){ return p.estado==='pendiente'; });
-
-  // Also load from Apps Script
-  if(typeof api === 'function'){
-    var token = null;
-    try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
-    api('getPendientes',{adminToken:token}).then(function(r){
-      if(loading) loading.style.display='none';
-      var apiPending = (r&&r.ok&&r.data) ? r.data : [];
-      var all = apiPending.concat(pending);
-      renderAdmPendientes(all, list);
-    }).catch(function(){
-      if(loading) loading.style.display='none';
-      renderAdmPendientes(pending, list);
-    });
-  } else {
-    if(loading) loading.style.display='none';
-    renderAdmPendientes(pending, list);
-  }
-}
-
-function renderAdmPendientes(items, container){
-  if(!items.length){
-    container.innerHTML='<p style="color:#888;font-size:.85rem;padding:1rem 0;">No hay citas pendientes de revisión.</p>';
-    return;
-  }
-  container.innerHTML = items.slice(0,20).map(function(p,i){
-    return '<div style="border:1px solid #e0d9f7;border-radius:10px;padding:1rem;margin-bottom:.6rem;display:flex;gap:1rem;align-items:flex-start;">'+
-      '<div style="flex:1;">'+
-        '<div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.35rem;">'+
-          '<span style="background:#f0ebff;color:#631EEB;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:50px;">'+(p['Categoria']||p.categoria||'—')+'</span>'+
-          '<span style="font-size:.75rem;color:#888;">'+(p['Autor']||p.autor||'—')+'</span>'+
-          '<span style="font-size:.75rem;color:#888;">p.'+(p['Pagina']||p.pagina||'?')+'</span>'+
-        '</div>'+
-        '<p style="font-size:.83rem;color:#3d3560;line-height:1.5;font-style:italic;">"'+String(p['Cita']||p.cita||'').substring(0,120)+'..."</p>'+
-        '<p style="font-size:.75rem;color:#aaa;margin-top:.25rem;">Por: '+(p['Usuario']||p.usuario||'anónimo')+'</p>'+
-      '</div>'+
-      '<div style="display:flex;flex-direction:column;gap:.35rem;flex-shrink:0;">'+
-        '<button onclick="admAprobarCita('+i+',this)" style="background:#631EEB;color:white;padding:5px 12px;border-radius:6px;border:none;cursor:pointer;font-size:.75rem;font-weight:600;font-family:inherit;">Aprobar</button>'+
-        '<button onclick="admRechazarCita('+i+',this)" style="background:none;border:1px solid #ef4444;color:#ef4444;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:.75rem;font-family:inherit;">Rechazar</button>'+
-      '</div>'+
-    '</div>';
-  }).join('');
-  window._admPendientes = items;
-}
-
-function admAprobarCita(idx, btn){
-  var p = window._admPendientes[idx];
-  if(!p) return;
-  btn.textContent='Aprobando...'; btn.disabled=true;
-  var token = null;
-  try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
-  if(typeof api==='function' && p._rowIndex !== undefined){
-    api('aprobarCita',{adminToken:token,rowIndex:p._rowIndex}).then(function(r){
-      admLoadPendientes();
-      ssToast(r&&r.ok?'Cita aprobada':'Error: '+(r?r.error:''),'ok');
-    });
-  } else {
-    // localStorage pending
-    var raw = JSON.parse(localStorage.getItem('ss_pdf_pendientes')||'[]');
-    raw.forEach(function(item){ if(item.id===p.id) item.estado='aprobada'; });
-    localStorage.setItem('ss_pdf_pendientes',JSON.stringify(raw));
-    admLoadPendientes();
-    if(typeof ssToast==='function') ssToast('Cita aprobada localmente');
-  }
-}
-
-function admRechazarCita(idx, btn){
-  var p = window._admPendientes[idx];
-  if(!p) return;
-  btn.textContent='Rechazando...'; btn.disabled=true;
-  var token = null;
-  try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
-  if(typeof api==='function' && p._rowIndex !== undefined){
-    api('rechazarCita',{adminToken:token,rowIndex:p._rowIndex,motivo:''}).then(function(r){
-      admLoadPendientes();
-    });
-  } else {
-    var raw = JSON.parse(localStorage.getItem('ss_pdf_pendientes')||'[]');
-    raw.forEach(function(item){ if(item.id===p.id) item.estado='rechazada'; });
-    localStorage.setItem('ss_pdf_pendientes',JSON.stringify(raw));
-    admLoadPendientes();
-  }
-}
-
-function admPublicarCita(){
-  var aut  = document.getElementById('adm-new-aut').value.trim();
-  var cita = document.getElementById('adm-new-cita').value.trim();
-  if(!aut||!cita){ alert('Autor y cita son obligatorios.'); return; }
-  var cat  = document.getElementById('adm-new-cat').value;
-  var ind  = document.getElementById('adm-new-ind').value;
-  var year = document.getElementById('adm-new-year').value;
-  var pub  = document.getElementById('adm-new-pub').value;
-  var pag  = document.getElementById('adm-new-pag').value;
-  var apa  = document.getElementById('adm-new-apa').value ||
-             aut+(year?' ('+year+').':' (s.f.).')+' '+pub+'.'+(pag?' p. '+pag+'.':'');
-  var link = document.getElementById('adm-new-link').value;
-  var token = null;
-  try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
-  api('enviarCita',{adminToken:token,categoria:cat,indicador:ind,autor:aut,cita:cita,
-    year:year,publicacion:pub,pagina:pag,citaAPA:apa,link:link,usuarioEmail:'admin'})
-  .then(function(r){
-    if(r&&r.ok){ ssCloseAdmPanels(); if(typeof ssToast==='function') ssToast('Cita publicada en el repositorio'); }
-    else alert('Error: '+(r?r.error:'sin conexión'));
-  });
-}
-
-// Auto-generate APA
-['adm-new-aut','adm-new-year','adm-new-pub','adm-new-pag'].forEach(function(id){
-  var el = document.getElementById(id);
-  if(el) el.addEventListener('input', function(){
-    var a=document.getElementById('adm-new-aut').value;
-    var y=document.getElementById('adm-new-year').value;
-    var p2=document.getElementById('adm-new-pub').value;
-    var pg=document.getElementById('adm-new-pag').value;
-    var apa=a+(y?' ('+y+').':' (s.f.).')+' '+p2+'.'+(pg?' p. '+pg+'.':'');
-    document.getElementById('adm-new-apa').value=apa;
-  });
-});
+function ssToggleDD(id){var all=document.querySelectorAll('.ss-dd');all.forEach(function(d){if(d.id!==id){d.classList.remove('open');}});document.getElementById(id).classList.toggle('open');}
+function ssToggleServ(id){var el=document.getElementById(id);var wasOpen=el.classList.contains('open');document.querySelectorAll('.ss-serv-item').forEach(function(i){i.classList.remove('open');});if(!wasOpen)el.classList.add('open');}
+function ssMobileNav(){document.getElementById('ss-nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd').forEach(function(d){d.classList.remove('open');});});
+(function(){try{var u=JSON.parse(localStorage.getItem('ss_user'));if(u&&u.nombre){var el=document.getElementById('ss-nav-user');if(el)el.innerHTML='<button onclick="openProfileModal()" style="background:var(--purple);color:white;padding:.42rem .95rem;border-radius:50px;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600;">'+u.nombre+' · Salir</button>';}}catch(e){}})();
 </script>
 
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">
+          <span class="hero-dot"></span>
+          <span class="hero-kicker">Red Bibliográfica · Ciencias Sociales</span>
+        </div>
+        <h1 class="display-xl">El saber<br><em>organizado.</em></h1>
+        <p class="hero-desc">Más de 843 citas sistematizadas de investigadores en ciencias sociales, antropología, educación y comunidad. Consulta libre, descarga filtrada, sin restricciones.</p>
+        <div class="hero-actions">
+          <a href="#repo" class="btn-primary">Explorar repositorio</a>
+          <a href="registro.html" class="btn-ghost">Unirme gratis</a>
+        </div>
+      </div>
+      <div class="hero-stats-panel">
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="stat-citas-hero">843<span>+</span></div>
+          <div class="hero-stat-label">Citas académicas sistematizadas</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="stat-autores-hero">—</div>
+          <div class="hero-stat-label">Autores e investigadores</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num" id="stat-indicadores-hero">—</div>
+          <div class="hero-stat-label">Indicadores de diagnóstico</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ STATS BAR ════════ -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><span class="stat-num" id="stat-citas-bar">843+</span><span class="stat-label">Citas</span></div>
+    <div class="stat-item"><span class="stat-num" id="stat-autores-bar">—</span><span class="stat-label">Autores</span></div>
+    <div class="stat-item"><span class="stat-num" id="stat-categorias-bar">—</span><span class="stat-label">Categorías</span></div>
+    <div class="stat-item"><span class="stat-num" id="stat-indicadores-bar">—</span><span class="stat-label">Indicadores</span></div>
+    <div class="stat-item"><span class="stat-num">Gratis</span><span class="stat-label">Acceso libre</span></div>
+  </div>
+</div>
+
+<!-- ════════ MARQUEE ════════ -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- ════════ TASK LIVE FEATURE ════════ -->
+<section class="tasklive-band">
+  <div class="container">
+    <div class="tasklive-inner">
+      <div>
+        <div class="tasklive-eyebrow">
+          <span class="tl-badge"><span class="tl-pulse"></span>Nuevo</span>
+          <span style="font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,238,248,.4);">Para facilitadores</span>
+        </div>
+        <h2 class="display-md" style="color:var(--fg-on-dark);margin-bottom:16px;">Task live</h2>
+        <p class="tasklive-desc">La sala de trabajo en grupos pequeños para tus videollamadas, sin cuentas ni instalaciones. Pega el enlace de un documento de Google, define los equipos y cada uno trabaja en su propia copia en vivo.</p>
+        <ul class="tasklive-features">
+          <li><span class="tl-feat-dot"></span>Sin cuentas ni instalaciones — funciona desde el navegador</li>
+          <li><span class="tl-feat-dot"></span>Cada equipo trabaja en su propia copia con color identificador</li>
+          <li><span class="tl-feat-dot"></span>IA revisa ortografía y consolida el trabajo al finalizar</li>
+          <li><span class="tl-feat-dot"></span>PDF + documento editable por correo a cada participante</li>
+          <li><span class="tl-feat-dot"></span>Lectura y recomendaciones desde la perspectiva Sintropía</li>
+        </ul>
+        <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank" class="btn-primary">Abrir Task live →</a>
+      </div>
+      <div class="tasklive-right">
+        <div class="tl-card">
+          <div class="tl-card-num">0</div>
+          <div class="tl-card-label">Cuentas requeridas</div>
+        </div>
+        <div class="tl-card">
+          <div class="tl-card-num">12</div>
+          <div class="tl-card-label">Colores de equipo disponibles</div>
+        </div>
+        <div class="tl-card">
+          <div class="tl-card-num">IA</div>
+          <div class="tl-card-label">Revisión ortográfica automática</div>
+        </div>
+        <div class="tl-card">
+          <div class="tl-card-num">PDF</div>
+          <div class="tl-card-label">Entregable por correo a cada participante</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ REPOSITORIO ════════ -->
+<section id="repo" class="section">
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="eyebrow-num">01</span>
+      <span class="eyebrow-line"></span>
+      <span class="eyebrow-text">Repositorio bibliográfico</span>
+    </div>
+    <h2 class="display-md" style="margin-bottom:8px;">Explorar citas</h2>
+    <p class="body-lg" style="margin-bottom:36px;max-width:52ch;">Datos en vivo desde Google Sheets. Filtra por categoría, indicador, autor o año y descarga en PDF.</p>
+
+    <!-- Guest banner -->
+    <div id="guest-banner" class="guest-banner" style="display:none;">
+      <p>Estás viendo el <strong>2% del repositorio</strong>. Aplica un filtro para ver el 5%, o suscríbete por <strong>$99 MXN/año</strong> para las 843+ citas completas.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a href="pago.html" class="btn-primary" style="font-size:.78rem;">Suscribirme $99/año →</a>
+        <a href="registro.html" class="btn-outline-purple" style="font-size:.78rem;border-color:rgba(255,255,255,.4);color:#fff;">Registrarme gratis</a>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <div class="filter-group"><label>Categoría</label><select id="filter-categoria" data-testid="filter-categoria"><option value="">Todas</option></select></div>
+      <div class="filter-group"><label>Indicador</label><select id="filter-indicador" data-testid="filter-indicador"><option value="">Todos</option></select></div>
+      <div class="filter-group"><label>Autor</label><select id="filter-autor" data-testid="filter-autor"><option value="">Todos</option></select></div>
+      <div class="filter-group"><label>Año</label><select id="filter-year" data-testid="filter-year"><option value="">Todos</option></select></div>
+      <div class="filter-actions">
+        <button class="btn-filter" onclick="clearFilters()" data-testid="clear-filters-btn">↺ Limpiar</button>
+        <button class="btn-filter btn-filter-accent" onclick="openDownloadModal()" data-testid="download-btn">↓ Descargar PDF</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div>
+      <div id="loading" class="loading">Cargando citas desde Google Sheets…</div>
+      <div id="error-container"></div>
+      <p id="citations-count" class="citations-count" style="display:none;">Mostrando <span id="showing-count">0</span> de <span id="total-count">0</span> citas <span id="guest-limit-msg" style="color:var(--orange);">(regístrate para ver todas)</span></p>
+      <div class="citations-grid" id="citations-grid" style="display:none;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ ACERCA / APOYO ════════ -->
+<section class="section bg-alt">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="about-kicker">SINTROPÍA SOCIAL</div>
+        <h2 class="display-md">Conocimiento<br>colectivo</h2>
+        <p>Sistematizamos el pensamiento de investigadores en ciencias sociales. Cada cita construye una red de conocimiento que crece con cada miembro de la comunidad.</p>
+        <p>La consulta y la descarga de citas filtradas son <strong>libres</strong> para toda la comunidad. Si este repositorio te aporta valor, considera <a href="https://www.paypal.com/donate/?hosted_button_id=84RDSWN99GWCN" target="_blank" rel="noopener">apoyar el proyecto con una donación</a>.</p>
+        <p>¿Preguntas? <a href="mailto:contacto@sintropiasocial.com">contacto@sintropiasocial.com</a></p>
+        <a href="registro.html" class="btn-primary" style="margin-top:8px;">Únete →</a>
+      </div>
+      <div class="apoyo-card">
+        <h4>Apoya el proyecto</h4>
+        <p>Sintropía Social es un proyecto independiente y gratuito. Tu donación nos permite mantener vivo este repositorio y construir nuevas herramientas para la comunidad.</p>
+        <div class="apoyo-check">
+          <div class="apoyo-check-item">Sin planes ni suscripciones obligatorias</div>
+          <div class="apoyo-check-item">Acceso completo y descargas libres</div>
+          <div class="apoyo-check-item">Cualquier monto suma</div>
+        </div>
+        <a href="https://www.paypal.com/donate/?hosted_button_id=84RDSWN99GWCN" target="_blank" rel="noopener" class="btn-primary" style="width:100%;justify-content:center;" data-testid="donate-btn-card">Donar con PayPal</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SERVICIOS ════════ -->
+<section id="servicios" class="section servicios-section">
+  <div class="container">
+    <div class="servicios-intro">
+      <span class="label-upper">Servicios profesionales</span>
+      <h2 class="display-md">Herramientas y Servicios</h2>
+      <p class="body-lg" style="max-width:44ch;margin:12px auto 0;">Investigación, educación, comunidad y empleabilidad — para organizaciones con impacto social real.</p>
+    </div>
+
+    <!-- Suscripción -->
+    <div class="suscripcion-band">
+      <div class="suscripcion-band-left">
+        <div class="suscripcion-kicker">Acceso al repositorio completo</div>
+        <h3>Suscripción al Dashboard Bibliográfico</h3>
+        <p>843+ citas de ciencias sociales sistematizadas. Filtra por categoría, indicador, autor y año. Acceso completo sin restricciones. Requiere registro previo.</p>
+      </div>
+      <div class="suscripcion-price">
+        <div class="price-big">$99</div>
+        <div class="price-period">MXN / año</div>
+        <a href="pago.html" class="btn-primary">Suscribirme →</a>
+      </div>
+    </div>
+
+    <!-- Investigación Social -->
+    <div class="servicios-cat-title"><span class="servicios-cat-dot" style="background:var(--purple);"></span><h3>Investigación Social</h3></div>
+    <div class="services-grid">
+      <div class="service-card"><h4>Investigación de Mercados Laborales</h4><p>Análisis territorial del empleo: sectores, informalidad, género y juventudes. Para gobiernos, cámaras y ONGs.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Estudios de Prospectiva Laboral</h4><p>Escenarios del futuro del trabajo ante IA y automatización. Mapeo de ocupaciones emergentes y brechas.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Evaluación de Programas de Empleo</h4><p>Evaluamos diseño e impacto de programas públicos con metodologías mixtas y recomendaciones claras.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/MU42VRBPV359A" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Diseño de Encuestas Laborales</h4><p>Instrumentos cuantitativos y cualitativos para medir condiciones de trabajo, informalidad y trayectorias.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/WRCZ8EQEAEB7S" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+    </div>
+
+    <!-- Educación -->
+    <div class="servicios-cat-title"><span class="servicios-cat-dot" style="background:var(--orange);"></span><h3>Educación</h3></div>
+    <div class="services-grid">
+      <div class="service-card"><h4>Diseño Curricular por Competencias</h4><p>Programas educativos desde primaria hasta universidad con enfoque crítico y socioemocional.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Diseño Instruccional de Cursos</h4><p>Experiencias didácticas para formatos presenciales, virtuales o híbridos con pedagogía crítica.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/VX6JVXRTACJLS" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Capacitación Docente</h4><p>Talleres vivenciales sobre enseñanza participativa, evaluación alternativa e inclusión educativa.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/SQ5L48FEBNG9C" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Conferencias en Temas Laborales</h4><p>Conferencias y talleres sobre informalidad, juventudes, género, IA y economía del cuidado.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/WHHLB4HGVXGGC" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+    </div>
+
+    <!-- Comunidad -->
+    <div class="servicios-cat-title"><span class="servicios-cat-dot" style="background:#16a34a;"></span><h3>Comunidad</h3></div>
+    <div class="services-grid">
+      <div class="service-card"><h4>Propuesta de Intervención Comunitaria</h4><p>Guías, dinámicas y formatos para planificar, implementar y evaluar acciones. Banco de 5 propuestas modelo.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/HHSC3TJXG826Y" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Consultoría (6 sesiones/mes)</h4><p>Acompañamiento en investigación, educación, comunidad y empleabilidad. Diagnóstico + plan de acción.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/ZUX6CD4QZ2D8L" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Kit de Indicadores y Marco Lógico</h4><p>Guía SMART, plantillas de matriz de cambio, banco de 40 indicadores y kit visual de reportes.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/33NB3YLQYKQVN" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+    </div>
+
+    <!-- Empleo -->
+    <div class="servicios-cat-title"><span class="servicios-cat-dot" style="background:#0284c7;"></span><h3>Empleo, Empleabilidad y Trabajo</h3></div>
+    <div class="services-grid">
+      <div class="service-card"><h4>Programa Híbrido para Jóvenes</h4><p>Programa integral presencial/virtual para jóvenes en vulnerabilidad con diagnóstico, plan y evaluación.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/R8H5526N6LLD4" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Intervenciones a través del Empleo</h4><p>5 módulos, 20 sesiones, manual metodológico, 15 dinámicas y plan de evaluación SMART.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/T979SJGBMG6DG" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Currícula de Habilidades Laborales</h4><p>Currícula modular: comunicación, trabajo en equipo, digitalización y competencias clave.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/SK5D9AVY5Z7YG" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Capacitación Territorial Básica</h4><p>2 sesiones de 3h con guía de dinámicas, mapa de actores y checklist de planificación.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/U2FYLDWXEZ4KE" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Capacitación Territorial Intermedia</h4><p>2 talleres, banco de 10 dinámicas, plantillas, indicadores y reporte visual de avances.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/ACEWCFC3WP334" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+      <div class="service-card"><h4>Capacitación Territorial Extensa</h4><p>4 talleres + kit completo, 20 dinámicas, informe estratégico y licencia de replicación.</p><div class="service-card-footer"><a href="https://www.paypal.com/ncp/payment/L477LPATG9PEE" target="_blank" rel="noopener" class="btn-contratar">Contratar →</a></div></div>
+    </div>
+
+    <!-- CTA final servicios -->
+    <div style="text-align:center;padding:36px;background:var(--bg-card);border:1px solid var(--line);border-radius:var(--r-lg);margin-top:8px;">
+      <h3 class="display-md" style="margin-bottom:12px;">¿Algo a la medida?</h3>
+      <p class="body-lg" style="max-width:38ch;margin:0 auto 24px;">Cada organización tiene desafíos únicos. Diseñamos propuestas adaptadas a tu contexto y presupuesto.</p>
+      <a href="mailto:dsalgado@sintropiasocial.com" class="btn-primary">Contacta a Sintropía Social →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ DONATE BAND ════════ -->
+<div class="donate-band">
+  <div class="container">
+    <p>Sintropía Social es un proyecto independiente. Tu apoyo mantiene el repositorio libre y abierto.</p>
+    <a href="https://www.paypal.com/donate/?hosted_button_id=84RDSWN99GWCN" target="_blank" rel="noopener" class="btn-primary" data-testid="donate-btn-footer">Donar con PayPal</a>
+  </div>
+</div>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p><strong>Sintropía Social</strong> · Repositorio Bibliográfico de Ciencias Sociales</p>
+      <p><a href="mailto:contacto@sintropiasocial.com">contacto@sintropiasocial.com</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════ MODALS ════════ -->
+<!-- User Profile Modal -->
+<div id="profile-modal" class="modal">
+  <div class="modal-content" style="max-width:550px;">
+    <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+    <h3 style="margin-bottom:1.5rem;">Mi Perfil</h3>
+    <div id="profile-content">
+      <div style="background:var(--bg);padding:1.5rem;border-radius:var(--r-md);margin-bottom:1.5rem;border:1px solid var(--line);">
+        <p style="margin:0;font-size:1.15rem;font-weight:700;color:var(--purple);" id="profile-nombre"></p>
+        <p style="margin:.25rem 0 0;color:var(--fg-muted);" id="profile-email"></p>
+        <p style="margin:.5rem 0 0;font-size:.9rem;" id="profile-institucion"></p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem;">
+        <div style="background:var(--bg);border:1px solid var(--line);padding:1rem;border-radius:var(--r-sm);text-align:center;">
+          <p style="font-size:2rem;font-weight:900;color:var(--purple);margin:0;font-family:var(--font-display);" id="profile-descargas">0</p>
+          <p style="font-size:.82rem;color:var(--fg-muted);margin:0;">Descargas</p>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--line);padding:1rem;border-radius:var(--r-sm);text-align:center;">
+          <p style="font-size:2rem;font-weight:900;color:var(--orange);margin:0;font-family:var(--font-display);" id="profile-fecha"></p>
+          <p style="font-size:.82rem;color:var(--fg-muted);margin:0;">Miembro desde</p>
+        </div>
+      </div>
+      <h4 style="margin-bottom:.75rem;color:var(--purple);font-family:var(--font-display);">Historial de descargas</h4>
+      <div id="profile-historial" style="max-height:200px;overflow-y:auto;"></div>
+      <button class="btn-outline-purple" onclick="cerrarSesion()" style="width:100%;margin-top:1.5rem;justify-content:center;">Cerrar sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div id="login-modal" class="modal">
+  <div class="modal-content" style="max-width:400px;">
+    <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+    <h3>Iniciar sesión</h3>
+    <p>Accede a tu cuenta para ver el repositorio completo.</p>
+    <div id="login-error" class="error-msg" style="display:none;"></div>
+    <form id="login-form-modal">
+      <div class="form-group"><label>Email</label><input type="email" id="login-email" required></div>
+      <div class="form-group"><label>Contraseña</label><input type="password" id="login-password" required></div>
+      <button type="submit" class="btn-primary" style="width:100%;justify-content:center;" id="login-submit-btn">Entrar</button>
+    </form>
+    <p style="text-align:center;margin-top:16px;font-size:.88rem;color:var(--fg-muted);">¿No tienes cuenta? <a href="registro.html" style="color:var(--purple);font-weight:700;">Regístrate gratis</a></p>
+  </div>
+</div>
+
+<!-- Download Modal -->
+<div id="download-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeDownloadModal()" data-testid="close-modal-btn">&times;</button>
+    <h3>Descargar citas filtradas</h3>
+    <div id="download-info" style="background:var(--bg);padding:1rem;border-radius:var(--r-sm);margin:1rem 0;border:1px solid var(--line);">
+      <p style="margin:0;font-weight:700;"><strong id="download-count">0</strong> citas seleccionadas</p>
+      <p style="margin:.5rem 0 0;font-size:.82rem;color:var(--fg-muted);" id="download-filters"></p>
+    </div>
+    <div id="payment-section">
+      <p style="color:#16a34a;font-weight:600;">Descarga libre y gratuita</p>
+      <p style="font-size:.85rem;color:var(--fg-muted);margin:.5rem 0 1rem;">Tu PDF se generará y descargará al instante. Sin pagos, sin registros obligatorios.</p>
+      <button class="btn-primary" onclick="descargarYRegistrar()" style="width:100%;justify-content:center;" data-testid="download-pdf-btn">Descargar PDF ahora</button>
+      <div style="background:var(--bg);border-radius:var(--r-sm);padding:16px;margin-top:16px;text-align:center;border:1px solid var(--line);">
+        <p style="margin:0 0 12px;font-size:.88rem;"><strong>¿Te fue útil?</strong> Apoya este proyecto independiente.</p>
+        <a href="https://www.paypal.com/donate/?hosted_button_id=84RDSWN99GWCN" target="_blank" rel="noopener" class="btn-primary" data-testid="donate-btn-modal">Donar con PayPal</a>
+      </div>
+    </div>
+    <div id="download-ready" class="download-section" style="display:none;">
+      <p style="color:#16a34a;font-weight:600;">¡Descarga iniciada!</p>
+      <p style="font-size:.9rem;color:var(--fg-muted);">Tu PDF se está descargando. Gracias por usar Sintropía Social.</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=BAADNWafE2xUH09mKvDiejlkmXxK9XQx1oa-ujzF7TF-pQNLf1a58OhHRUMUNoDx9dgXzhDclHdQhukdW0&components=hosted-buttons&disable-funding=venmo&currency=MXN"></script>
+
+<!-- ════════ MARQUEE INIT ════════ -->
+<script>
+const MARQUEE_ITEMS = [
+  { text: '843+ citas académicas', cat: 'Repositorio' },
+  { text: 'Repositorio bibliográfico', cat: 'Inicio' },
+  { text: 'Capital Social', cat: 'Eje 01' },
+  { text: 'Sentido de Comunidad', cat: 'Eje 02' },
+  { text: 'Agencia Social', cat: 'Eje 03' },
+  { text: 'Bienestar Colectivo', cat: 'Eje 04' },
+  { text: 'Identidad Territorial', cat: 'Eje 05' },
+  { text: 'Cohesión Social', cat: 'Eje 06' },
+  { text: 'Task live', cat: 'Facilitadores' },
+  { text: 'Ciencias sociales', cat: 'Disciplina' },
+  { text: 'Educación y comunidad', cat: 'Área' },
+  { text: 'Consulta libre', cat: 'Acceso' },
+  { text: 'Descarga filtrada', cat: 'Función' },
+  { text: 'Investigación social', cat: 'Área' },
+];
+(function(){
+  const track = document.getElementById('marqueeTrack');
+  if (!track) return;
+  let html = '';
+  [...MARQUEE_ITEMS, ...MARQUEE_ITEMS].forEach(item => {
+    html += `<span class="marquee-item"><span class="marquee-dot"></span>${item.text}<span style="opacity:.5;font-size:.6rem;letter-spacing:.15em;margin-left:4px;">${item.cat}</span></span>`;
+  });
+  track.innerHTML = html;
+})();
+</script>
+
+<!-- ════════ APP JS (original preserved) ════════ -->
+<script src="config.js"></script>
+<script>
+var allCitas = [];
+var filteredCitas = [];
+var paymentCompleted = false;
+
+document.addEventListener('DOMContentLoaded', async function() {
+  var user = Auth.getUser();
+  updateNavUser(user);
+  if (!user) { document.getElementById('guest-banner').style.display = 'flex'; }
+  setupFilterListeners();
+  await loadCitas();
+  setupPayPal();
+  setupLoginForm();
+});
+
+function updateNavUser(user) {
+  var ssNavUser = document.getElementById('ss-nav-user');
+  if (user && user.token) {
+    var label = user.nombre || 'Mi cuenta';
+    if(ssNavUser) ssNavUser.innerHTML = '<button onclick="openProfileModal()" style="background:var(--purple);color:white;padding:.42rem .95rem;border-radius:50px;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600;">' + label + ' · Salir</button>';
+  } else {
+    if(ssNavUser) ssNavUser.innerHTML = '<a href="#" onclick="openLoginModal();return false;" style="font-size:.86rem;font-weight:500;color:rgba(240,238,248,.65);padding:.45rem .8rem;border-radius:8px;text-decoration:none;">Entrar</a><a href="registro.html" class="ss-nav-cta">Únete gratis</a>';
+  }
+}
+
+function openLoginModal() { document.getElementById('login-modal').classList.add('active'); }
+function closeLoginModal() { var e=document.getElementById('login-error'); e.style.display='none'; document.getElementById('login-modal').classList.remove('active'); }
+function openProfileModal() { document.getElementById('profile-modal').classList.add('active'); loadUserProfile(); }
+function closeProfileModal() { document.getElementById('profile-modal').classList.remove('active'); }
+
+async function loadUserProfile() {
+  var user = Auth.getUser();
+  if (!user || !user.token) return;
+  document.getElementById('profile-nombre').textContent = (user.nombre||'') + ' ' + (user.apellido||'');
+  document.getElementById('profile-email').textContent = user.email || '';
+  document.getElementById('profile-institucion').textContent = user.institucion || '';
+  var result = await api('getPerfilUsuario', { userToken: user.token });
+  if (result.ok) {
+    document.getElementById('profile-descargas').textContent = result.usuario.totalDescargas || 0;
+    var fecha = new Date(result.usuario.fechaRegistro);
+    document.getElementById('profile-fecha').textContent = fecha.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
+    var historial = document.getElementById('profile-historial');
+    if (result.descargas && result.descargas.length > 0) {
+      historial.innerHTML = result.descargas.map(function(d) {
+        var f = new Date(d.fecha);
+        return '<div style="padding:.75rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:.85rem;">' +
+          '<span>' + f.toLocaleDateString('es-MX') + '</span>' +
+          '<span style="color:var(--fg-muted);">' + d.cantidadCitas + ' citas</span>' +
+          '<span style="font-weight:700;color:var(--purple);">$' + d.monto + '</span>' +
+        '</div>';
+      }).join('');
+    } else {
+      historial.innerHTML = '<p style="text-align:center;color:var(--fg-muted);padding:1rem;">No tienes descargas aún.</p>';
+    }
+  }
+}
+
+function setupLoginForm() {
+  document.getElementById('login-form-modal').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    var email = document.getElementById('login-email').value.trim().toLowerCase();
+    var password = document.getElementById('login-password').value;
+    var btn = document.getElementById('login-submit-btn');
+    var errorEl = document.getElementById('login-error');
+    errorEl.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'Entrando...';
+    try {
+      var passHash = await sha256(password);
+      var result = await api('loginUsuario', { email: email, passHash: passHash });
+      if (result.ok) {
+        Auth.setUser({ token: result.token || ('user_' + result.id), nombre: (result.user && result.user.nombre) || result.nombre || '', apellido: (result.user && result.user.apellido) || result.apellido || '', email: (result.user && result.user.email) || result.email || '', institucion: (result.user && result.user.institucion) || result.institucion || '', isAdmin: result.isAdmin || false });
+        closeLoginModal(); updateNavUser(Auth.getUser());
+        document.getElementById('guest-banner').style.display = 'none';
+        filterCitas();
+      } else {
+        errorEl.textContent = result.error || 'Credenciales incorrectas';
+        errorEl.style.display = 'block';
+      }
+    } catch(err) { errorEl.textContent = 'Error de conexión'; errorEl.style.display = 'block'; }
+    btn.disabled = false; btn.textContent = 'Entrar';
+  });
+}
+
+function cerrarSesion() {
+  Auth.logout(); closeProfileModal(); updateNavUser(null);
+  document.getElementById('guest-banner').style.display = 'flex';
+  filterCitas();
+}
+
+async function loadCitas() {
+  var loading = document.getElementById('loading');
+  var errorContainer = document.getElementById('error-container');
+  loading.style.display = 'block'; errorContainer.innerHTML = '';
+  var result = await api('getCitas');
+  loading.style.display = 'none';
+  if (!result.ok) { errorContainer.innerHTML = '<div class="error-msg">Error: ' + (result.error || 'No se pudieron cargar las citas') + '</div>'; return; }
+  allCitas = result.data || [];
+  // Update stats
+  document.getElementById('stat-citas-bar').textContent = allCitas.length;
+  if(document.getElementById('stat-citas-hero')) document.getElementById('stat-citas-hero').textContent = allCitas.length;
+  var autores = [...new Set(allCitas.map(c => c['Autor']).filter(Boolean))];
+  var categorias = [...new Set(allCitas.map(c => c['Categoria'] || c['Categoría']).filter(Boolean))];
+  var indicadores = [...new Set(allCitas.map(c => c['Indicador']).filter(Boolean))];
+  if(document.getElementById('stat-autores-bar')) document.getElementById('stat-autores-bar').textContent = autores.length;
+  if(document.getElementById('stat-autores-hero')) document.getElementById('stat-autores-hero').textContent = autores.length;
+  if(document.getElementById('stat-categorias-bar')) document.getElementById('stat-categorias-bar').textContent = categorias.length;
+  if(document.getElementById('stat-indicadores-bar')) document.getElementById('stat-indicadores-bar').textContent = indicadores.length;
+  if(document.getElementById('stat-indicadores-hero')) document.getElementById('stat-indicadores-hero').textContent = indicadores.length;
+  // Legacy stats compat
+  if(document.getElementById('stat-citas')) document.getElementById('stat-citas').textContent = allCitas.length;
+  if(document.getElementById('stat-autores')) document.getElementById('stat-autores').textContent = autores.length;
+  if(document.getElementById('stat-categorias')) document.getElementById('stat-categorias').textContent = categorias.length;
+  if(document.getElementById('stat-indicadores')) document.getElementById('stat-indicadores').textContent = indicadores.length;
+  populateFilter('filter-categoria', categorias);
+  populateFilter('filter-autor', autores);
+  populateFilter('filter-indicador', indicadores);
+  var years = [...new Set(allCitas.map(c => c['Anio'] || c['Año']).filter(Boolean))].sort((a,b) => b-a);
+  populateFilter('filter-year', years);
+  filterCitas();
+  document.getElementById('citations-grid').style.display = 'grid';
+}
+
+function populateFilter(id, values) {
+  var select = document.getElementById(id); if (!select) return;
+  var current = select.value;
+  select.innerHTML = '<option value="">Todos</option>';
+  values.sort().forEach(function(v) {
+    if (v) { var opt = document.createElement('option'); opt.value = v; opt.textContent = v; select.appendChild(opt); }
+  });
+  select.value = current;
+}
+
+function filterCitas() {
+  var categoria = document.getElementById('filter-categoria').value;
+  var indicador = document.getElementById('filter-indicador').value;
+  var autor = document.getElementById('filter-autor').value;
+  var year = document.getElementById('filter-year').value;
+  filteredCitas = allCitas.filter(function(c) {
+    var cat = c['Categoria'] || c['Categoría'] || '';
+    var ind = c['Indicador'] || '';
+    var aut = c['Autor'] || '';
+    var yr = String(c['Anio'] || c['Año'] || '');
+    if (categoria && cat !== categoria) return false;
+    if (indicador && ind !== indicador) return false;
+    if (autor && aut !== autor) return false;
+    if (year && yr !== year) return false;
+    return true;
+  });
+  updateDynamicFilters();
+  var user = Auth.getUser();
+  var displayCitas = filteredCitas;
+  if (!user || !user.token) {
+    var hasFilter = (categoria || indicador || autor || year);
+    var guestPct = hasFilter ? 0.05 : 0.02;
+    var limit = Math.max(1, Math.floor(filteredCitas.length * guestPct));
+    displayCitas = filteredCitas.slice(0, limit);
+  } else if (!user.subscribed) {
+    var limit = Math.max(1, Math.floor(filteredCitas.length * 0.10));
+    displayCitas = filteredCitas.slice(0, limit);
+  }
+  renderCitas(displayCitas, filteredCitas.length);
+}
+
+function updateDynamicFilters() {
+  var categoria = document.getElementById('filter-categoria').value;
+  var indicador = document.getElementById('filter-indicador').value;
+  var autor = document.getElementById('filter-autor').value;
+  var year = document.getElementById('filter-year').value;
+  var aC = new Set(), aI = new Set(), aA = new Set(), aY = new Set();
+  allCitas.forEach(function(c) {
+    var cat = c['Categoria'] || c['Categoría'] || '';
+    var ind = c['Indicador'] || '';
+    var aut = c['Autor'] || '';
+    var yr = String(c['Anio'] || c['Año'] || '');
+    var mC = !categoria || cat === categoria;
+    var mI = !indicador || ind === indicador;
+    var mA = !autor || aut === autor;
+    var mY = !year || yr === year;
+    if (mI && mA && mY && cat) aC.add(cat);
+    if (mC && mA && mY && ind) aI.add(ind);
+    if (mC && mI && mY && aut) aA.add(aut);
+    if (mC && mI && mA && yr) aY.add(yr);
+  });
+  updateFilterOptions('filter-categoria', aC, categoria);
+  updateFilterOptions('filter-indicador', aI, indicador);
+  updateFilterOptions('filter-autor', aA, autor);
+  updateFilterOptions('filter-year', aY, year, true);
+}
+
+function updateFilterOptions(selectId, availableOptions, currentValue, isYear) {
+  var select = document.getElementById(selectId); if (!select) return;
+  var options = Array.from(availableOptions).sort();
+  if (isYear) options.sort(function(a, b) { return b - a; });
+  select.innerHTML = '<option value="">Todos</option>';
+  options.forEach(function(opt) {
+    var option = document.createElement('option');
+    option.value = opt; option.textContent = opt;
+    if (opt === currentValue) option.selected = true;
+    select.appendChild(option);
+  });
+}
+
+function renderCitas(citas, totalCount) {
+  var grid = document.getElementById('citations-grid');
+  var countEl = document.getElementById('citations-count');
+  grid.innerHTML = '';
+  document.getElementById('total-count').textContent = totalCount || citas.length;
+  document.getElementById('showing-count').textContent = citas.length;
+  countEl.style.display = 'block';
+  var user = Auth.getUser();
+  var guestMsg = document.getElementById('guest-limit-msg');
+  if (guestMsg) guestMsg.style.display = (user && user.token) ? 'none' : 'inline';
+  if (citas.length === 0) {
+    grid.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--fg-muted);grid-column:1/-1;">No se encontraron citas con los filtros seleccionados.</p>';
+    return;
+  }
+  citas.forEach(function(c) {
+    var categoria = c['Categoria'] || c['Categoría'] || '';
+    var year = c['Anio'] || c['Año'] || '';
+    var poblacion = c['Poblacion'] || c['Población'] || '';
+    var autor = c['Autor'] || '';
+    var cita = c['Cita'] || '';
+    var comentarios = c['Comentarios'] || '';
+    var publicacion = c['Publicacion'] || c['Publicación'] || '';
+    var pagina = c['Pagina'] || c['Página'] || '';
+    var citaApa = c['Cita Apa'] || c['Cita APA'] || '';
+    var shortQuote = cita.length > 180 ? cita.substring(0, 180) + '...' : cita;
+    var shortComment = comentarios && comentarios.length > 120 ? comentarios.substring(0, 120) + '...' : comentarios;
+    var card = document.createElement('div');
+    card.className = 'citation-card';
+    var html = '<div class="citation-tags">';
+    if (categoria) html += '<span class="citation-tag tag-categoria">' + categoria + '</span>';
+    if (year) html += '<span class="citation-tag tag-year">' + year + '</span>';
+    if (poblacion) html += '<span class="citation-tag tag-poblacion">' + poblacion + '</span>';
+    html += '</div>';
+    html += '<blockquote class="citation-quote">' + shortQuote + '</blockquote>';
+    html += '<p class="citation-author">— <strong>' + autor + '</strong>';
+    if (publicacion) html += ', <em>' + publicacion + '</em>';
+    if (pagina) html += ', p. ' + pagina;
+    html += '</p>';
+    if (shortComment && shortComment.trim() !== '') html += '<div class="citation-comment">' + shortComment + '</div>';
+    var apaText = citaApa || autor + ' (' + year + '). ' + publicacion + '.';
+    html += '<div class="citation-footer">';
+    html += '<p class="citation-apa">' + apaText.substring(0, 80) + (apaText.length > 80 ? '...' : '') + '</p>';
+    html += '<button class="copy-apa-btn" onclick="copyAPA(this, \'' + escapeQuotes(apaText) + '\')">Copiar APA</button>';
+    html += '</div>';
+    card.innerHTML = html;
+    grid.appendChild(card);
+  });
+}
+
+function escapeQuotes(str) { return str.replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+
+function copyAPA(btn, apa) {
+  navigator.clipboard.writeText(apa).then(function() {
+    btn.textContent = 'Copiado';
+    setTimeout(function() { btn.textContent = 'Copiar APA'; }, 2000);
+  }).catch(function() {
+    btn.textContent = 'Copiar APA';
+  });
+}
+
+function clearFilters() {
+  ['filter-categoria','filter-indicador','filter-autor','filter-year'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value = '';
+  });
+  filterCitas();
+}
+
+function setupFilterListeners() {
+  ['filter-categoria','filter-indicador','filter-autor','filter-year'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.addEventListener('change', filterCitas);
+  });
+}
+
+function closeDownloadModal() { document.getElementById('download-modal').classList.remove('active'); }
+
+function descargarYRegistrar() {
+  try {
+    descargarPDF(); registrarDescargaEnServidor();
+    document.getElementById('payment-section').style.display = 'none';
+    document.getElementById('download-ready').style.display = 'block';
+    setTimeout(function(){ closeDownloadModal(); }, 2500);
+  } catch (e) { console.error('Error al generar PDF:', e); alert('Hubo un error al generar el PDF. Por favor intenta nuevamente.'); }
+}
+
+function registrarDescargaEnServidor() {
+  var user = Auth.getUser();
+  var count = filteredCitas.length > 0 ? filteredCitas.length : allCitas.length;
+  if (user && user.token) {
+    api('registrarDescarga', { userToken: user.token, tipoPago: 'libre', monto: '0', filtros: document.getElementById('download-filters').textContent, cantidadCitas: count }).catch(function(){});
+  }
+}
+
+function descargarPDF() {
+  var { jsPDF } = window.jspdf;
+  var doc = new jsPDF();
+  var dataToExport = filteredCitas.length > 0 ? filteredCitas : allCitas;
+  var pageWidth = doc.internal.pageSize.getWidth();
+  var margin = 15; var yPos = 20; var lineHeight = 6;
+  doc.setFontSize(18); doc.setTextColor(99,30,235); doc.text('Sintropía Social', margin, yPos); yPos += 8;
+  doc.setFontSize(12); doc.setTextColor(100); doc.text('Repositorio Bibliográfico de Ciencias Sociales', margin, yPos); yPos += 6;
+  doc.setFontSize(10); doc.text('Generado: ' + new Date().toLocaleDateString('es-MX'), margin, yPos); yPos += 10;
+  var filtersText = document.getElementById('download-filters').textContent;
+  if (filtersText) { doc.setFontSize(9); doc.setTextColor(120); doc.text('Filtros: ' + filtersText, margin, yPos); yPos += 8; }
+  doc.setDrawColor(200); doc.line(margin, yPos, pageWidth - margin, yPos); yPos += 10;
+  doc.setFontSize(10);
+  dataToExport.forEach(function(c, index) {
+    if (yPos > 270) { doc.addPage(); yPos = 20; }
+    var categoria = c['Categoria'] || c['Categoría'] || '';
+    var year = c['Anio'] || c['Año'] || '';
+    var autor = c['Autor'] || ''; var cita = c['Cita'] || '';
+    var citaApa = c['Cita Apa'] || c['Cita APA'] || '';
+    doc.setFontSize(8); doc.setTextColor(99,30,235); doc.text((categoria + ' | ' + year).toUpperCase(), margin, yPos); yPos += 5;
+    doc.setFontSize(10); doc.setTextColor(40);
+    var citaLines = doc.splitTextToSize('"' + cita + '"', pageWidth - margin * 2 - 5);
+    citaLines.forEach(function(line) { if (yPos > 275) { doc.addPage(); yPos = 20; } doc.text(line, margin + 5, yPos); yPos += lineHeight; });
+    doc.setFontSize(9); doc.setTextColor(80); doc.text('— ' + autor, margin + 5, yPos); yPos += 6;
+    if (citaApa) {
+      doc.setFontSize(8); doc.setTextColor(120);
+      var apaLines = doc.splitTextToSize('APA: ' + citaApa, pageWidth - margin * 2 - 10);
+      apaLines.forEach(function(line) { if (yPos > 275) { doc.addPage(); yPos = 20; } doc.text(line, margin + 5, yPos); yPos += 5; });
+    }
+    yPos += 8;
+    if (index < dataToExport.length - 1) { doc.setDrawColor(220); doc.line(margin, yPos - 3, pageWidth - margin, yPos - 3); }
+  });
+  doc.setFontSize(8); doc.setTextColor(150); doc.text('www.sintropiasocial.com | contacto@sintropiasocial.com', pageWidth / 2, 290, { align: 'center' });
+  doc.save('sintropia_social_citas_' + new Date().toISOString().slice(0,10) + '.pdf');
+}
+
+function setupPayPal() { /* descarga libre con donación opcional */ }
+
+function openDownloadModal() {
+  var categoria = document.getElementById('filter-categoria').value;
+  var indicador = document.getElementById('filter-indicador').value;
+  var autor = document.getElementById('filter-autor').value;
+  var year = document.getElementById('filter-year').value;
+  if (!categoria && !indicador && !autor && !year) { alert('Por favor selecciona al menos un filtro antes de descargar.'); return; }
+  document.getElementById('download-count').textContent = filteredCitas.length;
+  var filtersText = [];
+  if (categoria) filtersText.push('Categoría: ' + categoria);
+  if (indicador) filtersText.push('Indicador: ' + indicador);
+  if (autor) filtersText.push('Autor: ' + autor);
+  if (year) filtersText.push('Año: ' + year);
+  document.getElementById('download-filters').textContent = filtersText.join(' · ');
+  document.getElementById('payment-section').style.display = 'block';
+  document.getElementById('download-ready').style.display = 'none';
+  document.getElementById('download-modal').classList.add('active');
+}
+</script>
 </body>
 </html>
