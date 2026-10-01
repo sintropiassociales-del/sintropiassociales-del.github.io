@@ -381,6 +381,33 @@ body {
 .tool-card-ai:hover {
   background: rgba(99,30,235,0.08);
 }
+/* Task Live featured card */
+.tool-card-featured {
+  border: 2px solid var(--orange);
+  background: var(--bg-card);
+}
+.tool-card-featured:hover {
+  background: rgba(255,121,41,0.04);
+}
+.tl-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+}
+.tl-dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+  margin-top: 4px;
+}
+@media (max-width: 640px) {
+  .tool-card-featured > div > div:last-child { display: none; }
+}
 .ai-badge {
   display: inline-flex;
   align-items: center;
@@ -644,11 +671,11 @@ footer {
         <span class="stat-label">Citas académicas</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">15</span>
+        <span class="stat-num">16</span>
         <span class="stat-label">Herramientas</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">4</span>
+        <span class="stat-num">5</span>
         <span class="stat-label">Categorías</span>
       </div>
       <div class="stat-item">
@@ -909,6 +936,51 @@ footer {
 </section>
 
 <!-- ════════════════════════
+     05 · PARA FACILITADORES
+════════════════════════ -->
+<section class="tools-section section bg-alt">
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="eyebrow-num">05</span>
+      <span class="eyebrow-line"></span>
+      <span class="eyebrow-text">Para facilitadores</span>
+    </div>
+    <div class="tools-header">
+      <h2 class="display-md">Facilitadores</h2>
+      <p class="tools-header-desc body-lg">Herramientas para quienes conducen talleres, dinámicas grupales y procesos de aprendizaje colaborativo en videollamada o presencial.</p>
+    </div>
+    <div class="tools-grid">
+      <!-- Task Live — tarjeta destacada -->
+      <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank" class="tool-card tool-card-featured" style="grid-column:1/-1;">
+        <div class="tool-card-top">
+          <span class="tool-tag orange">Nuevo · Colaboración en vivo</span>
+          <span class="tool-arrow">↗</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;margin-top:8px;">
+          <div>
+            <span class="tool-name" style="font-size:1.5rem;">Task live</span>
+            <span class="tool-desc" style="display:block;margin-top:10px;">La sala de trabajo en grupos pequeños para tus videollamadas, sin cuentas ni instalaciones. Pegas el enlace de un documento, presentación u hoja de cálculo de Google, dices cuántos equipos habrá y compartes un enlace por equipo. Cada equipo trabaja en vivo en su propia copia.</span>
+          </div>
+          <div>
+            <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+              <li class="tl-feature"><span class="tl-dot"></span>Sin cuentas ni instalaciones</li>
+              <li class="tl-feature"><span class="tl-dot"></span>Cada equipo en su copia con color propio</li>
+              <li class="tl-feature"><span class="tl-dot"></span>Revisión de ortografía con IA al finalizar</li>
+              <li class="tl-feature"><span class="tl-dot"></span>Resultados consolidados en tu documento original</li>
+              <li class="tl-feature"><span class="tl-dot"></span>PDF + documento editable por correo a cada participante</li>
+              <li class="tl-feature"><span class="tl-dot"></span>Lectura y recomendaciones desde la perspectiva Sintropía</li>
+            </ul>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="cat-footer">
+      <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank" class="link-ghost">Abrir Task live →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
      REPOSITORIO BAND
 ════════════════════════ -->
 <div class="repo-band">
@@ -1066,6 +1138,7 @@ const MARQUEE_ITEMS = [
   { text: 'Juego Sintropía', cat: 'Experiencial' },
   { text: 'Perfil candidato', cat: 'Personas' },
   { text: 'Citas desde PDF', cat: 'Personas' },
+  { text: 'Task live', cat: 'Facilitadores' },
   { text: 'Instrumento con IA', cat: 'Todas' },
   { text: '843+ citas académicas', cat: 'Repositorio' },
   { text: 'Capital Social', cat: 'Eje 01' },
