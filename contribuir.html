@@ -174,44 +174,48 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
     <div class="ss-nav-links" id="ss-nav-links">
       <a href="inicio.html">Inicio</a>
       <div class="ss-dd" id="dd-herr">
-        <button class="ss-dd-btn" onclick="ssToggleDD('dd-herr')">
+        <button class="ss-dd-btn" onclick="ssToggleDD(this)">
           Herramientas
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <div class="ss-dd-panel herr">
-          <a href="diagnostico.html"><span class="t">Diagnóstico Social Rápido</span><span class="s">Árbol de problemas, marco lógico y más</span></a>
-          <a href="dashboard.html"><span class="t">Dashboard Interactivo</span><span class="s">Visualiza y exporta datos de investigación</span></a>
-          <a href="index.html"><span class="t">Buscador de Citas PDF</span><span class="s">Extrae citas de PDFs por palabra clave</span></a>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_disenio_instruccional.html" target="_blank"><span class="t">Diseño Instruccional de Cursos</span><span class="s">Estructura contenidos con enfoque pedagógico y competencial</span></a>
+          <a href="https://sintropiassociales-del.github.io/panel/diagnostico.html" target="_blank"><span class="t">Diagnóstico Social Rápido</span><span class="s">Árbol de problemas, marco lógico y más</span></a>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_dashboard.html" target="_blank"><span class="t">Dashboard Interactivo</span><span class="s">Visualiza y exporta datos de investigación</span></a>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_pdfcitas.html" target="_blank"><span class="t">Buscador de Citas PDF</span><span class="s">Extrae citas de PDFs por palabra clave</span></a>
           <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank"><span class="t" style="color:var(--orange);">Task live — Salas grupales</span><span class="s">Colaboración en vivo sin cuentas</span></a>
           <div class="ss-dd-hr"></div>
           <a href="herramientas.html"><span class="t" style="color:var(--purple);">Ver todas las herramientas →</span></a>
         </div>
       </div>
       <div class="ss-dd" id="dd-serv">
-        <button class="ss-dd-btn" onclick="ssToggleDD('dd-serv')">
+        <button class="ss-dd-btn" onclick="ssToggleDD(this)">
           Servicios
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <div class="ss-dd-panel serv">
           <div class="ss-serv-group">
             <div class="ss-serv-group-title">Investigación Social</div>
-            <div class="ss-serv-item" id="si-1"><button class="ss-serv-trigger" onclick="ssToggleServ('si-1')"><span>Investigación de Mercados Laborales</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Análisis riguroso del empleo en territorios específicos.</p><a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank">Contratar</a></div></div>
-            <div class="ss-serv-item" id="si-2"><button class="ss-serv-trigger" onclick="ssToggleServ('si-2')"><span>Estudios de Prospectiva Laboral</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Escenarios del futuro del trabajo ante IA y automatización.</p><a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank">Contratar</a></div></div>
+            <div class="ss-serv-item" id="si-1"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Investigación de Mercados Laborales</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Análisis riguroso del empleo en territorios específicos.</p><a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank">Contratar</a></div></div>
+            <div class="ss-serv-item" id="si-2"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Estudios de Prospectiva Laboral</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Escenarios del futuro del trabajo ante IA y automatización.</p><a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank">Contratar</a></div></div>
           </div>
           <div class="ss-dd-hr"></div>
           <div class="ss-serv-group">
             <div class="ss-serv-group-title">Educación</div>
-            <div class="ss-serv-item" id="si-3"><button class="ss-serv-trigger" onclick="ssToggleServ('si-3')"><span>Diseño Curricular por Competencias</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Programas educativos con enfoque crítico y socioemocional.</p><a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank">Contratar</a></div></div>
+            <div class="ss-serv-item" id="si-3"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Diseño Curricular por Competencias</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Programas educativos con enfoque crítico y socioemocional.</p><a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank">Contratar</a></div></div>
           </div>
           <div class="ss-dd-hr"></div>
           <div style="padding:.4rem .9rem .3rem;"><a href="servicios.html" style="display:block;text-align:center;padding:.55rem;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--purple);text-decoration:none;background:rgba(99,30,235,.1);">Ver todos los servicios →</a></div>
         </div>
       </div>
+      <a href="https://sintropiassociales-del.github.io/index.html">Repositorio Bibliográfico</a>
       <a href="newsletter.html" class="nav-newsletter">Newsletter</a>
       <a href="contribuir.html" class="active">Contribuir</a>
       <div class="ss-nav-divider"></div>
-      <a href="login.html" class="nav-entrar">Entrar</a>
-      <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
+      <span id="ss-nav-user">
+        <a href="https://sintropiassociales-del.github.io/registro.html" class="nav-entrar">Entrar</a>
+        <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
+      </span>
     </div>
     <button class="ss-hamburger" onclick="ssMobileNav()" aria-label="Menú">
       <span></span><span></span><span></span>
@@ -219,10 +223,12 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
   </div>
 </nav>
 <script>
-function ssToggleDD(id){var all=document.querySelectorAll('.ss-dd');all.forEach(function(d){if(d.id!==id){d.classList.remove('open');}});document.getElementById(id).classList.toggle('open');}
-function ssToggleServ(id){var el=document.getElementById(id);var wasOpen=el.classList.contains('open');document.querySelectorAll('.ss-serv-item').forEach(function(i){i.classList.remove('open');});if(!wasOpen)el.classList.add('open');}
-function ssMobileNav(){document.getElementById('ss-nav-links').classList.toggle('open');}
-document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd').forEach(function(d){d.classList.remove('open');});});
+function ssToggleDD(el){el.closest('.ss-dd').classList.toggle('open');}
+function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
+function ssMobileNav(){document.querySelector('.ss-nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd.open').forEach(d=>d.classList.remove('open'));
+});
 </script>
 
 <!-- ════════ HERO ════════ -->
