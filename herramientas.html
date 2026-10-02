@@ -407,13 +407,14 @@ body { padding-top: 64px; }
   flex: 1;
 }
 .tool-arrow {
-  font-size: 0.85rem;
-  color: var(--orange);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--orange);
   flex-shrink: 0;
-  transition: transform 0.2s;
-  line-height: 1;
+  transition: background .25s, transform .25s;
 }
-.tool-card.open .tool-arrow { transform: rotate(90deg); }
+.tool-card.open .tool-arrow { background: var(--purple); transform: scale(1.1); }
 
 .tool-body {
   display: none;
@@ -705,9 +706,9 @@ footer {
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <div class="ss-dd-panel herr">
-          <a href="diagnostico.html"><span class="t">Diagnóstico Social Rápido</span><span class="s">Árbol de problemas, marco lógico y más</span></a>
-          <a href="dashboard.html"><span class="t">Dashboard Interactivo</span><span class="s">Visualiza y exporta datos de investigación</span></a>
-          <a href="pdfcitas.html"><span class="t">Buscador de Citas PDF</span><span class="s">Extrae citas de PDFs por palabra clave</span></a>
+          <a href="https://sintropiassociales-del.github.io/panel/diagnostico.html" target="_blank"><span class="t">Diagnóstico Social Rápido</span><span class="s">Árbol de problemas, marco lógico y más</span></a>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_dashboard.html" target="_blank"><span class="t">Dashboard Interactivo</span><span class="s">Visualiza y exporta datos de investigación</span></a>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_pdfcitas.html" target="_blank"><span class="t">Buscador de Citas PDF</span><span class="s">Extrae citas de PDFs por palabra clave</span></a>
           <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank"><span class="t" style="color:var(--orange);">Task live — Salas grupales</span><span class="s">Colaboración en vivo sin cuentas</span></a>
           <div class="ss-dd-hr"></div>
           <a href="herramientas.html"><span class="t" style="color:var(--purple);">Ver todas las herramientas →</span></a>
@@ -830,7 +831,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-semaf">
         <div class="tool-card-head" onclick="toggleTool('hc-semaf')">
           <span class="tool-name">Semáforo de riesgo</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">En 20 preguntas sobre tu proceso de contratación actual, la empresa recibe un semáforo de riesgo gratuito. Entrada natural al servicio completo de Estudios Socioeconómicos y al Banco de Instrumentos de Reclutamiento y Selección.</p>
@@ -840,7 +841,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-dash">
         <div class="tool-card-head" onclick="toggleTool('hc-dash')">
           <span class="tool-name">Dashboard interactivo</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Sube tu propio CSV o Excel y en segundos recibes gráficas, métricas y una lectura cualitativa con perspectiva antropológica generada con IA. Muestra el valor de Sintropía con tus propios datos, antes de contratar cualquier servicio.</p>
@@ -850,7 +851,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-instr-emp">
         <div class="tool-card-head" onclick="toggleTool('hc-instr-emp')">
           <span class="tool-name">¿Necesitas un instrumento a tu medida?</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Cuéntanos qué necesitas medir en tu empresa y en unos minutos te enviamos por correo una propuesta de instrumento y nuestras recomendaciones — sin costo.</p>
@@ -879,7 +880,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-diag">
         <div class="tool-card-head" onclick="toggleTool('hc-diag')">
           <span class="tool-name">Diagnóstico rápido</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Plataforma de diagnóstico social desarrollada por Sintropía Social para empresas, OSC e instituciones educativas. A través de un cuestionario guiado en cinco áreas —empleabilidad, intervención comunitaria, empleo, RRHH y educación— y seis herramientas metodológicas (árbol de problemas, marco lógico, línea base, metodología SMART), genera un diagnóstico preliminar gratuito. Reporte profesional completo en menos de 24 h.</p>
@@ -889,7 +890,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-terr">
         <div class="tool-card-head" onclick="toggleTool('hc-terr')">
           <span class="tool-name">Mapa territorial de tu proyecto</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Ubica tu proyecto en un mapa, marca a tus actores clave y responde diez preguntas. Recibes de vuelta el mapa territorial de tu propio proyecto. Ideal para organizaciones comunitarias que necesitan argumentarle a un financiador dónde y con quién operan.</p>
@@ -899,7 +900,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-track">
         <div class="tool-card-head" onclick="toggleTool('hc-track')">
           <span class="tool-name">Sintropía Track</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Con once preguntas sobre tu proyecto, recibes un plan preliminar gratuito con indicadores, metas y cronograma — una probada directa del servicio completo de seguimiento y gestión de proyectos de Sintropía Social.</p>
@@ -928,7 +929,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-dc">
         <div class="tool-card-head" onclick="toggleTool('hc-dc')">
           <span class="tool-name">Diseño instruccional de cursos</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Describe qué curso quieres armar (presencial, virtual o híbrido) y la IA regresa una propuesta de secuencia didáctica. Ideal para ver una muestra concreta antes de encargar el diseño completo.</p>
@@ -938,7 +939,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-imes-prep">
         <div class="tool-card-head" onclick="toggleTool('hc-imes-prep')">
           <span class="tool-name">IMES Preparatoria</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Una muestra breve y gratuita del Instrumento de Medición de Empleabilidad Social (36 reactivos + preguntas abiertas) para que un estudiante de prepa vea en minutos su perfil de empleabilidad. Puerta de entrada a la aplicación completa.</p>
@@ -948,7 +949,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-imes-uni">
         <div class="tool-card-head" onclick="toggleTool('hc-imes-uni')">
           <span class="tool-name">IMES Universidad</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">La misma lógica que el IMES Preparatoria, adaptada a universitarios que se preparan para su primer empleo profesional: habilidades sociales, de empleabilidad y técnicas.</p>
@@ -958,7 +959,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-juego">
         <div class="tool-card-head" onclick="toggleTool('hc-juego')">
           <span class="tool-name">Tres puertas al mundo del trabajo</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Un juego gratuito donde el estudiante practica una entrevista de trabajo y el manejo de habilidades y estrés en el puesto, y recibe su resultado por correo. Útil para que un centro escolar vea, jugando, cómo aplicar el IMES o el banco de instrumentos a toda una generación.</p>
@@ -987,7 +988,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-cand">
         <div class="tool-card-head" onclick="toggleTool('hc-cand')">
           <span class="tool-name">¿Qué tan lista está tu búsqueda de empleo?</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Responde unas preguntas y descubre qué tan lista está tu búsqueda de empleo; al mismo tiempo puedes autorizar que te avisemos de vacantes a tu medida — un perfil calificado para la bolsa de candidatos de Sintropía.</p>
@@ -997,7 +998,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card" id="hc-pdf">
         <div class="tool-card-head" onclick="toggleTool('hc-pdf')">
           <span class="tool-name">Buscador de citas en PDF</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">Sube un libro, reporte o tesis, escribe una palabra clave y la herramienta localiza y propone las citas relevantes con su página exacta. Diseñada con fines académicos como puerta de entrada al Repositorio Bibliográfico completo.</p>
@@ -1026,7 +1027,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="tool-card tool-card-featured" id="hc-tasklive">
         <div class="tool-card-head" onclick="toggleTool('hc-tasklive')">
           <span class="tool-name" style="font-size:1.1rem;">Task Live — Salas grupales</span>
-          <span class="tool-arrow">→</span>
+          <span class="tool-arrow"></span>
         </div>
         <div class="tool-body">
           <p class="tool-desc">La sala de trabajo en grupos pequeños para tus videollamadas, sin cuentas ni instalaciones. Pegas el enlace de un documento, presentación u hoja de cálculo de Google, dices cuántos equipos habrá y compartes un enlace por equipo. Cada equipo trabaja en vivo en su propia copia.</p>
