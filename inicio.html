@@ -142,27 +142,28 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .pillar-text { font-size: .9rem; color: var(--fg-light-muted); line-height: 1.6; }
 @media(max-width:768px) { .about-grid { grid-template-columns: 1fr; gap: 3rem; } }
 
-/* ─── HERRAMIENTAS (fondo oscuro) ─── */
+/* ─── HERRAMIENTAS (fondo claro) ─── */
 .section-dark { background: var(--bg-dark); color: var(--text-main); }
 .section-dark .section-label { color: var(--purple); }
 
 /* Categorías de herramientas */
 .tools-cats { margin-top: 3rem; display: flex; flex-direction: column; gap: 2.5rem; }
-.tools-cat-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid rgba(255,255,255,.08); }
-.tools-cat-label { font-family: var(--font-display); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--orange); background: rgba(255,121,41,.1); padding: .3rem .75rem; border-radius: 50px; }
-.tools-cat-title { font-family: var(--font-display); font-size: .92rem; font-weight: 700; color: rgba(240,238,248,.5); }
+.tools-cat-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid rgba(14,12,24,.1); }
+.tools-cat-label { font-family: var(--font-display); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--orange); background: rgba(255,121,41,.12); padding: .3rem .75rem; border-radius: 50px; }
+.tools-cat-title { font-family: var(--font-display); font-size: .92rem; font-weight: 700; color: var(--fg-light-muted); }
 .tools-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
 
-/* Tarjeta de herramienta (sin icono) */
-.tool-card { background: var(--bg-card); border: 1px solid rgba(99,30,235,.15); border-radius: 14px; overflow: hidden; }
+/* Tarjeta de herramienta */
+.tool-card { background: var(--bg-light-card); border: 1px solid rgba(99,30,235,.15); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(14,12,24,.06); }
 .tool-card-head { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.4rem; cursor: pointer; gap: 1rem; }
-.tool-card-head:hover { background: rgba(255,255,255,.03); }
-.tool-name { font-family: var(--font-display); font-size: .9rem; font-weight: 700; color: var(--text-main); line-height: 1.3; flex: 1; }
-.tool-arrow { font-size: .85rem; color: var(--orange); flex-shrink: 0; transition: transform .2s; }
+.tool-card-head:hover { background: rgba(99,30,235,.04); }
+.tool-name { font-family: var(--font-display); font-size: .9rem; font-weight: 700; color: var(--fg-light); line-height: 1.3; flex: 1; }
+/* Círculo que rota en lugar de flecha */
+.tool-arrow { width: 22px; height: 22px; border-radius: 50%; background: var(--orange); flex-shrink: 0; transition: transform .25s; }
 .tool-card.open .tool-arrow { transform: rotate(90deg); }
-.tool-body { display: none; padding: 0 1.4rem 1.25rem; border-top: 1px solid rgba(255,255,255,.05); }
+.tool-body { display: none; padding: 0 1.4rem 1.25rem; border-top: 1px solid rgba(14,12,24,.07); }
 .tool-card.open .tool-body { display: block; }
-.tool-desc { font-size: .84rem; color: var(--text-muted); line-height: 1.7; padding-top: 1rem; margin-bottom: 1rem; }
+.tool-desc { font-size: .84rem; color: var(--fg-light-muted); line-height: 1.7; padding-top: 1rem; margin-bottom: 1rem; }
 .tool-link { display: inline-flex; align-items: center; gap: .4rem; background: var(--purple); color: white; padding: .5rem 1.2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .78rem; text-decoration: none; transition: background .18s; }
 .tool-link:hover { background: var(--purple-dk); }
 .tool-link svg { width: 12px; height: 12px; }
@@ -364,8 +365,8 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
   </div>
 </section>
 
-<!-- ════════ HERRAMIENTAS (fondo oscuro) ════════ -->
-<section class="section section-dark">
+<!-- ════════ HERRAMIENTAS (fondo claro) ════════ -->
+<section class="section section-light">
   <div class="container">
     <div class="section-label">02 · Herramientas gratuitas</div>
     <h2 class="section-title">Instrumentos para<br><span style="color:var(--orange);">cada contexto</span></h2>
@@ -383,7 +384,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-repo">
             <div class="tool-card-head" onclick="toggleTool('tc-repo')">
               <div class="tool-name">Repositorio de Citas PDF</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Busca entre más de 843 citas académicas organizadas por categoría, autor y año. Exporta en APA, MLA o Chicago con un clic, o sube un PDF y extrae tus propias citas por palabra clave. Acceso parcial gratuito; suscripción anual para el repositorio completo.</div>
@@ -393,7 +394,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-pdf">
             <div class="tool-card-head" onclick="toggleTool('tc-pdf')">
               <div class="tool-name">Buscador de citas en PDF</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Sube un libro, reporte o tesis, escribe una palabra clave y la herramienta localiza y propone las citas relevantes con su página exacta. Diseñada con fines académicos como puerta de entrada al Repositorio Bibliográfico completo.</div>
@@ -413,7 +414,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-diag">
             <div class="tool-card-head" onclick="toggleTool('tc-diag')">
               <div class="tool-name">Diagnóstico Social Rápido</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Plataforma de diagnóstico social desarrollada por Sintropía Social para empresas, OSC e instituciones educativas. A través de un cuestionario guiado en cinco áreas —empleabilidad, intervención comunitaria, empleo, RRHH y educación— y seis herramientas metodológicas (árbol de problemas, marco lógico, línea base, metodología SMART), genera un diagnóstico preliminar gratuito basado en la descripción densa de Geertz y el análisis crítico de la cultura del trabajo. Reporte profesional completo en menos de 24 h.</div>
@@ -423,7 +424,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-terr">
             <div class="tool-card-head" onclick="toggleTool('tc-terr')">
               <div class="tool-name">Mapa territorial de tu proyecto</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Ubica tu proyecto en un mapa, marca a tus actores clave y responde diez preguntas. Recibes de vuelta el mapa territorial de tu propio proyecto. Ideal para organizaciones comunitarias que necesitan argumentarle a un financiador dónde y con quién operan.</div>
@@ -433,7 +434,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-track">
             <div class="tool-card-head" onclick="toggleTool('tc-track')">
               <div class="tool-name">Sintropía Track</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Con once preguntas sobre tu proyecto, recibes un plan preliminar gratuito con indicadores, metas y cronograma — una probada directa del servicio completo de seguimiento y gestión de proyectos de Sintropía Social.</div>
@@ -453,7 +454,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-semaf">
             <div class="tool-card-head" onclick="toggleTool('tc-semaf')">
               <div class="tool-name">Semáforo de riesgo</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">En 20 preguntas sobre tu proceso de contratación actual, la empresa recibe un semáforo de riesgo gratuito. Entrada natural al servicio completo de Estudios Socioeconómicos y al Banco de Instrumentos de Reclutamiento y Selección.</div>
@@ -463,7 +464,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-dash">
             <div class="tool-card-head" onclick="toggleTool('tc-dash')">
               <div class="tool-name">Dashboard interactivo</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Sube tu propio CSV o Excel y en segundos recibes gráficas, métricas y una lectura cualitativa con perspectiva antropológica generada con IA. Muestra el valor de Sintropía con tus propios datos, antes de contratar cualquier servicio.</div>
@@ -473,7 +474,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-instr">
             <div class="tool-card-head" onclick="toggleTool('tc-instr')">
               <div class="tool-name">¿Necesitas un instrumento a tu medida?</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Cuéntanos qué necesitas medir en tu empresa y en unos minutos te enviamos por correo una propuesta de instrumento y nuestras recomendaciones — sin costo.</div>
@@ -493,7 +494,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-dc">
             <div class="tool-card-head" onclick="toggleTool('tc-dc')">
               <div class="tool-name">Diseño instruccional de cursos</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Describe qué curso quieres armar (presencial, virtual o híbrido) y la IA regresa una propuesta de secuencia didáctica. Ideal para ver una muestra concreta antes de encargar el diseño completo.</div>
@@ -503,7 +504,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-imes-prep">
             <div class="tool-card-head" onclick="toggleTool('tc-imes-prep')">
               <div class="tool-name">Muestra del IMES Preparatoria</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Una muestra breve y gratuita del Instrumento de Medición de Empleabilidad Social (36 reactivos + preguntas abiertas) para que un estudiante de prepa vea en minutos su perfil de empleabilidad. Puerta de entrada a la aplicación completa del catálogo de muestras.</div>
@@ -513,7 +514,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-imes-uni">
             <div class="tool-card-head" onclick="toggleTool('tc-imes-uni')">
               <div class="tool-name">Muestra del IMES Universidad</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">La misma lógica que el IMES Preparatoria, adaptada a universitarios que se preparan para su primer empleo profesional: habilidades sociales, de empleabilidad y técnicas.</div>
@@ -523,7 +524,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-juego">
             <div class="tool-card-head" onclick="toggleTool('tc-juego')">
               <div class="tool-name">Tres puertas al mundo del trabajo</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Un juego gratuito donde el estudiante practica una entrevista de trabajo y el manejo de habilidades y estrés en el puesto, y recibe su resultado por correo. Útil para que un centro escolar vea, jugando, cómo aplicar el IMES o el banco de instrumentos a toda una generación.</div>
@@ -543,7 +544,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
           <div class="tool-card" id="tc-cand">
             <div class="tool-card-head" onclick="toggleTool('tc-cand')">
               <div class="tool-name">¿Qué tan lista está tu búsqueda de empleo?</div>
-              <span class="tool-arrow">→</span>
+              <span class="tool-arrow"></span>
             </div>
             <div class="tool-body">
               <div class="tool-desc">Responde unas preguntas y descubre qué tan lista está tu búsqueda de empleo; al mismo tiempo puedes autorizar que te avisemos de vacantes a tu medida — un perfil calificado para la bolsa de candidatos de Sintropía.</div>
