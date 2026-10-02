@@ -375,89 +375,94 @@ body { padding-top: 64px; }
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
+  gap: 12px;
 }
 
+/* ─── Tarjeta expandible (sin icono emoji) ─── */
 .tool-card {
   background: var(--bg-card);
-  padding: 28px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  text-decoration: none;
-  color: inherit;
-  transition: background 0.15s ease;
-  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: border-color 0.15s;
 }
-.tool-card:hover {
-  background: var(--bg);
-  z-index: 1;
-}
-.tool-card:hover .tool-arrow { transform: translate(3px,-3px); }
+.tool-card:hover { border-color: var(--purple); }
 
-.tool-card-top {
+.tool-card-head {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
+  padding: 22px 20px;
+  cursor: pointer;
+  gap: 12px;
 }
-.tool-tag {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--purple);
-  background: rgba(99,30,235,0.08);
-  border-radius: var(--r-sm);
-  padding: 3px 8px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.tool-tag.orange {
-  color: var(--orange);
-  background: rgba(255,121,41,0.1);
-}
-.tool-arrow {
-  font-size: 1rem;
-  color: var(--fg-muted);
-  transition: transform 0.2s ease;
-  flex-shrink: 0;
-  line-height: 1;
-}
+.tool-card-head:hover { background: rgba(99,30,235,0.03); }
+
 .tool-name {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.3;
   color: var(--fg);
-}
-.tool-desc {
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--fg-muted);
   flex: 1;
 }
-.tool-card-ai {
-  border: 1px solid var(--purple);
-  background: rgba(99,30,235,0.04);
+.tool-arrow {
+  font-size: 0.85rem;
+  color: var(--orange);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  line-height: 1;
 }
-.tool-card-ai:hover {
-  background: rgba(99,30,235,0.08);
+.tool-card.open .tool-arrow { transform: rotate(90deg); }
+
+.tool-body {
+  display: none;
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--line);
 }
+.tool-card.open .tool-body { display: block; }
+
+.tool-desc {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--fg-muted);
+  padding-top: 14px;
+  margin-bottom: 14px;
+}
+.tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--purple);
+  color: #fff;
+  padding: 7px 18px;
+  border-radius: 50px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.tool-link:hover { background: var(--purple-dk); }
+.tool-link svg { width: 12px; height: 12px; }
+
 /* Task Live featured card */
 .tool-card-featured {
   border: 2px solid var(--orange);
-  background: var(--bg-card);
+  grid-column: 1 / -1;
 }
-.tool-card-featured:hover {
-  background: rgba(255,121,41,0.04);
+.tool-card-featured .tool-card-head { padding: 24px; }
+.tool-card-featured .tool-body { padding: 0 24px 24px; }
+.tl-features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
 }
 .tl-feature {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
   font-size: 0.85rem;
   color: var(--fg-muted);
   line-height: 1.4;
@@ -468,27 +473,10 @@ body { padding-top: 64px; }
   height: 7px;
   border-radius: 50%;
   background: var(--orange);
-  margin-top: 4px;
+  margin-top: 5px;
 }
 @media (max-width: 640px) {
-  .tool-card-featured > div > div:last-child { display: none; }
-}
-.ai-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--purple);
-  margin-top: 4px;
-}
-.ai-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--purple);
-  animation: pulse 2s ease-in-out infinite;
+  .tl-features-grid { grid-template-columns: 1fr; }
 }
 @keyframes pulse {
   0%,100% { opacity: 1; transform: scale(1); }
@@ -839,37 +827,36 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <p class="tools-header-desc body-lg">Diagnósticos de capital social, ecosistemas laborales y cultura organizacional para empresas que buscan impacto medible.</p>
     </div>
     <div class="tools-grid">
-      <!-- Sentido de empresa -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_se.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag">Diagnóstico</span>
-          <span class="tool-arrow">↗</span>
+      <div class="tool-card" id="hc-semaf">
+        <div class="tool-card-head" onclick="toggleTool('hc-semaf')">
+          <span class="tool-name">Semáforo de riesgo</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">Sentido de empresa</span>
-        <span class="tool-desc">Mide el alineamiento entre propósito organizacional y experiencia del colaborador. Identificamos brechas de sentido que afectan retención y desempeño.</span>
-      </a>
-      <!-- Dashboard -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_dashboard.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag">Visualización</span>
-          <span class="tool-arrow">↗</span>
+        <div class="tool-body">
+          <p class="tool-desc">En 20 preguntas sobre tu proceso de contratación actual, la empresa recibe un semáforo de riesgo gratuito. Entrada natural al servicio completo de Estudios Socioeconómicos y al Banco de Instrumentos de Reclutamiento y Selección.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_se.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
-        <span class="tool-name">Dashboard de resultados</span>
-        <span class="tool-desc">Panel interactivo que consolida indicadores de bienestar, productividad y clima organizacional en tiempo real. Exportable para reportes ejecutivos.</span>
-      </a>
-      <!-- Instrumento IA Empresas -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_instrumento.html?eje=empresas" target="_blank" class="tool-card tool-card-ai">
-        <div class="tool-card-top">
-          <span class="tool-tag">IA + Diagnóstico</span>
-          <span class="tool-arrow">↗</span>
+      </div>
+      <div class="tool-card" id="hc-dash">
+        <div class="tool-card-head" onclick="toggleTool('hc-dash')">
+          <span class="tool-name">Dashboard interactivo</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">Instrumento a tu medida</span>
-        <span class="tool-desc">Generamos un instrumento de diagnóstico personalizado con inteligencia artificial, ajustado a los ejes de sintropía para el contexto empresarial.</span>
-        <span class="ai-badge"><span class="ai-dot"></span>Con IA por eje</span>
-      </a>
-    </div>
-    <div class="cat-footer">
-      <a href="https://sintropiassociales-del.github.io/panel/" target="_blank" class="link-ghost">Ver todas las herramientas →</a>
+        <div class="tool-body">
+          <p class="tool-desc">Sube tu propio CSV o Excel y en segundos recibes gráficas, métricas y una lectura cualitativa con perspectiva antropológica generada con IA. Muestra el valor de Sintropía con tus propios datos, antes de contratar cualquier servicio.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_dashboard.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="tool-card" id="hc-instr-emp">
+        <div class="tool-card-head" onclick="toggleTool('hc-instr-emp')">
+          <span class="tool-name">¿Necesitas un instrumento a tu medida?</span>
+          <span class="tool-arrow">→</span>
+        </div>
+        <div class="tool-body">
+          <p class="tool-desc">Cuéntanos qué necesitas medir en tu empresa y en unos minutos te enviamos por correo una propuesta de instrumento y nuestras recomendaciones — sin costo.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_instrumento.html?eje=empresas" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -889,46 +876,36 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <p class="tools-header-desc body-lg">Herramientas para OSC, fundaciones y colectivos que necesitan evaluar su impacto territorial y fortalecer su gestión social.</p>
     </div>
     <div class="tools-grid">
-      <!-- Diagnóstico -->
-      <a href="https://sintropiassociales-del.github.io/panel/diagnostico.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag">Diagnóstico</span>
-          <span class="tool-arrow">↗</span>
+      <div class="tool-card" id="hc-diag">
+        <div class="tool-card-head" onclick="toggleTool('hc-diag')">
+          <span class="tool-name">Diagnóstico rápido</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">Diagnóstico organizacional</span>
-        <span class="tool-desc">Evaluación integral de capacidades internas: gobernanza, comunicación, planeación y sostenibilidad. Genera un perfil de fortalecimiento.</span>
-      </a>
-      <!-- Territorio -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_territorio.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag">Mapeo</span>
-          <span class="tool-arrow">↗</span>
+        <div class="tool-body">
+          <p class="tool-desc">Plataforma de diagnóstico social desarrollada por Sintropía Social para empresas, OSC e instituciones educativas. A través de un cuestionario guiado en cinco áreas —empleabilidad, intervención comunitaria, empleo, RRHH y educación— y seis herramientas metodológicas (árbol de problemas, marco lógico, línea base, metodología SMART), genera un diagnóstico preliminar gratuito. Reporte profesional completo en menos de 24 h.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/diagnostico.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
-        <span class="tool-name">Mapa de territorio</span>
-        <span class="tool-desc">Visualiza actores, redes y flujos de capital social en un territorio específico. Identifica alianzas estratégicas y brechas de intervención.</span>
-      </a>
-      <!-- Track -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_track.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag orange">Seguimiento</span>
-          <span class="tool-arrow">↗</span>
+      </div>
+      <div class="tool-card" id="hc-terr">
+        <div class="tool-card-head" onclick="toggleTool('hc-terr')">
+          <span class="tool-name">Mapa territorial de tu proyecto</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">Track de impacto</span>
-        <span class="tool-desc">Sistema de seguimiento longitudinal de indicadores de cambio social. Documenta avances, ajusta estrategias y evidencia resultados ante financiadores.</span>
-      </a>
-      <!-- Instrumento IA Org -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_instrumento.html?eje=organizaciones" target="_blank" class="tool-card tool-card-ai">
-        <div class="tool-card-top">
-          <span class="tool-tag">IA + Diagnóstico</span>
-          <span class="tool-arrow">↗</span>
+        <div class="tool-body">
+          <p class="tool-desc">Ubica tu proyecto en un mapa, marca a tus actores clave y responde diez preguntas. Recibes de vuelta el mapa territorial de tu propio proyecto. Ideal para organizaciones comunitarias que necesitan argumentarle a un financiador dónde y con quién operan.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_territorio.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
-        <span class="tool-name">Instrumento a tu medida</span>
-        <span class="tool-desc">Construye un instrumento de evaluación adaptado a las necesidades y contexto de tu organización, con apoyo de IA entrenada en sintropía social.</span>
-        <span class="ai-badge"><span class="ai-dot"></span>Con IA por eje</span>
-      </a>
-    </div>
-    <div class="cat-footer">
-      <a href="https://sintropiassociales-del.github.io/panel/" target="_blank" class="link-ghost">Ver todas las herramientas →</a>
+      </div>
+      <div class="tool-card" id="hc-track">
+        <div class="tool-card-head" onclick="toggleTool('hc-track')">
+          <span class="tool-name">Sintropía Track</span>
+          <span class="tool-arrow">→</span>
+        </div>
+        <div class="tool-body">
+          <p class="tool-desc">Con once preguntas sobre tu proyecto, recibes un plan preliminar gratuito con indicadores, metas y cronograma — una probada directa del servicio completo de seguimiento y gestión de proyectos de Sintropía Social.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_track.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -948,55 +925,46 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <p class="tools-header-desc body-lg">Desde preescolar hasta universidad: instrumentos para entender el clima escolar, diseñar intervenciones y fortalecer la comunidad educativa.</p>
     </div>
     <div class="tools-grid">
-      <!-- Diseño instruccional -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_disenio_instruccional.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag">Pedagogía</span>
-          <span class="tool-arrow">↗</span>
+      <div class="tool-card" id="hc-dc">
+        <div class="tool-card-head" onclick="toggleTool('hc-dc')">
+          <span class="tool-name">Diseño instruccional de cursos</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">Diseño instruccional</span>
-        <span class="tool-desc">Herramienta para planear secuencias didácticas con enfoque en sintropía. Conecta objetivos de aprendizaje con competencias sociales y ciudadanas.</span>
-      </a>
-      <!-- IMES -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_imes.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag">Instrumento</span>
-          <span class="tool-arrow">↗</span>
+        <div class="tool-body">
+          <p class="tool-desc">Describe qué curso quieres armar (presencial, virtual o híbrido) y la IA regresa una propuesta de secuencia didáctica. Ideal para ver una muestra concreta antes de encargar el diseño completo.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_disenio_instruccional.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
-        <span class="tool-name">IMES — Básica y Media</span>
-        <span class="tool-desc">Instrumento de Medición del Entorno Escolar para educación básica y media superior. Evalúa pertenencia, seguridad, aprendizaje y convivencia.</span>
-      </a>
-      <!-- IMES Universidad -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_imes_universidad.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag">Instrumento</span>
-          <span class="tool-arrow">↗</span>
+      </div>
+      <div class="tool-card" id="hc-imes-prep">
+        <div class="tool-card-head" onclick="toggleTool('hc-imes-prep')">
+          <span class="tool-name">IMES Preparatoria</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">IMES — Universidad</span>
-        <span class="tool-desc">Versión adaptada para educación superior. Mide capital social estudiantil, integración académica y sentido de pertenencia institucional.</span>
-      </a>
-      <!-- Juego Sintropía -->
-      <a href="https://sintropiassociales-del.github.io/panel/juego-sintropia.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag orange">Experiencial</span>
-          <span class="tool-arrow">↗</span>
+        <div class="tool-body">
+          <p class="tool-desc">Una muestra breve y gratuita del Instrumento de Medición de Empleabilidad Social (36 reactivos + preguntas abiertas) para que un estudiante de prepa vea en minutos su perfil de empleabilidad. Puerta de entrada a la aplicación completa.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_imes.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
-        <span class="tool-name">Juego Sintropía</span>
-        <span class="tool-desc">Dinámica lúdica que introduce los conceptos de sintropía social en grupos escolares. Facilita conversaciones sobre comunidad, confianza y colaboración.</span>
-      </a>
-      <!-- Instrumento IA Escolar -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_instrumento.html?eje=escolar" target="_blank" class="tool-card tool-card-ai">
-        <div class="tool-card-top">
-          <span class="tool-tag">IA + Diagnóstico</span>
-          <span class="tool-arrow">↗</span>
+      </div>
+      <div class="tool-card" id="hc-imes-uni">
+        <div class="tool-card-head" onclick="toggleTool('hc-imes-uni')">
+          <span class="tool-name">IMES Universidad</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">Instrumento a tu medida</span>
-        <span class="tool-desc">Diseña un instrumento diagnóstico para tu comunidad escolar con asistencia de IA, considerando nivel educativo, contexto y ejes de evaluación.</span>
-        <span class="ai-badge"><span class="ai-dot"></span>Con IA por eje</span>
-      </a>
-    </div>
-    <div class="cat-footer">
-      <a href="https://sintropiassociales-del.github.io/panel/" target="_blank" class="link-ghost">Ver todas las herramientas →</a>
+        <div class="tool-body">
+          <p class="tool-desc">La misma lógica que el IMES Preparatoria, adaptada a universitarios que se preparan para su primer empleo profesional: habilidades sociales, de empleabilidad y técnicas.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_imes_universidad.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="tool-card" id="hc-juego">
+        <div class="tool-card-head" onclick="toggleTool('hc-juego')">
+          <span class="tool-name">Tres puertas al mundo del trabajo</span>
+          <span class="tool-arrow">→</span>
+        </div>
+        <div class="tool-body">
+          <p class="tool-desc">Un juego gratuito donde el estudiante practica una entrevista de trabajo y el manejo de habilidades y estrés en el puesto, y recibe su resultado por correo. Útil para que un centro escolar vea, jugando, cómo aplicar el IMES o el banco de instrumentos a toda una generación.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/juego-sintropia.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1016,46 +984,26 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <p class="tools-header-desc body-lg">Recursos para que profesionales, estudiantes y ciudadanos comprendan su perfil social, vocacional y de desarrollo comunitario.</p>
     </div>
     <div class="tools-grid">
-      <!-- Candidato -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_candidato.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag">Perfil</span>
-          <span class="tool-arrow">↗</span>
+      <div class="tool-card" id="hc-cand">
+        <div class="tool-card-head" onclick="toggleTool('hc-cand')">
+          <span class="tool-name">¿Qué tan lista está tu búsqueda de empleo?</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">Perfil candidato</span>
-        <span class="tool-desc">Genera un mapa de fortalezas y áreas de desarrollo para candidatos a puestos con alto componente social. Incluye recomendaciones de formación.</span>
-      </a>
-      <!-- PDF Citas -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_pdfcitas.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag orange">Bibliografía</span>
-          <span class="tool-arrow">↗</span>
+        <div class="tool-body">
+          <p class="tool-desc">Responde unas preguntas y descubre qué tan lista está tu búsqueda de empleo; al mismo tiempo puedes autorizar que te avisemos de vacantes a tu medida — un perfil calificado para la bolsa de candidatos de Sintropía.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_candidato.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
-        <span class="tool-name">Citas desde PDF</span>
-        <span class="tool-desc">Extrae, organiza y genera referencias bibliográficas a partir de tus documentos PDF. Compatible con formatos APA, Chicago y Vancouver.</span>
-      </a>
-      <!-- Juego Sintropía Personas -->
-      <a href="https://sintropiassociales-del.github.io/panel/juego-sintropia.html" target="_blank" class="tool-card">
-        <div class="tool-card-top">
-          <span class="tool-tag orange">Experiencial</span>
-          <span class="tool-arrow">↗</span>
+      </div>
+      <div class="tool-card" id="hc-pdf">
+        <div class="tool-card-head" onclick="toggleTool('hc-pdf')">
+          <span class="tool-name">Buscador de citas en PDF</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <span class="tool-name">Juego Sintropía</span>
-        <span class="tool-desc">Versión individual del juego de diagnóstico. Explora tus dimensiones de capital social y recibe un mapa de tu perfil sintrópico personal.</span>
-      </a>
-      <!-- Instrumento IA Personas -->
-      <a href="https://sintropiassociales-del.github.io/panel/muestra_instrumento.html?eje=personas" target="_blank" class="tool-card tool-card-ai">
-        <div class="tool-card-top">
-          <span class="tool-tag">IA + Diagnóstico</span>
-          <span class="tool-arrow">↗</span>
+        <div class="tool-body">
+          <p class="tool-desc">Sube un libro, reporte o tesis, escribe una palabra clave y la herramienta localiza y propone las citas relevantes con su página exacta. Diseñada con fines académicos como puerta de entrada al Repositorio Bibliográfico completo.</p>
+          <a href="https://sintropiassociales-del.github.io/panel/muestra_pdfcitas.html" target="_blank" class="tool-link">Abrir herramienta <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
-        <span class="tool-name">Instrumento a tu medida</span>
-        <span class="tool-desc">Crea un instrumento de autodiagnóstico personalizado con IA. Responde a tus objetivos específicos de desarrollo personal o vocacional.</span>
-        <span class="ai-badge"><span class="ai-dot"></span>Con IA por eje</span>
-      </a>
-    </div>
-    <div class="cat-footer">
-      <a href="https://sintropiassociales-del.github.io/panel/" target="_blank" class="link-ghost">Ver todas las herramientas →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -1075,32 +1023,24 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <p class="tools-header-desc body-lg">Herramientas para quienes conducen talleres, dinámicas grupales y procesos de aprendizaje colaborativo en videollamada o presencial.</p>
     </div>
     <div class="tools-grid">
-      <!-- Task Live — tarjeta destacada -->
-      <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank" class="tool-card tool-card-featured" style="grid-column:1/-1;">
-        <div class="tool-card-top">
-          <span class="tool-tag orange">Nuevo · Colaboración en vivo</span>
-          <span class="tool-arrow">↗</span>
+      <div class="tool-card tool-card-featured" id="hc-tasklive">
+        <div class="tool-card-head" onclick="toggleTool('hc-tasklive')">
+          <span class="tool-name" style="font-size:1.1rem;">Task Live — Salas grupales</span>
+          <span class="tool-arrow">→</span>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;margin-top:8px;">
-          <div>
-            <span class="tool-name" style="font-size:1.5rem;">Task live</span>
-            <span class="tool-desc" style="display:block;margin-top:10px;">La sala de trabajo en grupos pequeños para tus videollamadas, sin cuentas ni instalaciones. Pegas el enlace de un documento, presentación u hoja de cálculo de Google, dices cuántos equipos habrá y compartes un enlace por equipo. Cada equipo trabaja en vivo en su propia copia.</span>
+        <div class="tool-body">
+          <p class="tool-desc">La sala de trabajo en grupos pequeños para tus videollamadas, sin cuentas ni instalaciones. Pegas el enlace de un documento, presentación u hoja de cálculo de Google, dices cuántos equipos habrá y compartes un enlace por equipo. Cada equipo trabaja en vivo en su propia copia.</p>
+          <div class="tl-features-grid" style="margin-bottom:16px;">
+            <div class="tl-feature"><span class="tl-dot"></span>Sin cuentas ni instalaciones</div>
+            <div class="tl-feature"><span class="tl-dot"></span>Cada equipo en su copia con color propio</div>
+            <div class="tl-feature"><span class="tl-dot"></span>Revisión de ortografía con IA al finalizar</div>
+            <div class="tl-feature"><span class="tl-dot"></span>Resultados consolidados en tu documento original</div>
+            <div class="tl-feature"><span class="tl-dot"></span>PDF + documento editable por correo</div>
+            <div class="tl-feature"><span class="tl-dot"></span>Lectura desde perspectiva Sintropía</div>
           </div>
-          <div>
-            <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;margin-top:4px;">
-              <li class="tl-feature"><span class="tl-dot"></span>Sin cuentas ni instalaciones</li>
-              <li class="tl-feature"><span class="tl-dot"></span>Cada equipo en su copia con color propio</li>
-              <li class="tl-feature"><span class="tl-dot"></span>Revisión de ortografía con IA al finalizar</li>
-              <li class="tl-feature"><span class="tl-dot"></span>Resultados consolidados en tu documento original</li>
-              <li class="tl-feature"><span class="tl-dot"></span>PDF + documento editable por correo a cada participante</li>
-              <li class="tl-feature"><span class="tl-dot"></span>Lectura y recomendaciones desde la perspectiva Sintropía</li>
-            </ul>
-          </div>
+          <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank" class="tool-link">Abrir Task Live <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
-      </a>
-    </div>
-    <div class="cat-footer">
-      <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank" class="link-ghost">Abrir Task live →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -1277,6 +1217,21 @@ function buildMarquee() {
   track.innerHTML = html;
 }
 buildMarquee();
+
+/* ── Nav ── */
+function ssToggleDD(el){el.closest('.ss-dd').classList.toggle('open');}
+function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
+function ssMobileNav(){document.querySelector('.ss-nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd.open').forEach(d=>d.classList.remove('open'));
+});
+
+/* ── Tool cards toggle ── */
+function toggleTool(id){
+  var card=document.getElementById(id);
+  if(!card)return;
+  card.classList.toggle('open');
+}
 </script>
 
 </body>
