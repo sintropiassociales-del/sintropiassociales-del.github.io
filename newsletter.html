@@ -142,6 +142,18 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
 .footer-links a { font-size: .82rem; color: var(--text-muted); text-decoration: none; transition: color .15s; }
 .footer-links a:hover { color: var(--text-main); }
 .footer-copy { font-size: .78rem; color: rgba(240,238,248,.3); margin-top: 1.5rem; text-align: center; }
+
+/* ── VIDEO HERO ── */
+.hero-inner { display: flex; align-items: center; justify-content: center; gap: 3.5rem; text-align: left; }
+.hero-text { flex: 1; min-width: 0; }
+.hero-text .hero-sub { margin: 0 0 3rem; max-width: 480px; }
+.hero-video-wrap { flex-shrink: 0; }
+.hero-video-wrap video { width: 220px; height: 220px; border-radius: 20px; object-fit: cover; display: block; box-shadow: 0 0 60px rgba(99,30,235,.35), 0 0 0 1px rgba(99,30,235,.2); }
+@media(max-width:680px){
+  .hero-inner { flex-direction: column; text-align: center; gap: 2rem; }
+  .hero-text .hero-sub { margin: 0 auto 2rem; }
+  .hero-video-wrap video { width: 160px; height: 160px; }
+}
 </style>
 </head>
 <body>
@@ -216,12 +228,19 @@ document.addEventListener('click',function(e){
 <!-- ════════ HERO ════════ -->
 <section class="hero">
   <div class="container-narrow">
-    <div class="hero-kicker">Bienvenido al newsletter</div>
-    <h1 class="hero-title">
-      Código<br>
-      <span class="accent">Sintropía</span>
-    </h1>
-    <p class="hero-sub">El newsletter de ciencia social, investigación aplicada y herramientas digitales para quienes trabajan con comunidades y territorios. Cada semana en LinkedIn.</p>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-kicker">Bienvenido al newsletter</div>
+        <h1 class="hero-title">
+          Código<br>
+          <span class="accent">Sintropía</span>
+        </h1>
+        <p class="hero-sub">El newsletter de ciencia social, investigación aplicada y herramientas digitales para quienes trabajan con comunidades y territorios. Cada semana en LinkedIn.</p>
+      </div>
+      <div class="hero-video-wrap">
+        <video src="sintropia-social.mp4" autoplay loop muted playsinline></video>
+      </div>
+    </div>
   </div>
 </section>
 
