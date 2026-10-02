@@ -87,12 +87,21 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .container-narrow { max-width: 760px; margin: 0 auto; padding: 0 clamp(16px,4vw,48px); }
 
 /* ─── HERO ─── */
-.hero { padding: 5rem 0 4rem; background: radial-gradient(ellipse 60% 70% at 50% 0%, rgba(99,30,235,.18) 0%, transparent 60%); border-bottom: 1px solid rgba(255,255,255,.06); text-align: center; }
+.hero { padding: 5rem 0 4rem; background: radial-gradient(ellipse 60% 70% at 50% 0%, rgba(99,30,235,.18) 0%, transparent 60%); border-bottom: 1px solid rgba(255,255,255,.06); }
 .section-label { font-family: var(--font-display); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--purple); margin-bottom: 1rem; }
 .hero-title { font-family: var(--font-display); font-size: clamp(3rem,7vw,6rem); font-weight: 900; text-transform: uppercase; line-height: .9; letter-spacing: -.02em; margin-bottom: 1.5rem; }
 .hero-title .accent { color: var(--orange); }
 .hero-kicker { display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(200,185,255,.7); background: rgba(99,30,235,.12); border: 1px solid rgba(99,30,235,.25); padding: .35rem 1rem; border-radius: 50px; margin-bottom: 1.5rem; }
-.hero-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 520px; line-height: 1.75; margin: 0 auto 3rem; }
+.hero-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 480px; line-height: 1.75; margin: 0 0 3rem; }
+.hero-inner { display: flex; align-items: center; justify-content: center; gap: 3.5rem; }
+.hero-text { flex: 1; min-width: 0; }
+.hero-video-wrap { flex-shrink: 0; }
+.hero-video-wrap video { width: 220px; height: 220px; border-radius: 20px; object-fit: cover; display: block; box-shadow: 0 0 60px rgba(99,30,235,.35), 0 0 0 1px rgba(99,30,235,.2); }
+@media(max-width:680px){
+  .hero-inner { flex-direction: column; text-align: center; gap: 2rem; }
+  .hero-text .hero-sub { margin: 0 auto 2rem; max-width: 100%; }
+  .hero-video-wrap video { width: 160px; height: 160px; }
+}
 
 /* ─── SIGNUP ─── */
 .signup-band { padding: 4rem 0; }
@@ -103,6 +112,23 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .linkedin-btn:hover { background: #0958A8; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(10,102,194,.4); }
 .linkedin-btn svg { width: 20px; height: 20px; fill: white; }
 .signup-note { margin-top: 1.5rem; font-size: .8rem; color: rgba(240,238,248,.3); }
+
+/* ─── EDICIONES PASADAS ─── */
+.editions-band { padding: 5rem 0; border-top: 1px solid rgba(255,255,255,.06); }
+.editions-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+.editions-title { font-family: var(--font-display); font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 900; text-transform: uppercase; }
+.editions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; }
+.edition-card { background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; transition: border-color .2s, transform .2s; }
+.edition-card:hover { border-color: rgba(99,30,235,.5); transform: translateY(-3px); }
+.edition-cover { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; background: var(--bg-darker); }
+.edition-body { padding: 1.2rem 1.4rem 1.4rem; flex: 1; display: flex; flex-direction: column; }
+.edition-num { font-family: var(--font-display); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--purple); margin-bottom: .4rem; }
+.edition-title { font-family: var(--font-display); font-size: .95rem; font-weight: 700; line-height: 1.3; margin-bottom: .5rem; color: var(--text-main); }
+.edition-desc { font-size: .8rem; color: var(--text-muted); line-height: 1.55; flex: 1; margin-bottom: 1rem; }
+.edition-dl { display: inline-flex; align-items: center; gap: .5rem; background: rgba(99,30,235,.15); border: 1px solid rgba(99,30,235,.3); color: rgba(200,185,255,.9); padding: .5rem 1rem; border-radius: 50px; font-size: .78rem; font-weight: 600; font-family: var(--font-display); text-decoration: none; transition: all .2s; }
+.edition-dl:hover { background: rgba(99,30,235,.35); color: #fff; }
+.edition-dl svg { width: 14px; height: 14px; flex-shrink: 0; }
+#editions-list:empty::after { content: 'Próximamente se publicarán ediciones aquí.'; font-size: .9rem; color: var(--text-muted); grid-column: 1/-1; text-align: center; padding: 3rem 0; }
 
 /* ─── QUÉ ES ─── */
 .about-band { padding: 5rem 0; border-top: 1px solid rgba(255,255,255,.06); }
@@ -142,18 +168,6 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
 .footer-links a { font-size: .82rem; color: var(--text-muted); text-decoration: none; transition: color .15s; }
 .footer-links a:hover { color: var(--text-main); }
 .footer-copy { font-size: .78rem; color: rgba(240,238,248,.3); margin-top: 1.5rem; text-align: center; }
-
-/* ── VIDEO HERO ── */
-.hero-inner { display: flex; align-items: center; justify-content: center; gap: 3.5rem; text-align: left; }
-.hero-text { flex: 1; min-width: 0; }
-.hero-text .hero-sub { margin: 0 0 3rem; max-width: 480px; }
-.hero-video-wrap { flex-shrink: 0; }
-.hero-video-wrap video { width: 220px; height: 220px; border-radius: 20px; object-fit: cover; display: block; box-shadow: 0 0 60px rgba(99,30,235,.35), 0 0 0 1px rgba(99,30,235,.2); }
-@media(max-width:680px){
-  .hero-inner { flex-direction: column; text-align: center; gap: 2rem; }
-  .hero-text .hero-sub { margin: 0 auto 2rem; }
-  .hero-video-wrap video { width: 160px; height: 160px; }
-}
 </style>
 </head>
 <body>
@@ -238,7 +252,7 @@ document.addEventListener('click',function(e){
         <p class="hero-sub">El newsletter de ciencia social, investigación aplicada y herramientas digitales para quienes trabajan con comunidades y territorios. Cada semana en LinkedIn.</p>
       </div>
       <div class="hero-video-wrap">
-        <video src="sintropia-social.mp4" autoplay loop muted playsinline></video>
+        <video src="SintropíaSocial.mp4" autoplay loop muted playsinline></video>
       </div>
     </div>
   </div>
@@ -255,6 +269,21 @@ document.addEventListener('click',function(e){
         Suscribirse en LinkedIn
       </a>
       <p class="signup-note">Se abre LinkedIn. Busca "Código Sintropía" y haz clic en Suscribirse.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ EDICIONES PASADAS ════════ -->
+<section class="editions-band">
+  <div class="container">
+    <div class="editions-header">
+      <div>
+        <div class="section-label">Archivo</div>
+        <h2 class="editions-title">Ediciones <span style="color:var(--orange);">pasadas</span></h2>
+      </div>
+    </div>
+    <div class="editions-grid" id="editions-list">
+      <!-- Las ediciones se cargan desde newsletters.json -->
     </div>
   </div>
 </section>
@@ -356,5 +385,32 @@ document.addEventListener('click',function(e){
   </div>
 </footer>
 
+<script>
+// Carga ediciones desde newsletters.json
+(async function(){
+  const grid = document.getElementById('editions-list');
+  try {
+    const r = await fetch('newsletters.json');
+    if(!r.ok) throw new Error();
+    const data = await r.json();
+    if(!data.length){ grid.innerHTML='<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:3rem 0;">Próximamente se publicarán ediciones aquí.</p>'; return; }
+    grid.innerHTML = data.map((e,i)=>`
+      <div class="edition-card">
+        ${e.cover ? `<img class="edition-cover" src="${e.cover}" alt="${e.title}" loading="lazy">` : `<div class="edition-cover" style="background:linear-gradient(135deg,#15112a,#0e0c18);display:flex;align-items:center;justify-content:center;"><span style="font-family:var(--font-display);font-size:2rem;font-weight:900;color:rgba(99,30,235,.4);">#${data.length-i}</span></div>`}
+        <div class="edition-body">
+          <div class="edition-num">Edición #${data.length-i}</div>
+          <div class="edition-title">${e.title}</div>
+          <div class="edition-desc">${e.desc||''}</div>
+          <a class="edition-dl" href="${e.pdf}" target="_blank">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M8 1v9M4 6l4 4 4-4M2 12h12v2H2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Descargar PDF
+          </a>
+        </div>
+      </div>`).join('');
+  } catch(e){
+    grid.innerHTML='<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:3rem 0;">Próximamente se publicarán ediciones aquí.</p>';
+  }
+})();
+</script>
 </body>
 </html>

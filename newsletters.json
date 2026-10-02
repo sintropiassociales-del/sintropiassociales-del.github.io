@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Singularidades del Trabajo. Conceptos e Imágenes Sociales",
+    "desc": "¿Cómo se construye socialmente la imagen del trabajo? Conceptos y representaciones que dan forma a nuestra comprensión de lo laboral.",
+    "pdf": "newsletters/singularidades-del-trabajo.pdf",
+    "cover": "newsletters/covers/singularidades.jpg"
+  },
+  {
+    "title": "Implicaciones Individuales sobre Transformaciones Sociales",
+    "desc": "¿Qué información hay dentro de cada historia personal que se convierte en generalidad? El puente entre lo biográfico y lo estructural.",
+    "pdf": "newsletters/implicaciones-individuales.pdf",
+    "cover": "newsletters/covers/implicaciones.jpg"
+  },
+  {
+    "title": "La Transformación del Trabajo. Nuevas Formas de Comprender los Cambios Sociales",
+    "desc": "Nuevas formas de entender los cambios en el mundo laboral desde la perspectiva de la ciencia social aplicada.",
+    "pdf": "newsletters/transformacion-del-trabajo.pdf",
+    "cover": "newsletters/covers/transformacion.jpg"
+  },
+  {
+    "title": "Trabajo y Corrupción",
+    "desc": "La corrupción encuentra un medio para darse a través del trabajo. Las razones pueden ser muchas; lo relevante es la infraestructura social que hay detrás.",
+    "pdf": "newsletters/trabajo-y-corrupcion.pdf",
+    "cover": "newsletters/covers/corrupcion.jpg"
+  },
+  {
+    "title": "Historias de Vida. Un poco de trabajo entre tantas historias",
+    "desc": "Antropología del Trabajo: el trabajo como acción humana que involucra a varios actores dentro de una sociedad, visto desde las narrativas biográficas.",
+    "pdf": "newsletters/historias-de-vida.pdf",
+    "cover": "newsletters/covers/historias.jpg"
+  },
+  {
+    "title": "Flexibilidad y Rigidez / Intervenciones Sociales",
+    "desc": "La flexibilidad como habilidad laboral y como condición de precariedad. Reflexiones sobre el trabajo y sus paradojas estructurales.",
+    "pdf": "newsletters/flexibilidad-y-rigidez.pdf",
+    "cover": "newsletters/covers/flexibilidad.jpg"
+  }
+]
