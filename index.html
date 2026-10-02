@@ -1137,6 +1137,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <div class="filter-actions">
         <button class="btn-filter" onclick="clearFilters()" data-testid="clear-filters-btn">↺ Limpiar</button>
         <button class="btn-filter btn-filter-accent" onclick="openDownloadModal()" data-testid="download-btn">↓ Descargar PDF</button>
+        <button class="btn-filter" onclick="openProponerModal()" style="background:rgba(255,121,41,.15);color:#FF7929;border-color:rgba(255,121,41,.35);" data-testid="proponer-btn">+ Proponer cita</button>
       </div>
     </div>
 
@@ -1363,6 +1364,66 @@ const MARQUEE_ITEMS = [
   track.innerHTML = html;
 })();
 </script>
+
+<!-- ════════ MODAL: PROPONER CITA ════════ -->
+<div id="proponer-modal" class="modal">
+  <div class="modal-content" style="max-width:560px;">
+    <button class="modal-close" onclick="closeProponerModal()">&times;</button>
+    <h3 style="margin-bottom:.5rem;">Proponer una cita</h3>
+    <p style="margin-bottom:1.2rem;">Comparte una cita de cualquier disciplina o libro para enriquecer el repositorio. El equipo de Sintropía Social la revisará antes de publicarla.</p>
+    <form id="proponer-form" autocomplete="off">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem;">
+        <div>
+          <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Categoría *</label>
+          <input type="text" id="prop-categoria" placeholder="Ej: Trabajo, Educación…" style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;" required>
+        </div>
+        <div>
+          <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Indicador</label>
+          <input type="text" id="prop-indicador" placeholder="Ej: Empleo juvenil" style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem;">
+        <div>
+          <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Autor *</label>
+          <input type="text" id="prop-autor" placeholder="Apellido, N." style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;" required>
+        </div>
+        <div>
+          <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Año</label>
+          <input type="number" id="prop-year" placeholder="2024" min="1900" max="2099" style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;">
+        </div>
+      </div>
+      <div style="margin-bottom:.75rem;">
+        <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Cita (texto completo) *</label>
+        <textarea id="prop-cita" rows="4" placeholder="Texto de la cita tal como aparece en la fuente…" style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;resize:vertical;" required></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem;">
+        <div>
+          <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Publicación / Libro</label>
+          <input type="text" id="prop-publicacion" placeholder="Título del libro o revista" style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;">
+        </div>
+        <div>
+          <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Página</label>
+          <input type="text" id="prop-pagina" placeholder="p. 34" style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;">
+        </div>
+      </div>
+      <div style="margin-bottom:.75rem;">
+        <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Cita APA</label>
+        <input type="text" id="prop-apa" placeholder="Autor, A. (Año). Título. Editorial." style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;">
+      </div>
+      <div style="margin-bottom:.75rem;">
+        <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Link / URL</label>
+        <input type="url" id="prop-link" placeholder="https://…" style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;">
+      </div>
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-size:.78rem;font-weight:600;color:var(--fg-muted);margin-bottom:.3rem;">Tu correo (para notificarte cuando se publique)</label>
+        <input type="email" id="prop-email" placeholder="correo@ejemplo.com" style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid rgba(99,30,235,.25);background:var(--bg-card);color:var(--fg);font-family:inherit;font-size:.85rem;">
+      </div>
+      <div id="proponer-error" style="display:none;color:#ff5252;font-size:.82rem;margin-bottom:.75rem;"></div>
+      <div id="proponer-ok" style="display:none;background:rgba(99,30,235,.12);border:1px solid rgba(99,30,235,.3);border-radius:10px;padding:.9rem 1rem;color:#c8b9ff;font-size:.85rem;margin-bottom:.75rem;"></div>
+      <button type="submit" id="proponer-submit" class="btn-primary" style="width:100%;justify-content:center;">Enviar propuesta</button>
+    </form>
+  </div>
+</div>
 
 <!-- ════════ APP JS (original preserved) ════════ -->
 <script src="config.js"></script>
@@ -1697,6 +1758,70 @@ function descargarPDF() {
 }
 
 function setupPayPal() { /* descarga libre con donación opcional */ }
+
+/* ── PROPONER CITA ── */
+function openProponerModal() {
+  document.getElementById('proponer-form').reset();
+  document.getElementById('proponer-error').style.display='none';
+  document.getElementById('proponer-ok').style.display='none';
+  document.getElementById('proponer-submit').disabled=false;
+  document.getElementById('proponer-submit').textContent='Enviar propuesta';
+  // pre-fill email if logged in
+  var user = Auth.getUser();
+  if (user && user.email) document.getElementById('prop-email').value = user.email;
+  document.getElementById('proponer-modal').classList.add('active');
+}
+function closeProponerModal() {
+  document.getElementById('proponer-modal').classList.remove('active');
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('proponer-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var errEl = document.getElementById('proponer-error');
+    var okEl  = document.getElementById('proponer-ok');
+    var btn   = document.getElementById('proponer-submit');
+    errEl.style.display='none'; okEl.style.display='none';
+    var categoria = document.getElementById('prop-categoria').value.trim();
+    var autor     = document.getElementById('prop-autor').value.trim();
+    var cita      = document.getElementById('prop-cita').value.trim();
+    if (!categoria||!autor||!cita) {
+      errEl.textContent='Por favor completa los campos obligatorios (*)';
+      errEl.style.display='block'; return;
+    }
+    btn.disabled=true; btn.textContent='Enviando…';
+    var params = {
+      action: 'enviarCita',
+      categoria:   categoria,
+      indicador:   document.getElementById('prop-indicador').value.trim(),
+      autor:       autor,
+      year:        document.getElementById('prop-year').value.trim(),
+      cita:        cita,
+      publicacion: document.getElementById('prop-publicacion').value.trim(),
+      pagina:      document.getElementById('prop-pagina').value.trim(),
+      citaAPA:     document.getElementById('prop-apa').value.trim(),
+      link:        document.getElementById('prop-link').value.trim(),
+      usuarioEmail:document.getElementById('prop-email').value.trim()
+    };
+    var url = WEBAPP_URL + '?' + Object.keys(params).map(function(k){ return encodeURIComponent(k)+'='+encodeURIComponent(params[k]); }).join('&');
+    var cbName = 'proponerCB_' + Date.now();
+    var s = document.createElement('script');
+    url += '&callback=' + cbName;
+    window[cbName] = function(res) {
+      delete window[cbName]; document.body.removeChild(s);
+      btn.disabled=false; btn.textContent='Enviar propuesta';
+      if (res && res.ok) {
+        okEl.textContent='¡Gracias! Tu cita fue enviada para revisión. El equipo de Sintropía Social la publicará pronto.';
+        okEl.style.display='block';
+        document.getElementById('proponer-form').reset();
+      } else {
+        errEl.textContent=(res && res.error)||'Error al enviar. Intenta de nuevo.';
+        errEl.style.display='block';
+      }
+    };
+    s.onerror=function(){ delete window[cbName]; document.body.removeChild(s); btn.disabled=false; btn.textContent='Enviar propuesta'; errEl.textContent='Error de conexión. Intenta de nuevo.'; errEl.style.display='block'; };
+    s.src=url; document.body.appendChild(s);
+  });
+});
 
 function openDownloadModal() {
   var categoria = document.getElementById('filter-categoria').value;
