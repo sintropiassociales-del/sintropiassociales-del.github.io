@@ -1151,6 +1151,497 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
   </div>
 </section>
 
+<!-- ════════ BUSCADOR DE CITAS EN PDF ════════ -->
+<section class="section" id="pdf-citas-section" style="padding-top:clamp(40px,8vw,80px);padding-bottom:clamp(40px,8vw,80px);">
+<div class="container">
+  <div style="text-align:center;margin-bottom:2.5rem;">
+    <div class="label-upper" style="margin-bottom:.6rem;">Herramienta · Análisis Textual</div>
+    <h2 class="display-md">Buscador de citas en PDF</h2>
+    <p class="body-lg" style="max-width:560px;margin:.75rem auto 0;">Carga cualquier libro, reporte o tesis. Busca por palabra clave y extrae párrafos con número de página exacto — listos para proponer al Repositorio.</p>
+  </div>
+
+  <!-- Drop zone -->
+  <div id="pcz-drop" style="border:2px dashed var(--line);border-radius:14px;padding:2.5rem 2rem;text-align:center;cursor:pointer;background:var(--bg-card);transition:all .2s;position:relative;max-width:720px;margin:0 auto 1.5rem;">
+    <input type="file" id="pcz-file" accept=".pdf" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="pczHandlePDF(this)"/>
+    <div style="font-size:2.2rem;margin-bottom:.6rem;">📄</div>
+    <div style="font-size:1rem;font-weight:600;color:var(--fg);margin-bottom:.25rem;">Arrastra o selecciona un PDF</div>
+    <div style="font-size:.8rem;color:var(--fg-muted);">Libros, reportes, tesis · Cualquier tamaño</div>
+    <div id="pcz-accepted" style="display:none;margin-top:.7rem;padding:6px 12px;background:rgba(99,30,235,.1);border-radius:7px;font-size:.74rem;color:var(--purple);">✓ <span id="pcz-fname"></span></div>
+  </div>
+
+  <!-- Info bar -->
+  <div id="pcz-infobar" style="display:none;max-width:720px;margin:0 auto 1rem;background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+    <span style="font-size:.8rem;color:var(--fg-muted);">Documento: <strong id="pcz-docname" style="color:var(--orange);">—</strong></span>
+    <span style="font-size:.8rem;color:var(--fg-muted);">Páginas: <strong id="pcz-pages" style="color:var(--orange);">—</strong></span>
+    <span style="font-size:.8rem;color:var(--fg-muted);">Estado: <strong id="pcz-status" style="color:var(--orange);">Procesando…</strong></span>
+    <button onclick="pczClear()" style="background:rgba(220,38,38,.08);color:#dc2626;border:1px solid rgba(220,38,38,.2);padding:4px 11px;border-radius:7px;font-size:.73rem;cursor:pointer;font-family:inherit;">✕ Cambiar PDF</button>
+  </div>
+
+  <!-- Spinner -->
+  <div id="pcz-spinner" style="display:none;text-align:center;padding:2rem 1rem;">
+    <div style="width:34px;height:34px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--purple);animation:spin .7s linear infinite;margin:0 auto .75rem;"></div>
+    <p style="font-size:.82rem;color:var(--fg-muted);">Extrayendo texto del PDF…</p>
+  </div>
+
+  <!-- Search -->
+  <div id="pcz-search" style="display:none;max-width:720px;margin:0 auto 1.5rem;">
+    <div style="display:flex;gap:.75rem;margin-bottom:.75rem;">
+      <input type="text" id="pcz-query" placeholder="Palabra o frase a buscar… (ej: cultura, trabajo, identidad)"
+        style="flex:1;padding:12px 15px;border:1px solid var(--line);border-radius:10px;font-size:.9rem;font-family:var(--font-body);color:var(--fg);background:var(--bg-card);transition:all .2s;outline:none;"
+        onkeydown="if(event.key==='Enter')pczDoSearch()"
+        onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--line)'"/>
+      <button onclick="pczDoSearch()" style="padding:12px 22px;border-radius:10px;background:var(--orange);color:#fff;border:none;font-size:.875rem;font-weight:600;cursor:pointer;font-family:var(--font-body);white-space:nowrap;">Buscar</button>
+    </div>
+    <!-- Metadatos del libro -->
+    <div style="background:var(--bg-card);border:1.5px solid rgba(99,30,235,.18);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;">
+      <div style="font-size:.78rem;font-weight:700;color:var(--purple);margin-bottom:.75rem;letter-spacing:.04em;">📖 METADATOS DEL DOCUMENTO <span style="font-weight:400;color:var(--fg-muted);font-size:.7rem;">(se aplican a todas las citas)</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.5rem;">
+        <div style="grid-column:span 2"><label style="font-size:.69rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px;">Título *</label><input id="pcz-bm-titulo" placeholder="Ej: La interpretación de las culturas" oninput="pczUpdateAPA()" style="width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--font-body);font-size:.84rem;color:var(--fg);background:var(--bg-card);outline:none;"/></div>
+        <div><label style="font-size:.69rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px;">Autor(es) *</label><input id="pcz-bm-autor" placeholder="Apellido, N." oninput="pczUpdateAPA()" style="width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--font-body);font-size:.84rem;color:var(--fg);background:var(--bg-card);outline:none;"/></div>
+        <div><label style="font-size:.69rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px;">Año</label><input id="pcz-bm-year" placeholder="2023" type="number" oninput="pczUpdateAPA()" style="width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--font-body);font-size:.84rem;color:var(--fg);background:var(--bg-card);outline:none;"/></div>
+        <div><label style="font-size:.69rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px;">Categoría</label>
+          <select id="pcz-bm-cat" style="width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--font-body);font-size:.84rem;color:var(--fg);background:var(--bg-card);outline:none;">
+            <option value="">Seleccionar...</option>
+            <option>Sociología</option><option>Antropología</option><option>Psicología</option>
+            <option>Educación</option><option>Virtualidad</option><option>Administración</option>
+            <option>Mercados Laborales</option><option>Historia</option><option>Filosofía</option>
+            <option>Investigación Social</option><option>Lingüística</option><option>Metodología</option>
+            <option>Intervención Comunitaria</option><option>Emprendimiento</option>
+            <option>Flexibilidad laboral</option><option>Evaluación de Impacto</option>
+            <option>Empleabilidad</option><option>Covid</option><option>Otra</option>
+          </select>
+        </div>
+        <div><label style="font-size:.69rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px;">Indicador</label><input id="pcz-bm-ind" placeholder="Ej: Cultura, Empleo…" style="width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--font-body);font-size:.84rem;color:var(--fg);background:var(--bg-card);outline:none;"/></div>
+        <div><label style="font-size:.69rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:3px;">Link / DOI</label><input id="pcz-bm-link" placeholder="https://..." style="width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-family:var(--font-body);font-size:.84rem;color:var(--fg);background:var(--bg-card);outline:none;"/></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:.6rem;">
+        <input id="pcz-bm-apa" readonly placeholder="APA se genera automáticamente…" style="flex:1;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:.82rem;font-style:italic;color:var(--purple);background:var(--bg);outline:none;"/>
+        <button onclick="pczAplicarMeta()" style="background:var(--purple);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:var(--font-body);white-space:nowrap;">Aplicar a todas</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="pcz-results" style="max-width:720px;margin:0 auto;"></div>
+  <div id="pcz-mas-wrap" style="max-width:720px;margin:.75rem auto 0;text-align:center;"></div>
+</div>
+</section>
+
+<!-- Toast PDF-citas -->
+<div id="pcz-toast" style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:10px 18px;font-size:.82rem;color:var(--fg);box-shadow:0 4px 20px rgba(0,0,0,.12);transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+/* ════════ BUSCADOR DE CITAS EN PDF (integrado en Repositorio) ════════
+   - Sin formulario de contacto previo
+   - Envía directamente al Sheets via enviarCita (misma acción que el modal)
+   - Para 1000+ citas: lotes de 10 con pausa de 400ms entre cada uno
+   - WEBAPP_URL viene de config.js (ya cargado antes de este bloque)
+   ════════════════════════════════════════════════════════════════════ */
+
+(function(){
+  // Lazy-load pdf.js worker
+  if(typeof pdfjsLib !== 'undefined'){
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+
+  var pczPdfText = [];
+  var pczBookMeta = {};
+  var pczCits = [];
+  var pczShown = 0;
+  var PCZ_POR_PAGINA = 15;
+  var pczLastQuery = '';
+
+  // ── Escapa HTML ──
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function escRx(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+  // ── Toast ──
+  function pczToast(msg,type){
+    var t=document.getElementById('pcz-toast');
+    if(!t)return;
+    t.textContent=msg;
+    t.style.borderLeft=(type==='err'?'3px solid #dc2626':'3px solid var(--purple)');
+    t.style.opacity='1';t.style.transform='translateY(0)';
+    clearTimeout(t._t);t._t=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(80px)';},3000);
+  }
+  window.pczToastFn = pczToast;
+
+  // ── APA ──
+  function pczUpdateAPA(){
+    var aut=(document.getElementById('pcz-bm-autor')||{}).value||'';
+    var yr=(document.getElementById('pcz-bm-year')||{}).value||'';
+    var tit=(document.getElementById('pcz-bm-titulo')||{}).value||'';
+    if(!aut&&!tit)return;
+    var apa=aut+(yr?' ('+yr+').':' (s.f.).')+' '+tit+'.';
+    var el=document.getElementById('pcz-bm-apa');
+    if(el)el.value=apa;
+  }
+  window.pczUpdateAPA=pczUpdateAPA;
+
+  function pczAplicarMeta(){
+    pczBookMeta={
+      autor:(document.getElementById('pcz-bm-autor')||{}).value||'',
+      year:(document.getElementById('pcz-bm-year')||{}).value||'',
+      titulo:(document.getElementById('pcz-bm-titulo')||{}).value||'',
+      categoria:(document.getElementById('pcz-bm-cat')||{}).value||'',
+      indicador:(document.getElementById('pcz-bm-ind')||{}).value||'',
+      link:(document.getElementById('pcz-bm-link')||{}).value||'',
+      apa:(document.getElementById('pcz-bm-apa')||{}).value||''
+    };
+    if(pczCits.length) pczRenderResults(pczCits, pczLastQuery);
+    pczToast('Metadatos aplicados a '+(pczCits.length||'las')+(pczCits.length?' citas':' futuras citas')+'.');
+  }
+  window.pczAplicarMeta=pczAplicarMeta;
+
+  // ── Handle PDF ──
+  async function pczHandlePDF(input){
+    var file=input.files[0]; if(!file)return;
+    if(typeof pdfjsLib==='undefined'){pczToast('Cargando motor PDF…','err');return;}
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    document.getElementById('pcz-fname').textContent=file.name;
+    document.getElementById('pcz-accepted').style.display='block';
+    document.getElementById('pcz-docname').textContent=file.name;
+    document.getElementById('pcz-status').textContent='Procesando…';
+    document.getElementById('pcz-infobar').style.display='flex';
+    document.getElementById('pcz-spinner').style.display='block';
+    document.getElementById('pcz-search').style.display='none';
+    document.getElementById('pcz-results').innerHTML='';
+    document.getElementById('pcz-drop').style.display='none';
+    try{
+      var buf=await file.arrayBuffer();
+      var pdf=await pdfjsLib.getDocument({data:buf}).promise;
+      var np=pdf.numPages;
+      document.getElementById('pcz-pages').textContent=np;
+      pczPdfText=[];
+      for(var i=1;i<=np;i++){
+        var pg=await pdf.getPage(i);
+        var ct=await pg.getTextContent();
+        pczPdfText.push(ct.items.map(function(it){return it.str;}).join(' '));
+      }
+      // Auto-detectar metadatos
+      try{
+        var md=await pdf.getMetadata();
+        var info=(md&&md.info)||{};
+        var tAuto=String(info.Title||'').trim();
+        var aAuto=String(info.Author||'').trim();
+        var PLACEHOLDERS=['anonymous','anónimo','unknown','desconocido','untitled','sin título','n/a','none','null','-'];
+        if(PLACEHOLDERS.indexOf(tAuto.toLowerCase())!==-1)tAuto='';
+        if(PLACEHOLDERS.indexOf(aAuto.toLowerCase())!==-1)aAuto='';
+        if(tAuto){var el=document.getElementById('pcz-bm-titulo');if(el&&!el.value){el.value=tAuto;pczUpdateAPA();}}
+        if(aAuto){var el2=document.getElementById('pcz-bm-autor');if(el2&&!el2.value){el2.value=aAuto;pczUpdateAPA();}}
+      }catch(e){}
+      document.getElementById('pcz-spinner').style.display='none';
+      document.getElementById('pcz-status').textContent='✓ Listo';
+      document.getElementById('pcz-status').style.color='var(--purple)';
+      document.getElementById('pcz-search').style.display='block';
+      window._pczPdfName=file.name.replace(/\.pdf$/i,'');
+      pczToast('PDF cargado: '+np+' páginas.');
+    }catch(e){
+      document.getElementById('pcz-spinner').style.display='none';
+      document.getElementById('pcz-status').textContent='Error al procesar';
+      pczToast('No se pudo leer el PDF. Verifica que no esté protegido.','err');
+    }
+  }
+  window.pczHandlePDF=pczHandlePDF;
+
+  function pczClear(){
+    pczPdfText=[];pczCits=[];pczShown=0;
+    document.getElementById('pcz-file').value='';
+    document.getElementById('pcz-accepted').style.display='none';
+    document.getElementById('pcz-infobar').style.display='none';
+    document.getElementById('pcz-search').style.display='none';
+    document.getElementById('pcz-results').innerHTML='';
+    document.getElementById('pcz-mas-wrap').innerHTML='';
+    document.getElementById('pcz-drop').style.display='block';
+    document.getElementById('pcz-query').value='';
+  }
+  window.pczClear=pczClear;
+
+  // ── Drag & drop ──
+  (function(){
+    var dz=document.getElementById('pcz-drop');
+    if(!dz)return;
+    dz.addEventListener('dragover',function(e){e.preventDefault();dz.style.borderColor='var(--orange)';});
+    dz.addEventListener('dragleave',function(){dz.style.borderColor='var(--line)';});
+    dz.addEventListener('drop',function(e){
+      e.preventDefault();dz.style.borderColor='var(--line)';
+      if(e.dataTransfer.files.length){
+        var inp=document.getElementById('pcz-file');
+        var dt=new DataTransfer();dt.items.add(e.dataTransfer.files[0]);
+        inp.files=dt.files;pczHandlePDF(inp);
+      }
+    });
+  })();
+
+  // ── Search ──
+  function pczDoSearch(){
+    var q=(document.getElementById('pcz-query').value||'').trim();
+    if(!q){pczToast('Escribe una palabra o frase.','err');return;}
+    if(!pczPdfText.length){pczToast('Primero carga un PDF.','err');return;}
+    var cs=false, ctx=true;
+    var st=cs?q:q.toLowerCase();
+    var results=[];
+    pczPdfText.forEach(function(pt,pi){
+      var sents=pt.split(/(?<=[.!?])\s+|(?:\n{2,})/).filter(function(s){return s.trim().length>15;});
+      sents.forEach(function(s,si){
+        var ss=cs?s:s.toLowerCase();
+        if(!ss.includes(st))return;
+        var txt=s.trim();
+        if(ctx){
+          if(si>0&&sents[si-1]&&sents[si-1].trim().length>10)txt=sents[si-1].trim()+' '+txt;
+          if(si<sents.length-1&&sents[si+1]&&sents[si+1].trim().length>10)txt=txt+' '+sents[si+1].trim();
+        }
+        var hl=txt.replace(new RegExp('('+escRx(q)+')','gi'),'<mark style="background:rgba(255,121,41,.18);color:var(--orange);border-radius:3px;padding:0 2px;font-style:normal;">$1</mark>');
+        results.push({page:pi+1,para:si+1,hl:hl,raw:txt});
+      });
+    });
+    // Deduplicar
+    var uniq=[];
+    results.forEach(function(r){
+      var dup=uniq.some(function(u){return u.page===r.page&&simPcz(u.raw,r.raw)>.82;});
+      if(!dup)uniq.push(r);
+    });
+    pczRenderResults(uniq,q);
+  }
+  window.pczDoSearch=pczDoSearch;
+
+  function simPcz(a,b){var m=Math.max(a.length,b.length);if(!m)return 0;return[...a].filter(function(c){return b.includes(c);}).length/m;}
+
+  // ── Render ──
+  function pczRenderResults(res,q){
+    pczCits=res; pczLastQuery=q; pczShown=0;
+    var cont=document.getElementById('pcz-results');
+    var wrap=document.getElementById('pcz-mas-wrap');
+    if(!cont)return;
+    if(!res.length){
+      cont.innerHTML='<div style="text-align:center;padding:2.5rem 1rem;"><div style="font-size:2.2rem;opacity:.25;margin-bottom:.75rem;">🔍</div><p style="font-size:.85rem;color:var(--fg-muted);">No se encontraron coincidencias para <strong style="color:var(--fg);">"'+esc(q)+'"</strong>.</p></div>';
+      if(wrap)wrap.innerHTML='';
+      return;
+    }
+    cont.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.75rem 1rem;background:var(--bg-card);border:1px solid var(--line);border-radius:10px;">'+
+      '<span style="font-size:.87rem;font-weight:600;color:var(--fg);"><strong style="color:var(--orange);">'+res.length+'</strong> citas encontradas para <em>"'+esc(q)+'"</em></span>'+
+      '<div style="display:flex;gap:.5rem;flex-wrap:wrap;">'+
+        '<button onclick="pczCopyAll()" style="padding:6px 13px;border-radius:7px;border:1px solid var(--line);background:none;color:var(--fg-muted);font-size:.74rem;cursor:pointer;font-family:inherit;">Copiar todas</button>'+
+        '<button onclick="pczProponerTodas()" style="padding:6px 13px;border-radius:7px;border:none;background:var(--purple);color:#fff;font-size:.74rem;cursor:pointer;font-family:inherit;font-weight:600;">Proponer todas al repositorio</button>'+
+      '</div>'+
+    '</div>'+
+    '<div id="pcz-lista"></div>';
+    pczRenderMas();
+  }
+
+  function pczRenderMas(){
+    var lista=document.getElementById('pcz-lista');
+    var wrap=document.getElementById('pcz-mas-wrap');
+    if(!lista)return;
+    var inicio=pczShown;
+    var hasta=Math.min(inicio+PCZ_POR_PAGINA, pczCits.length);
+    for(var i=inicio;i<hasta;i++) lista.appendChild(pczBuildCard(pczCits[i],i));
+    pczShown=hasta;
+    if(wrap){
+      if(pczShown<pczCits.length){
+        wrap.innerHTML='<button onclick="pczRenderMas()" style="padding:8px 20px;border-radius:8px;border:1px solid var(--line);background:none;color:var(--fg-muted);font-size:.82rem;cursor:pointer;font-family:inherit;">Mostrar más ('+(pczCits.length-pczShown)+' restantes)</button>';
+      } else { wrap.innerHTML=''; }
+    }
+  }
+  window.pczRenderMas=pczRenderMas;
+
+  function pczGenAPA(idx){
+    var fid='pcz-rf-'+idx;
+    var aut=(document.getElementById(fid+'-aut')||{}).value||'';
+    var yr=(document.getElementById(fid+'-year')||{}).value||'';
+    var pub=(document.getElementById(fid+'-pub')||{}).value||'';
+    var pag=(document.getElementById(fid+'-pag')||{}).value||'';
+    if(!aut&&!pub)return;
+    var apa=aut+(yr?' ('+yr+').':' (s.f.).')+' '+pub+'.'+(pag?' p. '+pag+'.':'');
+    var el=document.getElementById(fid+'-apa');
+    if(el)el.value=apa;
+  }
+  window.pczGenAPA=pczGenAPA;
+
+  function pczBuildCard(r,i){
+    var bm=pczBookMeta||{};
+    var fid='pcz-rf-'+i;
+    var div=document.createElement('div');
+    div.style.cssText='background:var(--bg-card);border:1px solid var(--line);border-radius:12px;margin-bottom:.75rem;overflow:hidden;';
+    div.innerHTML=
+      '<div style="padding:8px 13px;background:color-mix(in srgb,var(--bg) 70%,var(--line));display:flex;align-items:center;gap:.65rem;border-bottom:1px solid var(--line);">'+
+        '<span style="background:var(--purple);color:#fff;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:600;flex-shrink:0;">Pág. '+r.page+'</span>'+
+        '<span style="font-size:.72rem;color:var(--fg-muted);">Párrafo ~'+r.para+'</span>'+
+        '<button onclick="pczCopyCit('+i+')" style="margin-left:auto;padding:4px 11px;border-radius:7px;border:1px solid rgba(255,121,41,.3);background:none;color:var(--orange);font-size:.7rem;cursor:pointer;font-family:inherit;flex-shrink:0;">Copiar</button>'+
+        '<button onclick="pczToggleForm('+i+')" style="padding:4px 11px;border-radius:7px;border:none;background:var(--purple);color:#fff;font-size:.7rem;cursor:pointer;font-family:inherit;flex-shrink:0;margin-left:.2rem;">Proponer al repo</button>'+
+      '</div>'+
+      '<div style="padding:13px 15px;font-size:.85rem;line-height:1.8;color:var(--fg);font-style:italic;" id="pcz-text-'+i+'">'+r.hl+'</div>'+
+      // Formulario propuesta
+      '<div id="pcz-form-'+i+'" style="display:none;background:rgba(99,30,235,.04);border-top:1px solid rgba(99,30,235,.12);padding:1rem;">'+
+        '<div style="font-size:.75rem;font-weight:700;color:var(--purple);margin-bottom:.65rem;letter-spacing:.04em;">METADATOS PARA EL REPOSITORIO</div>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-bottom:.45rem;">'+
+          '<div><label style="font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:2px;">Categoría *</label>'+
+          '<select id="'+fid+'-cat" style="width:100%;padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.81rem;color:var(--fg);background:var(--bg-card);outline:none;">'+
+            '<option value="">Seleccionar...</option>'+
+            '<option>Sociología</option><option>Antropología</option><option>Psicología</option>'+
+            '<option>Educación</option><option>Virtualidad</option><option>Administración</option>'+
+            '<option>Mercados Laborales</option><option>Historia</option><option>Filosofía</option>'+
+            '<option>Investigación Social</option><option>Lingüística</option><option>Metodología</option>'+
+            '<option>Intervención Comunitaria</option><option>Emprendimiento</option>'+
+            '<option>Flexibilidad laboral</option><option>Evaluación de Impacto</option>'+
+            '<option>Empleabilidad</option><option>Covid</option><option>Otra</option>'+
+          '</select></div>'+
+          '<div><label style="font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:2px;">Indicador</label>'+
+          '<input id="'+fid+'-ind" placeholder="Ej: Cultura, Empleo…" oninput="pczGenAPA('+i+')" style="width:100%;padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.81rem;color:var(--fg);background:var(--bg-card);outline:none;"></div>'+
+        '</div>'+
+        '<div style="display:grid;grid-template-columns:1fr 70px 70px;gap:.45rem;margin-bottom:.45rem;">'+
+          '<div><label style="font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:2px;">Autor(es) *</label>'+
+          '<input id="'+fid+'-aut" placeholder="Apellido, N." oninput="pczGenAPA('+i+')" style="width:100%;padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.81rem;color:var(--fg);background:var(--bg-card);outline:none;"></div>'+
+          '<div><label style="font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:2px;">Año</label>'+
+          '<input id="'+fid+'-year" placeholder="2023" oninput="pczGenAPA('+i+')" style="width:100%;padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.81rem;color:var(--fg);background:var(--bg-card);outline:none;"></div>'+
+          '<div><label style="font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:2px;">Página</label>'+
+          '<input id="'+fid+'-pag" value="'+r.page+'" oninput="pczGenAPA('+i+')" style="width:100%;padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.81rem;color:var(--fg);background:var(--bg-card);outline:none;"></div>'+
+        '</div>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-bottom:.45rem;">'+
+          '<div><label style="font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:2px;">Publicación</label>'+
+          '<input id="'+fid+'-pub" placeholder="Título del libro" oninput="pczGenAPA('+i+')" style="width:100%;padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.81rem;color:var(--fg);background:var(--bg-card);outline:none;"></div>'+
+          '<div><label style="font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:2px;">APA (auto)</label>'+
+          '<input id="'+fid+'-apa" readonly style="width:100%;padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.81rem;color:var(--purple);background:var(--bg);outline:none;font-style:italic;"></div>'+
+        '</div>'+
+        '<div style="margin-bottom:.65rem;">'+
+          '<label style="font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;display:block;margin-bottom:2px;">Cita textual (editable)</label>'+
+          '<textarea id="'+fid+'-cita" rows="3" style="width:100%;padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.81rem;color:var(--fg);background:var(--bg-card);outline:none;resize:vertical;min-height:60px;"></textarea>'+
+        '</div>'+
+        '<div style="display:flex;gap:.5rem;flex-wrap:wrap;">'+
+          '<button onclick="pczEnviarCita('+i+')" id="pcz-send-'+i+'" style="background:var(--purple);color:#fff;padding:7px 16px;border-radius:7px;border:none;cursor:pointer;font-size:.81rem;font-family:inherit;font-weight:600;">Proponer al repositorio</button>'+
+          '<button onclick="pczToggleForm('+i+')" style="background:none;border:1px solid rgba(99,30,235,.15);padding:7px 13px;border-radius:7px;cursor:pointer;font-size:.81rem;font-family:inherit;color:var(--fg-muted);">Cancelar</button>'+
+        '</div>'+
+      '</div>';
+    // Pre-fill
+    setTimeout(function(){
+      var bm2=pczBookMeta||{};
+      var autEl=document.getElementById(fid+'-aut');
+      var catEl=document.getElementById(fid+'-cat');
+      var indEl=document.getElementById(fid+'-ind');
+      var yrEl=document.getElementById(fid+'-year');
+      var pubEl=document.getElementById(fid+'-pub');
+      var citaEl=document.getElementById(fid+'-cita');
+      if(autEl&&bm2.autor)autEl.value=bm2.autor;
+      if(catEl&&bm2.categoria)catEl.value=bm2.categoria;
+      if(indEl&&bm2.indicador)indEl.value=bm2.indicador;
+      if(yrEl&&bm2.year)yrEl.value=bm2.year;
+      if(pubEl&&bm2.titulo)pubEl.value=bm2.titulo;
+      if(citaEl)citaEl.value=r.raw.trim();
+      pczGenAPA(i);
+    },0);
+    return div;
+  }
+
+  function pczToggleForm(i){
+    var f=document.getElementById('pcz-form-'+i);
+    if(f)f.style.display=f.style.display==='none'?'block':'none';
+  }
+  window.pczToggleForm=pczToggleForm;
+
+  // ── Enviar cita individual ──
+  function pczEnviarCita(i){
+    var fid='pcz-rf-'+i;
+    var citaEl=document.getElementById(fid+'-cita');
+    var cita=citaEl?citaEl.value.trim():'';
+    if(!cita){pczToast('La cita no puede estar vacía.','err');return;}
+    var cat=(document.getElementById(fid+'-cat')||{}).value||'';
+    if(!cat){pczToast('Selecciona una categoría.','err');return;}
+    var autor=(document.getElementById(fid+'-aut')||{}).value||'Autor desconocido';
+    var ind=(document.getElementById(fid+'-ind')||{}).value||'';
+    var yr=(document.getElementById(fid+'-year')||{}).value||'';
+    var pag=(document.getElementById(fid+'-pag')||{}).value||'';
+    var pub=(document.getElementById(fid+'-pub')||{}).value||window._pczPdfName||'PDF';
+    var apa=(document.getElementById(fid+'-apa')||{}).value||autor+(yr?' ('+yr+').':' (s.f.).')+' '+pub+'.'+(pag?' p. '+pag+'.':'');
+    var btn=document.getElementById('pcz-send-'+i);
+    if(btn){btn.textContent='Enviando…';btn.disabled=true;}
+    // Obtener email del usuario logueado
+    var userEmail='';
+    try{if(typeof Auth!=='undefined'&&Auth.getUser){var u=Auth.getUser();if(u&&u.email)userEmail=u.email;}}catch(e){}
+    pczJSONP({action:'enviarCita',categoria:cat,indicador:ind,autor:autor,year:yr,
+      cita:cita,publicacion:pub,pagina:pag,citaAPA:apa,link:(pczBookMeta.link||''),usuarioEmail:userEmail}).then(function(resp){
+      if(resp&&resp.ok){
+        document.getElementById('pcz-form-'+i).style.display='none';
+        var txt=document.getElementById('pcz-text-'+i);
+        if(txt){txt.style.borderLeft='3px solid #16a34a';txt.insertAdjacentHTML('afterend','<p style="font-size:.76rem;color:#16a34a;font-weight:600;padding:4px 15px 8px;">✓ Propuesta enviada al repositorio — queda en revisión del administrador.</p>');}
+        pczToast('✓ Cita enviada al repositorio.');
+      } else {
+        if(btn){btn.textContent='Proponer al repositorio';btn.disabled=false;}
+        pczToast((resp&&resp.error)?resp.error:'No se pudo enviar. Intenta de nuevo.','err');
+      }
+    });
+  }
+  window.pczEnviarCita=pczEnviarCita;
+
+  // ── Proponer todas (lotes de 10, 400ms entre cada una para no sobrecargar) ──
+  function pczProponerTodas(){
+    if(!pczCits||!pczCits.length){pczToast('No hay citas.','err');return;}
+    var bm=pczBookMeta||{};
+    var candidatas=pczCits.filter(function(r){return(r.raw||'').trim().length>20;});
+    if(!candidatas.length){pczToast('Las citas son muy cortas para enviar.','err');return;}
+    if(!confirm('Se propondrán '+candidatas.length+' citas al repositorio para revisión del administrador. ¿Continuar?'))return;
+    pczToast('Enviando '+candidatas.length+' citas en lotes…');
+    var enviadas=0,fallidas=0,idx=0;
+    var LOTE=10, PAUSA=400;
+    var userEmail='';
+    try{if(typeof Auth!=='undefined'&&Auth.getUser){var u=Auth.getUser();if(u&&u.email)userEmail=u.email;}}catch(e){}
+    function siguiente(){
+      if(idx>=candidatas.length){
+        pczToast(enviadas+' cita(s) enviada(s)'+( fallidas?' · '+fallidas+' con error':'')+'.', fallidas&&!enviadas?'err':'ok');
+        return;
+      }
+      var r=candidatas[idx++];
+      var citaLimpia=(r.raw||'').trim();
+      var autor=bm.autor||'Autor desconocido';
+      var yr=bm.year||'';
+      var pub=bm.titulo||window._pczPdfName||'PDF';
+      var apa=autor+(yr?' ('+yr+').':' (s.f.).')+' '+pub+'.'+(r.page?' p. '+r.page+'.':'');
+      pczJSONP({action:'enviarCita',categoria:bm.categoria||'',indicador:bm.indicador||'',
+        autor:autor,year:yr,cita:citaLimpia,publicacion:pub,pagina:r.page,
+        citaAPA:apa,link:bm.link||'',usuarioEmail:userEmail}).then(function(resp){
+        if(resp&&resp.ok)enviadas++;else fallidas++;
+        // Pausa cada LOTE para no saturar el Apps Script
+        var pausa=(idx%LOTE===0)?PAUSA*3:PAUSA;
+        setTimeout(siguiente,pausa);
+      });
+    }
+    siguiente();
+  }
+  window.pczProponerTodas=pczProponerTodas;
+
+  // ── Copiar ──
+  function pczCopyCit(i){
+    var r=pczCits[i];
+    if(!r)return;
+    navigator.clipboard&&navigator.clipboard.writeText('"'+r.raw+'" (p. '+r.page+')').then(function(){pczToast('✓ Cita copiada.');});
+  }
+  window.pczCopyCit=pczCopyCit;
+  function pczCopyAll(){
+    if(!pczCits||!pczCits.length)return;
+    var txt=pczCits.map(function(r){return'"'+r.raw+'" (p. '+r.page+')';}).join('\n\n');
+    navigator.clipboard&&navigator.clipboard.writeText(txt).then(function(){pczToast('✓ '+pczCits.length+' citas copiadas.');});
+  }
+  window.pczCopyAll=pczCopyAll;
+
+  // ── JSONP (usa WEBAPP_URL de config.js) ──
+  function pczJSONP(params){
+    return new Promise(function(resolve){
+      var cbName='pczCB_'+Date.now()+'_'+Math.floor(Math.random()*100000);
+      var url=WEBAPP_URL+'?callback='+cbName;
+      for(var k in params){if(params[k]!==undefined&&params[k]!==null&&params[k]!=='')url+='&'+encodeURIComponent(k)+'='+encodeURIComponent(params[k]);}
+      var script=document.createElement('script');
+      var done=false;
+      function cleanup(){if(done)return;done=true;delete window[cbName];if(script.parentNode)script.parentNode.removeChild(script);}
+      window[cbName]=function(data){cleanup();resolve(data);};
+      script.onerror=function(){cleanup();resolve({ok:false,error:'Sin conexión.'});};
+      setTimeout(function(){if(!done){cleanup();resolve({ok:false,error:'Tiempo de espera agotado.'});}},40000);
+      script.src=url;
+      document.body.appendChild(script);
+    });
+  }
+})();
+</script>
+
 <!-- ════════ ACERCA / APOYO ════════ -->
 <section class="section bg-alt">
   <div class="container">
