@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Servicios — Sintropía Social</title>
+<title>Newsletter Código — Sintropía Social</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -34,6 +34,7 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .ss-nav-links > a:hover { color: #fff; background: rgba(255,255,255,.08); }
 .ss-nav-links > a.active { color: #fff; background: rgba(255,255,255,.1); }
 .ss-nav-links > a.nav-newsletter { background: rgba(99,30,235,.25); color: rgba(200,185,255,.9); border-radius: 50px; }
+.ss-nav-links > a.nav-newsletter.active { background: rgba(99,30,235,.5); color: #fff; }
 .ss-nav-links > a.nav-newsletter:hover { background: rgba(99,30,235,.4); color: #fff; }
 .ss-nav-divider { width: 1px; height: 20px; background: rgba(255,255,255,.12); margin: 0 .3rem; flex-shrink: 0; }
 .ss-nav-links > a.nav-entrar { color: rgba(240,238,248,.55); }
@@ -83,47 +84,52 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 
 /* ─── LAYOUT ─── */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px,4vw,48px); }
+.container-narrow { max-width: 760px; margin: 0 auto; padding: 0 clamp(16px,4vw,48px); }
 
 /* ─── HERO ─── */
-.hero { padding: 5rem 0 4rem; border-bottom: 1px solid rgba(255,255,255,.06); background: radial-gradient(ellipse 60% 80% at 80% 20%, rgba(99,30,235,.14) 0%, transparent 60%); }
+.hero { padding: 5rem 0 4rem; background: radial-gradient(ellipse 60% 70% at 50% 0%, rgba(99,30,235,.18) 0%, transparent 60%); border-bottom: 1px solid rgba(255,255,255,.06); text-align: center; }
 .section-label { font-family: var(--font-display); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--purple); margin-bottom: 1rem; }
-.hero-title { font-family: var(--font-display); font-size: clamp(2.8rem,6vw,5rem); font-weight: 900; text-transform: uppercase; line-height: .95; letter-spacing: -.02em; margin-bottom: 1.5rem; }
+.hero-title { font-family: var(--font-display); font-size: clamp(3rem,7vw,6rem); font-weight: 900; text-transform: uppercase; line-height: .9; letter-spacing: -.02em; margin-bottom: 1.5rem; }
 .hero-title .accent { color: var(--orange); }
-.hero-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 560px; line-height: 1.75; }
+.hero-kicker { display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(200,185,255,.7); background: rgba(99,30,235,.12); border: 1px solid rgba(99,30,235,.25); padding: .35rem 1rem; border-radius: 50px; margin-bottom: 1.5rem; }
+.hero-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 520px; line-height: 1.75; margin: 0 auto 3rem; }
 
-/* ─── SERVICIOS GRID ─── */
-.services-section { padding: 5rem 0; }
-.cat-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 900; text-transform: uppercase; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
-.cat-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.08); }
-.cat-num { font-size: .7rem; font-weight: 700; letter-spacing: .12em; color: var(--purple); background: rgba(99,30,235,.15); padding: .25rem .7rem; border-radius: 50px; }
-.services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; }
-.service-card { background: var(--bg-card); border: 1px solid rgba(99,30,235,.15); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; }
-.service-card:hover { border-color: rgba(99,30,235,.35); }
-.service-tag { display: inline-block; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); background: rgba(255,121,41,.1); padding: .25rem .75rem; border-radius: 50px; margin-bottom: 1rem; }
-.service-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; margin-bottom: .75rem; line-height: 1.25; }
-.service-desc { font-size: .9rem; color: var(--text-muted); line-height: 1.7; flex: 1; margin-bottom: 1.5rem; }
-.service-includes { margin-bottom: 1.5rem; }
-.service-includes-title { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); margin-bottom: .6rem; }
-.service-includes ul { list-style: none; }
-.service-includes ul li { font-size: .84rem; color: var(--text-muted); padding: .25rem 0; padding-left: 1.2rem; position: relative; }
-.service-includes ul li::before { content: '→'; position: absolute; left: 0; color: var(--purple); font-weight: 700; }
-.btn-contratar { display: block; text-align: center; background: var(--purple); color: white; padding: .75rem 1.5rem; border-radius: 50px; text-decoration: none; font-family: var(--font-display); font-weight: 700; font-size: .85rem; transition: all .18s; }
-.btn-contratar:hover { background: var(--purple-dk); transform: translateY(-1px); }
+/* ─── SIGNUP ─── */
+.signup-band { padding: 4rem 0; }
+.signup-box { background: var(--bg-card); border: 1px solid rgba(99,30,235,.25); border-radius: 24px; padding: clamp(2rem,5vw,3.5rem); text-align: center; }
+.signup-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; text-transform: uppercase; margin-bottom: .75rem; }
+.signup-sub { font-size: .92rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
+.linkedin-btn { display: inline-flex; align-items: center; gap: .75rem; background: #0A66C2; color: white; padding: 1rem 2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .95rem; text-decoration: none; transition: all .2s; }
+.linkedin-btn:hover { background: #0958A8; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(10,102,194,.4); }
+.linkedin-btn svg { width: 20px; height: 20px; fill: white; }
+.signup-note { margin-top: 1.5rem; font-size: .8rem; color: rgba(240,238,248,.3); }
 
-/* ─── PROCESO ─── */
-.proceso-band { background: var(--bg-darker); padding: 5rem 0; }
-.proceso-title { font-family: var(--font-display); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 900; text-transform: uppercase; margin-bottom: 3rem; }
-.proceso-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
-.proceso-step { text-align: center; }
-.paso-num { font-family: var(--font-display); font-size: 3rem; font-weight: 900; color: rgba(99,30,235,.3); line-height: 1; margin-bottom: .75rem; }
-.paso-title { font-family: var(--font-display); font-size: .95rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .5rem; }
-.paso-desc { font-size: .84rem; color: var(--text-muted); line-height: 1.6; }
+/* ─── QUÉ ES ─── */
+.about-band { padding: 5rem 0; border-top: 1px solid rgba(255,255,255,.06); }
+.about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+.about-title { font-family: var(--font-display); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 900; text-transform: uppercase; line-height: 1.05; margin-bottom: 1.5rem; }
+.about-text { font-size: .95rem; color: var(--text-muted); line-height: 1.8; }
+.about-text p { margin-bottom: 1rem; }
+.features-list { display: flex; flex-direction: column; gap: 1.2rem; }
+.feature-item { display: flex; gap: 1rem; align-items: flex-start; }
+.feature-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; margin-top: .1rem; }
+.feature-title { font-family: var(--font-display); font-size: .88rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .25rem; }
+.feature-desc { font-size: .84rem; color: var(--text-muted); line-height: 1.6; }
+@media(max-width:768px) { .about-grid { grid-template-columns: 1fr; gap: 3rem; } }
+
+/* ─── TEMAS ─── */
+.temas-band { background: var(--bg-darker); padding: 5rem 0; }
+.temas-title { font-family: var(--font-display); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 900; text-transform: uppercase; margin-bottom: .5rem; }
+.temas-sub { font-size: .95rem; color: var(--text-muted); margin-bottom: 3rem; }
+.temas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.tema-tag { background: rgba(99,30,235,.1); border: 1px solid rgba(99,30,235,.2); border-radius: 12px; padding: 1.2rem 1.5rem; }
+.tema-tag span { font-family: var(--font-display); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(200,185,255,.8); }
 
 /* ─── CTA ─── */
 .cta-band { padding: 5rem 0; text-align: center; }
 .cta-title { font-family: var(--font-display); font-size: clamp(1.8rem,3.5vw,3rem); font-weight: 900; text-transform: uppercase; margin-bottom: 1rem; }
-.cta-sub { color: var(--text-muted); font-size: 1rem; margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; }
-.btn-primary { background: var(--purple); color: white; padding: .85rem 2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .9rem; text-decoration: none; transition: all .2s; display: inline-block; }
+.cta-sub { color: var(--text-muted); font-size: 1rem; margin-bottom: 2rem; }
+.btn-primary { background: var(--purple); color: white; padding: .85rem 2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .9rem; text-decoration: none; display: inline-block; transition: all .2s; }
 .btn-primary:hover { background: var(--purple-dk); }
 .btn-outline { border: 1px solid rgba(255,255,255,.2); color: var(--text-main); padding: .85rem 2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 600; font-size: .9rem; text-decoration: none; display: inline-block; margin-left: .75rem; transition: all .2s; }
 .btn-outline:hover { border-color: rgba(255,255,255,.5); }
@@ -164,7 +170,7 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
         </div>
       </div>
       <div class="ss-dd" id="dd-serv">
-        <button class="ss-dd-btn active" onclick="ssToggleDD('dd-serv')">
+        <button class="ss-dd-btn" onclick="ssToggleDD('dd-serv')">
           Servicios
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
@@ -183,7 +189,7 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
           <div style="padding:.4rem .9rem .3rem;"><a href="servicios.html" style="display:block;text-align:center;padding:.55rem;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--purple);text-decoration:none;background:rgba(99,30,235,.1);">Ver todos los servicios →</a></div>
         </div>
       </div>
-      <a href="newsletter.html" class="nav-newsletter">Newsletter</a>
+      <a href="newsletter.html" class="nav-newsletter active">Newsletter</a>
       <a href="contribuir.html">Contribuir</a>
       <div class="ss-nav-divider"></div>
       <a href="login.html" class="nav-entrar">Entrar</a>
@@ -203,176 +209,108 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
 
 <!-- ════════ HERO ════════ -->
 <section class="hero">
-  <div class="container">
-    <div class="section-label">Servicios profesionales</div>
+  <div class="container-narrow">
+    <div class="hero-kicker">Bienvenido al newsletter</div>
     <h1 class="hero-title">
-      Consultoría<br>
-      en ciencia<br>
-      <span class="accent">social aplicada</span>
+      Código<br>
+      <span class="accent">Sintropía</span>
     </h1>
-    <p class="hero-sub">Proyectos de investigación, formación y análisis diseñados a la medida de organizaciones, instituciones y comunidades que necesitan conocimiento sólido para tomar decisiones.</p>
+    <p class="hero-sub">El newsletter de ciencia social, investigación aplicada y herramientas digitales para quienes trabajan con comunidades y territorios. Cada semana en LinkedIn.</p>
   </div>
 </section>
 
-<!-- ════════ SERVICIOS ════════ -->
-<section class="services-section">
-  <div class="container">
-
-    <!-- INVESTIGACIÓN -->
-    <div class="cat-title">
-      <span>Investigación Social</span>
-      <span class="cat-num">01</span>
+<!-- ════════ SIGNUP ════════ -->
+<section class="signup-band">
+  <div class="container-narrow">
+    <div class="signup-box">
+      <div class="signup-title">Suscríbete en LinkedIn</div>
+      <p class="signup-sub">Código Sintropía se publica como newsletter en LinkedIn. Suscríbete para recibirlo directamente en tu bandeja de entrada cada semana, sin costo ni spam.</p>
+      <a href="https://www.linkedin.com/newsletters/" target="_blank" class="linkedin-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        Suscribirse en LinkedIn
+      </a>
+      <p class="signup-note">Se abre LinkedIn. Busca "Código Sintropía" y haz clic en Suscribirse.</p>
     </div>
-    <div class="services-grid">
-      <div class="service-card">
-        <span class="service-tag">Investigación de campo</span>
-        <div class="service-name">Investigación de Mercados Laborales</div>
-        <div class="service-desc">Análisis riguroso del mercado de trabajo en territorios específicos. Diagnóstico de brechas de habilidades, oferta formativa, perfiles ocupacionales y tendencias sectoriales.</div>
-        <div class="service-includes">
-          <div class="service-includes-title">Incluye</div>
-          <ul>
-            <li>Mapeo de actores y sectores</li>
-            <li>Encuestas a empleadores y trabajadores</li>
-            <li>Análisis estadístico de datos secundarios</li>
-            <li>Informe ejecutivo + presentación</li>
-          </ul>
-        </div>
-        <a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank" class="btn-contratar">Contratar servicio →</a>
-      </div>
-      <div class="service-card">
-        <span class="service-tag">Prospectiva</span>
-        <div class="service-name">Estudios de Prospectiva Laboral</div>
-        <div class="service-desc">Escenarios del futuro del trabajo ante la automatización, la inteligencia artificial y las transformaciones productivas. Herramienta para planificar la reconversión laboral y educativa.</div>
-        <div class="service-includes">
-          <div class="service-includes-title">Incluye</div>
-          <ul>
-            <li>Análisis de tendencias globales y locales</li>
-            <li>Construcción participativa de escenarios</li>
-            <li>Identificación de ocupaciones en riesgo</li>
-            <li>Recomendaciones de política y programa</li>
-          </ul>
-        </div>
-        <a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank" class="btn-contratar">Contratar servicio →</a>
-      </div>
-    </div>
-
-    <!-- EDUCACIÓN -->
-    <div class="cat-title">
-      <span>Educación</span>
-      <span class="cat-num">02</span>
-    </div>
-    <div class="services-grid">
-      <div class="service-card">
-        <span class="service-tag">Diseño curricular</span>
-        <div class="service-name">Diseño Curricular por Competencias</div>
-        <div class="service-desc">Programas educativos construidos desde el enfoque de competencias, con pensamiento crítico y habilidades socioemocionales integradas. Para centros de formación, universidades y empresas.</div>
-        <div class="service-includes">
-          <div class="service-includes-title">Incluye</div>
-          <ul>
-            <li>Diagnóstico de necesidades formativas</li>
-            <li>Mapa curricular y perfil de egreso</li>
-            <li>Secuencias didácticas por módulo</li>
-            <li>Instrumentos de evaluación auténtica</li>
-          </ul>
-        </div>
-        <a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank" class="btn-contratar">Contratar servicio →</a>
-      </div>
-      <div class="service-card">
-        <span class="service-tag">Facilitación</span>
-        <div class="service-name">Talleres y Formación en Metodologías</div>
-        <div class="service-desc">Talleres presenciales y virtuales para equipos que necesitan apropiarse de herramientas de investigación social: diagnóstico participativo, sistematización de experiencias, marco lógico.</div>
-        <div class="service-includes">
-          <div class="service-includes-title">Incluye</div>
-          <ul>
-            <li>Sesiones de 4 a 24 horas</li>
-            <li>Material didáctico descargable</li>
-            <li>Práctica con casos reales del equipo</li>
-            <li>Soporte post-taller (1 mes)</li>
-          </ul>
-        </div>
-        <a href="contribuir.html" class="btn-contratar">Consultar disponibilidad →</a>
-      </div>
-    </div>
-
-    <!-- COMUNIDAD -->
-    <div class="cat-title">
-      <span>Comunidad</span>
-      <span class="cat-num">03</span>
-    </div>
-    <div class="services-grid">
-      <div class="service-card">
-        <span class="service-tag">Diagnóstico participativo</span>
-        <div class="service-name">Diagnóstico Comunitario Integral</div>
-        <div class="service-desc">Proceso participativo para identificar problemáticas, activos y necesidades de una comunidad o territorio. Combina metodologías cuantitativas y cualitativas con participación real de la población.</div>
-        <div class="service-includes">
-          <div class="service-includes-title">Incluye</div>
-          <ul>
-            <li>Talleres participativos in situ</li>
-            <li>Árbol de problemas colaborativo</li>
-            <li>Mapeo de actores e intereses</li>
-            <li>Informe y plan de acción</li>
-          </ul>
-        </div>
-        <a href="contribuir.html" class="btn-contratar">Solicitar propuesta →</a>
-      </div>
-      <div class="service-card" style="border-color:rgba(255,121,41,.2);background:rgba(255,121,41,.04);">
-        <span class="service-tag" style="color:var(--purple);background:rgba(99,30,235,.1);">Nuevo</span>
-        <div class="service-name">Asesoría en Innovación Social</div>
-        <div class="service-desc">Acompañamiento a organizaciones que diseñan proyectos de impacto social: desde la idea hasta la evaluación de resultados. Metodología de Design Thinking adaptada al contexto comunitario.</div>
-        <div class="service-includes">
-          <div class="service-includes-title">Incluye</div>
-          <ul>
-            <li>Sesiones de co-diseño (4–8 sesiones)</li>
-            <li>Prototipado y validación</li>
-            <li>Marco de medición de impacto</li>
-            <li>Informe de aprendizajes</li>
-          </ul>
-        </div>
-        <a href="contribuir.html" class="btn-contratar">Solicitar propuesta →</a>
-      </div>
-    </div>
-
   </div>
 </section>
 
-<!-- ════════ PROCESO ════════ -->
-<div class="proceso-band">
+<!-- ════════ QUÉ ES ════════ -->
+<section class="about-band">
   <div class="container">
-    <div class="section-label">Cómo trabajamos</div>
-    <h2 class="proceso-title">Del diagnóstico<br><span style="color:var(--orange);">a la acción</span></h2>
-    <div class="proceso-steps">
-      <div class="proceso-step">
-        <div class="paso-num">01</div>
-        <div class="paso-title">Contacto inicial</div>
-        <div class="paso-desc">Nos cuentas tu contexto, necesidades y plazos. En 48h tenemos una propuesta.</div>
+    <div class="about-grid">
+      <div>
+        <div class="section-label">¿Qué es Código?</div>
+        <h2 class="about-title">Conocimiento<br>listo para<br><span style="color:var(--orange);">usar</span></h2>
+        <div class="about-text">
+          <p>Código es el newsletter semanal de Sintropía Social donde compartimos investigación aplicada, metodologías de trabajo comunitario, herramientas digitales y reflexiones sobre el futuro del trabajo y la educación en América Latina.</p>
+          <p>No escribimos para académicos: escribimos para quien actúa en territorio y necesita conocimiento digerible, relevante y accionable.</p>
+        </div>
       </div>
-      <div class="proceso-step">
-        <div class="paso-num">02</div>
-        <div class="paso-title">Propuesta</div>
-        <div class="paso-desc">Diseñamos una propuesta específica con alcance, metodología y presupuesto detallado.</div>
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-icon">🔬</div>
+          <div>
+            <div class="feature-title">Metodologías explicadas</div>
+            <div class="feature-desc">Cómo usar marcos lógicos, árboles de problemas y diagnósticos participativos en proyectos reales.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🛠️</div>
+          <div>
+            <div class="feature-title">Herramientas y recursos</div>
+            <div class="feature-desc">Plantillas, bases de datos, software y guías que puedes aplicar esta semana.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📊</div>
+          <div>
+            <div class="feature-title">Datos e investigación</div>
+            <div class="feature-desc">Síntesis de estudios relevantes sobre mercados laborales, educación y comunidades.</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🌍</div>
+          <div>
+            <div class="feature-title">Casos y experiencias</div>
+            <div class="feature-desc">Proyectos reales de transformación social, con lo que funcionó y lo que no.</div>
+          </div>
+        </div>
       </div>
-      <div class="proceso-step">
-        <div class="paso-num">03</div>
-        <div class="paso-title">Ejecución</div>
-        <div class="paso-desc">Trabajamos con tu equipo con comunicación continua y entregas parciales revisables.</div>
-      </div>
-      <div class="proceso-step">
-        <div class="paso-num">04</div>
-        <div class="paso-title">Entrega y cierre</div>
-        <div class="paso-desc">Informe final, sesión de presentación y acompañamiento para implementar los hallazgos.</div>
-      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ TEMAS ════════ -->
+<div class="temas-band">
+  <div class="container">
+    <div class="section-label">De qué hablamos</div>
+    <h2 class="temas-title">Temas frecuentes</h2>
+    <p class="temas-sub">Cada edición aborda uno o varios de estos universos.</p>
+    <div class="temas-grid">
+      <div class="tema-tag"><span>Mercado Laboral</span></div>
+      <div class="tema-tag"><span>Educación Crítica</span></div>
+      <div class="tema-tag"><span>IA y Automatización</span></div>
+      <div class="tema-tag"><span>Metodología Cualitativa</span></div>
+      <div class="tema-tag"><span>Comunidades Locales</span></div>
+      <div class="tema-tag"><span>Diseño Curricular</span></div>
+      <div class="tema-tag"><span>Prospectiva Social</span></div>
+      <div class="tema-tag"><span>Herramientas Digitales</span></div>
+      <div class="tema-tag"><span>Investigación Participativa</span></div>
+      <div class="tema-tag"><span>Políticas Públicas</span></div>
+      <div class="tema-tag"><span>Acción Colectiva</span></div>
+      <div class="tema-tag"><span>Sistematización</span></div>
     </div>
   </div>
 </div>
 
 <!-- ════════ CTA ════════ -->
 <section class="cta-band">
-  <div class="container">
-    <div class="section-label">¿Tienes un proyecto?</div>
-    <h2 class="cta-title">Cuéntanos tu <span style="color:var(--orange);">reto</span></h2>
-    <p class="cta-sub">Escribenos, usa el formulario de contribuciones o contrata directamente el servicio que necesitas.</p>
-    <a href="contribuir.html" class="btn-primary">Contactar →</a>
-    <a href="herramientas.html" class="btn-outline">Ver herramientas gratuitas</a>
+  <div class="container-narrow" style="text-align:center;">
+    <div class="section-label">¿Ya lo estás leyendo?</div>
+    <h2 class="cta-title">Compártelo con tu <span style="color:var(--orange);">equipo</span></h2>
+    <p class="cta-sub">Si te fue útil, la mejor forma de apoyar el proyecto es compartirlo con colegas que trabajan en investigación social o educación.</p>
+    <a href="herramientas.html" class="btn-primary">Explorar herramientas</a>
+    <a href="servicios.html" class="btn-outline">Ver servicios</a>
   </div>
 </section>
 

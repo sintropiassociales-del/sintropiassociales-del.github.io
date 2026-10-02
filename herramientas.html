@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Herramientas — Sintropía Social</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Open+Sauce+One:wght@400;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Montserrat:wght@400;600;700;800;900&display=swap">
 <style>
 /* ═══════════════════════════════════════════════
    SINTROPÍA — HERRAMIENTAS
@@ -34,7 +34,7 @@
   --line-strong: #0E0C18;
 
   /* Type */
-  --font-display: 'Open Sauce One', 'Open Sans', sans-serif;
+  --font-display: 'Montserrat', 'Open Sans', sans-serif;
   --font-body:    'Open Sans', system-ui, sans-serif;
 
   /* Radius */
@@ -82,28 +82,43 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── SS-NAV ─── */
-.ss-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; background: rgba(14,12,24,.95); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(99,30,235,.25); font-family: var(--font-body); }
-.ss-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px,4vw,40px); height: 62px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+/* ─── SS-NAV (oscuro, homologado) ─── */
+.ss-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; background: rgba(14,12,24,.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(99,30,235,.2); font-family: var(--font-body); }
+.ss-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px,4vw,40px); height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+/* Logo */
 .ss-nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; flex-shrink: 0; }
-.ss-nav-logo img { height: 32px; width: auto; }
-.ss-nav-logo span { font-family: var(--font-display); font-size: 1rem; color: var(--orange); letter-spacing: .07em; font-weight: 700; }
-.ss-nav-links { display: flex; align-items: center; gap: .2rem; }
-.ss-nav-links > a { text-decoration: none; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .45rem .8rem; border-radius: 8px; transition: all .18s; white-space: nowrap; }
-.ss-nav-links > a:hover { color: #fff; background: rgba(255,255,255,.07); }
-.ss-nav-links > a.active { color: #fff; }
+.ss-nav-logo img { height: 34px; width: auto; border-radius: 50%; }
+.ss-nav-logo-name { font-family: var(--font-display); font-size: .95rem; font-weight: 700; color: var(--orange); letter-spacing: .06em; }
+/* Links */
+.ss-nav-links { display: flex; align-items: center; gap: .15rem; }
+.ss-nav-links > a { text-decoration: none; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; transition: all .18s; white-space: nowrap; }
+.ss-nav-links > a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.ss-nav-links > a.active { color: #fff; background: rgba(255,255,255,.1); }
+/* Newsletter pill */
+.ss-nav-links > a.nav-newsletter { background: rgba(99,30,235,.25); color: rgba(200,185,255,.9); border-radius: 50px; }
+.ss-nav-links > a.nav-newsletter:hover { background: rgba(99,30,235,.4); color: #fff; }
+/* Divider */
+.ss-nav-divider { width: 1px; height: 20px; background: rgba(255,255,255,.12); margin: 0 .3rem; flex-shrink: 0; }
+/* Entrar */
+.ss-nav-links > a.nav-entrar { color: rgba(240,238,248,.55); }
+.ss-nav-links > a.nav-entrar:hover { color: #fff; background: none; }
+/* CTA */
+.ss-nav-cta { background: var(--purple) !important; color: white !important; padding: .42rem 1.1rem !important; border-radius: 50px !important; font-weight: 600 !important; font-size: .83rem !important; }
+.ss-nav-cta:hover { background: var(--purple-dk) !important; }
+/* Dropdown trigger */
 .ss-dd { position: relative; }
-.ss-dd-btn { display: flex; align-items: center; gap: .3rem; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .45rem .8rem; border-radius: 8px; cursor: pointer; transition: all .18s; background: none; border: none; font-family: inherit; white-space: nowrap; }
-.ss-dd-btn:hover,.ss-dd.open .ss-dd-btn { color: #fff; background: rgba(255,255,255,.07); }
-.ss-dd-btn svg { width: 11px; height: 11px; transition: transform .18s; flex-shrink: 0; color: rgba(240,238,248,.35); }
+.ss-dd-btn { display: flex; align-items: center; gap: .3rem; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; cursor: pointer; transition: all .18s; background: none; border: none; font-family: inherit; white-space: nowrap; }
+.ss-dd-btn:hover,.ss-dd.open .ss-dd-btn { color: #fff; background: rgba(255,255,255,.08); }
+.ss-dd-btn svg { width: 11px; height: 11px; transition: transform .18s; flex-shrink: 0; color: rgba(240,238,248,.3); }
 .ss-dd.open .ss-dd-btn svg { transform: rotate(180deg); }
-.ss-dd-panel { display: none; position: absolute; top: calc(100% + 6px); left: 0; background: var(--bg-dark); border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .6rem; box-shadow: 0 10px 36px rgba(0,0,0,.4); z-index: 600; }
+/* Dropdown panel */
+.ss-dd-panel { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: #0e0c18; border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .6rem; box-shadow: 0 10px 36px rgba(0,0,0,.5); z-index: 600; }
 .ss-dd.open .ss-dd-panel { display: block; }
 .ss-dd-panel.herr { min-width: 240px; }
 .ss-dd-panel.herr a { display: block; padding: .55rem .9rem; border-radius: 9px; text-decoration: none; transition: background .15s; }
 .ss-dd-panel.herr a:hover { background: rgba(255,255,255,.06); }
-.ss-dd-panel.herr a .t { display: block; font-size: .84rem; font-weight: 600; color: var(--fg-on-dark); }
-.ss-dd-panel.herr a .s { display: block; font-size: .75rem; color: rgba(240,238,248,.45); margin-top: .1rem; }
+.ss-dd-panel.herr a .t { display: block; font-size: .84rem; font-weight: 600; color: #f0eef8; }
+.ss-dd-panel.herr a .s { display: block; font-size: .75rem; color: rgba(240,238,248,.4); margin-top: .1rem; }
 .ss-dd-hr { height: 1px; background: rgba(255,255,255,.08); margin: .35rem .4rem; }
 .ss-dd-panel.serv { min-width: 280px; max-width: 320px; }
 .ss-serv-group { margin-bottom: .2rem; }
@@ -111,29 +126,29 @@ body {
 .ss-serv-item { border-radius: 9px; overflow: hidden; }
 .ss-serv-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: .5rem .9rem; background: none; border: none; cursor: pointer; font-family: inherit; border-radius: 9px; transition: background .15s; }
 .ss-serv-trigger:hover,.ss-serv-item.open .ss-serv-trigger { background: rgba(255,255,255,.06); }
-.ss-serv-trigger span { font-size: .84rem; font-weight: 500; color: var(--fg-on-dark); text-align: left; }
+.ss-serv-trigger span { font-size: .84rem; font-weight: 500; color: #f0eef8; text-align: left; }
 .ss-serv-trigger svg { width: 10px; height: 10px; flex-shrink: 0; color: rgba(240,238,248,.3); transition: transform .15s; }
 .ss-serv-item.open .ss-serv-trigger svg { transform: rotate(180deg); }
 .ss-serv-body { display: none; padding: .4rem .9rem .7rem 1.1rem; }
 .ss-serv-item.open .ss-serv-body { display: block; }
-.ss-serv-body p { font-size: .78rem; color: rgba(240,238,248,.55); line-height: 1.55; margin-bottom: .55rem; }
+.ss-serv-body p { font-size: .78rem; color: rgba(240,238,248,.5); line-height: 1.55; margin-bottom: .55rem; }
 .ss-serv-body a { display: inline-block; background: var(--purple); color: white; padding: 5px 14px; border-radius: 50px; text-decoration: none; font-size: .76rem; font-weight: 600; }
 .ss-serv-body a:hover { background: var(--purple-dk); }
-.ss-nav-cta { background: var(--purple) !important; color: white !important; padding: .45rem 1.1rem !important; border-radius: 50px !important; font-weight: 600 !important; font-size: .83rem !important; }
-.ss-nav-cta:hover { background: var(--purple-dk) !important; color: white !important; }
-.ss-hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; padding: .4rem; background: none; border: none; }
+/* Hamburger */
+.ss-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: .4rem; background: none; border: none; }
 .ss-hamburger span { display: block; width: 22px; height: 2px; background: rgba(240,238,248,.6); border-radius: 2px; transition: all .2s; }
-@media(max-width:860px) {
-  .ss-nav-links { display: none; position: fixed; top: 62px; left: 0; right: 0; background: var(--bg-dark); border-bottom: 1px solid rgba(99,30,235,.25); flex-direction: column; align-items: stretch; padding: 1rem; gap: .2rem; box-shadow: 0 8px 24px rgba(0,0,0,.4); max-height: 80vh; overflow-y: auto; }
+@media(max-width:900px) {
+  .ss-nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; background: #0e0c18; border-bottom: 1px solid rgba(99,30,235,.2); flex-direction: column; align-items: stretch; padding: 1rem; gap: .2rem; box-shadow: 0 8px 24px rgba(0,0,0,.5); max-height: 80vh; overflow-y: auto; }
   .ss-nav-links.open { display: flex; }
   .ss-nav-links > a,.ss-dd-btn { padding: .65rem 1rem; border-radius: 10px; font-size: .92rem; width: 100%; }
+  .ss-nav-divider { display: none; }
   .ss-dd { width: 100%; }
   .ss-dd-panel { position: static; border: none; box-shadow: none; background: rgba(255,255,255,.04); margin-top: .25rem; border-radius: 10px; }
   .ss-dd.open .ss-dd-panel { display: block; }
   .ss-hamburger { display: flex; }
   .ss-nav-inner { padding: 0 1.25rem; }
 }
-body { padding-top: 62px; }
+body { padding-top: 64px; }
 
 /* ─── TYPOGRAPHY SCALE ─── */
 .display-xl {
@@ -692,10 +707,10 @@ footer {
   <div class="ss-nav-inner">
     <a href="index.html" class="ss-nav-logo">
       <img src="logo.png" alt="Sintropía Social" onerror="this.style.display='none'">
-      <span>SINTROPÍA SOCIAL</span>
+      <span class="ss-nav-logo-name">SINTROPÍA SOCIAL</span>
     </a>
     <div class="ss-nav-links" id="ss-nav-links">
-      <a href="index.html">Repositorio</a>
+      <a href="index.html">Inicio</a>
       <div class="ss-dd" id="dd-herr">
         <button class="ss-dd-btn" onclick="ssToggleDD('dd-herr')">
           Herramientas
@@ -730,10 +745,12 @@ footer {
           <div style="padding:.4rem .9rem .3rem;"><a href="index.html#servicios" style="display:block;text-align:center;padding:.55rem;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--purple);text-decoration:none;background:rgba(99,30,235,.1);">Ver todos los servicios →</a></div>
         </div>
       </div>
-      <a href="blog.html">Blog</a>
+      <a href="newsletter.html" class="nav-newsletter">Newsletter</a>
       <a href="contribuir.html">Contribuir</a>
+      <div class="ss-nav-divider"></div>
       <span id="ss-nav-user">
-        <a href="registro.html" class="ss-nav-cta">Únete</a>
+        <a href="login.html" class="nav-entrar">Entrar</a>
+        <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
       </span>
     </div>
     <button class="ss-hamburger" onclick="ssMobileNav()" aria-label="Menú">

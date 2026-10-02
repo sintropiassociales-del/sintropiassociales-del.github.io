@@ -1,301 +1,431 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.paypal.com https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.paypal.com https://cdnjs.cloudflare.com; frame-src https://www.paypal.com; base-uri 'self'; object-src 'none';">
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contribuir — Sintropía Social</title>
-
-<link rel="stylesheet" href="sintro-shared.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--m:#631EEB;--md:#4a13b8;--ml:#8b5cf6;--n:#FF7929;--nl:#e06a1a;--w:#fff;--gc:#f0ebff;--gt:#4a4458;--gb:rgba(99,30,235,.15);--sh:0 4px 26px rgba(91,33,212,.1)}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family: var(--font-body);background:var(--gc);color:var(--gt);min-height:100vh}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:15px 48px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--gb)}
-.nl{display:flex;align-items:center;gap:11px;text-decoration:none}
-.nlc{width:38px;height:38px;background:var(--m);border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ml)}
-.nlt{font-family: var(--font-display);font-size:1rem;color:var(--n);letter-spacing:.08em;font-weight:700}
-.navr{display:flex;gap:24px;align-items:center}
-.navr a{text-decoration:none;font-size:.86rem;font-weight:500;color:var(--gt);transition:color .2s}
-.navr a:hover{color:var(--m)}
-.btn-j{background:var(--n);color:#fff!important;padding:7px 17px;border-radius:50px;font-size:.82rem!important;font-weight:600!important}
-.phero{padding:114px 48px 48px;text-align:center;background:#fff;border-bottom:1px solid var(--gb)}
-.pbdg{display:inline-block;background:rgba(255,107,26,.1);color:var(--n);font-size:.71rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:50px;margin-bottom:13px;font-weight:600}
-.phero h1{font-family: var(--font-display);font-size:clamp(1.8rem,3.8vw,2.8rem);font-weight:900;color:#1a0f33;margin-bottom:9px}
-.phero h1 em{font-style:italic;color:var(--m)}
-.phero p{color:var(--gt);font-size:.95rem;max-width:500px;margin:0 auto;line-height:1.7}
-main{max-width:1060px;margin:0 auto;padding:48px 38px}
-.layout{display:grid;grid-template-columns:1fr 350px;gap:26px;align-items:start}
-.fcard{background:#fff;border-radius:18px;padding:42px;box-shadow:var(--sh);border:1px solid var(--gb)}
-.fcard h2{font-family: var(--font-display);font-size:1.5rem;font-weight:700;color:#1a0f33;margin-bottom:4px}
-.fsub{color:#888;font-size:.85rem;margin-bottom:30px}
-/* Login wall */
-.lwall{background:linear-gradient(135deg,var(--m),var(--ml));border-radius:14px;padding:32px;text-align:center;color:#fff;margin-bottom:28px}
-.lwall h3{font-family: var(--font-display);font-size:1.4rem;margin-bottom:9px}
-.lwall p{opacity:.85;font-size:.9rem;margin-bottom:18px;line-height:1.6}
-.lwall a{background:#fff;color:var(--m);padding:10px 22px;border-radius:50px;text-decoration:none;font-weight:700;font-size:.9rem}
-.stit{font-size:.69rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--m);padding-bottom:8px;margin-bottom:16px;margin-top:26px;border-bottom:2px solid var(--gb);display:flex;align-items:center;gap:7px}
-.stit:first-of-type{margin-top:0}
-.sdot{width:7px;height:7px;border-radius:50%;background:var(--n)}
-.fr2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.fr3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:13px}
-.campo{display:flex;flex-direction:column;gap:5px;margin-bottom:15px}
-.campo label{font-size:.71rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gt)}
-.campo label .req{color:var(--n)}
-.campo input,.campo select,.campo textarea{padding:10px 13px;border:1.5px solid var(--gb);border-radius:9px;font-family: var(--font-body);font-size:.88rem;color:var(--gt);background:#fff;transition:border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none}
-.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--m);box-shadow:0 0 0 3px rgba(91,33,212,.1)}
-.campo textarea{resize:vertical;min-height:84px}
-.hint{font-size:.72rem;color:#aaa;margin-top:-3px}
-.apaprev{background:var(--gc);border:1.5px solid var(--gb);border-radius:9px;padding:12px 14px;margin-top:7px;min-height:46px}
-.apalbl{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:5px}
-.apatxt{font-size:.86rem;color:var(--gt);line-height:1.6;font-style:italic}
-.apaact{display:flex;gap:8px;margin-top:8px}
-.bcopa{background:var(--m);color:#fff;border:none;padding:6px 14px;border-radius:7px;font-size:.78rem;font-family: var(--font-body);cursor:pointer;transition:all .2s;font-weight:500}
-.bcopa:hover{background:var(--md)}
-.bcopa.cop{background:#22c55e}
-.bsub{width:100%;background:var(--n);color:#fff;padding:14px 20px;border-radius:10px;border:none;font-family: var(--font-body);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s;margin-top:20px;box-shadow:0 8px 22px rgba(255,107,26,.26)}
-.bsub:hover{background:var(--nl);transform:translateY(-2px)}
-.bsub:disabled{background:#aaa;transform:none;cursor:not-allowed}
-.sidebar{display:flex;flex-direction:column;gap:17px}
-.scard{background:#fff;border-radius:14px;padding:24px;box-shadow:var(--sh);border:1px solid var(--gb)}
-.scard h3{font-family: var(--font-display);font-size:1.02rem;font-weight:700;color:#1a0f33;margin-bottom:5px}
-.scard p{font-size:.82rem;color:#888;line-height:1.6;margin-bottom:13px}
-.gi{display:flex;align-items:flex-start;gap:9px;font-size:.82rem;color:var(--gt);margin-bottom:10px;line-height:1.4}
-.gn{width:20px;height:20px;min-width:20px;background:var(--m);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:700}
-.aej{background:var(--gc);border-radius:8px;padding:12px;font-size:.8rem;line-height:1.7;color:var(--gt)}
-.aej strong{color:var(--m);display:block;margin-bottom:4px;font-size:.69rem;letter-spacing:.08em;text-transform:uppercase}
-.sovl{display:none;position:fixed;inset:0;z-index:200;background:rgba(26,15,51,.78);backdrop-filter:blur(8px);align-items:center;justify-content:center}
-.sovl.show{display:flex}
-.sbox{background:#fff;border-radius:18px;padding:48px 38px;max-width:400px;width:92%;box-shadow:0 32px 80px rgba(91,33,212,.26);text-align:center}
-.sico{width:66px;height:66px;background:rgba(91,33,212,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 16px}
-.sbox h3{font-family: var(--font-display);font-size:1.6rem;color:#1a0f33;margin-bottom:9px}
-.sbox p{color:#888;font-size:.9rem;line-height:1.6;margin-bottom:22px}
-.sbtns{display:flex;flex-direction:column;gap:8px}
-.bok{background:var(--m);color:#fff;padding:11px 20px;border-radius:9px;border:none;font-family: var(--font-body);font-size:.91rem;font-weight:600;cursor:pointer}
-.bok:hover{background:var(--md)}
-.boks{background:none;color:var(--m);padding:9px 20px;border-radius:9px;border:1.5px solid var(--gb);font-family: var(--font-body);font-size:.87rem;cursor:pointer;text-decoration:none;display:block;transition:all .2s}
-.boks:hover{border-color:var(--m)}
-@media(max-width:980px){.layout{grid-template-columns:1fr}.sidebar{display:none}main{padding:32px 16px}}
-@media(max-width:640px){nav{padding:12px 16px}.phero{padding:92px 16px 36px}.fcard{padding:24px 16px}.fr2,.fr3{grid-template-columns:1fr}}
+:root {
+  --purple: #631EEB;
+  --purple-dk: #4912C2;
+  --orange: #FF7929;
+  --bg-dark: #0e0c18;
+  --bg-darker: #08060f;
+  --bg-card: #15112a;
+  --text-main: #f0eef8;
+  --text-muted: rgba(240,238,248,.55);
+  --font-display: 'Montserrat', 'Open Sans', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg-dark); color: var(--text-main); font-family: var(--font-body); padding-top: 64px; line-height: 1.6; }
+
+/* ─── SS-NAV ─── */
+.ss-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; background: rgba(14,12,24,.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(99,30,235,.2); font-family: var(--font-body); }
+.ss-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px,4vw,40px); height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.ss-nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; flex-shrink: 0; }
+.ss-nav-logo img { height: 34px; width: auto; border-radius: 50%; }
+.ss-nav-logo-name { font-family: var(--font-display); font-size: .95rem; font-weight: 700; color: var(--orange); letter-spacing: .06em; }
+.ss-nav-links { display: flex; align-items: center; gap: .15rem; }
+.ss-nav-links > a { text-decoration: none; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; transition: all .18s; white-space: nowrap; }
+.ss-nav-links > a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.ss-nav-links > a.active { color: #fff; background: rgba(255,255,255,.1); }
+.ss-nav-links > a.nav-newsletter { background: rgba(99,30,235,.25); color: rgba(200,185,255,.9); border-radius: 50px; }
+.ss-nav-links > a.nav-newsletter:hover { background: rgba(99,30,235,.4); color: #fff; }
+.ss-nav-divider { width: 1px; height: 20px; background: rgba(255,255,255,.12); margin: 0 .3rem; flex-shrink: 0; }
+.ss-nav-links > a.nav-entrar { color: rgba(240,238,248,.55); }
+.ss-nav-links > a.nav-entrar:hover { color: #fff; background: none; }
+.ss-nav-cta { background: var(--purple) !important; color: white !important; padding: .42rem 1.1rem !important; border-radius: 50px !important; font-weight: 600 !important; font-size: .83rem !important; }
+.ss-nav-cta:hover { background: var(--purple-dk) !important; }
+.ss-dd { position: relative; }
+.ss-dd-btn { display: flex; align-items: center; gap: .3rem; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; cursor: pointer; transition: all .18s; background: none; border: none; font-family: inherit; white-space: nowrap; }
+.ss-dd-btn:hover,.ss-dd.open .ss-dd-btn { color: #fff; background: rgba(255,255,255,.08); }
+.ss-dd-btn svg { width: 11px; height: 11px; transition: transform .18s; flex-shrink: 0; color: rgba(240,238,248,.3); }
+.ss-dd.open .ss-dd-btn svg { transform: rotate(180deg); }
+.ss-dd-panel { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: #0e0c18; border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .6rem; box-shadow: 0 10px 36px rgba(0,0,0,.5); z-index: 600; }
+.ss-dd.open .ss-dd-panel { display: block; }
+.ss-dd-panel.herr { min-width: 240px; }
+.ss-dd-panel.herr a { display: block; padding: .55rem .9rem; border-radius: 9px; text-decoration: none; transition: background .15s; }
+.ss-dd-panel.herr a:hover { background: rgba(255,255,255,.06); }
+.ss-dd-panel.herr a .t { display: block; font-size: .84rem; font-weight: 600; color: #f0eef8; }
+.ss-dd-panel.herr a .s { display: block; font-size: .75rem; color: rgba(240,238,248,.4); margin-top: .1rem; }
+.ss-dd-hr { height: 1px; background: rgba(255,255,255,.08); margin: .35rem .4rem; }
+.ss-dd-panel.serv { min-width: 280px; max-width: 320px; }
+.ss-serv-group { margin-bottom: .2rem; }
+.ss-serv-group-title { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--purple); padding: .4rem .9rem .2rem; }
+.ss-serv-item { border-radius: 9px; overflow: hidden; }
+.ss-serv-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: .5rem .9rem; background: none; border: none; cursor: pointer; font-family: inherit; border-radius: 9px; transition: background .15s; }
+.ss-serv-trigger:hover,.ss-serv-item.open .ss-serv-trigger { background: rgba(255,255,255,.06); }
+.ss-serv-trigger span { font-size: .84rem; font-weight: 500; color: #f0eef8; text-align: left; }
+.ss-serv-trigger svg { width: 10px; height: 10px; flex-shrink: 0; color: rgba(240,238,248,.3); transition: transform .15s; }
+.ss-serv-item.open .ss-serv-trigger svg { transform: rotate(180deg); }
+.ss-serv-body { display: none; padding: .4rem .9rem .7rem 1.1rem; }
+.ss-serv-item.open .ss-serv-body { display: block; }
+.ss-serv-body p { font-size: .78rem; color: rgba(240,238,248,.5); line-height: 1.55; margin-bottom: .55rem; }
+.ss-serv-body a { display: inline-block; background: var(--purple); color: white; padding: 5px 14px; border-radius: 50px; text-decoration: none; font-size: .76rem; font-weight: 600; }
+.ss-serv-body a:hover { background: var(--purple-dk); }
+.ss-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: .4rem; background: none; border: none; }
+.ss-hamburger span { display: block; width: 22px; height: 2px; background: rgba(240,238,248,.6); border-radius: 2px; transition: all .2s; }
+@media(max-width:900px) {
+  .ss-nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; background: #0e0c18; border-bottom: 1px solid rgba(99,30,235,.2); flex-direction: column; align-items: stretch; padding: 1rem; gap: .2rem; box-shadow: 0 8px 24px rgba(0,0,0,.5); max-height: 80vh; overflow-y: auto; }
+  .ss-nav-links.open { display: flex; }
+  .ss-nav-links > a,.ss-dd-btn { padding: .65rem 1rem; border-radius: 10px; font-size: .92rem; width: 100%; }
+  .ss-nav-divider { display: none; }
+  .ss-dd { width: 100%; }
+  .ss-dd-panel { position: static; border: none; box-shadow: none; background: rgba(255,255,255,.04); margin-top: .25rem; border-radius: 10px; }
+  .ss-dd.open .ss-dd-panel { display: block; }
+  .ss-hamburger { display: flex; }
+  .ss-nav-inner { padding: 0 1.25rem; }
+}
+
+/* ─── LAYOUT ─── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px,4vw,48px); }
+.container-narrow { max-width: 760px; margin: 0 auto; padding: 0 clamp(16px,4vw,48px); }
+
+/* ─── HERO ─── */
+.hero { padding: 5rem 0 4rem; background: radial-gradient(ellipse 60% 70% at 50% 0%, rgba(255,121,41,.1) 0%, rgba(99,30,235,.12) 30%, transparent 65%); border-bottom: 1px solid rgba(255,255,255,.06); text-align: center; }
+.section-label { font-family: var(--font-display); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+.hero-title { font-family: var(--font-display); font-size: clamp(3rem,7vw,5.5rem); font-weight: 900; text-transform: uppercase; line-height: .9; letter-spacing: -.02em; margin-bottom: 1.5rem; }
+.hero-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 520px; line-height: 1.75; margin: 0 auto 2rem; }
+
+/* ─── FORMAS ─── */
+.formas-band { padding: 5rem 0; }
+.formas-title { font-family: var(--font-display); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 900; text-transform: uppercase; margin-bottom: .5rem; }
+.formas-sub { font-size: .95rem; color: var(--text-muted); margin-bottom: 3rem; max-width: 560px; }
+.formas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.forma-card { background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; transition: border-color .2s; }
+.forma-card:hover { border-color: rgba(99,30,235,.45); }
+.forma-icon { font-size: 2rem; margin-bottom: 1.25rem; line-height: 1; }
+.forma-num { font-family: var(--font-display); font-size: .68rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--purple); margin-bottom: .5rem; }
+.forma-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; text-transform: uppercase; margin-bottom: .75rem; }
+.forma-desc { font-size: .88rem; color: var(--text-muted); line-height: 1.7; flex: 1; margin-bottom: 1.5rem; }
+.forma-btn { display: inline-block; align-self: flex-start; background: var(--purple); color: white; padding: .65rem 1.4rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .82rem; text-decoration: none; transition: all .2s; }
+.forma-btn:hover { background: var(--purple-dk); transform: translateY(-2px); }
+.forma-btn.secondary { background: transparent; border: 1px solid rgba(99,30,235,.5); color: rgba(200,185,255,.9); }
+.forma-btn.secondary:hover { background: rgba(99,30,235,.2); border-color: var(--purple); color: white; }
+
+/* ─── DONACIÓN ─── */
+.donacion-band { background: var(--bg-darker); padding: 5rem 0; }
+.donacion-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.donacion-title { font-family: var(--font-display); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 900; text-transform: uppercase; margin-bottom: 1rem; }
+.donacion-text { font-size: .92rem; color: var(--text-muted); line-height: 1.8; }
+.donacion-text p { margin-bottom: 1rem; }
+.donacion-box { background: var(--bg-card); border: 1px solid rgba(255,121,41,.2); border-radius: 20px; padding: 2rem; }
+.donacion-box-title { font-family: var(--font-display); font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--orange); margin-bottom: 1.5rem; }
+.amounts { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.5rem; }
+.amount-btn { background: rgba(255,121,41,.1); border: 1px solid rgba(255,121,41,.25); color: rgba(240,238,248,.8); padding: .55rem 1.1rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .85rem; cursor: pointer; transition: all .18s; }
+.amount-btn:hover,.amount-btn.sel { background: var(--orange); border-color: var(--orange); color: white; }
+.paypal-donate-btn { display: flex; align-items: center; justify-content: center; gap: .75rem; width: 100%; background: #FFC439; color: #003087; padding: 1rem; border-radius: 12px; font-family: var(--font-display); font-weight: 800; font-size: 1rem; text-decoration: none; margin-top: 1rem; transition: all .2s; border: none; cursor: pointer; }
+.paypal-donate-btn:hover { background: #f0b800; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,196,57,.3); }
+.paypal-donate-btn svg { width: 22px; height: 22px; }
+.paypal-note { margin-top: .75rem; font-size: .75rem; color: rgba(240,238,248,.3); text-align: center; }
+@media(max-width:768px) { .donacion-inner { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+/* ─── IMPACTO ─── */
+.impacto-band { padding: 5rem 0; }
+.impacto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+.impacto-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,.07); border-radius: 16px; padding: 2rem 1.5rem; text-align: center; }
+.impacto-num { font-family: var(--font-display); font-size: 2.8rem; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: .5rem; }
+.impacto-label { font-size: .82rem; color: var(--text-muted); line-height: 1.4; }
+
+/* ─── COLECTIVO ─── */
+.colectivo-band { background: var(--bg-darker); padding: 5rem 0; }
+.colectivo-title { font-family: var(--font-display); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 900; text-transform: uppercase; margin-bottom: 1rem; }
+.colectivo-sub { font-size: .95rem; color: var(--text-muted); margin-bottom: 3rem; max-width: 560px; }
+.ways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+.way-item { display: flex; gap: 1rem; align-items: flex-start; background: rgba(255,255,255,.03); border-radius: 14px; padding: 1.25rem; }
+.way-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: .1rem; }
+.way-title { font-family: var(--font-display); font-size: .84rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .3rem; }
+.way-desc { font-size: .82rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ─── CTA FINAL ─── */
+.cta-band { padding: 6rem 0; text-align: center; background: radial-gradient(ellipse 50% 60% at 50% 100%, rgba(99,30,235,.2) 0%, transparent 65%); }
+.cta-title { font-family: var(--font-display); font-size: clamp(2rem,4vw,3.5rem); font-weight: 900; text-transform: uppercase; line-height: 1; margin-bottom: 1rem; }
+.cta-title span { color: var(--orange); }
+.cta-sub { color: var(--text-muted); font-size: 1rem; margin-bottom: 2.5rem; }
+.cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-primary { background: var(--purple); color: white; padding: .9rem 2.2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .9rem; text-decoration: none; display: inline-block; transition: all .2s; }
+.btn-primary:hover { background: var(--purple-dk); }
+.btn-outline { border: 1px solid rgba(255,255,255,.2); color: var(--text-main); padding: .9rem 2.2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 600; font-size: .9rem; text-decoration: none; display: inline-block; transition: all .2s; }
+.btn-outline:hover { border-color: rgba(255,255,255,.5); }
+
+/* ─── FOOTER ─── */
+footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.06); padding: 2.5rem 0 2rem; }
+.footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+.footer-logo { font-family: var(--font-display); font-size: .9rem; font-weight: 700; color: var(--orange); letter-spacing: .06em; }
+.footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+.footer-links a { font-size: .82rem; color: var(--text-muted); text-decoration: none; transition: color .15s; }
+.footer-links a:hover { color: var(--text-main); }
+.footer-copy { font-size: .78rem; color: rgba(240,238,248,.3); margin-top: 1.5rem; text-align: center; }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Open+Sauce+One:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 </head>
 <body>
-<div id="sintro-nav"></div>
 
-
-<div class="phero">
-  <div class="pbdg">Contribución al repositorio</div>
-  <h1>Agrega una <em>cita</em> al repositorio</h1>
-  <p>Comparte el pensamiento de un autor. Tu contribución se revisa antes de publicarse para garantizar la calidad.</p>
-</div>
-<main>
-  <div class="layout">
-    <div class="fcard">
-      <h2>Nueva cita bibliográfica</h2>
-      <p class="fsub">Los campos con <span style="color:var(--n)">*</span> son obligatorios. Tu cita será revisada por el equipo antes de publicarse.</p>
-      <div id="form-area">
-        <form id="cform" onsubmit="enviar(event)" novalidate>
-          <div class="stit"><div class="sdot"></div>Identificación del autor</div>
-          <div class="campo">
-            <label>Autor(es) <span class="req">*</span></label>
-            <input type="text" id="c-aut" placeholder="Apellido, N. — Ej: García, M. A." required oninput="apaGen()"/>
-            <span class="hint">Varios autores: García, M. A., López, R. B., &amp; Torres, C.</span>
-          </div>
-          <div class="fr2">
-            <div class="campo">
-              <label>Categoría <span class="req">*</span></label>
-              <select id="c-cat" required>
-                <option value="">Seleccionar…</option>
-                <option>Sociología</option><option>Antropología</option><option>Psicología</option>
-                <option>Educación</option><option>Virtualidad</option><option>Administración</option>
-                <option>Mercados Laborales</option><option>Historia</option><option>Filosofía</option>
-                <option>Investigación Social</option><option>Lingüística</option><option>Metodología</option>
-                <option>Intervención Comunitaria</option><option>Emprendimiento</option><option>Otra</option>
-              </select>
-            </div>
-            <div class="campo">
-              <label>Indicador</label>
-              <input type="text" id="c-ind" placeholder="Ej: Trabajo, Educación…"/>
-            </div>
-          </div>
-          <div class="campo">
-            <label>Población estudiada</label>
-            <input type="text" id="c-pop" placeholder="Ej: adolescentes, organizaciones…"/>
-          </div>
-          <div class="stit"><div class="sdot"></div>Datos de la publicación</div>
-          <div class="fr3">
-            <div class="campo">
-              <label>Título <span class="req">*</span></label>
-              <input type="text" id="c-pub" placeholder="Nombre del libro o artículo" required oninput="apaGen()"/>
-            </div>
-            <div class="campo">
-              <label>Año <span class="req">*</span></label>
-              <input type="number" id="c-yr" placeholder="2023" min="1800" max="2099" required oninput="apaGen()"/>
-            </div>
-            <div class="campo">
-              <label>Página</label>
-              <input type="text" id="c-pag" placeholder="48" oninput="apaGen()"/>
-            </div>
-          </div>
-          <div class="campo">
-            <label>Link / URL <span style="color:#aaa;font-weight:400;text-transform:none;font-size:.78rem">(opcional)</span></label>
-            <input type="url" id="c-link" placeholder="https://…"/>
-          </div>
-          <div class="stit"><div class="sdot"></div>Contenido</div>
-          <div class="campo">
-            <label>Cita textual <span class="req">*</span></label>
-            <textarea id="c-cita" placeholder="Escribe la cita exacta, tal como aparece en el texto original…" required></textarea>
-            <span class="hint">Debe ser cita textual. Respeta la ortografía y puntuación originales.</span>
-          </div>
-          <div class="campo">
-            <label>Comentarios / Reflexión personal</label>
-            <textarea id="c-com" placeholder="¿Qué te aporta esta cita? ¿Cómo la conectas con tu investigación?"></textarea>
-            <span class="hint">Tu reflexión enriquece el repositorio para la comunidad.</span>
-          </div>
-          <div class="stit"><div class="sdot"></div>Cita APA 7ª edición (automática)</div>
-          <div class="apaprev">
-            <div class="apalbl">Vista previa APA</div>
-            <div class="apatxt" id="apa-out"><em style="color:#ccc">Completa autor, año y título…</em></div>
-            <div class="apaact">
-              <button type="button" class="bcopa" id="bcopa" onclick="copiarAPA()"> Copiar APA</button>
-            </div>
-          </div>
-          <input type="hidden" id="c-apa"/>
-          <button type="submit" class="bsub" id="bsub">Enviar cita para revisión →</button>
-        </form>
+<!-- ════════ NAV ════════ -->
+<nav class="ss-nav">
+  <div class="ss-nav-inner">
+    <a href="index.html" class="ss-nav-logo">
+      <img src="logo.png" alt="Sintropía Social" onerror="this.style.display='none'">
+      <span class="ss-nav-logo-name">SINTROPÍA SOCIAL</span>
+    </a>
+    <div class="ss-nav-links" id="ss-nav-links">
+      <a href="inicio.html">Inicio</a>
+      <div class="ss-dd" id="dd-herr">
+        <button class="ss-dd-btn" onclick="ssToggleDD('dd-herr')">
+          Herramientas
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ss-dd-panel herr">
+          <a href="diagnostico.html"><span class="t">Diagnóstico Social Rápido</span><span class="s">Árbol de problemas, marco lógico y más</span></a>
+          <a href="dashboard.html"><span class="t">Dashboard Interactivo</span><span class="s">Visualiza y exporta datos de investigación</span></a>
+          <a href="index.html"><span class="t">Buscador de Citas PDF</span><span class="s">Extrae citas de PDFs por palabra clave</span></a>
+          <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank"><span class="t" style="color:var(--orange);">Task live — Salas grupales</span><span class="s">Colaboración en vivo sin cuentas</span></a>
+          <div class="ss-dd-hr"></div>
+          <a href="herramientas.html"><span class="t" style="color:var(--purple);">Ver todas las herramientas →</span></a>
+        </div>
       </div>
+      <div class="ss-dd" id="dd-serv">
+        <button class="ss-dd-btn" onclick="ssToggleDD('dd-serv')">
+          Servicios
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ss-dd-panel serv">
+          <div class="ss-serv-group">
+            <div class="ss-serv-group-title">Investigación Social</div>
+            <div class="ss-serv-item" id="si-1"><button class="ss-serv-trigger" onclick="ssToggleServ('si-1')"><span>Investigación de Mercados Laborales</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Análisis riguroso del empleo en territorios específicos.</p><a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank">Contratar</a></div></div>
+            <div class="ss-serv-item" id="si-2"><button class="ss-serv-trigger" onclick="ssToggleServ('si-2')"><span>Estudios de Prospectiva Laboral</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Escenarios del futuro del trabajo ante IA y automatización.</p><a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank">Contratar</a></div></div>
+          </div>
+          <div class="ss-dd-hr"></div>
+          <div class="ss-serv-group">
+            <div class="ss-serv-group-title">Educación</div>
+            <div class="ss-serv-item" id="si-3"><button class="ss-serv-trigger" onclick="ssToggleServ('si-3')"><span>Diseño Curricular por Competencias</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Programas educativos con enfoque crítico y socioemocional.</p><a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank">Contratar</a></div></div>
+          </div>
+          <div class="ss-dd-hr"></div>
+          <div style="padding:.4rem .9rem .3rem;"><a href="servicios.html" style="display:block;text-align:center;padding:.55rem;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--purple);text-decoration:none;background:rgba(99,30,235,.1);">Ver todos los servicios →</a></div>
+        </div>
+      </div>
+      <a href="newsletter.html" class="nav-newsletter">Newsletter</a>
+      <a href="contribuir.html" class="active">Contribuir</a>
+      <div class="ss-nav-divider"></div>
+      <a href="login.html" class="nav-entrar">Entrar</a>
+      <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
     </div>
-    <div class="sidebar">
-      <div class="scard">
-        <h3>Proceso de publicación</h3>
-        <p>Las citas pasan por revisión antes de publicarse:</p>
-        <div class="gi"><div class="gn">1</div><span>Envías la cita con el formulario.</span></div>
-        <div class="gi"><div class="gn">2</div><span>El equipo de Sintropía revisa ortografía, veracidad y formato.</span></div>
-        <div class="gi"><div class="gn">3</div><span>Si es aprobada, se publica en el repositorio.</span></div>
-        <div class="gi"><div class="gn">4</div><span>Recibirás confirmación por email.</span></div>
+    <button class="ss-hamburger" onclick="ssMobileNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<script>
+function ssToggleDD(id){var all=document.querySelectorAll('.ss-dd');all.forEach(function(d){if(d.id!==id){d.classList.remove('open');}});document.getElementById(id).classList.toggle('open');}
+function ssToggleServ(id){var el=document.getElementById(id);var wasOpen=el.classList.contains('open');document.querySelectorAll('.ss-serv-item').forEach(function(i){i.classList.remove('open');});if(!wasOpen)el.classList.add('open');}
+function ssMobileNav(){document.getElementById('ss-nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd').forEach(function(d){d.classList.remove('open');});});
+</script>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="container-narrow">
+    <div class="section-label">Sé parte del proyecto</div>
+    <h1 class="hero-title">
+      Contribuir<br>
+      <span style="color:var(--orange);">al cambio</span>
+    </h1>
+    <p class="hero-sub">Sintropía Social es un proyecto de acceso libre. Lo que construimos aquí es gracias a quienes eligen apoyarlo con su tiempo, talento o recursos.</p>
+  </div>
+</section>
+
+<!-- ════════ FORMAS ════════ -->
+<section class="formas-band">
+  <div class="container">
+    <div class="section-label">Cómo puedes participar</div>
+    <h2 class="formas-title">Elige tu forma<br>de contribuir</h2>
+    <p class="formas-sub">Hay muchas maneras de ser parte. Desde compartir contenido hasta colaborar en investigaciones o apoyar económicamente el proyecto.</p>
+    <div class="formas-grid">
+      <div class="forma-card">
+        <div class="forma-icon">💜</div>
+        <div class="forma-num">01 · Económico</div>
+        <div class="forma-name">Donación directa</div>
+        <p class="forma-desc">Apoya el mantenimiento de las herramientas gratuitas, la investigación abierta y el newsletter. Cualquier monto ayuda a sostener el proyecto.</p>
+        <a href="#donacion" class="forma-btn">Hacer una donación</a>
       </div>
-      <div class="scard">
-        <h3>Formato APA 7ª ed.</h3>
-        <p>Generado automáticamente:</p>
-        <div class="aej"><strong>Estructura</strong>Apellido, N. (Año). <em>Título</em>, p. X.</div>
-        <div style="margin-top:9px" class="aej"><strong>Ejemplo</strong>Freire, P. (2005). <em>Pedagogía del oprimido</em>, p. 69.</div>
+      <div class="forma-card">
+        <div class="forma-icon">🔬</div>
+        <div class="forma-num">02 · Investigación</div>
+        <div class="forma-name">Colabora en proyectos</div>
+        <p class="forma-desc">Si investigas en ciencias sociales, educación o mercados laborales, podemos co-diseñar metodologías, compartir datos anonimizados o publicar juntos.</p>
+        <a href="mailto:colaboracion@sintropia.social" class="forma-btn secondary">Proponer colaboración</a>
       </div>
-      <div class="scard">
-        <h3>¿Dudas?</h3>
-        <p>Escríbenos a <a href="mailto:contacto@sintropiasocial.com" style="color:var(--n);font-weight:500">contacto@sintropiasocial.com</a></p>
+      <div class="forma-card">
+        <div class="forma-icon">📢</div>
+        <div class="forma-num">03 · Difusión</div>
+        <div class="forma-name">Comparte el proyecto</div>
+        <p class="forma-desc">Compartir el newsletter, las herramientas o los artículos con colegas que trabajan en territorios y comunidades es una contribución real y valiosa.</p>
+        <a href="newsletter.html" class="forma-btn secondary">Ver el newsletter</a>
+      </div>
+      <div class="forma-card">
+        <div class="forma-icon">🛠️</div>
+        <div class="forma-num">04 · Técnico</div>
+        <div class="forma-name">Desarrollo y diseño</div>
+        <p class="forma-desc">¿Sabes programar, diseñar o manejar datos? Las herramientas digitales de Sintropía siempre pueden mejorar. Escríbenos si quieres sumarte al equipo.</p>
+        <a href="mailto:dev@sintropia.social" class="forma-btn secondary">Contactar al equipo</a>
       </div>
     </div>
   </div>
-</main>
-<div class="sovl" id="sovl">
-  <div class="sbox">
-    <div class="sico">⏳</div>
-    <h3>¡Cita enviada!</h3>
-    <p>Tu contribución fue recibida y está en revisión. El equipo de Sintropía Social la revisará antes de publicarla.</p>
-    <div class="sbtns">
-      <button class="bok" onclick="nueva()">Agregar otra cita</button>
-      <a href="index.html" class="boks">Ver el repositorio</a>
+</section>
+
+<!-- ════════ DONACIÓN ════════ -->
+<section class="donacion-band" id="donacion">
+  <div class="container">
+    <div class="donacion-inner">
+      <div>
+        <div class="section-label">Apoyo económico</div>
+        <h2 class="donacion-title">Cada donación<br>sostiene el<br><span style="color:var(--orange);">acceso libre</span></h2>
+        <div class="donacion-text">
+          <p>Las herramientas de Sintropía Social son gratuitas. El newsletter no tiene muro de pago. La investigación que publicamos es abierta. Esto tiene un costo real.</p>
+          <p>Con tu apoyo podemos mantener los servidores activos, seguir desarrollando nuevas herramientas y dedicar tiempo a la investigación que nadie más financia.</p>
+          <p>No hay nivel mínimo ni compromiso de permanencia. Contribuye lo que puedas, cuando puedas.</p>
+        </div>
+      </div>
+      <div class="donacion-box">
+        <div class="donacion-box-title">Elige un monto (USD)</div>
+        <div class="amounts">
+          <button class="amount-btn" onclick="selectAmount(this,'5')">$5</button>
+          <button class="amount-btn sel" onclick="selectAmount(this,'10')">$10</button>
+          <button class="amount-btn" onclick="selectAmount(this,'25')">$25</button>
+          <button class="amount-btn" onclick="selectAmount(this,'50')">$50</button>
+          <button class="amount-btn" onclick="selectAmount(this,'100')">$100</button>
+        </div>
+        <a href="https://www.paypal.com/donate/?hosted_button_id=SINTROPIA" target="_blank" class="paypal-donate-btn" id="paypal-btn">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.426 4c-.862 0-1.604.62-1.74 1.47L4 14.8h2.42l.5-3h2.2c2.66 0 4.76-1.26 5.34-3.84.26-1.2.12-2.16-.4-2.86C13.48 4.42 12.62 4 11.52 4H7.426zm.88 2.56h3.1c.7 0 1.14.28 1.3.86.26 1-.46 2.38-2.38 2.38H8.14l.166-3.24z" fill="#003087"/><path d="M16.02 7.56c-.1.06-.2.14-.3.22-.64 2.36-2.84 3.82-5.52 3.82H8.54l-.62 3.82c-.08.5.3.98.82.98h2.42c.72 0 1.34-.52 1.46-1.24l.06-.32.52-3.26.04-.22c.12-.72.74-1.24 1.46-1.24h.92c2.54 0 4.44-1.04 5.1-4.04-.26-.3-.62-.56-1.04-.74-.34-.14-.7-.22-1.08-.22-.22 0-.44.02-.66.04l-.44.4z" fill="#009cde"/></svg>
+          Donar con PayPal — <span id="amount-display">$10</span>
+        </a>
+        <p class="paypal-note">Redirige a PayPal. Seguro y sin crear cuenta.</p>
+      </div>
     </div>
   </div>
-</div>
-<script src="config.js"></script>
-<script src="nav.js"></script>
+</section>
 <script>
-// Verificar login al cargar
-window.addEventListener('DOMContentLoaded', function(){
-  const u = Auth.getUser();
-  if (!u) {
-    document.getElementById('form-area').innerHTML = `
-      <div class="lwall">
-        <h3>🔒 Inicia sesión para contribuir</h3>
-        <p>Debes tener una cuenta en Sintropía Social para enviar citas al repositorio.</p>
-        <a href="registro.html">Crear cuenta gratis →</a>
+var currentAmount = '10';
+function selectAmount(btn, amount) {
+  document.querySelectorAll('.amount-btn').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');
+  currentAmount = amount;
+  document.getElementById('amount-display').textContent = '$' + amount;
+  document.getElementById('paypal-btn').href = 'https://www.paypal.com/donate/?hosted_button_id=SINTROPIA&amount=' + amount;
+}
+</script>
+
+<!-- ════════ IMPACTO ════════ -->
+<section class="impacto-band">
+  <div class="container">
+    <div class="section-label">Lo que hemos construido</div>
+    <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:900;text-transform:uppercase;">El proyecto<br>en números</h2>
+    <div class="impacto-grid">
+      <div class="impacto-card">
+        <div class="impacto-num">843+</div>
+        <div class="impacto-label">Citas académicas en el repositorio</div>
       </div>
-      <div style="text-align:center;margin-top:12px;font-size:.84rem;color:#888">¿Ya tienes cuenta? <a href="registro.html" style="color:var(--m);font-weight:500">Iniciar sesión</a></div>`;
-  }
-});
+      <div class="impacto-card">
+        <div class="impacto-num">16</div>
+        <div class="impacto-label">Herramientas digitales gratuitas</div>
+      </div>
+      <div class="impacto-card">
+        <div class="impacto-num">5</div>
+        <div class="impacto-label">Áreas de investigación activas</div>
+      </div>
+      <div class="impacto-card">
+        <div class="impacto-num">0</div>
+        <div class="impacto-label">Muros de pago — acceso siempre libre</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-function apaGen() {
-  const aut = document.getElementById('c-aut')?.value?.trim()||'';
-  const yr  = document.getElementById('c-yr')?.value?.trim()||'';
-  const pub = document.getElementById('c-pub')?.value?.trim()||'';
-  const pag = document.getElementById('c-pag')?.value?.trim()||'';
-  const out = document.getElementById('apa-out');
-  if(!out) return;
-  if (!aut&&!yr&&!pub) { out.innerHTML='<em style="color:#ccc">Completa autor, año y título…</em>'; return; }
-  let s = '';
-  if(aut) s += aut+'. ';
-  s += (yr?`(${yr})`:'(s.f.)')+'. ';
-  if(pub) s += `<em>${pub}</em>`;
-  if(pag) s += `, p. ${pag}`;
-  s += '.';
-  out.innerHTML = s;
-  document.getElementById('c-apa').value = s.replace(/<[^>]*>/g,'');
-}
+<!-- ════════ OTRAS FORMAS ════════ -->
+<section class="colectivo-band">
+  <div class="container">
+    <div class="section-label">Más allá de la donación</div>
+    <h2 class="colectivo-title">Construir<br>colectivamente</h2>
+    <p class="colectivo-sub">El cambio social real se teje en red. Aquí hay otras formas concretas de ser parte de Sintropía.</p>
+    <div class="ways-grid">
+      <div class="way-item">
+        <div class="way-icon">📚</div>
+        <div>
+          <div class="way-title">Comparte bibliografía</div>
+          <div class="way-desc">¿Conoces investigaciones relevantes sobre trabajo, comunidad o educación? Puedes enviarlas para el repositorio.</div>
+        </div>
+      </div>
+      <div class="way-item">
+        <div class="way-icon">🎙️</div>
+        <div>
+          <div class="way-title">Escribe para el newsletter</div>
+          <div class="way-desc">Publicamos análisis, reflexiones y casos de practicionantes con experiencia en campo. Propón un artículo.</div>
+        </div>
+      </div>
+      <div class="way-item">
+        <div class="way-icon">🏫</div>
+        <div>
+          <div class="way-title">Usa las herramientas</div>
+          <div class="way-desc">Integrar nuestras herramientas en talleres, clases o proyectos es una forma valiosa de validarlas y mejorarlas.</div>
+        </div>
+      </div>
+      <div class="way-item">
+        <div class="way-icon">🤝</div>
+        <div>
+          <div class="way-title">Alianzas institucionales</div>
+          <div class="way-desc">¿Representas a una organización? Podemos explorar convenios de colaboración, co-autoría o formación.</div>
+        </div>
+      </div>
+      <div class="way-item">
+        <div class="way-icon">🐛</div>
+        <div>
+          <div class="way-title">Reporta errores</div>
+          <div class="way-desc">Si encuentras un problema en alguna herramienta o un dato incorrecto, cuéntanoslo. Cada reporte mejora el proyecto.</div>
+        </div>
+      </div>
+      <div class="way-item">
+        <div class="way-icon">🌐</div>
+        <div>
+          <div class="way-title">Traduce y adapta</div>
+          <div class="way-desc">Algunas herramientas pueden adaptarse a contextos locales o idiomas específicos. ¿Tienes experiencia en eso?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-function copiarAPA() {
-  const v = document.getElementById('c-apa')?.value||'';
-  if (!v) return;
-  navigator.clipboard.writeText(v).then(function(){
-    const b=document.getElementById('bcopa');
-    b.textContent='✓ Copiado!'; b.classList.add('cop');
-    setTimeout(()=>{ b.textContent='📋 Copiar APA'; b.classList.remove('cop'); },2500);
-  });
-}
+<!-- ════════ CTA ════════ -->
+<section class="cta-band">
+  <div class="container-narrow">
+    <div class="section-label">¿Listo para sumarte?</div>
+    <h2 class="cta-title">El conocimiento<br>es un bien <span>común</span></h2>
+    <p class="cta-sub">Cualquier contribución, grande o pequeña, mantiene vivo este proyecto.</p>
+    <div class="cta-btns">
+      <a href="#donacion" class="btn-primary">Donar ahora</a>
+      <a href="herramientas.html" class="btn-outline">Explorar herramientas</a>
+    </div>
+  </div>
+</section>
 
-async function enviar(e) {
-  e.preventDefault();
-  const btn = document.getElementById('bsub');
-  btn.disabled=true; btn.textContent='Enviando…';
-  const u = Auth.getUser();
-  const r = await api('enviarCita', {
-    categoria:    document.getElementById('c-cat').value,
-    indicador:    document.getElementById('c-ind').value,
-    poblacion:    document.getElementById('c-pop').value,
-    year:         document.getElementById('c-yr').value,
-    autor:        document.getElementById('c-aut').value,
-    cita:         document.getElementById('c-cita').value,
-    comentarios:  document.getElementById('c-com').value,
-    publicacion:  document.getElementById('c-pub').value,
-    pagina:       document.getElementById('c-pag').value,
-    link:         document.getElementById('c-link').value,
-    citaAPA:      document.getElementById('c-apa').value,
-    usuarioEmail: u?.email||'',
-  });
-  if (r.ok) {
-    document.getElementById('sovl').classList.add('show');
-  } else {
-    alert('Error al enviar: ' + (r.error||'Inténtalo de nuevo'));
-    btn.disabled=false; btn.textContent='Enviar cita para revisión →';
-  }
-}
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">SINTROPÍA SOCIAL</div>
+      <div class="footer-links">
+        <a href="inicio.html">Inicio</a>
+        <a href="herramientas.html">Herramientas</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="newsletter.html">Newsletter</a>
+        <a href="contribuir.html">Contribuir</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2024 Sintropía Social · Investigación y acción colectiva</div>
+  </div>
+</footer>
 
-function nueva() {
-  document.getElementById('sovl').classList.remove('show');
-  document.getElementById('cform').reset();
-  apaGen();
-  document.getElementById('bsub').disabled=false;
-  document.getElementById('bsub').textContent='Enviar cita para revisión →';
-}
-</script>
-
-
-<script>SintroNav.render('#sintro-nav','contribuir');</script>
-<script>
-(function(){
-  try{
-    var u=JSON.parse(localStorage.getItem('ss_user')||'null');
-    if(!u) u=JSON.parse(localStorage.getItem('sintropia_usuario_actual')||'null');
-    var el=document.getElementById('ss-nav-user');
-    if(!el||!(u&&(u.nombre||u.email))) return;
-    var label=u.nombre||(u.email?u.email.split('@')[0]:'');
-    var btn=document.createElement('button');
-    btn.textContent=label+' · Salir';
-    btn.style.cssText='background:var(--morado);color:var(--blanco);padding:.42rem .95rem;border-radius:var(--r-pill);border:none;cursor:pointer;font-family:var(--font-body);font-size:.82rem;font-weight:600;';
-    btn.onclick=function(){ localStorage.removeItem('ss_user'); localStorage.removeItem('sintropia_usuario_actual'); location.reload(); };
-    el.innerHTML=''; el.appendChild(btn);
-  }catch(e){}
-})();
-</script>
 </body>
 </html>
