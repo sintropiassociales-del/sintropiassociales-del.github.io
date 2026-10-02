@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.paypal.com https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.paypal.com https://cdnjs.cloudflare.com; frame-src https://www.paypal.com; base-uri 'self'; object-src 'none';">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mi perfil — Sintropía Social</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Open+Sans:wght@300;400;500;600&display=swap"/>
+<script src="config.js"></script>
+<script src="nav.js"></script>
+<link rel="stylesheet" href="sintro-shared.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --purple:#631EEB;--purple-mid:#9B6BF8;--purple-light:#EDE8FD;--purple-border:rgba(107,33,245,.12);
+  --orange:#FF7929;--orange-light:#FFF0E8;
+  --dark:#16141C;--mid:#3D3848;--muted:#9B97A8;--surface:#FAF9FC;--white:#ffffff;
+  --green:#16a34a;--green-bg:rgba(22,163,74,.08);--red:#dc2626;--red-bg:rgba(220,38,38,.06);
+  --radius-sm:10px;--radius-md:16px;--radius-lg:22px;--radius-pill:100px;
+  --font-display:'Fraunces',Georgia,serif;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Open Sans',sans-serif;background:#fff;color:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;}
+h1,h2,h3{font-family:var(--font-display);font-weight:300;letter-spacing:-.025em;line-height:1.15;}
+p{line-height:1.8;}
+
+/* ── NAV heredado ── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--purple-border);transition:box-shadow .3s;}
+.nav-logo{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--purple);letter-spacing:-.01em;}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{font-size:.85rem;font-weight:400;color:var(--mid);transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--purple);}
+.nav-end{display:flex;align-items:center;gap:.75rem;}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font-family:'Open Sans',sans-serif;font-size:.88rem;font-weight:500;padding:.75rem 1.6rem;border-radius:var(--radius-pill);cursor:pointer;border:none;transition:all .2s;text-decoration:none;white-space:nowrap;}
+.btn-primary{background:var(--purple);color:#fff;}
+.btn-primary:hover{background:#5a18d4;transform:translateY(-2px);box-shadow:0 10px 28px rgba(107,33,245,.28);}
+.btn-ghost{background:transparent;color:var(--mid);}
+.btn-ghost:hover{color:var(--purple);}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:4px;}
+.nav-toggle span{display:block;width:22px;height:1.5px;background:var(--mid);margin:5px 0;transition:all .3s;}
+@media(max-width:820px){
+  .nav-links{display:none;flex-direction:column;gap:0;position:fixed;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid var(--purple-border);padding:1rem 2rem 1.5rem;}
+  .nav-links.open{display:flex;}
+  .nav-links a{padding:.65rem 0;font-size:1rem;border-bottom:1px solid var(--purple-border);}
+  .nav-toggle{display:block;}
+  .nav-end .btn-primary{display:none;}
+}
+
+/* ── LAYOUT ── */
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem;}
+.page-wrap{padding-top:100px;padding-bottom:4rem;min-height:100vh;background:var(--surface);}
+
+/* ── HERO PERFIL ── */
+.perfil-hero{background:linear-gradient(135deg,#1a1033 0%,#2d1f5c 100%);padding:2.5rem;border-radius:var(--radius-lg);margin-bottom:2rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;}
+.perfil-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--purple-mid));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.8rem;font-weight:400;color:#fff;flex-shrink:0;}
+.perfil-info h1{color:#fff;font-size:clamp(1.4rem,3vw,1.9rem);margin-bottom:.25rem;}
+.perfil-info p{color:rgba(255,255,255,.55);font-size:.85rem;font-weight:300;}
+.perfil-stats{display:flex;gap:1.5rem;margin-left:auto;flex-wrap:wrap;}
+.pstat{text-align:center;}
+.pstat-n{font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:#fff;line-height:1;}
+.pstat-l{font-size:.7rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.07em;margin-top:.2rem;}
+
+/* ── TABS ── */
+.tabs-wrap{display:flex;gap:0;background:#fff;border:1px solid var(--purple-border);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:2rem;}
+.tab-btn{padding:.8rem 1.5rem;font-family:'Open Sans',sans-serif;font-size:.84rem;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.tab-btn:hover{color:var(--purple);background:var(--purple-light);}
+.tab-btn.active{color:var(--purple);background:var(--purple-light);font-weight:600;}
+
+/* ── CARDS CITAS ── */
+.cita-card{background:#fff;border:1px solid var(--purple-border);border-radius:var(--radius-md);padding:1.25rem 1.4rem;margin-bottom:.75rem;display:flex;gap:1rem;align-items:flex-start;transition:all .2s;}
+.cita-card:hover{border-color:rgba(99,30,235,.25);box-shadow:0 4px 20px rgba(99,30,235,.06);}
+.cita-estado{flex-shrink:0;margin-top:.1rem;}
+.cita-estado-badge{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:20px;}
+.badge-pendiente{background:rgba(255,121,41,.1);color:var(--orange);}
+.badge-aprobada{background:var(--green-bg);color:var(--green);}
+.badge-rechazada{background:var(--red-bg);color:var(--red);}
+.cita-body{flex:1;min-width:0;}
+.cita-text{font-size:.85rem;font-style:italic;color:var(--dark);line-height:1.7;margin-bottom:.4rem;}
+.cita-meta{font-size:.74rem;color:var(--muted);display:flex;gap:.75rem;flex-wrap:wrap;}
+.cita-meta span{display:flex;align-items:center;gap:.2rem;}
+.cita-actions{display:flex;flex-direction:column;gap:.3rem;flex-shrink:0;}
+.cita-btn{padding:5px 13px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit;border:none;white-space:nowrap;transition:all .18s;}
+.cita-btn-edit{background:var(--purple-light);color:var(--purple);}
+.cita-btn-edit:hover{background:rgba(99,30,235,.15);}
+.cita-btn-del{background:var(--red-bg);color:var(--red);border:1px solid rgba(220,38,38,.15);}
+.cita-btn-del:hover{background:rgba(220,38,38,.12);}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:3.5rem 1rem;}
+.empty-state-icon{font-size:2.5rem;opacity:.25;margin-bottom:.75rem;}
+.empty-state p{font-size:.88rem;color:var(--muted);max-width:360px;margin:0 auto .75rem;}
+.empty-state a{color:var(--purple);font-weight:600;font-size:.85rem;}
+
+/* ── FORM EDICION ── */
+.edit-form-wrap{background:var(--purple-light);border:1.5px solid rgba(99,30,235,.15);border-radius:var(--radius-md);padding:1.25rem 1.4rem;margin-top:.5rem;}
+.edit-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.ef-group{display:flex;flex-direction:column;gap:3px;}
+.ef-group.full{grid-column:span 2;}
+.ef-group label{font-size:.67rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.04em;}
+.ef-group input,.ef-group select,.ef-group textarea{padding:8px 10px;border:1.5px solid rgba(99,30,235,.15);border-radius:8px;font-family:'Open Sans',sans-serif;font-size:.83rem;color:var(--dark);background:#fff;outline:none;transition:border-color .2s;}
+.ef-group input:focus,.ef-group select:focus,.ef-group textarea:focus{border-color:var(--purple);}
+.ef-group textarea{resize:vertical;min-height:70px;}
+.ef-actions{display:flex;gap:.5rem;margin-top:.75rem;}
+.ef-save{background:var(--purple);color:#fff;padding:7px 18px;border-radius:8px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;font-family:inherit;}
+.ef-cancel{background:none;border:1px solid rgba(99,30,235,.2);padding:7px 14px;border-radius:8px;cursor:pointer;font-size:.82rem;color:var(--mid);font-family:inherit;}
+
+/* ── LOGIN WALL ── */
+.login-wall{background:linear-gradient(135deg,var(--purple),var(--purple-mid));border-radius:var(--radius-lg);padding:3rem;text-align:center;color:#fff;}
+.login-wall h2{font-size:1.6rem;margin-bottom:.6rem;}
+.login-wall p{font-size:.9rem;opacity:.82;margin-bottom:1.5rem;line-height:1.65;}
+.login-wall a{background:#fff;color:var(--purple);padding:.75rem 1.8rem;border-radius:var(--radius-pill);font-weight:700;font-size:.9rem;display:inline-block;transition:all .2s;}
+.login-wall a:hover{background:#f2f0f8;transform:translateY(-2px);}
+
+/* ── CONTRIBUCION CARD ── */
+.contrib-card{background:#fff;border:1px solid var(--purple-border);border-radius:var(--radius-md);padding:1.25rem 1.4rem;margin-bottom:.75rem;}
+.contrib-card h4{font-family:var(--font-display);font-size:1rem;font-weight:400;margin-bottom:.35rem;}
+.contrib-card p{font-size:.83rem;color:var(--muted);line-height:1.65;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--dark);color:#fff;padding:.7rem 1.2rem;border-radius:10px;font-size:.84rem;font-weight:500;opacity:0;transform:translateY(8px);transition:all .28s;pointer-events:none;z-index:999;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* ── LOADING ── */
+.loading-dots{display:inline-flex;gap:4px;align-items:center;}
+.loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:ld .8s ease-in-out infinite;}
+.loading-dots span:nth-child(2){animation-delay:.16s;}
+.loading-dots span:nth-child(3){animation-delay:.32s;}
+@keyframes ld{0%,80%,100%{opacity:.25;transform:scale(.8);}40%{opacity:1;transform:scale(1);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+@media(max-width:600px){
+  .perfil-hero{flex-direction:column;text-align:center;}
+  .perfil-stats{justify-content:center;margin-left:0;}
+  .edit-form-grid{grid-template-columns:1fr;}
+  .ef-group.full{grid-column:span 1;}
+  .cita-card{flex-direction:column;}
+  .cita-actions{flex-direction:row;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="index.html">Sintropía Social</a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Repositorio</a></li>
+    <li><a href="blog.html">Newsletter</a></li>
+    <li><a href="herramientas.html">Herramientas</a></li>
+    <li><a href="usuario.html" class="active" style="color:var(--purple);font-weight:600;">Mi perfil</a></li>
+  </ul>
+  <div class="nav-end">
+    <a href="index.html" class="btn btn-ghost" style="font-size:.83rem;">← Volver al repositorio</a>
+    <button class="btn btn-primary" onclick="ssLogout()">Cerrar sesión</button>
+  </div>
+  <button class="nav-toggle" onclick="document.getElementById('nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="page-wrap">
+<div class="container">
+
+  <!-- Cargando sesión -->
+  <div id="ui-loading" style="text-align:center;padding:5rem 1rem;">
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+    <p style="font-size:.85rem;color:var(--muted);margin-top:.75rem;">Cargando tu perfil…</p>
+  </div>
+
+  <!-- Login wall -->
+  <div id="ui-login" style="display:none;margin-top:2rem;">
+    <div class="login-wall">
+      <h2>Área privada</h2>
+      <p>Inicia sesión para ver tus citas propuestas, el estado de tu contenido y tu historial de contribuciones.</p>
+      <a href="registro.html">Iniciar sesión →</a>
+      <p style="margin-top:1rem;font-size:.8rem;opacity:.7;">¿No tienes cuenta? <a href="registro.html" style="background:none;color:#fff;text-decoration:underline;padding:0;display:inline;font-weight:600;">Regístrate gratis</a></p>
+    </div>
+  </div>
+
+  <!-- Perfil autenticado -->
+  <div id="ui-perfil" style="display:none;">
+    <!-- Hero -->
+    <div class="perfil-hero">
+      <div class="perfil-avatar" id="p-avatar">?</div>
+      <div class="perfil-info">
+        <h1 id="p-nombre">—</h1>
+        <p id="p-email">—</p>
+        <p id="p-fecha-registro" style="margin-top:.2rem;font-size:.76rem;color:rgba(255,255,255,.35);"></p>
+      </div>
+      <div class="perfil-stats">
+        <div class="pstat"><div class="pstat-n" id="pstat-total">0</div><div class="pstat-l">Citas enviadas</div></div>
+        <div class="pstat"><div class="pstat-n" id="pstat-aprobadas" style="color:#86efac;">0</div><div class="pstat-l">Aprobadas</div></div>
+        <div class="pstat"><div class="pstat-n" id="pstat-pendientes" style="color:#fdba74;">0</div><div class="pstat-l">En revisión</div></div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-wrap">
+      <button class="tab-btn active" onclick="uShowTab('citas',this)">📚 Mis citas propuestas</button>
+      <button class="tab-btn" onclick="uShowTab('contribuciones',this)">📝 Mis contribuciones</button>
+      <button class="tab-btn" onclick="uShowTab('cuenta',this)">⚙️ Mi cuenta</button>
+    </div>
+
+    <!-- Tab: Citas -->
+    <div id="tab-citas">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1.25rem;">
+        <h2 style="font-size:1.4rem;">Mis citas propuestas</h2>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+          <button onclick="uCitasFiltrar('TODAS',this)" class="uf-fbtn uf-fbtn-act" style="padding:5px 12px;border-radius:20px;font-size:.76rem;cursor:pointer;background:var(--purple);color:#fff;border:none;font-family:inherit;font-weight:600;">Todas</button>
+          <button onclick="uCitasFiltrar('PENDIENTE',this)" class="uf-fbtn" style="padding:5px 12px;border-radius:20px;font-size:.76rem;cursor:pointer;background:rgba(255,121,41,.1);color:var(--orange);border:1px solid rgba(255,121,41,.2);font-family:inherit;">Pendientes</button>
+          <button onclick="uCitasFiltrar('APROBADA',this)" class="uf-fbtn" style="padding:5px 12px;border-radius:20px;font-size:.76rem;cursor:pointer;background:var(--green-bg);color:var(--green);border:1px solid rgba(22,163,74,.2);font-family:inherit;">Aprobadas</button>
+          <button onclick="uCitasFiltrar('RECHAZADA',this)" class="uf-fbtn" style="padding:5px 12px;border-radius:20px;font-size:.76rem;cursor:pointer;background:var(--red-bg);color:var(--red);border:1px solid rgba(220,38,38,.15);font-family:inherit;">Rechazadas</button>
+        </div>
+      </div>
+      <div id="u-citas-list">
+        <div style="text-align:center;padding:2rem;"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem;">
+        <a href="index.html#pdf-citas-section" class="btn btn-primary" style="font-size:.85rem;">+ Proponer una nueva cita</a>
+      </div>
+    </div>
+
+    <!-- Tab: Contribuciones -->
+    <div id="tab-contribuciones" style="display:none;">
+      <h2 style="font-size:1.4rem;margin-bottom:1.25rem;">Mis contribuciones al blog</h2>
+      <div id="u-contrib-list">
+        <div style="text-align:center;padding:2rem;"><div class="loading-dots"><span></span><span></span><span></span></div></div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem;">
+        <a href="blog.html" class="btn btn-primary" style="font-size:.85rem;">Ir al blog y contribuir</a>
+      </div>
+    </div>
+
+    <!-- Tab: Cuenta -->
+    <div id="tab-cuenta" style="display:none;">
+      <h2 style="font-size:1.4rem;margin-bottom:1.5rem;">Configuración de cuenta</h2>
+      <div style="background:#fff;border:1px solid var(--purple-border);border-radius:var(--radius-md);padding:1.75rem;max-width:540px;">
+        <h3 style="font-size:1rem;font-weight:600;color:var(--dark);margin-bottom:1.25rem;">Datos básicos</h3>
+        <div style="display:grid;gap:.75rem;">
+          <div class="ef-group"><label>Nombre completo</label><input id="cu-nombre" placeholder="Tu nombre"/></div>
+          <div class="ef-group"><label>Organización (opcional)</label><input id="cu-org" placeholder="Institución o proyecto"/></div>
+          <div class="ef-group"><label>Correo electrónico</label><input id="cu-email" type="email" readonly style="opacity:.6;background:var(--surface);cursor:not-allowed;" title="El correo no se puede cambiar desde aquí"/></div>
+        </div>
+        <div style="margin-top:1.25rem;display:flex;gap:.75rem;flex-wrap:wrap;">
+          <button onclick="uGuardarCuenta()" style="background:var(--purple);color:#fff;padding:9px 22px;border-radius:var(--radius-pill);border:none;cursor:pointer;font-size:.87rem;font-weight:600;font-family:inherit;">Guardar cambios</button>
+          <button onclick="ssLogout()" style="background:none;border:1px solid rgba(220,38,38,.2);color:var(--red);padding:9px 20px;border-radius:var(--radius-pill);cursor:pointer;font-size:.87rem;font-family:inherit;">Cerrar sesión</button>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid rgba(220,38,38,.12);border-radius:var(--radius-md);padding:1.5rem;max-width:540px;margin-top:1.25rem;">
+        <h3 style="font-size:1rem;font-weight:600;color:var(--red);margin-bottom:.5rem;">Zona peligrosa</h3>
+        <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem;">Eliminar tu cuenta borra todos tus datos y citas propuestas (las ya aprobadas permanecen en el repositorio como anónimas).</p>
+        <button onclick="uEliminarCuenta()" style="background:none;border:1px solid rgba(220,38,38,.3);color:var(--red);padding:7px 16px;border-radius:var(--radius-pill);cursor:pointer;font-size:.82rem;font-family:inherit;">Eliminar mi cuenta</button>
+      </div>
+    </div>
+
+  </div><!-- /ui-perfil -->
+
+</div>
+</div>
+
+<!-- Toast -->
+<div id="u-toast" class="toast"></div>
+
+<footer style="background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <span style="font-family:var(--font-display);font-size:.9rem;font-weight:700;color:rgba(255,255,255,.35);">Sintropía Social</span>
+  <span style="font-size:.75rem;color:rgba(255,255,255,.25);">Repositorio Bibliográfico — Área de usuario</span>
+  <a href="index.html" style="font-size:.75rem;color:rgba(255,255,255,.35);transition:color .2s;" onmouseover="this.style.color='#9B6BF8'" onmouseout="this.style.color='rgba(255,255,255,.35)'">← Volver al repositorio</a>
+</footer>
+
+<script>
+/* ════════ USUARIO — Perfil y gestión de citas propuestas ════════ */
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+// Toast
+function uToast(msg){
+  var t=document.getElementById('u-toast');
+  if(!t)return;
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},3000);
+}
+
+// ── JSONP (usa WEBAPP_URL de config.js) ──
+function uAPI(action, params){
+  return new Promise(function(resolve){
+    var cb='uCB_'+Date.now()+'_'+Math.floor(Math.random()*100000);
+    var url=WEBAPP_URL+'?callback='+cb;
+    params=params||{};params.action=action;
+    for(var k in params){if(params[k]!==undefined&&params[k]!==null)url+='&'+encodeURIComponent(k)+'='+encodeURIComponent(params[k]);}
+    var s=document.createElement('script');var done=false;
+    function cleanup(){if(done)return;done=true;delete window[cb];if(s.parentNode)s.parentNode.removeChild(s);}
+    window[cb]=function(d){cleanup();resolve(d);};
+    s.onerror=function(){cleanup();resolve({ok:false,error:'Sin conexión.'});};
+    setTimeout(function(){if(!done){cleanup();resolve({ok:false,error:'Timeout.'});}},20000);
+    s.src=url;document.body.appendChild(s);
+  });
+}
+
+// ── SESIÓN ──
+function ssGetUser(){
+  var u=null;
+  try{u=JSON.parse(localStorage.getItem('ss_user')||'null');}catch(e){}
+  if(!u)try{u=JSON.parse(localStorage.getItem('sintropia_usuario_actual')||'null');}catch(e){}
+  return u;
+}
+
+function ssLogout(){
+  localStorage.removeItem('ss_user');
+  localStorage.removeItem('sintropia_usuario_actual');
+  localStorage.removeItem('ss_admin');
+  window.location.href='index.html';
+}
+
+// ── INIT ──
+var _uCitasPool=[], _uFiltro='TODAS', _uUser=null;
+
+(function init(){
+  var u=ssGetUser();
+  document.getElementById('ui-loading').style.display='none';
+  if(!u){
+    document.getElementById('ui-login').style.display='block';
+    return;
+  }
+  _uUser=u;
+  document.getElementById('ui-perfil').style.display='block';
+  // Rellenar hero
+  var inicial=(u.nombre||u.email||'?')[0].toUpperCase();
+  document.getElementById('p-avatar').textContent=inicial;
+  document.getElementById('p-nombre').textContent=u.nombre||u.email||'Usuario';
+  document.getElementById('p-email').textContent=u.email||'';
+  if(u.fechaRegistro){
+    try{
+      var d=new Date(u.fechaRegistro);
+      document.getElementById('p-fecha-registro').textContent='Miembro desde '+d.toLocaleDateString('es-MX',{month:'long',year:'numeric'});
+    }catch(e){}
+  }
+  // Campos cuenta
+  var cn=document.getElementById('cu-nombre');
+  var co=document.getElementById('cu-org');
+  var ce=document.getElementById('cu-email');
+  if(cn)cn.value=u.nombre||'';
+  if(co)co.value=u.organizacion||'';
+  if(ce)ce.value=u.email||'';
+  // Cargar citas
+  uLoadCitas();
+  uLoadContrib();
+})();
+
+// ── CITAS ──
+function uLoadCitas(){
+  if(!_uUser)return;
+  var el=document.getElementById('u-citas-list');
+  if(el)el.innerHTML='<div style="text-align:center;padding:2rem;"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+  uAPI('getMisCitas',{usuario:_uUser.email}).then(function(r){
+    if(r&&r.ok&&r.data&&r.data.length){
+      _uCitasPool=r.data;
+    } else {
+      _uCitasPool=[];
+    }
+    // Stats
+    var total=_uCitasPool.length;
+    var aprobadas=_uCitasPool.filter(function(c){return(c.Estado||c.estado||'')==='APROBADA';}).length;
+    var pendientes=_uCitasPool.filter(function(c){return(c.Estado||c.estado||'')==='PENDIENTE';}).length;
+    document.getElementById('pstat-total').textContent=total;
+    document.getElementById('pstat-aprobadas').textContent=aprobadas;
+    document.getElementById('pstat-pendientes').textContent=pendientes;
+    uRenderCitas();
+  }).catch(function(){
+    if(el)el.innerHTML='<p style="color:var(--muted);font-size:.85rem;padding:2rem;text-align:center;">No se pudo cargar el historial. Intenta más tarde.</p>';
+  });
+}
+
+function uCitasFiltrar(estado, btn){
+  _uFiltro=estado;
+  document.querySelectorAll('.uf-fbtn').forEach(function(b){
+    b.style.background='none';b.style.color='#888';b.style.border='1px solid #ddd';b.style.fontWeight='400';
+  });
+  if(btn){
+    var colors={TODAS:'#631EEB',PENDIENTE:getComputedStyle(document.documentElement).getPropertyValue('--orange').trim(),APROBADA:'#16a34a',RECHAZADA:'#dc2626'};
+    btn.style.background=colors[estado]||'#555';btn.style.color='#fff';btn.style.border='none';btn.style.fontWeight='600';
+  }
+  uRenderCitas();
+}
+
+function uRenderCitas(){
+  var el=document.getElementById('u-citas-list');if(!el)return;
+  var lista=_uFiltro==='TODAS'?_uCitasPool:_uCitasPool.filter(function(c){return(c.Estado||c.estado||'')===''+_uFiltro;});
+  if(!lista.length){
+    el.innerHTML='<div class="empty-state"><div class="empty-state-icon">📚</div><p>'+
+      (_uFiltro==='TODAS'?'Aún no has propuesto ninguna cita al repositorio.':'Sin citas con ese estado.')+
+      '</p><a href="index.html#pdf-citas-section">Proponer mi primera cita →</a></div>';
+    return;
+  }
+  el.innerHTML=lista.map(function(c,idx){
+    var estado=c.Estado||c.estado||'PENDIENTE';
+    var id=c.No||c.id||idx;
+    var badgeCls=estado==='APROBADA'?'badge-aprobada':estado==='RECHAZADA'?'badge-rechazada':'badge-pendiente';
+    return '<div class="cita-card" id="ucita-'+id+'">'+
+      '<div class="cita-estado"><span class="cita-estado-badge '+badgeCls+'">'+estado+'</span></div>'+
+      '<div class="cita-body">'+
+        '<div class="cita-text">"'+esc((c.Cita||c.cita||'').substring(0,260))+((c.Cita||c.cita||'').length>260?'…':'')+'"</div>'+
+        '<div class="cita-meta">'+
+          (c.Autor||c.autor?'<span>✍ '+esc(c.Autor||c.autor)+'</span>':'')+
+          (c.Publicacion||c.publicacion?'<span>📖 '+esc(c.Publicacion||c.publicacion)+'</span>':'')+
+          (c.Pagina||c.pagina?'<span>p. '+esc(String(c.Pagina||c.pagina))+'</span>':'')+
+          (c.Categoria||c.categoria?'<span>🏷 '+esc(c.Categoria||c.categoria)+'</span>':'')+
+          (c.Fecha||c.fecha?'<span>🕐 '+new Date(c.Fecha||c.fecha).toLocaleDateString('es-MX',{month:'short',year:'numeric'})+'</span>':'')+
+        '</div>'+
+        '<div id="ucita-edit-'+id+'" style="display:none;margin-top:.75rem;"></div>'+
+      '</div>'+
+      (estado==='PENDIENTE'?
+        '<div class="cita-actions">'+
+          '<button class="cita-btn cita-btn-edit" onclick="uToggleEdit(\''+id+'\','+JSON.stringify(c).replace(/"/g,'&quot;')+')">Editar</button>'+
+          '<button class="cita-btn cita-btn-del" onclick="uEliminarCita(\''+id+'\')">Eliminar</button>'+
+        '</div>':'<div class="cita-actions"></div>')+
+    '</div>';
+  }).join('');
+}
+
+function uToggleEdit(id, c){
+  var wrap=document.getElementById('ucita-edit-'+id);
+  if(!wrap)return;
+  if(wrap.style.display!=='none'){wrap.style.display='none';wrap.innerHTML='';return;}
+  wrap.style.display='block';
+  wrap.innerHTML='<div class="edit-form-wrap">'+
+    '<div class="edit-form-grid">'+
+      '<div class="ef-group full"><label>Cita textual *</label><textarea id="ef-cita-'+id+'" rows="3">'+esc(c.Cita||c.cita||'')+'</textarea></div>'+
+      '<div class="ef-group"><label>Autor</label><input id="ef-aut-'+id+'" value="'+esc(c.Autor||c.autor||'')+'"/></div>'+
+      '<div class="ef-group"><label>Año</label><input id="ef-yr-'+id+'" value="'+esc(String(c.Anio||c.anio||''))+'"/></div>'+
+      '<div class="ef-group"><label>Publicación</label><input id="ef-pub-'+id+'" value="'+esc(c.Publicacion||c.publicacion||'')+'"/></div>'+
+      '<div class="ef-group"><label>Página</label><input id="ef-pag-'+id+'" value="'+esc(String(c.Pagina||c.pagina||''))+'"/></div>'+
+      '<div class="ef-group"><label>Categoría</label>'+
+      '<select id="ef-cat-'+id+'">'+
+        ['Sociología','Antropología','Psicología','Educación','Virtualidad','Administración','Mercados Laborales','Historia','Filosofía','Investigación Social','Lingüística','Metodología','Intervención Comunitaria','Emprendimiento','Flexibilidad laboral','Evaluación de Impacto','Empleabilidad','Covid','Otra'].map(function(op){
+          return '<option'+(op===(c.Categoria||c.categoria)?' selected':'')+'>'+op+'</option>';
+        }).join('')+
+      '</select></div>'+
+      '<div class="ef-group"><label>Indicador</label><input id="ef-ind-'+id+'" value="'+esc(c.Indicador||c.indicador||'')+'"/></div>'+
+    '</div>'+
+    '<div class="ef-actions">'+
+      '<button class="ef-save" onclick="uGuardarCita(\''+id+'\')">Guardar cambios</button>'+
+      '<button class="ef-cancel" onclick="uToggleEdit(\''+id+'\',{})">Cancelar</button>'+
+    '</div>'+
+  '</div>';
+}
+window.uToggleEdit=uToggleEdit;
+
+function uGuardarCita(id){
+  var cita=(document.getElementById('ef-cita-'+id)||{}).value||'';
+  if(!cita.trim()){uToast('La cita no puede estar vacía.');return;}
+  uAPI('actualizarCita',{
+    id:id,
+    usuario:_uUser.email,
+    cita:cita,
+    autor:(document.getElementById('ef-aut-'+id)||{}).value||'',
+    year:(document.getElementById('ef-yr-'+id)||{}).value||'',
+    publicacion:(document.getElementById('ef-pub-'+id)||{}).value||'',
+    pagina:(document.getElementById('ef-pag-'+id)||{}).value||'',
+    categoria:(document.getElementById('ef-cat-'+id)||{}).value||'',
+    indicador:(document.getElementById('ef-ind-'+id)||{}).value||''
+  }).then(function(r){
+    if(r&&r.ok){
+      uToast('✓ Cita actualizada.');
+      uLoadCitas();
+    } else { uToast(r&&r.error?r.error:'Error al guardar.'); }
+  });
+}
+window.uGuardarCita=uGuardarCita;
+
+function uEliminarCita(id){
+  if(!confirm('¿Eliminar esta cita? Se retirará de la lista de pendientes.'))return;
+  uAPI('eliminarCita',{id:id,usuario:_uUser.email}).then(function(r){
+    if(r&&r.ok){
+      _uCitasPool=_uCitasPool.filter(function(c){return (c.No||c.id||c['No'])!==id&&(c.No||c.id||c['No'])!=id;});
+      uToast('Cita eliminada.');
+      uRenderCitas();
+    } else { uToast(r&&r.error?r.error:'Error al eliminar.'); }
+  });
+}
+window.uEliminarCita=uEliminarCita;
+
+// ── CONTRIBUCIONES ──
+function uLoadContrib(){
+  if(!_uUser)return;
+  var el=document.getElementById('u-contrib-list');
+  if(el)el.innerHTML='<div style="text-align:center;padding:2rem;"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+  uAPI('getMisContribuciones',{usuario:_uUser.email}).then(function(r){
+    if(r&&r.ok&&r.data&&r.data.length){
+      el.innerHTML=r.data.map(function(co){
+        var estado=co.Estado||co.estado||'pendiente';
+        var estadoColor=estado==='publicada'||estado==='aprobada'?'var(--green)':'var(--orange)';
+        return '<div class="contrib-card">'+
+          '<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;flex-wrap:wrap;">'+
+            '<h4>'+esc(co.Titulo||co.titulo||'Sin título')+'</h4>'+
+            '<span style="font-size:.7rem;background:rgba(99,30,235,.08);color:var(--purple);padding:2px 9px;border-radius:20px;">'+esc(co.Tipo||co.tipo||'Contribución')+'</span>'+
+            '<span style="font-size:.7rem;color:'+estadoColor+';font-weight:600;">'+estado+'</span>'+
+          '</div>'+
+          '<p>'+esc((co.Resumen||co.resumen||'').substring(0,200))+((co.Resumen||co.resumen||'').length>200?'…':'')+'</p>'+
+          (co.Fecha||co.fecha?'<p style="font-size:.74rem;color:var(--muted);margin-top:.35rem;">'+new Date(co.Fecha||co.fecha).toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'})+'</p>':'')+
+        '</div>';
+      }).join('');
+    } else {
+      el.innerHTML='<div class="empty-state"><div class="empty-state-icon">📝</div><p>Aún no has enviado contribuciones al blog o al anecdotario.</p><a href="blog.html">Contribuir al blog →</a></div>';
+    }
+  }).catch(function(){
+    el.innerHTML='<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem;">Sin conexión. Intenta más tarde.</p>';
+  });
+}
+
+// ── TABS ──
+function uShowTab(name, btn){
+  ['citas','contribuciones','cuenta'].forEach(function(t){
+    document.getElementById('tab-'+t).style.display=t===name?'block':'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn)btn.classList.add('active');
+}
+window.uShowTab=uShowTab;
+
+// ── CUENTA ──
+function uGuardarCuenta(){
+  var nombre=(document.getElementById('cu-nombre')||{}).value||'';
+  var org=(document.getElementById('cu-org')||{}).value||'';
+  if(!nombre.trim()){uToast('Escribe tu nombre.');return;}
+  uAPI('actualizarUsuario',{email:_uUser.email,nombre:nombre,organizacion:org}).then(function(r){
+    if(r&&r.ok){
+      _uUser.nombre=nombre;_uUser.organizacion=org;
+      try{localStorage.setItem('ss_user',JSON.stringify(_uUser));}catch(e){}
+      document.getElementById('p-nombre').textContent=nombre;
+      document.getElementById('p-avatar').textContent=nombre[0].toUpperCase();
+      uToast('✓ Datos actualizados.');
+    } else { uToast(r&&r.error?r.error:'Error al guardar.'); }
+  });
+}
+window.uGuardarCuenta=uGuardarCuenta;
+
+function uEliminarCuenta(){
+  if(!confirm('¿Eliminar tu cuenta? Esta acción no se puede deshacer.'))return;
+  if(!confirm('Confirma de nuevo: se eliminarán tus datos de usuario. Las citas ya aprobadas quedan como anónimas.'))return;
+  uAPI('eliminarUsuario',{email:_uUser.email}).then(function(r){
+    ssLogout();
+  });
+}
+window.uEliminarCuenta=uEliminarCuenta;
+</script>
+</body>
+</html>

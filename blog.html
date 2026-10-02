@@ -649,6 +649,9 @@ renderAnec();
   <div class="adm-bar-actions">
     <button class="adm-btn adm-btn-naranja" onclick="ssToggleAdmPanel('adm-panel-contribuciones')">Contribuciones</button>
     <button class="adm-btn adm-btn-outline" onclick="ssToggleAdmPanel('adm-panel-suscriptores')">Suscriptores</button>
+    <button class="adm-btn adm-btn-primary" onclick="ssToggleAdmPanel('adm-panel-citas')" id="adm-citas-btn">
+      Citas pendientes <span id="adm-citas-badge" style="display:none;background:#FF7929;color:#fff;font-size:.65rem;padding:1px 6px;border-radius:10px;margin-left:4px;"></span>
+    </button>
     <div class="adm-bar-sep"></div>
     <button class="adm-btn adm-btn-outline" onclick="window.location.href='admin.html'">Panel admin</button>
   </div>
@@ -671,6 +674,212 @@ renderAnec();
   </div>
   <div id="adm-suscriptores-list" style="font-size:.85rem;color:#888;">Cargando suscriptores...</div>
 </div>
+
+<!-- PANEL: Citas pendientes del Repositorio -->
+<div class="adm-panel" id="adm-panel-citas">
+  <div class="adm-panel-header">
+    <h3>Citas pendientes — Repositorio Bibliográfico</h3>
+    <div style="display:flex;align-items:center;gap:.6rem;">
+      <button id="adm-aprobar-todas-btn" onclick="admAprobarTodas()" style="background:#16a34a;color:#fff;padding:5px 14px;border-radius:7px;border:none;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">✓ Aprobar todas</button>
+      <button onclick="admLoadCitas(true)" style="background:none;border:1px solid rgba(99,30,235,.2);color:#631EEB;padding:5px 11px;border-radius:7px;font-size:.75rem;cursor:pointer;font-family:inherit;">↺ Actualizar</button>
+      <button class="adm-panel-close" onclick="ssCloseAdmPanels()">✕</button>
+    </div>
+  </div>
+  <div id="adm-citas-filtros" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+    <button onclick="admCitasFiltrar('PENDIENTE',this)" class="cf-btn cf-active" style="padding:4px 11px;border-radius:20px;font-size:.74rem;font-weight:600;cursor:pointer;background:#631EEB;color:#fff;border:none;font-family:inherit;">Pendientes</button>
+    <button onclick="admCitasFiltrar('APROBADA',this)" class="cf-btn" style="padding:4px 11px;border-radius:20px;font-size:.74rem;font-weight:600;cursor:pointer;background:rgba(22,163,74,.1);color:#16a34a;border:1px solid rgba(22,163,74,.2);font-family:inherit;">Aprobadas</button>
+    <button onclick="admCitasFiltrar('RECHAZADA',this)" class="cf-btn" style="padding:4px 11px;border-radius:20px;font-size:.74rem;font-weight:600;cursor:pointer;background:rgba(220,38,38,.08);color:#dc2626;border:1px solid rgba(220,38,38,.15);font-family:inherit;">Rechazadas</button>
+    <button onclick="admCitasFiltrar('TODAS',this)" class="cf-btn" style="padding:4px 11px;border-radius:20px;font-size:.74rem;font-weight:600;cursor:pointer;background:none;color:#888;border:1px solid #ddd;font-family:inherit;">Todas</button>
+    <span id="adm-citas-count" style="font-size:.75rem;color:#888;align-self:center;margin-left:.25rem;"></span>
+  </div>
+  <div id="adm-citas-list" style="font-size:.85rem;color:#888;">Cargando citas...</div>
+</div>
+
+<script>
+/* ════════ ADMIN: Aprobación de citas del Repositorio ════════ */
+var _admCitasPool = [];
+var _admCitasFiltroActivo = 'PENDIENTE';
+
+// Carga las citas pendientes del Sheets
+function admLoadCitas(force){
+  var el = document.getElementById('adm-citas-list');
+  if(!el) return;
+  el.innerHTML = '<p style="color:#888;font-size:.82rem;">Cargando citas…</p>';
+  if(typeof api !== 'function'){ el.textContent = 'config.js no disponible.'; return; }
+  var token = null;
+  try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
+  api('getCitasPendientes', { adminToken: token, estado: 'TODAS' }).then(function(r){
+    if(r && r.ok && r.data && r.data.length){
+      _admCitasPool = r.data;
+      // Badge con pendientes
+      var pend = r.data.filter(function(c){ return (c.Estado||c.estado||'')===_admCitasFiltroActivo||_admCitasFiltroActivo==='TODAS'; });
+      var badge = document.getElementById('adm-citas-badge');
+      var totalPend = r.data.filter(function(c){ return (c.Estado||c.estado||'')=='PENDIENTE'; }).length;
+      if(badge && totalPend){ badge.textContent = totalPend; badge.style.display='inline'; }
+      admRenderCitas();
+    } else {
+      _admCitasPool = [];
+      el.innerHTML = '<p style="color:#888;font-size:.82rem;">No hay citas '+(force?'':'pendientes')+'.</p>';
+    }
+  }).catch(function(){ el.textContent = 'Error al conectar con Apps Script.'; });
+}
+
+function admCitasFiltrar(estado, btn){
+  _admCitasFiltroActivo = estado;
+  document.querySelectorAll('.cf-btn').forEach(function(b){
+    b.style.background = 'none'; b.style.color = '#888'; b.style.border = '1px solid #ddd';
+  });
+  if(btn){ btn.style.background = estado==='PENDIENTE'?'#631EEB':estado==='APROBADA'?'#16a34a':estado==='RECHAZADA'?'#dc2626':'#555';
+           btn.style.color = '#fff'; btn.style.border = 'none'; }
+  admRenderCitas();
+}
+
+function admRenderCitas(){
+  var el = document.getElementById('adm-citas-list'); if(!el) return;
+  var lista = _admCitasFiltroActivo === 'TODAS' ? _admCitasPool :
+    _admCitasPool.filter(function(c){ return (c.Estado||c.estado||'') === _admCitasFiltroActivo; });
+  var countEl = document.getElementById('adm-citas-count');
+  if(countEl) countEl.textContent = lista.length + ' resultado(s)';
+  var mostrarAprobar = document.getElementById('adm-aprobar-todas-btn');
+  if(mostrarAprobar) mostrarAprobar.style.display = _admCitasFiltroActivo==='PENDIENTE' && lista.length ? 'inline-block' : 'none';
+  if(!lista.length){ el.innerHTML = '<p style="color:#888;font-size:.82rem;">Sin citas con ese estado.</p>'; return; }
+  el.innerHTML = lista.map(function(c, i){
+    var estado = c.Estado || c.estado || 'PENDIENTE';
+    var estadoColor = estado==='APROBADA'?'#16a34a':estado==='RECHAZADA'?'#dc2626':'#FF7929';
+    var estadoBg = estado==='APROBADA'?'rgba(22,163,74,.08)':estado==='RECHAZADA'?'rgba(220,38,38,.06)':'rgba(255,121,41,.08)';
+    var id = c.No || c.id || c['No'] || i;
+    return '<div id="adm-cita-row-'+id+'" style="border:1px solid #e0d9f7;border-radius:10px;padding:.85rem 1rem;margin-bottom:.5rem;background:#fff;display:flex;gap:.75rem;align-items:flex-start;flex-wrap:wrap;">'+
+      '<div style="flex:1;min-width:200px;">'+
+        '<div style="display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;margin-bottom:.4rem;">'+
+          '<span style="font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:'+estadoBg+';color:'+estadoColor+';padding:2px 9px;border-radius:20px;">'+estado+'</span>'+
+          '<span style="font-size:.7rem;background:#f0ebff;color:#631EEB;padding:2px 8px;border-radius:20px;">'+escapeHtml(c.Categoria||c.categoria||'—')+'</span>'+
+          (c.Anio||c.anio ? '<span style="font-size:.7rem;color:#888;">'+escapeHtml(String(c.Anio||c.anio))+'</span>' : '')+
+        '</div>'+
+        '<div style="font-size:.83rem;font-style:italic;color:#3d3560;line-height:1.6;margin-bottom:.35rem;">"'+escapeHtml((c.Cita||c.cita||'').substring(0,220))+((c.Cita||c.cita||'').length>220?'…':'') +'"</div>'+
+        '<div style="font-size:.74rem;color:#888;">'+
+          escapeHtml(c.Autor||c.autor||'Sin autor')+
+          (c.Publicacion||c.publicacion ? ' · <em>'+escapeHtml(c.Publicacion||c.publicacion)+'</em>' : '')+
+          (c.Pagina||c.pagina ? ' · p. '+escapeHtml(String(c.Pagina||c.pagina)) : '')+
+          (c.Usuario||c.usuario ? ' · <span style="color:#631EEB;">'+escapeHtml(c.Usuario||c.usuario)+'</span>' : '')+
+        '</div>'+
+      '</div>'+
+      '<div style="display:flex;flex-direction:column;gap:.35rem;flex-shrink:0;">'+
+        (estado==='PENDIENTE' ?
+          '<button onclick="admAprobarCita(\''+id+'\')" style="background:#16a34a;color:#fff;padding:5px 13px;border-radius:7px;border:none;font-size:.76rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;">✓ Aprobar</button>'+
+          '<button onclick="admRechazarCita(\''+id+'\')" style="background:rgba(220,38,38,.08);color:#dc2626;padding:5px 13px;border-radius:7px;border:1px solid rgba(220,38,38,.2);font-size:.76rem;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;">✕ Rechazar</button>'
+        : '<span style="font-size:.73rem;color:'+estadoColor+';font-weight:600;padding:4px 0;">'+estado+'</span>')+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+// Aprobar una sola
+function admAprobarCita(id){
+  var token = null;
+  try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
+  var row = document.getElementById('adm-cita-row-'+id);
+  if(row) row.style.opacity = '.5';
+  api('aprobarCita', { adminToken: token, id: id }).then(function(r){
+    if(r && r.ok){
+      // Actualizar en pool
+      _admCitasPool = _admCitasPool.map(function(c){
+        if((c.No||c.id||c['No'])===id||(c.No||c.id||c['No'])==id) c.Estado = 'APROBADA';
+        return c;
+      });
+      // Badge actualizar
+      var totalPend = _admCitasPool.filter(function(c){ return (c.Estado||c.estado||'')==='PENDIENTE'; }).length;
+      var badge = document.getElementById('adm-citas-badge');
+      if(badge){ if(totalPend){ badge.textContent=totalPend; }else{ badge.style.display='none'; } }
+      admRenderCitas();
+      ssToast('✓ Cita aprobada.');
+    } else {
+      if(row) row.style.opacity = '1';
+      ssToast('Error al aprobar. Intenta de nuevo.');
+    }
+  }).catch(function(){
+    if(row) row.style.opacity = '1';
+    ssToast('Sin conexión con Apps Script.');
+  });
+}
+
+// Rechazar una sola
+function admRechazarCita(id){
+  if(!confirm('¿Rechazar esta cita? Quedará marcada como RECHAZADA.')) return;
+  var token = null;
+  try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
+  var row = document.getElementById('adm-cita-row-'+id);
+  if(row) row.style.opacity = '.5';
+  api('rechazarCita', { adminToken: token, id: id }).then(function(r){
+    if(r && r.ok){
+      _admCitasPool = _admCitasPool.map(function(c){
+        if((c.No||c.id||c['No'])===id||(c.No||c.id||c['No'])==id) c.Estado = 'RECHAZADA';
+        return c;
+      });
+      admRenderCitas();
+      ssToast('Cita rechazada.');
+    } else {
+      if(row) row.style.opacity = '1';
+      ssToast('Error al rechazar.');
+    }
+  });
+}
+
+// Aprobar todas las pendientes de golpe
+function admAprobarTodas(){
+  var pendientes = _admCitasPool.filter(function(c){ return (c.Estado||c.estado||'') === 'PENDIENTE'; });
+  if(!pendientes.length){ ssToast('No hay citas pendientes.'); return; }
+  if(!confirm('¿Aprobar ' + pendientes.length + ' citas pendientes de una vez?')) return;
+  var token = null;
+  try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
+  var btn = document.getElementById('adm-aprobar-todas-btn');
+  if(btn){ btn.textContent = 'Aprobando…'; btn.disabled = true; }
+  api('aprobarTodasCitas', { adminToken: token }).then(function(r){
+    if(r && r.ok){
+      _admCitasPool = _admCitasPool.map(function(c){ c.Estado = 'APROBADA'; return c; });
+      var badge = document.getElementById('adm-citas-badge');
+      if(badge) badge.style.display = 'none';
+      admRenderCitas();
+      ssToast('✓ ' + (r.count || pendientes.length) + ' citas aprobadas.');
+    } else {
+      ssToast('Error al aprobar. Intenta de nuevo.');
+    }
+    if(btn){ btn.textContent = '✓ Aprobar todas'; btn.disabled = false; }
+  }).catch(function(){
+    ssToast('Sin conexión.');
+    if(btn){ btn.textContent = '✓ Aprobar todas'; btn.disabled = false; }
+  });
+}
+
+// Interceptar apertura del panel para auto-cargar
+(function(){
+  var _orig = window.ssToggleAdmPanel;
+  window.ssToggleAdmPanel = function(id){
+    if(typeof _orig === 'function') _orig(id);
+    if(id === 'adm-panel-citas') admLoadCitas(false);
+  };
+})();
+
+// Al iniciar, cargar badge de citas pendientes
+document.addEventListener('DOMContentLoaded', function(){
+  var checkAdmin = setInterval(function(){
+    if(typeof window.ssAdminIsAdmin === 'function' && window.ssAdminIsAdmin()){
+      clearInterval(checkAdmin);
+      // Cargar count para badge
+      if(typeof api === 'function'){
+        var token = null;
+        try{ token = JSON.parse(localStorage.getItem('ss_admin')||'{}').token; }catch(e){}
+        api('getCitasPendientes', { adminToken: token, estado: 'PENDIENTE' }).then(function(r){
+          if(r && r.ok && r.data && r.data.length){
+            var badge = document.getElementById('adm-citas-badge');
+            if(badge){ badge.textContent = r.data.length; badge.style.display = 'inline'; }
+          }
+        }).catch(function(){});
+      }
+    }
+  }, 500);
+  setTimeout(function(){ clearInterval(checkAdmin); }, 8000);
+});
+</script>
 
 <script>
 var admBlogPDFData='';
