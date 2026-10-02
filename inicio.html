@@ -204,7 +204,7 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
     <div class="ss-nav-links" id="ss-nav-links">
       <a href="inicio.html" class="active">Inicio</a>
       <div class="ss-dd" id="dd-herr">
-        <button class="ss-dd-btn" onclick="ssToggleDD('dd-herr')">
+        <button class="ss-dd-btn" onclick="ssToggleDD(this)">
           Herramientas
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
@@ -218,7 +218,7 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
         </div>
       </div>
       <div class="ss-dd" id="dd-serv">
-        <button class="ss-dd-btn" onclick="ssToggleDD('dd-serv')">
+        <button class="ss-dd-btn" onclick="ssToggleDD(this)">
           Servicios
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
@@ -250,12 +250,6 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
     </button>
   </div>
 </nav>
-<script>
-function ssToggleDD(id){var all=document.querySelectorAll('.ss-dd');all.forEach(function(d){if(d.id!==id){d.classList.remove('open');}});document.getElementById(id).classList.toggle('open');}
-function ssToggleServ(id){var el=document.getElementById(id);var wasOpen=el.classList.contains('open');document.querySelectorAll('.ss-serv-item').forEach(function(i){i.classList.remove('open');});if(!wasOpen)el.classList.add('open');}
-function ssMobileNav(){document.getElementById('ss-nav-links').classList.toggle('open');}
-document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd').forEach(function(d){d.classList.remove('open');});});
-</script>
 
 <!-- ════════ HERO ════════ -->
 <section class="hero">
