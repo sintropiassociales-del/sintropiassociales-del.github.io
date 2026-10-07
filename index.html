@@ -1556,11 +1556,11 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
     var apa=(document.getElementById(fid+'-apa')||{}).value||autor+(yr?' ('+yr+').':' (s.f.).')+' '+pub+'.'+(pag?' p. '+pag+'.':'');
     var btn=document.getElementById('pcz-send-'+i);
     if(btn){btn.textContent='Enviando…';btn.disabled=true;}
-    // Obtener email del usuario logueado
-    var userEmail='';
-    try{if(typeof Auth!=='undefined'&&Auth.getUser){var u=Auth.getUser();if(u&&u.email)userEmail=u.email;}}catch(e){}
+    // Obtener email y token del usuario logueado
+    var userEmail=''; var userToken='';
+    try{if(typeof Auth!=='undefined'&&Auth.getUser){var u=Auth.getUser();if(u&&u.email)userEmail=u.email;if(u&&u.token)userToken=u.token;}}catch(e){}
     pczJSONP({action:'enviarCita',categoria:cat,indicador:ind,autor:autor,year:yr,
-      cita:cita,publicacion:pub,pagina:pag,citaAPA:apa,link:(pczBookMeta.link||''),usuarioEmail:userEmail}).then(function(resp){
+      cita:cita,publicacion:pub,pagina:pag,citaAPA:apa,link:(pczBookMeta.link||''),usuarioEmail:userEmail,userToken:userToken}).then(function(resp){
       if(resp&&resp.ok){
         document.getElementById('pcz-form-'+i).style.display='none';
         var txt=document.getElementById('pcz-text-'+i);
@@ -1584,8 +1584,8 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
     pczToast('Enviando '+candidatas.length+' citas en lotes…');
     var enviadas=0,fallidas=0,idx=0;
     var LOTE=10, PAUSA=400;
-    var userEmail='';
-    try{if(typeof Auth!=='undefined'&&Auth.getUser){var u=Auth.getUser();if(u&&u.email)userEmail=u.email;}}catch(e){}
+    var userEmail=''; var userToken='';
+    try{if(typeof Auth!=='undefined'&&Auth.getUser){var u=Auth.getUser();if(u&&u.email)userEmail=u.email;if(u&&u.token)userToken=u.token;}}catch(e){}
     function siguiente(){
       if(idx>=candidatas.length){
         pczToast(enviadas+' cita(s) enviada(s)'+( fallidas?' · '+fallidas+' con error':'')+'.', fallidas&&!enviadas?'err':'ok');
@@ -1599,7 +1599,7 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       var apa=autor+(yr?' ('+yr+').':' (s.f.).')+' '+pub+'.'+(r.page?' p. '+r.page+'.':'');
       pczJSONP({action:'enviarCita',categoria:bm.categoria||'',indicador:bm.indicador||'',
         autor:autor,year:yr,cita:citaLimpia,publicacion:pub,pagina:r.page,
-        citaAPA:apa,link:bm.link||'',usuarioEmail:userEmail}).then(function(resp){
+        citaAPA:apa,link:bm.link||'',usuarioEmail:userEmail,userToken:userToken}).then(function(resp){
         if(resp&&resp.ok)enviadas++;else fallidas++;
         // Pausa cada LOTE para no saturar el Apps Script
         var pausa=(idx%LOTE===0)?PAUSA*3:PAUSA;
@@ -2365,7 +2365,8 @@ document.addEventListener('DOMContentLoaded', function() {
       pagina:      document.getElementById('prop-pagina').value.trim(),
       citaAPA:     document.getElementById('prop-apa').value.trim(),
       link:        document.getElementById('prop-link').value.trim(),
-      usuarioEmail:document.getElementById('prop-email').value.trim()
+      usuarioEmail:document.getElementById('prop-email').value.trim(),
+      userToken:(function(){ try{var u=Auth.getUser();return u&&u.token?u.token:'';}catch(e){return '';} })()
     };
     var url = WEBAPP_URL + '?' + Object.keys(params).map(function(k){ return encodeURIComponent(k)+'='+encodeURIComponent(params[k]); }).join('&');
     var cbName = 'proponerCB_' + Date.now();
