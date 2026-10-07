@@ -251,28 +251,24 @@ document.addEventListener('click',function(e){
     <p class="formas-sub">Hay muchas maneras de ser parte. Desde compartir contenido hasta colaborar en investigaciones o apoyar económicamente el proyecto.</p>
     <div class="formas-grid">
       <div class="forma-card">
-        <div class="forma-icon">💜</div>
         <div class="forma-num">01 · Económico</div>
         <div class="forma-name">Donación directa</div>
         <p class="forma-desc">Apoya el mantenimiento de las herramientas gratuitas, la investigación abierta y el newsletter. Cualquier monto ayuda a sostener el proyecto.</p>
         <a href="#donacion" class="forma-btn">Hacer una donación</a>
       </div>
       <div class="forma-card">
-        <div class="forma-icon">🔬</div>
         <div class="forma-num">02 · Investigación</div>
         <div class="forma-name">Colabora en proyectos</div>
         <p class="forma-desc">Si investigas en ciencias sociales, educación o mercados laborales, podemos co-diseñar metodologías, compartir datos anonimizados o publicar juntos.</p>
         <a href="mailto:colaboracion@sintropia.social" class="forma-btn secondary">Proponer colaboración</a>
       </div>
       <div class="forma-card">
-        <div class="forma-icon">📢</div>
         <div class="forma-num">03 · Difusión</div>
         <div class="forma-name">Comparte el proyecto</div>
         <p class="forma-desc">Compartir el newsletter, las herramientas o los artículos con colegas que trabajan en territorios y comunidades es una contribución real y valiosa.</p>
         <a href="newsletter.html" class="forma-btn secondary">Ver el newsletter</a>
       </div>
       <div class="forma-card">
-        <div class="forma-icon">🛠️</div>
         <div class="forma-num">04 · Técnico</div>
         <div class="forma-name">Desarrollo y diseño</div>
         <p class="forma-desc">¿Sabes programar, diseñar o manejar datos? Las herramientas digitales de Sintropía siempre pueden mejorar. Escríbenos si quieres sumarte al equipo.</p>
@@ -296,17 +292,15 @@ document.addEventListener('click',function(e){
         </div>
       </div>
       <div class="donacion-box">
-        <div class="donacion-box-title">Elige un monto (USD)</div>
+        <div class="donacion-box-title">Elige un monto (MXN)</div>
         <div class="amounts">
-          <button class="amount-btn" onclick="selectAmount(this,'5')">$5</button>
-          <button class="amount-btn sel" onclick="selectAmount(this,'10')">$10</button>
-          <button class="amount-btn" onclick="selectAmount(this,'25')">$25</button>
           <button class="amount-btn" onclick="selectAmount(this,'50')">$50</button>
-          <button class="amount-btn" onclick="selectAmount(this,'100')">$100</button>
+          <button class="amount-btn sel" onclick="selectAmount(this,'200')">$200</button>
+          <button class="amount-btn" onclick="selectAmount(this,'500')">$500</button>
         </div>
         <a href="https://www.paypal.com/donate/?hosted_button_id=84RDSWN99GWCN" target="_blank" class="paypal-donate-btn" id="paypal-btn">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.426 4c-.862 0-1.604.62-1.74 1.47L4 14.8h2.42l.5-3h2.2c2.66 0 4.76-1.26 5.34-3.84.26-1.2.12-2.16-.4-2.86C13.48 4.42 12.62 4 11.52 4H7.426zm.88 2.56h3.1c.7 0 1.14.28 1.3.86.26 1-.46 2.38-2.38 2.38H8.14l.166-3.24z" fill="#003087"/><path d="M16.02 7.56c-.1.06-.2.14-.3.22-.64 2.36-2.84 3.82-5.52 3.82H8.54l-.62 3.82c-.08.5.3.98.82.98h2.42c.72 0 1.34-.52 1.46-1.24l.06-.32.52-3.26.04-.22c.12-.72.74-1.24 1.46-1.24h.92c2.54 0 4.44-1.04 5.1-4.04-.26-.3-.62-.56-1.04-.74-.34-.14-.7-.22-1.08-.22-.22 0-.44.02-.66.04l-.44.4z" fill="#009cde"/></svg>
-          Donar con PayPal — <span id="amount-display">$10</span>
+          Donar con PayPal — <span id="amount-display">$200</span>
         </a>
         <p class="paypal-note">Redirige a PayPal. Seguro y sin crear cuenta.</p>
       </div>
@@ -314,7 +308,7 @@ document.addEventListener('click',function(e){
   </div>
 </section>
 <script>
-var currentAmount = '10';
+var currentAmount = '200';
 function selectAmount(btn, amount) {
   document.querySelectorAll('.amount-btn').forEach(function(b){b.classList.remove('sel');});
   btn.classList.add('sel');
@@ -358,47 +352,78 @@ function selectAmount(btn, amount) {
     <p class="colectivo-sub">El cambio social real se teje en red. Aquí hay otras formas concretas de ser parte de Sintropía.</p>
     <div class="ways-grid">
       <div class="way-item">
-        <div class="way-icon">📚</div>
         <div>
           <div class="way-title">Comparte bibliografía</div>
           <div class="way-desc">¿Conoces investigaciones relevantes sobre trabajo, comunidad o educación? Puedes enviarlas para el repositorio.</div>
         </div>
       </div>
       <div class="way-item">
-        <div class="way-icon">🎙️</div>
         <div>
           <div class="way-title">Escribe para el newsletter</div>
           <div class="way-desc">Publicamos análisis, reflexiones y casos de practicionantes con experiencia en campo. Propón un artículo.</div>
         </div>
       </div>
       <div class="way-item">
-        <div class="way-icon">🏫</div>
         <div>
           <div class="way-title">Usa las herramientas</div>
           <div class="way-desc">Integrar nuestras herramientas en talleres, clases o proyectos es una forma valiosa de validarlas y mejorarlas.</div>
         </div>
       </div>
       <div class="way-item">
-        <div class="way-icon">🤝</div>
         <div>
           <div class="way-title">Alianzas institucionales</div>
           <div class="way-desc">¿Representas a una organización? Podemos explorar convenios de colaboración, co-autoría o formación.</div>
         </div>
       </div>
       <div class="way-item">
-        <div class="way-icon">🐛</div>
         <div>
           <div class="way-title">Reporta errores</div>
           <div class="way-desc">Si encuentras un problema en alguna herramienta o un dato incorrecto, cuéntanoslo. Cada reporte mejora el proyecto.</div>
         </div>
       </div>
       <div class="way-item">
-        <div class="way-icon">🌐</div>
         <div>
           <div class="way-title">Traduce y adapta</div>
           <div class="way-desc">Algunas herramientas pueden adaptarse a contextos locales o idiomas específicos. ¿Tienes experiencia en eso?</div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ HERRAMIENTAS PARA CONTRIBUIR ════════ -->
+<section class="colectivo-band" style="padding-top:0;">
+  <div class="container">
+    <div class="section-label" style="margin-bottom:.5rem;">Herramientas para participar</div>
+    <p style="font-size:.92rem;color:var(--text-muted);margin-bottom:2rem;max-width:560px;">Usa el Buscador de Citas PDF para localizar fuentes en cualquier documento y proponer nuevas entradas al Repositorio Bibliográfico de Sintropía.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
+
+      <!-- Repositorio Bibliográfico -->
+      <div class="way-item" style="flex-direction:column;gap:.75rem;padding:1.5rem;background:var(--bg-card);border:1px solid rgba(99,30,235,.25);border-radius:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--text-main);">Repositorio Bibliográfico</div>
+          <div style="width:14px;height:14px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>
+        </div>
+        <p style="font-size:.85rem;color:var(--text-muted);line-height:1.7;">Busca entre más de 843 citas académicas organizadas por categoría, autor y año. Exporta en APA, MLA o Chicago con un clic. También puedes proponer nuevas citas desde cualquier disciplina o libro. Acceso parcial gratuito; suscripción anual para el repositorio completo.</p>
+        <a href="https://sintropiassociales-del.github.io/index.html" target="_blank" style="display:inline-flex;align-items:center;gap:.5rem;background:var(--purple);color:#fff;font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:.65rem 1.2rem;border-radius:50px;text-decoration:none;width:fit-content;transition:background .2s;">
+          Abrir herramienta
+          <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Buscador de Citas PDF -->
+      <div class="way-item" style="flex-direction:column;gap:.75rem;padding:1.5rem;background:var(--bg-card);border:1px solid rgba(255,121,41,.2);border-radius:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--text-main);">Buscador de citas en PDF</div>
+          <div style="width:14px;height:14px;border-radius:50%;background:var(--orange);flex-shrink:0;"></div>
+        </div>
+        <p style="font-size:.85rem;color:var(--text-muted);line-height:1.7;">Carga cualquier libro, reporte o tesis. Busca por palabra clave y extrae párrafos con número de página exacto — listos para proponer al Repositorio.</p>
+        <a href="https://sintropiassociales-del.github.io/panel/muestra_pdfcitas.html" target="_blank" style="display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text-main);font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:.65rem 1.2rem;border-radius:50px;border:1px solid rgba(255,255,255,.2);text-decoration:none;width:fit-content;transition:border-color .2s;">
+          Abrir herramienta
+          <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+
     </div>
   </div>
 </section>
