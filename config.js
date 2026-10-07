@@ -9,7 +9,7 @@ var CONFIG = {
   SHEET_ID: '114sl6Mt-UhQQsv7zyicAAmsYzo3VDPoAvbT-0MakK94',
   GUEST_PERCENT: 0.10,
   CONTACT_EMAIL: 'contacto@sintropiasocial.com',
-  ADMIN_EMAILS: ['dsalgado@sintropiasocial.com'],
+  ADMIN_EMAILS: ['d.salgado.lpz@gmail.com', 'sintropiassociales@gmail.com', 'dsalgado@sintropiasocial.com'],
   PAYPAL_CLIENT_ID: 'BAADNWafE2xUH09mKvDiejlkmXxK9XQx1oa-ujzF7TF-pQNLf1a58OhHRUMUNoDx9dgXzhDclHdQhukdW0',
   PAYPAL_BUTTON_ID: 'RY5K7VHYRPJLY'
 };
@@ -29,8 +29,23 @@ var Auth = {
   setAdmin:    function(a) { localStorage.setItem('ss_admin', JSON.stringify(a)); },
   logout:      function() { localStorage.removeItem('ss_user'); localStorage.removeItem('sintropia_usuario_actual'); location.href = 'index.html'; },
   logoutAdmin: function() { localStorage.removeItem('ss_admin'); location.reload(); },
-  isAdmin:     function() { var a = Auth.getAdmin(); return !!(a && a.token); },
-  getToken:    function() { var a = Auth.getAdmin(); return (a && a.token) ? a.token : null; }
+  isAdmin: function() {
+    // Opción 1: sesión admin clásica (ss_admin)
+    var a = Auth.getAdmin();
+    if (a && a.token) return true;
+    // Opción 2: usuario logueado cuyo email está en ADMIN_EMAILS
+    var u = Auth.getUser();
+    if (u && u.email && CONFIG.ADMIN_EMAILS.indexOf(u.email.toLowerCase()) !== -1) return true;
+    // Opción 3: flag isAdmin guardado en el perfil de usuario
+    if (u && u.isAdmin) return true;
+    return false;
+  },
+  getToken: function() {
+    var a = Auth.getAdmin();
+    if (a && a.token) return a.token;
+    var u = Auth.getUser();
+    return (u && u.token) ? u.token : null;
+  }
 };
 
 // ── SHA-256 (nativo del browser) ──
