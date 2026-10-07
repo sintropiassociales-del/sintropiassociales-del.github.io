@@ -6,6 +6,7 @@
 <title>Repositorio Bibliográfico — Sintropía Social</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Montserrat:wght@400;600;700;800;900&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 /* ═══════════════════════════════════════════════
    SINTROPÍA — REPOSITORIO BIBLIOGRÁFICO
@@ -1791,6 +1792,29 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
     <h3>Iniciar sesión</h3>
     <p>Accede a tu cuenta para ver el repositorio completo.</p>
     <div id="login-error" class="error-msg" style="display:none;"></div>
+
+    <!-- Google Sign-In -->
+    <div id="g_id_onload"
+      data-client_id="778086289246-k0np3tkn92ubktvagff2hnohdveg8bgj.apps.googleusercontent.com"
+      data-callback="handleGoogleLogin"
+      data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="outline"
+      data-text="signin_with"
+      data-shape="rectangular"
+      data-logo_alignment="left"
+      data-width="352">
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:14px 0;">
+      <div style="flex:1;height:1px;background:var(--line);"></div>
+      <span style="font-size:.8rem;color:var(--fg-muted);white-space:nowrap;">o continúa con email</span>
+      <div style="flex:1;height:1px;background:var(--line);"></div>
+    </div>
+
     <form id="login-form-modal">
       <div class="form-group"><label>Email</label><input type="email" id="login-email" required></div>
       <div class="form-group"><label>Contraseña</label><input type="password" id="login-password" required></div>
@@ -1999,6 +2023,56 @@ function setupLoginForm() {
     } catch(err) { errorEl.textContent = 'Error de conexión'; errorEl.style.display = 'block'; }
     btn.disabled = false; btn.textContent = 'Entrar';
   });
+}
+
+// ── Google Sign-In callback ──────────────────────────────────────
+async function handleGoogleLogin(response) {
+  var errorEl = document.getElementById('login-error');
+  if (errorEl) { errorEl.style.display = 'none'; }
+  try {
+    // Decode JWT payload (no verification needed — Apps Script verifica)
+    var parts = response.credential.split('.');
+    var payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/,'/')));
+    var email = (payload.email || '').toLowerCase();
+    var nombre = payload.given_name || payload.name || email.split('@')[0];
+    var apellido = payload.family_name || '';
+
+    // Verifica/registra en Apps Script con el token de Google
+    var result = await api('loginConGoogle', { googleToken: response.credential, email: email, nombre: nombre, apellido: apellido });
+
+    if (result && result.ok) {
+      Auth.setUser({
+        token: result.token || ('google_' + email),
+        nombre: result.nombre || nombre,
+        apellido: result.apellido || apellido,
+        email: result.email || email,
+        institucion: result.institucion || '',
+        isAdmin: result.isAdmin || false,
+        googleToken: response.credential
+      });
+      closeLoginModal();
+      updateNavUser(Auth.getUser());
+      document.getElementById('guest-banner').style.display = 'none';
+      filterCitas();
+    } else {
+      // Si Apps Script no tiene loginConGoogle, creamos sesión local con Google
+      Auth.setUser({
+        token: 'google_' + email,
+        nombre: nombre,
+        apellido: apellido,
+        email: email,
+        institucion: '',
+        isAdmin: false,
+        googleToken: response.credential
+      });
+      closeLoginModal();
+      updateNavUser(Auth.getUser());
+      document.getElementById('guest-banner').style.display = 'none';
+      filterCitas();
+    }
+  } catch(err) {
+    if (errorEl) { errorEl.textContent = 'Error al iniciar sesión con Google'; errorEl.style.display = 'block'; }
+  }
 }
 
 function cerrarSesion() {
