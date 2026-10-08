@@ -1,200 +1,532 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.paypal.com https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.paypal.com https://cdnjs.cloudflare.com; frame-src https://www.paypal.com; base-uri 'self'; object-src 'none';">
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Únete — Sintropía Social</title>
-
-<link rel="stylesheet" href="sintro-shared.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Únete gratis — Sintropía Social</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--m:#631EEB;--md:#4a13b8;--ml:#8b5cf6;--n:#FF7929;--nl:#e06a1a;--w:#fff;--gc:#f0ebff;--gt:#4a4458;--gb:rgba(99,30,235,.15)}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family: var(--font-body);background:var(--gc);color:var(--gt);min-height:100vh}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:15px 48px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--gb)}
-.nl{display:flex;align-items:center;gap:11px;text-decoration:none}
-.nlc{width:38px;height:38px;background:var(--m);border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ml)}
-.nlt{font-family: var(--font-display);font-size:1rem;color:var(--n);letter-spacing:.08em;font-weight:700}
-.navr{display:flex;gap:24px;align-items:center}
-.navr a{text-decoration:none;font-size:.86rem;font-weight:500;color:var(--gt);transition:color .2s}
-.navr a:hover{color:var(--m)}
-.page{min-height:100vh;display:flex;padding-top:74px}
-.pl{width:390px;min-width:290px;background:var(--m);padding:68px 44px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
-.pl::before{content:'';position:absolute;width:460px;height:460px;border-radius:50%;border:65px solid rgba(255,255,255,.05);top:-130px;right:-130px}
-.pl::after{content:'';position:absolute;width:270px;height:270px;border-radius:50%;border:48px solid rgba(255,107,26,.12);bottom:-65px;left:-65px}
-.plc{position:relative;z-index:1}
-.pbdg{display:inline-block;background:rgba(255,107,26,.2);color:var(--nl);font-size:.69rem;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:50px;margin-bottom:26px;font-weight:600}
-.pl h2{font-family: var(--font-display);font-size:2.1rem;font-weight:900;color:#fff;line-height:1.2;margin-bottom:16px}
-.pl h2 em{color:var(--n);font-style:italic}
-.pl .desc{color:rgba(255,255,255,.74);font-size:.91rem;line-height:1.7;margin-bottom:32px}
-.bls{list-style:none;display:flex;flex-direction:column;gap:13px}
-.bi{display:flex;align-items:flex-start;gap:10px;color:rgba(255,255,255,.84);font-size:.87rem;line-height:1.5}
-.bic{width:25px;height:25px;min-width:25px;background:rgba(255,107,26,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.76rem}
-.pr{flex:1;padding:52px 68px;display:flex;align-items:center;justify-content:center}
-.fc{max-width:490px;width:100%}
-.fc h3{font-family: var(--font-display);font-size:1.85rem;font-weight:700;color:#1a0f33;margin-bottom:5px}
-.sub{color:#888;font-size:.87rem;margin-bottom:34px}
-.fr2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.campo{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
-.campo label{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--m)}
-.campo input,.campo select,.campo textarea{padding:11px 13px;border:1.5px solid var(--gb);border-radius:10px;font-family: var(--font-body);font-size:.89rem;color:var(--gt);background:#fff;transition:border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none}
-.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--m);box-shadow:0 0 0 3px rgba(91,33,212,.1)}
-.campo textarea{resize:vertical;min-height:74px}
-.cerr{border-color:#ef4444!important;box-shadow:0 0 0 3px rgba(239,68,68,.1)!important}
-.cmsg{font-size:.75rem;color:#ef4444;margin-top:3px;display:none}
-.cmsg.show{display:block}
-.cck{display:flex;align-items:flex-start;gap:9px;font-size:.83rem;color:var(--gt);line-height:1.4;margin-bottom:20px}
-.cck input[type=checkbox]{width:16px;height:16px;min-width:16px;accent-color:var(--m);margin-top:2px;cursor:pointer}
-.bsub{width:100%;background:var(--m);color:#fff;padding:13px 20px;border-radius:10px;border:none;font-family: var(--font-body);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s;box-shadow:0 8px 22px rgba(91,33,212,.28);position:relative}
-.bsub:hover{background:var(--md);transform:translateY(-2px)}
-.bsub:disabled{background:#aaa;transform:none;cursor:not-allowed}
-.fft{text-align:center;margin-top:18px;font-size:.83rem;color:#888}
-.fft a{color:var(--m);text-decoration:none;font-weight:500}
-.suc{display:none;text-align:center;padding:52px 16px}
-.suco{width:68px;height:68px;background:rgba(91,33,212,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 16px}
-.suc h3{font-family: var(--font-display);font-size:1.65rem;color:#1a0f33;margin-bottom:10px}
-.suc p{color:#888;font-size:.91rem;line-height:1.6;margin-bottom:22px}
-.bp{background:var(--m);color:#fff;padding:11px 24px;border-radius:50px;text-decoration:none;font-weight:500;font-size:.91rem;display:inline-block;box-shadow:0 8px 22px rgba(91,33,212,.28)}
-.bp:hover{background:var(--md)}
-@media(max-width:980px){.pl{display:none}.pr{padding:52px 20px}}
-@media(max-width:560px){nav{padding:12px 16px}.fr2{grid-template-columns:1fr}}
+:root {
+  --purple: #631EEB;
+  --purple-dk: #4c16b5;
+  --purple-lt: rgba(99,30,235,.1);
+  --orange: #FF7929;
+  --bg: #f5f4fb;
+  --bg-card: #ffffff;
+  --fg: #1a1630;
+  --fg-mid: #4a4468;
+  --fg-muted: #7c76a0;
+  --line: rgba(99,30,235,.15);
+  --green: #16a34a;
+  --red: #dc2626;
+  --r: 14px;
+  --shadow: 0 4px 24px rgba(99,30,235,.12);
+  --font-display: 'Barlow', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--fg); min-height: 100vh; }
+
+/* ─── NAV (idéntico al de index.html — oscuro) ─── */
+.ss-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; background: rgba(14,12,24,.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(99,30,235,.2); font-family: var(--font-body); }
+.ss-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px,4vw,40px); height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.ss-nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; flex-shrink: 0; }
+.ss-nav-logo img { height: 34px; width: auto; border-radius: 50%; }
+.ss-nav-logo-name { font-family: var(--font-display); font-size: .95rem; font-weight: 700; color: var(--orange); letter-spacing: .06em; }
+.ss-nav-links { display: flex; align-items: center; gap: .15rem; }
+.ss-nav-links > a { text-decoration: none; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; transition: all .18s; white-space: nowrap; }
+.ss-nav-links > a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.ss-nav-links > a.active { color: #fff; background: rgba(255,255,255,.1); }
+.ss-nav-links > a.nav-newsletter { background: rgba(99,30,235,.25); color: rgba(200,185,255,.9); border-radius: 50px; }
+.ss-nav-links > a.nav-newsletter:hover { background: rgba(99,30,235,.4); color: #fff; }
+.ss-nav-divider { width: 1px; height: 20px; background: rgba(255,255,255,.12); margin: 0 .3rem; flex-shrink: 0; }
+.ss-nav-links > a.nav-entrar { color: rgba(240,238,248,.55); }
+.ss-nav-links > a.nav-entrar:hover { color: #fff; background: none; }
+.ss-nav-cta { background: var(--purple) !important; color: white !important; padding: .42rem 1.1rem !important; border-radius: 50px !important; font-weight: 600 !important; font-size: .83rem !important; }
+.ss-nav-cta:hover { background: var(--purple-dk) !important; }
+.ss-dd { position: relative; }
+.ss-dd-btn { display: flex; align-items: center; gap: .3rem; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; cursor: pointer; transition: all .18s; background: none; border: none; font-family: inherit; white-space: nowrap; }
+.ss-dd-btn:hover,.ss-dd.open .ss-dd-btn { color: #fff; background: rgba(255,255,255,.08); }
+.ss-dd-btn svg { width: 11px; height: 11px; transition: transform .18s; flex-shrink: 0; color: rgba(240,238,248,.3); }
+.ss-dd.open .ss-dd-btn svg { transform: rotate(180deg); }
+.ss-dd-panel { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: #0e0c18; border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .6rem; box-shadow: 0 10px 36px rgba(0,0,0,.5); z-index: 600; }
+.ss-dd.open .ss-dd-panel { display: block; }
+.ss-dd-panel.herr { min-width: 240px; }
+.ss-dd-panel.herr a { display: block; padding: .55rem .9rem; border-radius: 9px; text-decoration: none; transition: background .15s; }
+.ss-dd-panel.herr a:hover { background: rgba(255,255,255,.06); }
+.ss-dd-panel.herr a .t { display: block; font-size: .84rem; font-weight: 600; color: #f0eef8; }
+.ss-dd-panel.herr a .s { display: block; font-size: .75rem; color: rgba(240,238,248,.4); margin-top: .1rem; }
+.ss-dd-hr { height: 1px; background: rgba(255,255,255,.08); margin: .35rem .4rem; }
+.ss-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: .4rem; background: none; border: none; }
+.ss-hamburger span { display: block; width: 22px; height: 2px; background: rgba(240,238,248,.6); border-radius: 2px; transition: all .2s; }
+@media(max-width:900px) {
+  .ss-nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; background: #0e0c18; border-bottom: 1px solid rgba(99,30,235,.2); flex-direction: column; align-items: stretch; padding: 1rem; gap: .2rem; box-shadow: 0 8px 24px rgba(0,0,0,.5); max-height: 80vh; overflow-y: auto; }
+  .ss-nav-links.open { display: flex; }
+  .ss-nav-links > a,.ss-dd-btn { padding: .65rem 1rem; border-radius: 10px; font-size: .92rem; width: 100%; }
+  .ss-nav-divider { display: none; }
+  .ss-dd { width: 100%; }
+  .ss-dd-panel { position: static; border: none; box-shadow: none; background: rgba(255,255,255,.04); margin-top: .25rem; border-radius: 10px; }
+  .ss-dd.open .ss-dd-panel { display: block; }
+  .ss-hamburger { display: flex; }
+  .ss-nav-cta { text-align: center; }
+}
+
+/* ─── LAYOUT ─── */
+.page-wrap {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: 100vh;
+  padding-top: 64px;
+}
+@media(max-width: 860px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .sidebar { order: 2; padding-block: 40px 32px; }
+  .form-side { order: 1; padding-block: 40px 16px; }
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  background: linear-gradient(160deg, #2d1579 0%, #1a0d4a 55%, #0f0826 100%);
+  padding: clamp(48px,8vw,80px) clamp(24px,5vw,48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+}
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,30,235,.35) 0%, transparent 70%);
+  pointer-events: none;
+}
+.sidebar::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -40px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,121,41,.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.sidebar-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,121,41,.15); border: 1px solid rgba(255,121,41,.3);
+  color: var(--orange); font-size: .72rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .3rem .8rem; border-radius: 50px; margin-bottom: 1.4rem;
+  width: fit-content;
+}
+.sidebar h2 {
+  font-family: var(--font-display); font-size: clamp(1.8rem,3.5vw,2.4rem);
+  font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: .8rem;
+}
+.sidebar h2 em { color: var(--orange); font-style: normal; }
+.sidebar-desc {
+  font-size: .92rem; color: rgba(255,255,255,.6); line-height: 1.65;
+  margin-bottom: 2rem;
+}
+.sidebar-perks { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+.sidebar-perks li {
+  display: flex; align-items: flex-start; gap: .75rem;
+  font-size: .87rem; color: rgba(255,255,255,.75); line-height: 1.5;
+}
+.sidebar-perks li .icon {
+  width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+  background: rgba(99,30,235,.35); display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; margin-top: .05rem;
+}
+
+/* ─── FORM SIDE ─── */
+.form-side {
+  padding: clamp(40px,6vw,72px) clamp(24px,5vw,64px);
+  display: flex; align-items: flex-start; justify-content: center;
+}
+.form-box { width: 100%; max-width: 520px; }
+.form-box h1 { font-family: var(--font-display); font-size: 1.9rem; font-weight: 800; margin-bottom: .3rem; color: var(--fg); }
+.form-box .sub { font-size: .9rem; color: var(--fg-muted); margin-bottom: 1.8rem; }
+
+/* ─── GOOGLE BTN ─── */
+.btn-google {
+  width: 100%; padding: .7rem 1rem; background: var(--bg-card); color: var(--fg);
+  border: 1.5px solid var(--line); border-radius: 10px; font-family: var(--font-body);
+  font-size: .92rem; font-weight: 500; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; gap: 10px;
+  transition: border-color .15s, box-shadow .15s; margin-bottom: 4px;
+}
+.btn-google:hover { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(99,30,235,.08); }
+.btn-google:disabled { opacity: .5; cursor: not-allowed; }
+.btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
+.divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; color: var(--fg-muted); font-size: .78rem; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+/* ─── FORM ─── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+@media(max-width:480px) { .form-grid { grid-template-columns: 1fr; } }
+.field { margin-bottom: 14px; }
+.field.full { grid-column: 1 / -1; }
+.field label { display: block; font-size: .75rem; font-weight: 700; color: var(--fg-muted); margin-bottom: 5px; letter-spacing: .06em; text-transform: uppercase; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: .6rem .85rem; border-radius: 9px;
+  border: 1.5px solid var(--line); background: var(--bg-card); color: var(--fg);
+  font-family: var(--font-body); font-size: .9rem; outline: none; transition: border .18s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(99,30,235,.08); }
+.field textarea { resize: vertical; min-height: 80px; }
+.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237c76a0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+.checkbox-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px; font-size: .85rem; color: var(--fg-mid); line-height: 1.5; }
+.checkbox-row input[type="checkbox"] { width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; accent-color: var(--purple); cursor: pointer; }
+.checkbox-row a { color: var(--purple); font-weight: 600; }
+.btn-submit {
+  width: 100%; padding: .8rem 1rem; background: var(--purple); color: #fff;
+  border: none; border-radius: 10px; font-family: var(--font-body); font-size: .95rem;
+  font-weight: 700; cursor: pointer; transition: opacity .15s, background .15s;
+  letter-spacing: .01em;
+}
+.btn-submit:hover { background: var(--purple-dk); }
+.btn-submit:disabled { opacity: .5; cursor: not-allowed; }
+.form-footer { text-align: center; margin-top: 18px; font-size: .86rem; color: var(--fg-muted); }
+.form-footer a { color: var(--purple); font-weight: 600; text-decoration: none; }
+.form-footer a:hover { text-decoration: underline; }
+
+/* ─── MENSAJES ─── */
+.msg { border-radius: 9px; padding: .7rem .95rem; font-size: .86rem; margin-bottom: 14px; display: none; }
+.msg.error { background: rgba(220,38,38,.08); border: 1px solid rgba(220,38,38,.25); color: var(--red); }
+.msg.ok { background: rgba(22,163,74,.08); border: 1px solid rgba(22,163,74,.25); color: var(--green); }
+.msg.show { display: block; }
+
+/* ─── ÉXITO ─── */
+#success-view { display: none; text-align: center; padding: 2rem 0; }
+#success-view .check { font-size: 3rem; margin-bottom: 1rem; }
+#success-view h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin-bottom: .5rem; color: var(--purple); }
+#success-view p { color: var(--fg-muted); font-size: .92rem; line-height: 1.6; max-width: 360px; margin: 0 auto 1.5rem; }
+#success-view a { display: inline-block; background: var(--purple); color: #fff; padding: .65rem 1.6rem; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: .9rem; }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Open+Sauce+One:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 </head>
 <body>
-<div id="sintro-nav"></div>
 
-
-<div class="page">
-  <div class="pl">
-    <div class="plc">
-      <div class="pbdg">Comunidad abierta · Gratis</div>
-      <h2>Sé parte de la <em>red</em></h2>
-      <p class="desc">Únete a investigadores, estudiantes y lectores que construimos conocimiento social de forma colectiva.</p>
-      <ul class="bls">
-        <li class="bi"><div class="bic">📚</div><span>Acceso completo a 836+ citas sistematizadas</span></li>
-        <li class="bi"><div class="bic">🔍</div><span>Filtros por categoría, indicador, autor y año</span></li>
-        <li class="bi"><div class="bic">📋</div><span>Genera y copia citas APA automáticamente</span></li>
-        <li class="bi"><div class="bic">⬇</div><span>Descarga selecciones filtradas en CSV · $18 MXN</span></li>
-        <li class="bi"><div class="bic">✍️</div><span>Contribuye con tus propias citas</span></li>
-      </ul>
+<!-- ════ NAV (idéntico al de index.html) ════ -->
+<nav class="ss-nav">
+  <div class="ss-nav-inner">
+    <a href="index.html" class="ss-nav-logo">
+      <img src="logo.png" alt="Sintropía Social" onerror="this.style.display='none'">
+      <span class="ss-nav-logo-name">SINTROPÍA SOCIAL</span>
+    </a>
+    <div class="ss-nav-links" id="ss-nav-links">
+      <a href="index.html">Inicio</a>
+      <div class="ss-dd" id="dd-herr">
+        <button class="ss-dd-btn" onclick="ssToggleDD('dd-herr')">
+          Herramientas
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ss-dd-panel herr">
+          <a href="diagnostico.html"><span class="t">Diagnóstico Social Rápido</span><span class="s">Árbol de problemas, marco lógico y más</span></a>
+          <a href="dashboard.html"><span class="t">Dashboard Interactivo</span><span class="s">Visualiza y exporta datos de investigación</span></a>
+          <a href="pdfcitas.html"><span class="t">Buscador de Citas PDF</span><span class="s">Extrae citas de PDFs por palabra clave</span></a>
+          <div class="ss-dd-hr"></div>
+          <a href="herramientas.html"><span class="t" style="color:var(--purple);">Ver todas las herramientas →</span></a>
+        </div>
+      </div>
+      <a href="servicios.html">Servicios</a>
+      <a href="index.html#repositorio">Repositorio Bibliográfico</a>
+      <a href="newsletter.html" class="nav-newsletter">Newsletter</a>
+      <a href="contribuir.html">Contribuir</a>
+      <div class="ss-nav-divider"></div>
+      <span id="ss-nav-user">
+        <a href="#" onclick="abrirLogin();return false;" class="nav-entrar">Entrar</a>
+        <a href="registro.html" class="ss-nav-cta active" style="pointer-events:none;opacity:.8;">Únete gratis</a>
+      </span>
     </div>
+    <button class="ss-hamburger" onclick="document.getElementById('ss-nav-links').classList.toggle('open')" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-  <div class="pr">
-    <div class="fc">
-      <div id="fwrap">
-        <h3>Crear cuenta</h3>
-        <p class="sub">Es gratis. Sin compromisos. Solo conocimiento.</p>
-        <form id="rform" onsubmit="enviar(event)" novalidate>
-          <div class="fr2">
-            <div class="campo">
+</nav>
+
+<!-- ════ CONTENIDO ════ -->
+<div class="page-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <span class="sidebar-badge">● Comunidad abierta &nbsp;·&nbsp; Gratis</span>
+    <h2>Sé parte de la <em>red</em></h2>
+    <p class="sidebar-desc">Únete a investigadores, estudiantes y lectores que construimos conocimiento social de forma colectiva.</p>
+    <ul class="sidebar-perks">
+      <li><span class="icon">📚</span>Acceso completo a 843+ citas sistematizadas</li>
+      <li><span class="icon">🔍</span>Filtros por categoría, indicador, autor y año</li>
+      <li><span class="icon">📋</span>Genera y copia citas APA automáticamente</li>
+      <li><span class="icon">⬇️</span>Descarga selecciones filtradas en CSV</li>
+      <li><span class="icon">✍️</span>Contribuye con tus propias citas</li>
+      <li><span class="icon">💜</span>Con tu registro ayudas a que sigamos creciendo y podamos ofrecer más herramientas gratuitas para la comunidad</li>
+    </ul>
+  </aside>
+
+  <!-- FORMULARIO -->
+  <main class="form-side">
+    <div class="form-box">
+      <h1>Crear cuenta</h1>
+      <p class="sub">Es gratis. Sin compromisos. Solo conocimiento.</p>
+
+      <div class="msg error" id="msg-error"></div>
+      <div class="msg ok" id="msg-ok"></div>
+
+      <!-- Éxito -->
+      <div id="success-view">
+        <div class="check">🎉</div>
+        <h2>¡Bienvenido/a!</h2>
+        <p>Tu cuenta fue creada. Ya puedes acceder al repositorio bibliográfico y todas las herramientas.</p>
+        <a href="index.html">Ir al repositorio →</a>
+      </div>
+
+      <!-- Formulario -->
+      <div id="form-view">
+        <!-- Google -->
+        <button type="button" class="btn-google" id="btn-google" onclick="registrarConGoogle()">
+          <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"/>
+            <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z"/>
+            <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z"/>
+            <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58Z"/>
+          </svg>
+          Registrarse con Google
+        </button>
+
+        <div class="divider">o con correo y contraseña</div>
+
+        <form id="reg-form" autocomplete="on">
+          <div class="form-grid">
+            <div class="field">
               <label>Nombre *</label>
-              <input type="text" id="r-nom" placeholder="María" required/>
+              <input type="text" id="reg-nombre" autocomplete="given-name" required placeholder="María">
             </div>
-            <div class="campo">
+            <div class="field">
               <label>Apellido *</label>
-              <input type="text" id="r-ape" placeholder="González" required/>
+              <input type="text" id="reg-apellido" autocomplete="family-name" required placeholder="González">
+            </div>
+            <div class="field full">
+              <label>Correo electrónico *</label>
+              <input type="email" id="reg-email" autocomplete="email" required placeholder="maria@universidad.edu.mx">
+            </div>
+            <div class="field full">
+              <label>Contraseña *</label>
+              <input type="password" id="reg-pass" autocomplete="new-password" required placeholder="Mínimo 8 caracteres" minlength="8">
+            </div>
+            <div class="field full">
+              <label>Institución / Organización</label>
+              <input type="text" id="reg-institucion" autocomplete="organization" placeholder="Universidad, empresa, independiente…">
+            </div>
+            <div class="field full">
+              <label>Área de interés *</label>
+              <select id="reg-area" required>
+                <option value="" disabled selected>Seleccionar…</option>
+                <option>Sociología</option>
+                <option>Trabajo social</option>
+                <option>Educación</option>
+                <option>Economía</option>
+                <option>Ciencia política</option>
+                <option>Antropología</option>
+                <option>Psicología social</option>
+                <option>Salud pública</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>¿Por qué quieres unirte? (opcional)</label>
+              <textarea id="reg-motivo" placeholder="Cuéntanos brevemente…"></textarea>
             </div>
           </div>
-          <div class="campo">
-            <label>Correo electrónico *</label>
-            <input type="email" id="r-email" placeholder="maria@universidad.edu.mx" required/>
-            <span class="cmsg" id="email-err">Este correo ya está registrado.</span>
-          </div>
-          <div class="campo">
-            <label>Contraseña *</label>
-            <input type="password" id="r-pass" placeholder="Mínimo 8 caracteres" required minlength="8"/>
-          </div>
-          <div class="campo">
-            <label>Institución / Organización</label>
-            <input type="text" id="r-inst" placeholder="Universidad, empresa, independiente…"/>
-          </div>
-          <div class="campo">
-            <label>Área de interés *</label>
-            <select id="r-area" required>
-              <option value="">Seleccionar…</option>
-              <option>Sociología</option><option>Psicología Social</option><option>Antropología</option>
-              <option>Educación</option><option>Economía Social</option><option>Ciencias Políticas</option>
-              <option>Trabajo Social</option><option>Comunicación</option><option>Historia</option>
-              <option>Virtualidad / Tecnología</option><option>Investigación Social</option><option>Otra</option>
-            </select>
-          </div>
-          <div class="campo">
-            <label>¿Por qué quieres unirte? (opcional)</label>
-            <textarea id="r-mot" placeholder="Cuéntanos brevemente…"></textarea>
-          </div>
-          <div class="cck">
-            <input type="checkbox" id="r-ter" required/>
-            <label for="r-ter">Acepto que mis contribuciones serán públicas. He leído la <a href="#" style="color:var(--m)">política de privacidad</a>.</label>
-          </div>
-          <button type="submit" class="bsub" id="bsub">Crear mi cuenta →</button>
+          <label class="checkbox-row">
+            <input type="checkbox" id="reg-acepta" required>
+            <span>Acepto que mis contribuciones serán públicas. He leído la <a href="privacidad.html" target="_blank">política de privacidad</a>.</span>
+          </label>
+          <button type="submit" class="btn-submit" id="btn-submit">Crear mi cuenta →</button>
         </form>
-        <div class="fft">¿Dudas? <a href="mailto:contacto@sintropiasocial.com">contacto@sintropiasocial.com</a><br><br>¿Ya tienes cuenta? <a href="index.html#repo">Ir al repositorio →</a></div>
-      </div>
-      <div class="suc" id="suc">
-        <div class="suco">✓</div>
-        <h3>¡Bienvenida a la comunidad!</h3>
-        <p>Tu cuenta fue creada. Ya puedes explorar las 836+ citas completas y contribuir con las tuyas.</p>
-        <a href="index.html" class="bp">Ir al repositorio →</a>
-      </div>
+
+        <div class="form-footer">
+          <p style="margin-bottom:.5rem;">¿Dudas? <a href="mailto:contacto@sintropiasocial.com">contacto@sintropiasocial.com</a></p>
+          <p>¿Ya tienes cuenta? <a href="#" onclick="abrirLogin();return false;">Ir al repositorio →</a></p>
+        </div>
+      </div><!-- /form-view -->
     </div>
-  </div>
+  </main>
 </div>
+
 <script src="config.js"></script>
-<script src="nav.js"></script>
 <script>
-async function enviar(e) {
-  e.preventDefault();
-  const btn = document.getElementById('bsub');
-  btn.disabled = true; btn.textContent = 'Creando cuenta…';
-  document.getElementById('email-err').classList.remove('show');
+var GOOGLE_CLIENT_ID = '778086289246-k0np3tkn92ubktvagff2hnohdveg8bgj.apps.googleusercontent.com';
 
-  const pass = document.getElementById('r-pass').value;
-  const passHash = await sha256(pass);
+// ── NAV DROPDOWNS ──
+function ssToggleDD(id) {
+  var all = document.querySelectorAll('.ss-dd');
+  all.forEach(function(d){ if(d.id !== id) d.classList.remove('open'); });
+  document.getElementById(id).classList.toggle('open');
+}
+document.addEventListener('click', function(e){
+  if (!e.target.closest('.ss-dd')) document.querySelectorAll('.ss-dd').forEach(function(d){ d.classList.remove('open'); });
+});
 
-  const r = await api('registrarUsuario', {
-    nombre:      document.getElementById('r-nom').value,
-    apellido:    document.getElementById('r-ape').value,
-    email:       document.getElementById('r-email').value,
-    passHash,
-    institucion: document.getElementById('r-inst').value,
-    area:        document.getElementById('r-area').value,
-    motivo:      document.getElementById('r-mot').value,
+// ── UI HELPERS ──
+function showMsg(tipo, txt) {
+  var el = document.getElementById('msg-' + tipo);
+  el.textContent = txt;
+  el.classList.add('show');
+}
+function clearMsgs() {
+  document.getElementById('msg-error').classList.remove('show');
+  document.getElementById('msg-ok').classList.remove('show');
+}
+function mostrarExito() {
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('success-view').style.display = 'block';
+}
+function abrirLogin() {
+  // Si hay un modal de login en index.html, redirige con flag
+  window.location.href = 'index.html?login=1';
+}
+
+// Detecta si viene con ?login=1 para abrir modal al volver
+window.addEventListener('DOMContentLoaded', function() {
+  // Si el usuario ya tiene sesión activa, redirige al inicio
+  try {
+    var u = Auth && Auth.getUser && Auth.getUser();
+    if (u && u.token) { window.location.href = 'index.html'; return; }
+  } catch(e) {}
+});
+
+// ── GOOGLE REGISTRO ──
+function registrarConGoogle() {
+  var btn = document.getElementById('btn-google');
+  clearMsgs();
+  btn.disabled = true;
+  btn.innerHTML = '<span style="opacity:.6">Conectando con Google…</span>';
+
+  if (typeof google === 'undefined' || !google.accounts) {
+    showMsg('error', 'Google no disponible. Recarga la página e intenta de nuevo.');
+    resetBtnGoogle();
+    return;
+  }
+
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: function(response) {
+      if (!response || !response.credential) {
+        showMsg('error', 'No se recibió credencial de Google.'); resetBtnGoogle(); return;
+      }
+      var parts = response.credential.split('.');
+      var payload = {};
+      try { payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/'))); } catch(e) {}
+      var emailGoogle = (payload.email || '').toLowerCase().trim();
+      var nombreGoogle = payload.given_name || payload.name || '';
+      var apellidoGoogle = payload.family_name || '';
+
+      // Llama registrarUsuario con flag google
+      api('registrarUsuario', {
+        nombre: nombreGoogle,
+        apellido: apellidoGoogle,
+        email: emailGoogle,
+        passHash: '',
+        institucion: '',
+        area: '',
+        motivo: '',
+        via: 'google',
+        googleIdToken: response.credential
+      }).then(function(res) {
+        if (res && res.ok) {
+          // Guarda sesión
+          if (res.token) {
+            try {
+              localStorage.setItem('ss_user', JSON.stringify({
+                token: res.token, nombre: nombreGoogle, apellido: apellidoGoogle,
+                email: emailGoogle, institucion: ''
+              }));
+            } catch(e) {}
+          }
+          mostrarExito();
+        } else {
+          showMsg('error', res && res.error ? res.error : 'No se pudo completar el registro.');
+          resetBtnGoogle();
+        }
+      }).catch(function() {
+        showMsg('error', 'Error de conexión. Intenta de nuevo.');
+        resetBtnGoogle();
+      });
+    },
+    auto_select: false
   });
+  google.accounts.id.prompt(function(n) {
+    if (n.isNotDisplayed() || n.isSkippedMoment()) resetBtnGoogle();
+  });
+}
 
-  if (r.ok) {
-    Auth.setUser({ id: r.id, nombre: document.getElementById('r-nom').value,
-      apellido: document.getElementById('r-ape').value,
-      email: document.getElementById('r-email').value });
-    document.getElementById('fwrap').style.display = 'none';
-    document.getElementById('suc').style.display = 'block';
-  } else {
-    if (r.error?.includes('registrado')) {
-      document.getElementById('email-err').classList.add('show');
-      document.getElementById('r-email').classList.add('cerr');
+function resetBtnGoogle() {
+  var btn = document.getElementById('btn-google');
+  if (!btn) return;
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58Z"/></svg> Registrarse con Google';
+}
+
+// ── REGISTRO CON EMAIL ──
+async function sha256(msg) {
+  var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+}
+
+document.getElementById('reg-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  clearMsgs();
+  var btn = document.getElementById('btn-submit');
+
+  var nombre    = document.getElementById('reg-nombre').value.trim();
+  var apellido  = document.getElementById('reg-apellido').value.trim();
+  var email     = document.getElementById('reg-email').value.trim().toLowerCase();
+  var pass      = document.getElementById('reg-pass').value;
+  var inst      = document.getElementById('reg-institucion').value.trim();
+  var area      = document.getElementById('reg-area').value;
+  var motivo    = document.getElementById('reg-motivo').value.trim();
+  var acepta    = document.getElementById('reg-acepta').checked;
+
+  if (!acepta) { showMsg('error', 'Debes aceptar los términos para continuar.'); return; }
+  if (pass.length < 8) { showMsg('error', 'La contraseña debe tener al menos 8 caracteres.'); return; }
+
+  btn.disabled = true; btn.textContent = 'Creando cuenta…';
+
+  try {
+    var passHash = await sha256(pass);
+    var res = await api('registrarUsuario', {
+      nombre: nombre, apellido: apellido, email: email,
+      passHash: passHash, institucion: inst, area: area, motivo: motivo
+    });
+    if (res && res.ok) {
+      if (res.token) {
+        try {
+          localStorage.setItem('ss_user', JSON.stringify({
+            token: res.token, nombre: nombre, apellido: apellido,
+            email: email, institucion: inst
+          }));
+        } catch(ex) {}
+      }
+      mostrarExito();
     } else {
-      alert('Error: ' + (r.error || 'Inténtalo de nuevo'));
+      showMsg('error', res && res.error ? res.error : 'No se pudo crear la cuenta. Intenta de nuevo.');
+      btn.disabled = false; btn.textContent = 'Crear mi cuenta →';
     }
+  } catch(err) {
+    showMsg('error', 'Error de conexión con el servidor.');
     btn.disabled = false; btn.textContent = 'Crear mi cuenta →';
   }
-}
-</script>
+});
 
-
-<script>SintroNav.render('#sintro-nav','registro');</script>
-<script>
-(function(){
-  try{
-    var u=JSON.parse(localStorage.getItem('ss_user')||'null');
-    if(!u) u=JSON.parse(localStorage.getItem('sintropia_usuario_actual')||'null');
-    var el=document.getElementById('ss-nav-user');
-    if(!el||!(u&&(u.nombre||u.email))) return;
-    var label=u.nombre||(u.email?u.email.split('@')[0]:'');
-    var btn=document.createElement('button');
-    btn.textContent=label+' · Salir';
-    btn.style.cssText='background:var(--morado);color:var(--blanco);padding:.42rem .95rem;border-radius:var(--r-pill);border:none;cursor:pointer;font-family:var(--font-body);font-size:.82rem;font-weight:600;';
-    btn.onclick=function(){ localStorage.removeItem('ss_user'); localStorage.removeItem('sintropia_usuario_actual'); location.reload(); };
-    el.innerHTML=''; el.appendChild(btn);
-  }catch(e){}
+// Abre modal de login en index.html si viene con ?login=1
+(function() {
+  if (window.location.search.indexOf('login=1') > -1) {
+    // Redirige limpio, el modal lo abre index.html si lo detecta
+    history.replaceState({}, '', window.location.pathname);
+  }
 })();
 </script>
 </body>
