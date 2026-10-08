@@ -70,6 +70,18 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .ss-serv-body a:hover { background: var(--purple-dk); }
 .ss-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: .4rem; background: none; border: none; }
 .ss-hamburger span { display: block; width: 22px; height: 2px; background: rgba(240,238,248,.6); border-radius: 2px; transition: all .2s; }
+
+/* ── Nav user dropdown ── */
+.ss-nav-user-btn { display: flex; align-items: center; gap: .5rem; background: rgba(99,30,235,.15); border: 1px solid rgba(99,30,235,.3); border-radius: 50px; padding: .3rem .85rem .3rem .4rem; cursor: pointer; font-family: var(--font-body); font-size: .84rem; color: var(--text-main); transition: all .18s; }
+.ss-nav-user-btn:hover { background: rgba(99,30,235,.28); }
+.ss-nav-avatar { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: var(--purple); color: #fff; font-size: .72rem; font-weight: 700; font-family: var(--font-display); }
+.ss-nav-dropdown { display: none; position: absolute; top: calc(100% + 10px); right: 0; background: #0e0c18; border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .5rem; min-width: 175px; box-shadow: 0 10px 36px rgba(0,0,0,.5); z-index: 600; }
+.ss-nav-dropdown.open { display: block; }
+.ss-nav-dropdown a, .ss-nav-dropdown button { display: block; width: 100%; text-align: left; padding: .55rem .85rem; border-radius: 9px; font-size: .84rem; font-weight: 500; color: var(--text-main); text-decoration: none; background: none; border: none; cursor: pointer; font-family: var(--font-body); transition: background .15s; }
+.ss-nav-dropdown a:hover, .ss-nav-dropdown button:hover { background: rgba(255,255,255,.07); }
+.ss-nav-dropdown hr { border: none; border-top: 1px solid rgba(255,255,255,.08); margin: .3rem .4rem; }
+.ss-nav-login-btn { background: var(--purple) !important; color: white !important; padding: .42rem 1.1rem !important; border-radius: 50px !important; font-weight: 600 !important; font-size: .83rem !important; text-decoration: none; display: inline-block; }
+
 @media(max-width:900px) {
   .ss-nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; background: #0e0c18; border-bottom: 1px solid rgba(99,30,235,.2); flex-direction: column; align-items: stretch; padding: 1rem; gap: .2rem; box-shadow: 0 8px 24px rgba(0,0,0,.5); max-height: 80vh; overflow-y: auto; }
   .ss-nav-links.open { display: flex; }
@@ -175,7 +187,6 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
   padding-bottom: 2px; transition: all .2s;
 }
 .hero-cta-ghost:hover { color: #fff; border-color: rgba(99,30,235,.7); }
-/* video side */
 .hero-visual {
   flex-shrink: 0;
   display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
@@ -211,7 +222,6 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
   letter-spacing: .1em; text-transform: uppercase; color: var(--orange);
 }
 .hero-badge svg { width: 12px; height: 12px; }
-/* section-label used in other sections too */
 .section-label { font-family: var(--font-display); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--purple); margin-bottom: 1rem; }
 @media(max-width:860px){
   .hero-inner { grid-template-columns: 1fr; justify-items: start; }
@@ -223,7 +233,7 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
   .hero-meta { gap: .75rem; }
 }
 
-/* ─── SIGNUP / FORMULARIO ─── */
+/* ─── SIGNUP / FORMULARIO INTERESADOS ─── */
 .signup-band { padding: 4rem 0; }
 .signup-box { background: var(--bg-card); border: 1px solid rgba(99,30,235,.25); border-radius: 24px; padding: clamp(2rem,5vw,3.5rem); }
 .signup-title { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; text-transform: uppercase; margin-bottom: .5rem; }
@@ -234,7 +244,7 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .signup-pane { display: none; }
 .signup-pane.active { display: block; }
 
-/* Formulario */
+/* Formulario base */
 .nf { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .nf-full { grid-column: 1 / -1; }
 .nf label { display: block; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(200,185,255,.7); margin-bottom: .35rem; }
@@ -250,6 +260,7 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .nf-check { display: flex; align-items: flex-start; gap: .6rem; }
 .nf-check input[type=checkbox] { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; accent-color: var(--purple); }
 .nf-check span { font-size: .8rem; color: var(--text-muted); line-height: 1.5; }
+.nf-check a { color: rgba(200,185,255,.8); }
 .nf-btn {
   width: 100%; padding: .85rem; border-radius: 50px; border: none; cursor: pointer;
   background: var(--orange); color: white; font-family: var(--font-display);
@@ -268,110 +279,46 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .linkedin-btn svg { width: 20px; height: 20px; fill: white; }
 .signup-note { margin-top: 1.5rem; font-size: .8rem; color: rgba(240,238,248,.3); }
 
-/* ─── BLOG ─── */
-.blog-band { padding: 5rem 0; border-top: 1px solid rgba(255,255,255,.06); }
-.blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.5rem; margin-top: 2.5rem; }
-.blog-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; transition: border-color .25s, transform .25s, box-shadow .25s; }
-.blog-card:hover { border-color: rgba(99,30,235,.35); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
-.blog-card-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(--bg-darker); display: block; }
-.blog-card-img-placeholder { width: 100%; aspect-ratio: 16/9; background: linear-gradient(135deg,#15112a,#1d1540); display: flex; align-items: center; justify-content: center; }
-.blog-card-img-placeholder svg { width: 36px; height: 36px; opacity: .2; }
-.blog-card-body { padding: 1.25rem 1.4rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
-.blog-card-date { font-size: .72rem; color: var(--purple); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .5rem; }
-.blog-card-title { font-family: var(--font-display); font-size: .96rem; font-weight: 700; line-height: 1.35; margin-bottom: .6rem; color: var(--text-main); }
-.blog-card-summary { font-size: .8rem; color: var(--text-muted); line-height: 1.6; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 1.1rem; }
-.blog-card-link { display: inline-flex; align-items: center; gap: .4rem; font-size: .8rem; font-weight: 700; font-family: var(--font-display); color: var(--orange); text-decoration: none; transition: gap .18s; }
-.blog-card-link:hover { gap: .7rem; }
-
-/* Blog modal */
-.blog-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.8); backdrop-filter: blur(6px); z-index: 900; align-items: flex-start; justify-content: center; padding: 3rem 1rem 2rem; overflow-y: auto; }
-.blog-modal-overlay.open { display: flex; }
-.blog-modal { background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 24px; max-width: 760px; width: 100%; padding: clamp(1.5rem,4vw,3rem); position: relative; }
-.blog-modal-close { position: absolute; top: 1.2rem; right: 1.2rem; background: rgba(255,255,255,.08); border: none; color: var(--text-main); font-size: 1.2rem; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .18s; }
-.blog-modal-close:hover { background: rgba(255,255,255,.15); }
-.blog-modal-date { font-size: .75rem; color: var(--purple); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .75rem; }
-.blog-modal-title { font-family: var(--font-display); font-size: clamp(1.4rem,3vw,2rem); font-weight: 800; line-height: 1.15; margin-bottom: 1.25rem; }
-.blog-modal-body { font-size: .95rem; color: var(--text-muted); line-height: 1.85; white-space: pre-wrap; }
-
-/* ─── EDICIONES PASADAS ─── */
-.editions-band { padding: 5rem 0 6rem; border-top: 1px solid rgba(255,255,255,.06); }
-.editions-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
-.editions-title { font-family: var(--font-display); font-size: clamp(1.8rem,3.5vw,2.8rem); font-weight: 900; text-transform: uppercase; line-height: 1; }
-.editions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
+/* ─── FORMULARIO ENVIAR ARTÍCULO (solo usuarios con sesión) ─── */
+.articulo-band { padding: 4rem 0; border-top: 1px solid rgba(255,255,255,.06); }
+.articulo-box { background: var(--bg-card); border: 1px solid rgba(99,30,235,.25); border-radius: 24px; padding: clamp(2rem,5vw,3.5rem); }
+.articulo-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: .5rem; }
+.articulo-sub { font-size: .9rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.7; }
+/* Invitación a iniciar sesión (cuando no hay usuario) */
+.articulo-login-prompt { text-align: center; padding: 2.5rem 1.5rem; }
+.articulo-login-prompt p { font-size: .95rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+.articulo-login-btn { display: inline-flex; align-items: center; gap: .5rem; background: var(--purple); color: #fff; padding: .75rem 1.75rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .88rem; text-decoration: none; transition: all .2s; }
+.articulo-login-btn:hover { background: var(--purple-dk); transform: translateY(-2px); }
+/* Formulario real */
+.af { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.af-full { grid-column: 1 / -1; }
+.af label { display: block; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(200,185,255,.7); margin-bottom: .35rem; }
+.af input, .af select, .af textarea {
+  width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(99,30,235,.25);
+  border-radius: 10px; color: var(--text-main); font-family: var(--font-body); font-size: .9rem;
+  padding: .65rem .9rem; outline: none; transition: border-color .18s;
+  -webkit-appearance: none; appearance: none;
 }
-.edition-card {
-  background: var(--bg-card);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 18px;
-  overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: border-color .25s, transform .25s, box-shadow .25s;
-  cursor: pointer;
+.af input:focus, .af select:focus, .af textarea:focus { border-color: rgba(99,30,235,.6); }
+.af textarea { resize: vertical; min-height: 140px; }
+.af select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a090cc' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .8rem center; padding-right: 2.2rem; }
+.af select option { background: #1a1630; }
+.af-check { display: flex; align-items: flex-start; gap: .6rem; }
+.af-check input[type=checkbox] { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; accent-color: var(--purple); }
+.af-check span { font-size: .8rem; color: var(--text-muted); line-height: 1.5; }
+.af-check a { color: rgba(200,185,255,.8); }
+.af-btn {
+  width: 100%; padding: .85rem; border-radius: 50px; border: none; cursor: pointer;
+  background: var(--purple); color: white; font-family: var(--font-display);
+  font-weight: 700; font-size: .95rem; transition: all .2s; margin-top: .5rem;
 }
-.edition-card:hover {
-  border-color: rgba(99,30,235,.4);
-  transform: translateY(-5px);
-  box-shadow: 0 16px 48px rgba(0,0,0,.4), 0 0 0 1px rgba(99,30,235,.2);
-}
-.edition-cover-wrap {
-  position: relative; overflow: hidden;
-}
-.edition-cover {
-  width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block;
-  background: var(--bg-darker);
-  transition: transform .35s;
-}
-.edition-card:hover .edition-cover { transform: scale(1.04); }
-.edition-cover-placeholder {
-  width: 100%; aspect-ratio: 2/3;
-  background: linear-gradient(145deg, #15112a 0%, #1d1540 50%, #0e0c18 100%);
-  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: .5rem;
-}
-.edition-cover-num-big {
-  font-family: var(--font-display); font-size: 3.5rem; font-weight: 900;
-  color: rgba(99,30,235,.5); line-height: 1; letter-spacing: -.04em;
-}
-.edition-cover-label {
-  font-size: .6rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
-  color: rgba(200,185,255,.2);
-}
-.edition-num-chip {
-  position: absolute; top: .75rem; left: .75rem;
-  background: rgba(99,30,235,.85); backdrop-filter: blur(8px);
-  color: white; font-family: var(--font-display); font-size: .65rem; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase;
-  padding: .25rem .6rem; border-radius: 50px;
-}
-.edition-body { padding: 1.1rem 1.3rem 1.4rem; flex: 1; display: flex; flex-direction: column; }
-.edition-title { font-family: var(--font-display); font-size: .88rem; font-weight: 700; line-height: 1.35; margin-bottom: .5rem; color: var(--text-main); }
-.edition-desc { font-size: .78rem; color: var(--text-muted); line-height: 1.6; flex: 1; margin-bottom: 1.1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-.edition-dl {
-  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-  background: var(--orange); color: white;
-  padding: .6rem 1rem; border-radius: 10px;
-  font-size: .78rem; font-weight: 700; font-family: var(--font-display);
-  text-decoration: none; transition: all .2s;
-  text-align: center;
-}
-.edition-dl:hover { background: #e0621a; transform: translateY(-1px); }
-.edition-dl svg { width: 14px; height: 14px; flex-shrink: 0; }
-#editions-list:empty::after { content: 'Próximamente se publicarán ediciones aquí.'; font-size: .9rem; color: var(--text-muted); grid-column: 1/-1; text-align: center; padding: 3rem 0; }
-
-/* ─── QUÉ ES ─── */
-.about-band { padding: 5rem 0; border-top: 1px solid rgba(255,255,255,.06); }
-.about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
-.about-title { font-family: var(--font-display); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 900; text-transform: uppercase; line-height: 1.05; margin-bottom: 1.5rem; }
-.about-text { font-size: .95rem; color: var(--text-muted); line-height: 1.8; }
-.about-text p { margin-bottom: 1rem; }
-.features-list { display: flex; flex-direction: column; gap: 1.2rem; }
-.feature-item { display: flex; gap: 1rem; align-items: flex-start; }
-.feature-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; margin-top: .1rem; }
-.feature-title { font-family: var(--font-display); font-size: .88rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .25rem; }
-.feature-desc { font-size: .84rem; color: var(--text-muted); line-height: 1.6; }
-@media(max-width:768px) { .about-grid { grid-template-columns: 1fr; gap: 3rem; } }
+.af-btn:hover { background: var(--purple-dk); transform: translateY(-2px); }
+.af-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.af-msg { margin-top: 1rem; padding: .75rem 1rem; border-radius: 10px; font-size: .85rem; text-align: center; display: none; }
+.af-msg.ok { background: rgba(50,200,100,.12); border: 1px solid rgba(50,200,100,.3); color: #5ce09a; display: block; }
+.af-msg.err { background: rgba(255,80,80,.1); border: 1px solid rgba(255,80,80,.3); color: #ff7a7a; display: block; }
+.af-user-tag { display: inline-flex; align-items: center; gap: .5rem; background: rgba(99,30,235,.15); border: 1px solid rgba(99,30,235,.3); border-radius: 50px; padding: .3rem .9rem; font-size: .8rem; color: rgba(200,185,255,.85); margin-bottom: 1.5rem; }
+@media(max-width:600px){ .af { grid-template-columns: 1fr; } .af-full { grid-column: 1; } }
 
 /* ─── TEMAS ─── */
 .temas-band { background: var(--bg-darker); padding: 5rem 0; }
@@ -450,8 +397,7 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
       <a href="newsletter.html" class="nav-newsletter active">Newsletter</a>
       <a href="contribuir.html">Contribuir</a>
       <div class="ss-nav-divider"></div>
-      <span id="ss-nav-user">
-        <a href="https://sintropiassociales-del.github.io/registro.html" class="nav-entrar">Entrar</a>
+      <span id="ss-nav-user" style="position:relative;">
         <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
       </span>
     </div>
@@ -466,7 +412,51 @@ function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
 function ssMobileNav(){document.querySelector('.ss-nav-links').classList.toggle('open');}
 document.addEventListener('click',function(e){
   if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd.open').forEach(d=>d.classList.remove('open'));
+  if(!e.target.closest('#ss-nav-user'))document.getElementById('nav-dropdown')&&document.getElementById('nav-dropdown').classList.remove('open');
 });
+
+/* ── Nav usuario ── */
+function _esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function updateNavUser(user){
+  var el=document.getElementById('ss-nav-user');
+  if(!el)return;
+  if(!user){
+    el.innerHTML='<a href="registro.html" class="ss-nav-cta">Únete gratis</a>';
+    return;
+  }
+  var inicial=(user.nombre||user.email||'U')[0].toUpperCase();
+  el.innerHTML=
+    '<div style="position:relative;">'+
+      '<button class="ss-nav-user-btn" onclick="toggleNavDropdown()" id="nav-user-toggle">'+
+        '<span class="ss-nav-avatar">'+_esc(inicial)+'</span>'+
+        '<span>'+_esc(user.nombre||user.email||'Mi perfil')+'</span>'+
+        '<span style="font-size:.65rem;opacity:.6;">▾</span>'+
+      '</button>'+
+      '<div class="ss-nav-dropdown" id="nav-dropdown">'+
+        '<a href="usuario.html">👤 Mi perfil</a>'+
+        '<hr/>'+
+        '<button onclick="cerrarSesion()">🚪 Cerrar sesión</button>'+
+      '</div>'+
+    '</div>';
+}
+function toggleNavDropdown(){
+  var dd=document.getElementById('nav-dropdown');
+  if(dd)dd.classList.toggle('open');
+}
+function cerrarSesion(){
+  localStorage.removeItem('ss_user');
+  localStorage.removeItem('sintropia_usuario_actual');
+  localStorage.removeItem('ss_admin');
+  updateNavUser(null);
+  window.location.href='index.html';
+}
+/* Inicializar nav con sesión actual */
+(function(){
+  try{
+    var raw=localStorage.getItem('ss_user');
+    if(raw){var u=JSON.parse(raw);updateNavUser(u);}
+  }catch(e){}
+})();
 </script>
 
 <!-- ════════ HERO ════════ -->
@@ -502,7 +492,7 @@ document.addEventListener('click',function(e){
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           Suscribirme gratis
         </a>
-        <a href="#ediciones" class="hero-cta-ghost">Ver ediciones anteriores ↓</a>
+        <a href="#enviar-articulo" class="hero-cta-ghost">¿Tienes algo que compartir? ↓</a>
       </div>
     </div>
     <div class="hero-visual">
@@ -533,7 +523,6 @@ document.addEventListener('click',function(e){
       <!-- Tab 1: Formulario -->
       <div class="signup-pane active" id="pane-form" role="tabpanel">
         <form class="nf" id="interest-form" novalidate>
-          <!-- Nombre y Apellido -->
           <div>
             <label for="nf-nombre">Nombre *</label>
             <input type="text" id="nf-nombre" name="nombre" placeholder="Tu nombre" required>
@@ -542,11 +531,9 @@ document.addEventListener('click',function(e){
             <label for="nf-apellido">Apellido *</label>
             <input type="text" id="nf-apellido" name="apellido" placeholder="Tu apellido" required>
           </div>
-
-          <!-- Estado / Entidad -->
           <div>
             <label for="nf-estado">Estado / País *</label>
-            <select id="nf-estado" name="estado" required onchange="updateMunicipio(this.value)">
+            <select id="nf-estado" name="estado" required>
               <option value="">Selecciona...</option>
               <optgroup label="Estados de México">
                 <option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option>
@@ -566,23 +553,16 @@ document.addEventListener('click',function(e){
               </optgroup>
             </select>
           </div>
-
-          <!-- Municipio -->
           <div>
             <label for="nf-municipio">Municipio / Ciudad *</label>
             <input type="text" id="nf-municipio" name="municipio" placeholder="Escribe tu municipio o ciudad" required>
           </div>
-
-          <!-- Edad -->
           <div>
             <label for="nf-edad">Edad *</label>
             <select id="nf-edad" name="edad" required>
               <option value="">Selecciona...</option>
-              <!-- JS llena las opciones 14-100 -->
             </select>
           </div>
-
-          <!-- Interés -->
           <div>
             <label for="nf-interes">¿En qué estás interesado/a? *</label>
             <select id="nf-interes" name="interes" required>
@@ -596,28 +576,20 @@ document.addEventListener('click',function(e){
               <option value="Otro">Otro</option>
             </select>
           </div>
-
-          <!-- Email -->
           <div>
             <label for="nf-email">Correo electrónico *</label>
             <input type="email" id="nf-email" name="email" placeholder="tu@correo.com" required>
           </div>
-
-          <!-- Teléfono -->
           <div>
             <label for="nf-tel">Teléfono (opcional)</label>
             <input type="tel" id="nf-tel" name="telefono" placeholder="10 dígitos">
           </div>
-
-          <!-- Consentimiento -->
           <div class="nf-full">
             <label class="nf-check">
               <input type="checkbox" id="nf-consent" name="consentimiento" required>
-              <span>Acepto que Sintropía Social guarde mis datos para contactarme sobre actividades, publicaciones y proyectos. Puedo solicitar la eliminación de mis datos en cualquier momento.</span>
+              <span>Acepto que Sintropía Social guarde mis datos para contactarme sobre actividades, publicaciones y proyectos. He leído las <a href="politicas-de-uso.pdf" target="_blank">Políticas de Uso</a>. Puedo solicitar la eliminación de mis datos en cualquier momento.</span>
             </label>
           </div>
-
-          <!-- Botón -->
           <div class="nf-full">
             <button type="submit" class="nf-btn" id="nf-submit">Enviar registro</button>
             <div class="nf-msg" id="nf-msg"></div>
@@ -638,80 +610,88 @@ document.addEventListener('click',function(e){
   </div>
 </section>
 
-<!-- ════════ BLOG ════════ -->
-<section class="blog-band" id="blog">
-  <div class="container">
-    <div class="section-label">Reflexiones y artículos</div>
-    <h2 class="editions-title">Blog <span style="color:var(--orange);">Sintropía</span></h2>
-    <div class="blog-grid" id="blog-grid">
-      <div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-muted);font-size:.9rem;">Cargando entradas…</div>
-    </div>
-  </div>
-</section>
+<!-- ════════ ENVIAR ARTÍCULO (solo usuarios registrados) ════════ -->
+<section class="articulo-band" id="enviar-articulo">
+  <div class="container-narrow">
+    <div class="articulo-box">
+      <div class="section-label">Comunidad</div>
+      <div class="articulo-title">Comparte tu artículo</div>
+      <p class="articulo-sub">¿Tienes investigación, reflexión o experiencia de campo que valga la pena difundir? Los miembros registrados pueden enviar propuestas de artículo para el newsletter. El equipo editorial revisará cada envío.</p>
 
-<!-- Modal para leer entrada de blog -->
-<div class="blog-modal-overlay" id="blog-modal" role="dialog" aria-modal="true" aria-labelledby="bm-title">
-  <div class="blog-modal">
-    <button class="blog-modal-close" onclick="closeBlogModal()" aria-label="Cerrar">✕</button>
-    <div class="blog-modal-date" id="bm-date"></div>
-    <h2 class="blog-modal-title" id="bm-title"></h2>
-    <div class="blog-modal-body" id="bm-body"></div>
-  </div>
-</div>
-
-<!-- ════════ EDICIONES PASADAS ════════ -->
-<section class="editions-band" id="ediciones">
-  <div class="container">
-    <div class="editions-header">
-      <div>
-        <div class="section-label">Archivo</div>
-        <h2 class="editions-title">Ediciones <span style="color:var(--orange);">pasadas</span></h2>
+      <!-- Estado: sin sesión -->
+      <div id="articulo-no-sesion" class="articulo-login-prompt">
+        <p>Para enviar un artículo necesitas tener una cuenta activa en Sintropía Social.</p>
+        <a href="registro.html" class="articulo-login-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1a4 4 0 100 8A4 4 0 008 1zM2 14s-.5-4 6-4 6 4 6 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Iniciar sesión o registrarse
+        </a>
       </div>
-      <p style="font-size:.88rem;color:var(--text-muted);max-width:300px;text-align:right;line-height:1.55;">Descarga cada edición en PDF directamente desde aquí.</p>
-    </div>
-    <div class="editions-grid" id="editions-list">
-      <!-- Las ediciones se cargan desde newsletters.json -->
-    </div>
-  </div>
-</section>
 
-<!-- ════════ QUÉ ES ════════ -->
-<section class="about-band">
-  <div class="container">
-    <div class="about-grid">
-      <div>
-        <div class="section-label">¿Qué es Código?</div>
-        <h2 class="about-title">Conocimiento<br>listo para<br><span style="color:var(--orange);">usar</span></h2>
-        <div class="about-text">
-          <p>Código es el newsletter semanal de Sintropía Social donde compartimos investigación aplicada, metodologías de trabajo comunitario, herramientas digitales y reflexiones sobre el futuro del trabajo y la educación en América Latina.</p>
-          <p>No escribimos para académicos: escribimos para quien actúa en territorio y necesita conocimiento digerible, relevante y accionable.</p>
+      <!-- Estado: con sesión -->
+      <div id="articulo-con-sesion" style="display:none;">
+        <div class="af-user-tag" id="af-user-tag">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1a4 4 0 100 8A4 4 0 008 1zM2 14s-.5-4 6-4 6 4 6 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span id="af-user-name">Usuario</span>
         </div>
-      </div>
-      <div class="features-list">
-        <div class="feature-item">
-          <div>
-            <div class="feature-title">Metodologías explicadas</div>
-            <div class="feature-desc">Cómo usar marcos lógicos, árboles de problemas y diagnósticos participativos en proyectos reales.</div>
+        <form class="af" id="articulo-form" novalidate>
+          <!-- Título del artículo -->
+          <div class="af-full">
+            <label for="af-titulo">Título del artículo *</label>
+            <input type="text" id="af-titulo" name="titulo" placeholder="Título propuesto para tu artículo" required>
           </div>
-        </div>
-        <div class="feature-item">
+          <!-- Tema / categoría -->
           <div>
-            <div class="feature-title">Herramientas y recursos</div>
-            <div class="feature-desc">Plantillas, bases de datos, software y guías que puedes aplicar esta semana.</div>
+            <label for="af-categoria">Categoría temática *</label>
+            <select id="af-categoria" name="categoria" required>
+              <option value="">Selecciona...</option>
+              <option>Mercado Laboral</option>
+              <option>Educación Crítica</option>
+              <option>IA y Automatización</option>
+              <option>Metodología Cualitativa</option>
+              <option>Comunidades Locales</option>
+              <option>Diseño Curricular</option>
+              <option>Prospectiva Social</option>
+              <option>Herramientas Digitales</option>
+              <option>Investigación Participativa</option>
+              <option>Políticas Públicas</option>
+              <option>Acción Colectiva</option>
+              <option>Sistematización</option>
+              <option>Otro</option>
+            </select>
           </div>
-        </div>
-        <div class="feature-item">
+          <!-- Longitud estimada -->
           <div>
-            <div class="feature-title">Datos e investigación</div>
-            <div class="feature-desc">Síntesis de estudios relevantes sobre mercados laborales, educación y comunidades.</div>
+            <label for="af-longitud">Extensión estimada *</label>
+            <select id="af-longitud" name="longitud" required>
+              <option value="">Selecciona...</option>
+              <option value="Corto (500–800 palabras)">Corto (500–800 palabras)</option>
+              <option value="Medio (800–1500 palabras)">Medio (800–1500 palabras)</option>
+              <option value="Largo (más de 1500 palabras)">Largo (más de 1500 palabras)</option>
+            </select>
           </div>
-        </div>
-        <div class="feature-item">
-          <div>
-            <div class="feature-title">Casos y experiencias</div>
-            <div class="feature-desc">Proyectos reales de transformación social, con lo que funcionó y lo que no.</div>
+          <!-- Resumen / abstract -->
+          <div class="af-full">
+            <label for="af-resumen">Resumen o abstract *</label>
+            <textarea id="af-resumen" name="resumen" placeholder="Describe de qué trata tu artículo, su argumento principal y por qué es relevante para lectores de Código Sintropía (máx. 400 palabras)." required maxlength="2400"></textarea>
           </div>
-        </div>
+          <!-- Enlace o archivo -->
+          <div class="af-full">
+            <label for="af-enlace">Enlace al borrador (opcional)</label>
+            <input type="url" id="af-enlace" name="enlace" placeholder="https://docs.google.com/... o cualquier enlace compartible">
+          </div>
+          <!-- Consentimiento / políticas -->
+          <div class="af-full">
+            <label class="af-check">
+              <input type="checkbox" id="af-consent" name="consentimiento" required>
+              <span>Confirmo que el contenido es de mi autoría o cuento con los permisos necesarios para compartirlo. He leído las <a href="politicas-de-uso.pdf" target="_blank">Políticas de Uso</a> y acepto que el equipo editorial revise mi propuesta.</span>
+            </label>
+          </div>
+          <!-- Botón -->
+          <div class="af-full">
+            <button type="submit" class="af-btn" id="af-submit">Enviar propuesta de artículo</button>
+            <div class="af-msg" id="af-msg"></div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -762,6 +742,7 @@ document.addEventListener('click',function(e){
         <a href="servicios.html">Servicios</a>
         <a href="newsletter.html">Newsletter</a>
         <a href="contribuir.html">Contribuir</a>
+        <a href="politicas-de-uso.pdf" target="_blank">Políticas de Uso</a>
       </div>
     </div>
     <div class="footer-copy">© 2024 Sintropía Social · Investigación y acción colectiva</div>
@@ -770,15 +751,14 @@ document.addEventListener('click',function(e){
 
 <script>
 // ── URL del Apps Script desplegado ──────────────────────────────
-// Después de desplegar NewsletterApp.gs, pega la URL aquí:
-const APPS_SCRIPT_URL = 'TU_APPS_SCRIPT_URL_AQUI';
+var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycby0B5nxI1nNybyp7UqtCB4ld8MC_NFg9tvEgamV3lTFVUxzLoDjyEIwh4l_leGYNQ_FiQ/exec';
 
 // ══════════════════════════════════════════════════════════════
 //  TABS  (Formulario / LinkedIn)
 // ══════════════════════════════════════════════════════════════
 function switchTab(btn){
-  document.querySelectorAll('.signup-tab').forEach(t=>{ t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
-  document.querySelectorAll('.signup-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.signup-tab').forEach(function(t){t.classList.remove('active');t.setAttribute('aria-selected','false');});
+  document.querySelectorAll('.signup-pane').forEach(function(p){p.classList.remove('active');});
   btn.classList.add('active');
   btn.setAttribute('aria-selected','true');
   document.getElementById(btn.dataset.pane).classList.add('active');
@@ -788,197 +768,117 @@ function switchTab(btn){
 //  POBLAR SELECT DE EDAD (14-100)
 // ══════════════════════════════════════════════════════════════
 (function(){
-  const sel = document.getElementById('nf-edad');
-  for(let i=14;i<=100;i++){
-    const o = document.createElement('option');
-    o.value = o.textContent = i;
-    sel.appendChild(o);
-  }
+  var sel=document.getElementById('nf-edad');
+  for(var i=14;i<=100;i++){var o=document.createElement('option');o.value=o.textContent=i;sel.appendChild(o);}
 })();
 
 // ══════════════════════════════════════════════════════════════
-//  FORMULARIO DE INTERESADOS
+//  SECCIÓN "ENVIAR ARTÍCULO": mostrar/ocultar según sesión
 // ══════════════════════════════════════════════════════════════
-document.getElementById('interest-form').addEventListener('submit', async function(e){
+(function(){
+  try{
+    var raw=localStorage.getItem('ss_user');
+    if(raw){
+      var u=JSON.parse(raw);
+      document.getElementById('articulo-no-sesion').style.display='none';
+      document.getElementById('articulo-con-sesion').style.display='block';
+      var nameEl=document.getElementById('af-user-name');
+      if(nameEl) nameEl.textContent=(u.nombre||u.email||'Usuario');
+    }
+  }catch(e){}
+})();
+
+// ══════════════════════════════════════════════════════════════
+//  FORMULARIO DE INTERESADOS (JSONP → Apps Script)
+// ══════════════════════════════════════════════════════════════
+document.getElementById('interest-form').addEventListener('submit',function(e){
   e.preventDefault();
-  const btn  = document.getElementById('nf-submit');
-  const msg  = document.getElementById('nf-msg');
-  const form = e.target;
+  var btn=document.getElementById('nf-submit');
+  var msg=document.getElementById('nf-msg');
+  var form=e.target;
+  if(!form.consentimiento.checked){showMsg(msg,'err','Por favor acepta las Políticas de Uso para continuar.');return;}
+  btn.disabled=true; btn.textContent='Enviando…'; msg.className='nf-msg';
 
-  // Validar consentimiento
-  if(!form.consentimiento.checked){
-    showMsg(msg,'err','Por favor acepta el aviso de privacidad para continuar.');
-    return;
-  }
+  var cbName='_cbInteresado'+Date.now();
+  var params='action=interesado'
+    +'&nombre='+encodeURIComponent(form.nombre.value.trim())
+    +'&apellido='+encodeURIComponent(form.apellido.value.trim())
+    +'&estado='+encodeURIComponent(form.estado.value)
+    +'&municipio='+encodeURIComponent(form.municipio.value.trim())
+    +'&edad='+encodeURIComponent(form.edad.value)
+    +'&email='+encodeURIComponent(form.email.value.trim())
+    +'&telefono='+encodeURIComponent(form.telefono.value.trim())
+    +'&interes='+encodeURIComponent(form.interes.value)
+    +'&fuente=Newsletter&consentimiento=true'
+    +'&callback='+cbName;
 
-  btn.disabled = true;
-  btn.textContent = 'Enviando…';
-  msg.className = 'nf-msg';
-
-  try {
-    const params = new URLSearchParams({
-      action:         'interesado',
-      nombre:         form.nombre.value.trim(),
-      apellido:       form.apellido.value.trim(),
-      estado:         form.estado.value,
-      municipio:      form.municipio.value.trim(),
-      edad:           form.edad.value,
-      email:          form.email.value.trim(),
-      telefono:       form.telefono.value.trim(),
-      interes:        form.interes.value,
-      fuente:         'Newsletter',
-      consentimiento: 'true'
-    });
-
-    const r = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: params.toString()
-    });
-    const data = await r.json();
-
-    if(data.ok){
-      showMsg(msg,'ok','¡Registro exitoso! Te contactaremos pronto. Tu código es: ' + data.codigo);
-      form.reset();
-    } else {
-      throw new Error(data.error || 'Error al guardar');
-    }
-  } catch(err){
-    showMsg(msg,'err','Hubo un problema al enviar el formulario. Intenta de nuevo más tarde.');
-    console.error(err);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Enviar registro';
-  }
+  window[cbName]=function(data){
+    delete window[cbName];
+    if(data&&data.ok){showMsg(msg,'ok','¡Registro exitoso! Te contactaremos pronto.');form.reset();}
+    else{showMsg(msg,'err','Hubo un problema. Intenta de nuevo más tarde.');}
+    btn.disabled=false; btn.textContent='Enviar registro';
+  };
+  var sc=document.createElement('script');
+  sc.src=WEBAPP_URL+'?'+params;
+  sc.onerror=function(){showMsg(msg,'err','No se pudo conectar. Intenta de nuevo.');btn.disabled=false;btn.textContent='Enviar registro';};
+  document.head.appendChild(sc);
+  setTimeout(function(){if(window[cbName]){delete window[cbName];showMsg(msg,'err','Sin respuesta del servidor.');btn.disabled=false;btn.textContent='Enviar registro';}},12000);
 });
 
-function showMsg(el, type, text){
-  el.className = 'nf-msg ' + type;
-  el.textContent = text;
-  el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+// ══════════════════════════════════════════════════════════════
+//  FORMULARIO ENVIAR ARTÍCULO (JSONP → Apps Script)
+// ══════════════════════════════════════════════════════════════
+var articuloForm=document.getElementById('articulo-form');
+if(articuloForm){
+  articuloForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    var btn=document.getElementById('af-submit');
+    var msg=document.getElementById('af-msg');
+    var form=e.target;
+    if(!form.consentimiento.checked){showMsg(msg,'err','Acepta las Políticas de Uso para continuar.');return;}
+
+    var user={};
+    try{user=JSON.parse(localStorage.getItem('ss_user')||'{}');}catch(ex){}
+    if(!user.email){showMsg(msg,'err','No se detecta sesión activa. Inicia sesión e intenta de nuevo.');return;}
+
+    btn.disabled=true; btn.textContent='Enviando…'; msg.className='af-msg';
+
+    var cbName='_cbArticulo'+Date.now();
+    var params='action=enviarArticulo'
+      +'&email='+encodeURIComponent(user.email||'')
+      +'&nombre='+encodeURIComponent(user.nombre||'')
+      +'&titulo='+encodeURIComponent(form.titulo.value.trim())
+      +'&categoria='+encodeURIComponent(form.categoria.value)
+      +'&longitud='+encodeURIComponent(form.longitud.value)
+      +'&resumen='+encodeURIComponent(form.resumen.value.trim())
+      +'&enlace='+encodeURIComponent(form.enlace.value.trim())
+      +'&callback='+cbName;
+
+    window[cbName]=function(data){
+      delete window[cbName];
+      if(data&&data.ok){
+        showMsg(msg,'ok','¡Propuesta enviada! El equipo editorial se pondrá en contacto contigo.');
+        form.reset();
+      }else{
+        showMsg(msg,'err',data&&data.error?data.error:'Hubo un problema. Intenta de nuevo más tarde.');
+      }
+      btn.disabled=false; btn.textContent='Enviar propuesta de artículo';
+    };
+    var sc=document.createElement('script');
+    sc.src=WEBAPP_URL+'?'+params;
+    sc.onerror=function(){showMsg(msg,'err','No se pudo conectar. Intenta de nuevo.');btn.disabled=false;btn.textContent='Enviar propuesta de artículo';};
+    document.head.appendChild(sc);
+    setTimeout(function(){if(window[cbName]){delete window[cbName];showMsg(msg,'err','Sin respuesta del servidor.');btn.disabled=false;btn.textContent='Enviar propuesta de artículo';}},12000);
+  });
 }
 
 // ══════════════════════════════════════════════════════════════
-//  BLOG — cargar desde Apps Script
+//  HELPER
 // ══════════════════════════════════════════════════════════════
-let blogEntries = [];
-
-async function loadBlog(){
-  const grid = document.getElementById('blog-grid');
-  try {
-    const r = await fetch(APPS_SCRIPT_URL + '?action=getBlog');
-    const data = await r.json();
-
-    if(!Array.isArray(data) || data.length === 0){
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-muted);">Próximamente se publicarán artículos aquí.</div>';
-      return;
-    }
-
-    blogEntries = data;
-    grid.innerHTML = data.map((entry, idx) => {
-      const fecha    = formatDate(entry['Fecha']);
-      const titulo   = escHtml(entry['Título'] || '');
-      const resumen  = escHtml(entry['Resumen'] || '');
-      const imagen   = entry['Imagen'] || '';
-      const imgHtml  = imagen
-        ? `<img class="blog-card-img" src="${escHtml(imagen)}" alt="${titulo}" loading="lazy">`
-        : `<div class="blog-card-img-placeholder"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.5"/><path d="M4 16l5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
-      return `
-      <article class="blog-card" onclick="openBlogModal(${idx})" style="cursor:pointer;">
-        ${imgHtml}
-        <div class="blog-card-body">
-          <div class="blog-card-date">${fecha}</div>
-          <h3 class="blog-card-title">${titulo}</h3>
-          <p class="blog-card-summary">${resumen}</p>
-          <span class="blog-card-link">Leer más <span>→</span></span>
-        </div>
-      </article>`;
-    }).join('');
-
-  } catch(err){
-    // Si el URL no está configurado todavía, mostrar placeholder
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-muted);">Próximamente se publicarán artículos aquí.</div>';
-  }
-}
-
-function openBlogModal(idx){
-  const entry  = blogEntries[idx];
-  if(!entry) return;
-  document.getElementById('bm-date').textContent  = formatDate(entry['Fecha']);
-  document.getElementById('bm-title').textContent = entry['Título'] || '';
-  document.getElementById('bm-body').textContent  = entry['Contenido'] || entry['Resumen'] || '';
-  document.getElementById('blog-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeBlogModal(){
-  document.getElementById('blog-modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// Cerrar modal con Escape o click en overlay
-document.getElementById('blog-modal').addEventListener('click', function(e){
-  if(e.target === this) closeBlogModal();
-});
-document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeBlogModal(); });
-
-// ══════════════════════════════════════════════════════════════
-//  EDICIONES — cargar desde newsletters.json
-// ══════════════════════════════════════════════════════════════
-(async function(){
-  const grid = document.getElementById('editions-list');
-  try {
-    const r = await fetch('newsletters.json');
-    if(!r.ok) throw new Error();
-    const data = await r.json();
-    if(!data.length){ grid.innerHTML='<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:3rem 0;">Próximamente se publicarán ediciones aquí.</p>'; return; }
-    grid.innerHTML = data.map((e,i)=>{
-      const n = data.length - i;
-      const coverHtml = e.cover
-        ? `<img class="edition-cover" src="${e.cover}" alt="${e.title}" loading="lazy">`
-        : `<div class="edition-cover-placeholder"><div class="edition-cover-num-big">#${n}</div><div class="edition-cover-label">Edición</div></div>`;
-      return `
-      <div class="edition-card">
-        <div class="edition-cover-wrap">
-          ${coverHtml}
-          <div class="edition-num-chip">Ed. #${n}</div>
-        </div>
-        <div class="edition-body">
-          <div class="edition-title">${e.title}</div>
-          <div class="edition-desc">${e.desc||''}</div>
-          <a class="edition-dl" href="${e.pdf}" target="_blank">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M8 1v9M4 6l4 4 4-4M2 12h12v2H2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Descargar PDF
-          </a>
-        </div>
-      </div>`;
-    }).join('');
-  } catch(e){
-    grid.innerHTML='<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:3rem 0;">Próximamente se publicarán ediciones aquí.</p>';
-  }
-})();
-
-// ══════════════════════════════════════════════════════════════
-//  HELPERS
-// ══════════════════════════════════════════════════════════════
-function formatDate(raw){
-  if(!raw) return '';
-  try {
-    const d = new Date(raw);
-    return d.toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
-  } catch(e){ return String(raw); }
-}
-
-function escHtml(s){
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// Iniciar carga del blog
-if(APPS_SCRIPT_URL !== 'TU_APPS_SCRIPT_URL_AQUI'){
-  loadBlog();
-} else {
-  document.getElementById('blog-grid').innerHTML =
-    '<div style="grid-column:1/-1;text-align:center;padding:3rem 0;color:var(--text-muted);">Próximamente se publicarán artículos aquí.</div>';
+function showMsg(el,type,text){
+  el.className='nf-msg '+type; el.textContent=text;
+  el.style.display='block';
+  el.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 </script>
 </body>
