@@ -1000,7 +1000,7 @@ body { padding-top: 64px; }
       <a href="contribuir.html">Contribuir</a>
       <div class="ss-nav-divider"></div>
       <span id="ss-nav-user">
-        <a href="login.html" class="nav-entrar">Entrar</a>
+        <a href="#" onclick="openLoginModal();return false;" class="nav-entrar">Entrar</a>
         <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
       </span>
     </div>
@@ -1559,8 +1559,8 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
     // Obtener email y token del usuario logueado
     var userEmail=''; var userToken='';
     try{if(typeof Auth!=='undefined'&&Auth.getUser){var u=Auth.getUser();if(u&&u.email)userEmail=u.email;if(u&&u.token)userToken=u.token;}}catch(e){}
-    pczJSONP({action:'enviarCita',categoria:cat,indicador:ind,autor:autor,year:yr,
-      cita:cita,publicacion:pub,pagina:pag,citaAPA:apa,link:(pczBookMeta.link||''),usuarioEmail:userEmail,userToken:userToken}).then(function(resp){
+    pczJSONP({action:'enviarCita',categoria:sanitizeInput(cat),indicador:sanitizeInput(ind),autor:sanitizeInput(autor),year:sanitizeInput(yr),
+      cita:sanitizeInput(cita),publicacion:sanitizeInput(pub),pagina:sanitizeInput(pag),citaAPA:sanitizeInput(apa),link:sanitizeInput(pczBookMeta.link||''),usuarioEmail:userEmail,userToken:userToken}).then(function(resp){
       if(resp&&resp.ok){
         document.getElementById('pcz-form-'+i).style.display='none';
         var txt=document.getElementById('pcz-text-'+i);
@@ -1597,9 +1597,9 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       var yr=bm.year||'';
       var pub=bm.titulo||window._pczPdfName||'PDF';
       var apa=autor+(yr?' ('+yr+').':' (s.f.).')+' '+pub+'.'+(r.page?' p. '+r.page+'.':'');
-      pczJSONP({action:'enviarCita',categoria:bm.categoria||'',indicador:bm.indicador||'',
-        autor:autor,year:yr,cita:citaLimpia,publicacion:pub,pagina:r.page,
-        citaAPA:apa,link:bm.link||'',usuarioEmail:userEmail,userToken:userToken}).then(function(resp){
+      pczJSONP({action:'enviarCita',categoria:sanitizeInput(bm.categoria||''),indicador:sanitizeInput(bm.indicador||''),
+        autor:sanitizeInput(autor),year:sanitizeInput(yr),cita:sanitizeInput(citaLimpia),publicacion:sanitizeInput(pub),pagina:sanitizeInput(r.page||''),
+        citaAPA:sanitizeInput(apa),link:sanitizeInput(bm.link||''),usuarioEmail:userEmail,userToken:userToken}).then(function(resp){
         if(resp&&resp.ok)enviadas++;else fallidas++;
         // Pausa cada LOTE para no saturar el Apps Script
         var pausa=(idx%LOTE===0)?PAUSA*3:PAUSA;
@@ -2025,6 +2025,20 @@ function setupLoginForm() {
   });
 }
 
+// ══════════════════════════════════════════════════════════════════
+//  SEGURIDAD: Sanitización contra inyección de fórmulas en Sheets
+//  Bloquea valores que empiecen con = + - @ (CSV/formula injection)
+// ══════════════════════════════════════════════════════════════════
+function sanitizeInput(val) {
+  if (val === null || val === undefined) return '';
+  var s = String(val).trim();
+  // Elimina caracteres de control invisibles (excepto \n)
+  s = s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+  // Prefija con apóstrofo si empieza con caracter de fórmula
+  if (/^[=+\-@\t\r\n|]/.test(s)) s = "'" + s;
+  return s;
+}
+
 // ── Google Sign-In callback ──────────────────────────────────────
 async function handleGoogleLogin(response) {
   var errorEl = document.getElementById('login-error');
@@ -2354,17 +2368,18 @@ document.addEventListener('DOMContentLoaded', function() {
       errEl.style.display='block'; return;
     }
     btn.disabled=true; btn.textContent='Enviando…';
+    // Sanitiza campos contra inyección de fórmulas en Sheets
     var params = {
       action: 'enviarCita',
-      categoria:   categoria,
-      indicador:   document.getElementById('prop-indicador').value.trim(),
-      autor:       autor,
-      year:        document.getElementById('prop-year').value.trim(),
-      cita:        cita,
-      publicacion: document.getElementById('prop-publicacion').value.trim(),
-      pagina:      document.getElementById('prop-pagina').value.trim(),
-      citaAPA:     document.getElementById('prop-apa').value.trim(),
-      link:        document.getElementById('prop-link').value.trim(),
+      categoria:   sanitizeInput(categoria),
+      indicador:   sanitizeInput(document.getElementById('prop-indicador').value),
+      autor:       sanitizeInput(autor),
+      year:        sanitizeInput(document.getElementById('prop-year').value),
+      cita:        sanitizeInput(cita),
+      publicacion: sanitizeInput(document.getElementById('prop-publicacion').value),
+      pagina:      sanitizeInput(document.getElementById('prop-pagina').value),
+      citaAPA:     sanitizeInput(document.getElementById('prop-apa').value),
+      link:        sanitizeInput(document.getElementById('prop-link').value),
       usuarioEmail:document.getElementById('prop-email').value.trim(),
       userToken:(function(){ try{var u=Auth.getUser();return u&&u.token?u.token:'';}catch(e){return '';} })()
     };
