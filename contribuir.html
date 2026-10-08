@@ -141,17 +141,39 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 
 /* ─── ANECDOTARIO ─── */
 .anec-band { padding: 5rem 0; background: var(--bg-dark); }
-.anec-header { margin-bottom: 3rem; }
+.anec-header { margin-bottom: 2.5rem; }
 .anec-title { font-family: var(--font-display); font-size: clamp(2rem,4vw,3rem); font-weight: 900; text-transform: uppercase; margin-bottom: .75rem; }
 .anec-sub { font-size: .95rem; color: var(--text-muted); max-width: 580px; line-height: 1.75; }
+
+/* ── Métricas macro ── */
+.anec-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 3rem; }
+.anec-metric { background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 16px; padding: 1.4rem 1.5rem; }
+.anec-metric-num { font-family: var(--font-display); font-size: clamp(1.6rem,3vw,2.4rem); font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: .3rem; }
+.anec-metric-label { font-size: .78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; line-height: 1.4; }
+.anec-metric-sub { font-size: .72rem; color: rgba(240,238,248,.35); margin-top: .35rem; line-height: 1.4; }
+@media(max-width:900px){ .anec-metrics { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:480px){ .anec-metrics { grid-template-columns: 1fr; } }
+
+/* ── Mini chart: vías de empleo ── */
+.anec-insight { background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 16px; padding: 1.75rem 2rem; margin-bottom: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+.anec-insight-col h4 { font-family: var(--font-display); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--purple); margin-bottom: 1rem; }
+.anec-bar-row { display: flex; align-items: center; gap: .75rem; margin-bottom: .65rem; }
+.anec-bar-label { font-size: .78rem; color: var(--text-muted); min-width: 160px; line-height: 1.3; }
+.anec-bar-track { flex: 1; background: rgba(255,255,255,.07); border-radius: 4px; height: 7px; overflow: hidden; }
+.anec-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--purple), var(--orange)); }
+.anec-bar-pct { font-family: var(--font-display); font-size: .72rem; font-weight: 700; color: var(--text-muted); min-width: 36px; text-align: right; }
+.anec-insight-quote { background: rgba(255,121,41,.06); border: 1px solid rgba(255,121,41,.18); border-radius: 12px; padding: 1rem 1.25rem; margin-top: .5rem; }
+.anec-insight-quote p { font-size: .84rem; font-style: italic; color: var(--text-muted); line-height: 1.65; }
+.anec-insight-quote cite { display: block; font-size: .72rem; color: var(--orange); font-style: normal; font-weight: 600; margin-top: .5rem; }
+@media(max-width:700px){ .anec-insight { grid-template-columns: 1fr; gap: 1.5rem; } .anec-bar-label { min-width: 120px; } }
 
 /* Carrusel */
 .anec-carousel { position: relative; overflow: hidden; margin-bottom: 2.5rem; }
 .anec-track { display: flex; gap: 1.25rem; transition: transform .4s cubic-bezier(.4,0,.2,1); }
-.anec-slide { flex: 0 0 calc(33.333% - .84rem); background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 18px; padding: 1.75rem; min-height: 180px; display: flex; flex-direction: column; gap: .6rem; }
+.anec-slide { flex: 0 0 calc(33.333% - .84rem); background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 18px; padding: 1.75rem; min-height: 220px; display: flex; flex-direction: column; gap: .65rem; }
 .anec-slide-label { font-family: var(--font-display); font-size: .65rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--purple); }
 .anec-slide-pregunta { font-size: .8rem; font-weight: 600; color: var(--text-muted); font-style: italic; line-height: 1.3; margin-top: -.2rem; }
-.anec-slide-value { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--text-main); line-height: 1.2; flex: 1; }
+.anec-slide-value { font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: var(--text-main); line-height: 1.25; flex: 1; }
 .anec-slide-sub { font-size: .78rem; color: var(--text-muted); line-height: 1.5; }
 @media(max-width:768px) { .anec-slide { flex: 0 0 calc(80% - .6rem); } }
 @media(max-width:480px) { .anec-slide { flex: 0 0 calc(92% - .3rem); } }
@@ -436,7 +458,106 @@ function selectAmount(btn, amount) {
     <div class="anec-header">
       <div class="section-label">Voces del trabajo en México</div>
       <h2 class="anec-title">Anecdotario</h2>
-      <p class="anec-sub">Testimonios reales sobre experiencias laborales en el país. Cada entrada es anónima y refleja una voz distinta del mercado de trabajo mexicano. Comparte la tuya.</p>
+      <p class="anec-sub">Más de 20 mil personas de toda la república han compartido su experiencia laboral. Cada dato aquí es una voz real del mercado de trabajo mexicano. Comparte la tuya.</p>
+    </div>
+
+    <!-- ── MÉTRICAS MACRO ── -->
+    <div class="anec-metrics">
+      <div class="anec-metric">
+        <div class="anec-metric-num">20,934</div>
+        <div class="anec-metric-label">Personas respondieron</div>
+        <div class="anec-metric-sub">De 32 estados de la república</div>
+      </div>
+      <div class="anec-metric">
+        <div class="anec-metric-num">57.9%</div>
+        <div class="anec-metric-label">Mujeres</div>
+        <div class="anec-metric-sub">12,134 femenino · 8,292 masculino</div>
+      </div>
+      <div class="anec-metric">
+        <div class="anec-metric-num">26.4</div>
+        <div class="anec-metric-label">Edad promedio</div>
+        <div class="anec-metric-sub">El 51.2% tiene entre 19 y 24 años</div>
+      </div>
+      <div class="anec-metric">
+        <div class="anec-metric-num">52.5%</div>
+        <div class="anec-metric-label">Estudia actualmente</div>
+        <div class="anec-metric-sub">25.1% trabaja · 11.4% estudia y trabaja</div>
+      </div>
+    </div>
+
+    <!-- ── INSIGHT: vías de empleo + trabajo ideal ── -->
+    <div class="anec-insight">
+      <div class="anec-insight-col">
+        <h4>¿Cómo han encontrado empleo?</h4>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Familiares o amigos</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:100%"></div></div>
+          <span class="anec-bar-pct">5,317</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Gobierno</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:72%"></div></div>
+          <span class="anec-bar-pct">3,813</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Internet</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:66%"></div></div>
+          <span class="anec-bar-pct">3,520</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Currículum a empresas</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:50%"></div></div>
+          <span class="anec-bar-pct">2,658</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Bolsa escolar</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:22%"></div></div>
+          <span class="anec-bar-pct">1,154</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Agencias de empleo</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:19%"></div></div>
+          <span class="anec-bar-pct">985</span>
+        </div>
+        <p style="font-size:.74rem;color:rgba(240,238,248,.3);margin-top:.75rem;line-height:1.5;">El capital social —redes de contacto— sigue siendo la vía más efectiva para acceder al empleo en México, por encima de las bolsas digitales y los mecanismos formales.</p>
+      </div>
+      <div class="anec-insight-col">
+        <h4>Lo que aspiran hacer</h4>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Docencia / educación</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:100%"></div></div>
+          <span class="anec-bar-pct">16.2%</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Directivo / liderazgo</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:88%"></div></div>
+          <span class="anec-bar-pct">14.2%</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Área administrativa</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:44%"></div></div>
+          <span class="anec-bar-pct">7.0%</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Negocio propio</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:38%"></div></div>
+          <span class="anec-bar-pct">6.0%</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Tecnología / informática</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:18%"></div></div>
+          <span class="anec-bar-pct">2.9%</span>
+        </div>
+        <div class="anec-bar-row">
+          <span class="anec-bar-label">Salud</span>
+          <div class="anec-bar-track"><div class="anec-bar-fill" style="width:16%"></div></div>
+          <span class="anec-bar-pct">2.6%</span>
+        </div>
+        <div class="anec-insight-quote">
+          <p>"Buen ambiente laboral, flexibilidad de horario, que se trabaje por objetivos, buen salario y mejora profesional."</p>
+          <cite>— Respuesta recurrente al preguntar por el trabajo ideal</cite>
+        </div>
+      </div>
     </div>
 
     <!-- Carrusel de datos -->
@@ -623,20 +744,59 @@ function selectAmount(btn, amount) {
                 (usado para "Trabajo ideal")
 */
 var ANEC_DATA = [
-  {label:'Edad',                   value:'26–30 años',                                sub:'Rango más frecuente en las respuestas'},
-  {label:'Estado',                 value:'Ciudad de México',                           sub:'Principal estado de residencia reportado'},
-  {label:'Alcaldía o Municipio',   value:'Iztapalapa',                                sub:'Alcaldía más mencionada en CDMX'},
-  {label:'Último grado de estudios', value:'Licenciatura',                            sub:'Nivel educativo predominante'},
-  {label:'Trabajo ideal',          pregunta:'¿Cuál sería tu trabajo ideal?',
-                                   value:'"Flexible, con impacto social y bien remunerado"',
-                                   sub:'Patrón recurrente en las respuestas'},
-  {label:'Edad',                   value:'18–25 años',                                sub:'Segundo rango más frecuente'},
-  {label:'Estado',                 value:'Jalisco',                                   sub:'Segundo estado más reportado'},
-  {label:'Alcaldía o Municipio',   value:'Guadalajara Centro',                        sub:'Municipio más mencionado en Jalisco'},
-  {label:'Último grado de estudios', value:'Preparatoria / Bachillerato',             sub:'Segundo nivel educativo predominante'},
-  {label:'Trabajo ideal',          pregunta:'¿Cuál sería tu trabajo ideal?',
-                                   value:'"Desde casa, con horario propio y buen sueldo"',
-                                   sub:'Segunda respuesta más común'}
+  /* ── Bloque 1: perfil más frecuente ── */
+  {label:'Estado con más respuestas',
+   value:'Estado de México',
+   sub:'7,827 respuestas · municipio con más menciones: Toluca'},
+
+  {label:'Edad predominante',
+   value:'19–24 años',
+   sub:'51.2% de quienes respondieron se encuentran en este rango'},
+
+  {label:'Alcaldía o Municipio · CDMX',
+   value:'Iztapalapa',
+   sub:'La alcaldía más mencionada de Ciudad de México (247 respuestas)'},
+
+  {label:'Último grado de estudios',
+   value:'Licenciatura',
+   sub:'52.6% cuenta con estudios universitarios o de posgrado'},
+
+  {label:'Trabajo ideal',
+   pregunta:'¿Cuál sería tu trabajo ideal?',
+   value:'"Hacer lo que amas y que sea bien remunerado"',
+   sub:'Uno de los patrones más recurrentes entre 16,221 respuestas abiertas'},
+
+  /* ── Bloque 2: segundo perfil / otros estados ── */
+  {label:'Segundo estado',
+   value:'Jalisco',
+   sub:'1,990 respuestas · municipio más mencionado: Guadalajara'},
+
+  {label:'Categoría profesional aspirada',
+   value:'Directivo o similar',
+   sub:'5,666 personas aspiran a roles de liderazgo o dirección'},
+
+  {label:'Alcaldía o Municipio · Jalisco',
+   value:'Zapopan',
+   sub:'202 menciones · segundo municipio más reportado en Jalisco'},
+
+  {label:'Área laboral más deseada',
+   value:'Docencia',
+   sub:'5,658 personas eligen la educación como campo de trabajo ideal'},
+
+  {label:'Trabajo ideal',
+   pregunta:'¿Cuál sería tu trabajo ideal?',
+   value:'"Trabajar en lo que amo, con horario flexible y sin estrés"',
+   sub:'Flexibilidad y autonomía como demanda creciente en jóvenes de 19–24 años'},
+
+  /* ── Bloque 3: datos llamativos ── */
+  {label:'¿Cómo encuentran empleo?',
+   value:'Redes de contacto',
+   sub:'5,317 personas encontraron trabajo a través de familiares o amigos — la vía más efectiva'},
+
+  {label:'Trabajo ideal',
+   pregunta:'¿Cuál sería tu trabajo ideal?',
+   value:'"Jefa de mi propia empresa y poder destacar lo que estudié"',
+   sub:'El emprendimiento y la autonomía aparecen como aspiración en el 6% de las respuestas abiertas'}
 ];
 
 var anecIdx = 0;
