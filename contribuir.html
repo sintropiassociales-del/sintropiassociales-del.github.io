@@ -69,6 +69,20 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .ss-serv-body a:hover { background: var(--purple-dk); }
 .ss-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: .4rem; background: none; border: none; }
 .ss-hamburger span { display: block; width: 22px; height: 2px; background: rgba(240,238,248,.6); border-radius: 2px; transition: all .2s; }
+
+/* ─── USER NAV DROPDOWN ─── */
+.ss-user-menu { position: relative; }
+.ss-user-avatar-btn { display: flex; align-items: center; gap: .5rem; background: rgba(99,30,235,.2); border: 1px solid rgba(99,30,235,.35); border-radius: 50px; padding: .3rem .75rem .3rem .3rem; cursor: pointer; font-family: inherit; color: var(--text-main); font-size: .84rem; font-weight: 600; transition: all .18s; }
+.ss-user-avatar-btn:hover { background: rgba(99,30,235,.35); border-color: var(--purple); }
+.ss-user-initials { width: 28px; height: 28px; border-radius: 50%; background: var(--purple); display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 700; color: white; flex-shrink: 0; }
+.ss-user-name-short { max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ss-user-drop { display: none; position: absolute; top: calc(100% + 8px); right: 0; min-width: 200px; background: #0e0c18; border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .6rem; box-shadow: 0 10px 36px rgba(0,0,0,.5); z-index: 600; }
+.ss-user-menu.open .ss-user-drop { display: block; }
+.ss-user-drop a, .ss-user-drop button { display: block; width: 100%; text-align: left; padding: .55rem .9rem; border-radius: 9px; text-decoration: none; font-size: .84rem; font-weight: 500; color: var(--text-main); transition: background .15s; background: none; border: none; cursor: pointer; font-family: inherit; }
+.ss-user-drop a:hover, .ss-user-drop button:hover { background: rgba(255,255,255,.06); }
+.ss-user-drop .logout-btn { color: rgba(240,100,100,.8); }
+.ss-user-drop .logout-btn:hover { background: rgba(220,50,50,.1); color: #f77; }
+
 @media(max-width:900px) {
   .ss-nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; background: #0e0c18; border-bottom: 1px solid rgba(99,30,235,.2); flex-direction: column; align-items: stretch; padding: 1rem; gap: .2rem; box-shadow: 0 8px 24px rgba(0,0,0,.5); max-height: 80vh; overflow-y: auto; }
   .ss-nav-links.open { display: flex; }
@@ -79,6 +93,7 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
   .ss-dd.open .ss-dd-panel { display: block; }
   .ss-hamburger { display: flex; }
   .ss-nav-inner { padding: 0 1.25rem; }
+  .ss-user-drop { right: auto; left: 0; }
 }
 
 /* ─── LAYOUT ─── */
@@ -124,33 +139,81 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .paypal-note { margin-top: .75rem; font-size: .75rem; color: rgba(240,238,248,.3); text-align: center; }
 @media(max-width:768px) { .donacion-inner { grid-template-columns: 1fr; gap: 2.5rem; } }
 
-/* ─── IMPACTO ─── */
-.impacto-band { padding: 5rem 0; }
-.impacto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
-.impacto-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,.07); border-radius: 16px; padding: 2rem 1.5rem; text-align: center; }
-.impacto-num { font-family: var(--font-display); font-size: 2.8rem; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: .5rem; }
-.impacto-label { font-size: .82rem; color: var(--text-muted); line-height: 1.4; }
+/* ─── ANECDOTARIO ─── */
+.anec-band { padding: 5rem 0; background: var(--bg-dark); }
+.anec-header { margin-bottom: 3rem; }
+.anec-title { font-family: var(--font-display); font-size: clamp(2rem,4vw,3rem); font-weight: 900; text-transform: uppercase; margin-bottom: .75rem; }
+.anec-sub { font-size: .95rem; color: var(--text-muted); max-width: 580px; line-height: 1.75; }
 
-/* ─── COLECTIVO ─── */
-.colectivo-band { background: var(--bg-darker); padding: 5rem 0; }
-.colectivo-title { font-family: var(--font-display); font-size: clamp(1.8rem,3vw,2.8rem); font-weight: 900; text-transform: uppercase; margin-bottom: 1rem; }
-.colectivo-sub { font-size: .95rem; color: var(--text-muted); margin-bottom: 3rem; max-width: 560px; }
-.ways-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
-.way-item { display: flex; gap: 1rem; align-items: flex-start; background: rgba(255,255,255,.03); border-radius: 14px; padding: 1.25rem; }
-.way-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: .1rem; }
-.way-title { font-family: var(--font-display); font-size: .84rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .3rem; }
-.way-desc { font-size: .82rem; color: var(--text-muted); line-height: 1.5; }
+/* Carrusel */
+.anec-carousel { position: relative; overflow: hidden; margin-bottom: 2.5rem; }
+.anec-track { display: flex; gap: 1.25rem; transition: transform .4s cubic-bezier(.4,0,.2,1); }
+.anec-slide { flex: 0 0 calc(33.333% - .84rem); background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 18px; padding: 1.75rem; min-height: 180px; display: flex; flex-direction: column; gap: .6rem; }
+.anec-slide-label { font-family: var(--font-display); font-size: .65rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--purple); }
+.anec-slide-value { font-family: var(--font-display); font-size: 1.45rem; font-weight: 800; color: var(--text-main); line-height: 1.2; flex: 1; }
+.anec-slide-sub { font-size: .78rem; color: var(--text-muted); line-height: 1.5; }
+@media(max-width:768px) { .anec-slide { flex: 0 0 calc(80% - .6rem); } }
+@media(max-width:480px) { .anec-slide { flex: 0 0 calc(92% - .3rem); } }
 
-/* ─── CTA FINAL ─── */
-.cta-band { padding: 6rem 0; text-align: center; background: radial-gradient(ellipse 50% 60% at 50% 100%, rgba(99,30,235,.2) 0%, transparent 65%); }
-.cta-title { font-family: var(--font-display); font-size: clamp(2rem,4vw,3.5rem); font-weight: 900; text-transform: uppercase; line-height: 1; margin-bottom: 1rem; }
-.cta-title span { color: var(--orange); }
-.cta-sub { color: var(--text-muted); font-size: 1rem; margin-bottom: 2.5rem; }
-.cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-.btn-primary { background: var(--purple); color: white; padding: .9rem 2.2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 700; font-size: .9rem; text-decoration: none; display: inline-block; transition: all .2s; }
-.btn-primary:hover { background: var(--purple-dk); }
-.btn-outline { border: 1px solid rgba(255,255,255,.2); color: var(--text-main); padding: .9rem 2.2rem; border-radius: 50px; font-family: var(--font-display); font-weight: 600; font-size: .9rem; text-decoration: none; display: inline-block; transition: all .2s; }
-.btn-outline:hover { border-color: rgba(255,255,255,.5); }
+.anec-nav { display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem; }
+.anec-nav-btn { background: rgba(99,30,235,.15); border: 1px solid rgba(99,30,235,.3); color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .18s; flex-shrink: 0; }
+.anec-nav-btn:hover { background: rgba(99,30,235,.35); border-color: var(--purple); }
+.anec-nav-btn:disabled { opacity: .3; cursor: default; }
+.anec-dots { display: flex; gap: .4rem; flex: 1; }
+.anec-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.2); cursor: pointer; transition: all .2s; flex-shrink: 0; }
+.anec-dot.active { background: var(--purple); width: 20px; border-radius: 3px; }
+
+/* Formulario Anecdotario */
+.anec-form-wrap { background: var(--bg-darker); border: 1px solid rgba(99,30,235,.2); border-radius: 22px; padding: 2.5rem; }
+.anec-form-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-bottom: .5rem; }
+.anec-form-sub { font-size: .86rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
+.anec-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.anec-field { display: flex; flex-direction: column; gap: .4rem; }
+.anec-field.full { grid-column: 1 / -1; }
+.anec-field label { font-size: .78rem; font-weight: 600; color: rgba(240,238,248,.7); letter-spacing: .04em; }
+.anec-field label span.req { color: var(--purple); margin-left: .2rem; }
+.anec-input, .anec-select, .anec-textarea {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  padding: .7rem 1rem;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: .88rem;
+  transition: border-color .18s, background .18s;
+  width: 100%;
+}
+.anec-input:focus, .anec-select:focus, .anec-textarea:focus {
+  outline: none;
+  border-color: var(--purple);
+  background: rgba(99,30,235,.08);
+}
+.anec-select option { background: #0e0c18; color: var(--text-main); }
+.anec-textarea { resize: vertical; min-height: 90px; }
+.anec-form-note { font-size: .76rem; color: var(--text-muted); margin-top: .35rem; line-height: 1.5; }
+.anec-submit-row { grid-column: 1 / -1; display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; margin-top: .5rem; }
+.anec-submit-btn {
+  background: var(--purple);
+  color: white;
+  border: none;
+  padding: .8rem 2rem;
+  border-radius: 50px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .88rem;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.anec-submit-btn:hover { background: var(--purple-dk); transform: translateY(-1px); }
+.anec-submit-btn:disabled { opacity: .6; cursor: default; transform: none; }
+.anec-submit-note { font-size: .76rem; color: var(--text-muted); line-height: 1.5; max-width: 320px; }
+.anec-msg { padding: 1rem 1.4rem; border-radius: 12px; font-size: .88rem; font-weight: 500; margin-top: 1.2rem; display: none; }
+.anec-msg.ok { background: rgba(40,200,100,.12); border: 1px solid rgba(40,200,100,.3); color: #5de8a0; }
+.anec-msg.err { background: rgba(220,50,50,.12); border: 1px solid rgba(220,50,50,.3); color: #f88; }
+@media(max-width:600px) { .anec-form { grid-template-columns: 1fr; } .anec-field.full { grid-column: 1; } }
 
 /* ─── FOOTER ─── */
 footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.06); padding: 2.5rem 0 2rem; }
@@ -172,7 +235,7 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
       <span class="ss-nav-logo-name">SINTROPÍA SOCIAL</span>
     </a>
     <div class="ss-nav-links" id="ss-nav-links">
-      <a href="inicio.html">Inicio</a>
+      <a href="index.html">Inicio</a>
       <div class="ss-dd" id="dd-herr">
         <button class="ss-dd-btn" onclick="ssToggleDD(this)">
           Herramientas
@@ -213,7 +276,8 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
       <a href="contribuir.html" class="active">Contribuir</a>
       <div class="ss-nav-divider"></div>
       <span id="ss-nav-user">
-        <a href="https://sintropiassociales-del.github.io/registro.html" class="nav-entrar">Entrar</a>
+        <!-- Se reemplaza dinámicamente según sesión -->
+        <a href="#" onclick="openLoginModal();return false;" class="nav-entrar">Entrar</a>
         <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
       </span>
     </div>
@@ -222,13 +286,59 @@ footer { background: var(--bg-darker); border-top: 1px solid rgba(255,255,255,.0
     </button>
   </div>
 </nav>
+
 <script>
+/* ─── NAV helpers ─── */
 function ssToggleDD(el){el.closest('.ss-dd').classList.toggle('open');}
 function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
 function ssMobileNav(){document.querySelector('.ss-nav-links').classList.toggle('open');}
 document.addEventListener('click',function(e){
   if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd.open').forEach(d=>d.classList.remove('open'));
+  if(!e.target.closest('.ss-user-menu'))document.querySelectorAll('.ss-user-menu.open').forEach(d=>d.classList.remove('open'));
 });
+
+/* ─── Session ─── */
+function openLoginModal(){window.location.href='index.html?login=1';}
+
+function updateNavUser(user){
+  var el=document.getElementById('ss-nav-user');
+  if(!el)return;
+  if(!user){
+    el.innerHTML='<a href="#" onclick="openLoginModal();return false;" class="nav-entrar">Entrar</a><a href="registro.html" class="ss-nav-cta">Únete gratis</a>';
+    return;
+  }
+  var nombre=user.nombre||user.email||'Usuario';
+  var inicial=(nombre[0]||'U').toUpperCase();
+  var nombreCorto=nombre.split(' ')[0];
+  el.innerHTML=`
+    <div class="ss-user-menu" id="user-menu-dd">
+      <button class="ss-user-avatar-btn" onclick="document.getElementById('user-menu-dd').classList.toggle('open')">
+        <div class="ss-user-initials">${inicial}</div>
+        <span class="ss-user-name-short">${nombreCorto}</span>
+        <svg viewBox="0 0 10 6" fill="none" style="width:10px;height:10px;color:rgba(240,238,248,.4)"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="ss-user-drop">
+        <a href="usuario.html">Mi perfil</a>
+        <a href="usuario.html#citas">Mis citas</a>
+        <div style="height:1px;background:rgba(255,255,255,.08);margin:.35rem .4rem;"></div>
+        <button class="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+      </div>
+    </div>`;
+}
+
+function cerrarSesion(){
+  try{localStorage.removeItem('ss_user');}catch(e){}
+  updateNavUser(null);
+  window.location.reload();
+}
+
+/* ─── Cargar sesión al inicio ─── */
+(function(){
+  try{
+    var u=localStorage.getItem('ss_user');
+    if(u) updateNavUser(JSON.parse(u));
+  }catch(e){}
+})();
 </script>
 
 <!-- ════════ HERO ════════ -->
@@ -318,125 +428,163 @@ function selectAmount(btn, amount) {
 }
 </script>
 
-<!-- ════════ IMPACTO ════════ -->
-<section class="impacto-band">
+<!-- ════════ ANECDOTARIO ════════ -->
+<section class="anec-band" id="anecdotario">
   <div class="container">
-    <div class="section-label">Lo que hemos construido</div>
-    <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:900;text-transform:uppercase;">El proyecto<br>en números</h2>
-    <div class="impacto-grid">
-      <div class="impacto-card">
-        <div class="impacto-num">843+</div>
-        <div class="impacto-label">Citas académicas en el repositorio</div>
-      </div>
-      <div class="impacto-card">
-        <div class="impacto-num">16</div>
-        <div class="impacto-label">Herramientas digitales gratuitas</div>
-      </div>
-      <div class="impacto-card">
-        <div class="impacto-num">5</div>
-        <div class="impacto-label">Áreas de investigación activas</div>
-      </div>
-      <div class="impacto-card">
-        <div class="impacto-num">0</div>
-        <div class="impacto-label">Muros de pago — acceso siempre libre</div>
+    <div class="anec-header">
+      <div class="section-label">Voces del trabajo en México</div>
+      <h2 class="anec-title">Anecdotario</h2>
+      <p class="anec-sub">Testimonios reales sobre experiencias laborales en el país. Cada entrada es anónima y refleja una voz distinta del mercado de trabajo mexicano. Comparte la tuya.</p>
+    </div>
+
+    <!-- Carrusel de datos -->
+    <div class="anec-carousel" id="anec-carousel">
+      <div class="anec-track" id="anec-track">
+        <!-- slides inyectados por JS -->
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ════════ OTRAS FORMAS ════════ -->
-<section class="colectivo-band">
-  <div class="container">
-    <div class="section-label">Más allá de la donación</div>
-    <h2 class="colectivo-title">Construir<br>colectivamente</h2>
-    <p class="colectivo-sub">El cambio social real se teje en red. Aquí hay otras formas concretas de ser parte de Sintropía.</p>
-    <div class="ways-grid">
-      <div class="way-item">
-        <div>
-          <div class="way-title">Comparte bibliografía</div>
-          <div class="way-desc">¿Conoces investigaciones relevantes sobre trabajo, comunidad o educación? Puedes enviarlas para el repositorio.</div>
-        </div>
-      </div>
-      <div class="way-item">
-        <div>
-          <div class="way-title">Escribe para el newsletter</div>
-          <div class="way-desc">Publicamos análisis, reflexiones y casos de practicionantes con experiencia en campo. Propón un artículo.</div>
-        </div>
-      </div>
-      <div class="way-item">
-        <div>
-          <div class="way-title">Usa las herramientas</div>
-          <div class="way-desc">Integrar nuestras herramientas en talleres, clases o proyectos es una forma valiosa de validarlas y mejorarlas.</div>
-        </div>
-      </div>
-      <div class="way-item">
-        <div>
-          <div class="way-title">Alianzas institucionales</div>
-          <div class="way-desc">¿Representas a una organización? Podemos explorar convenios de colaboración, co-autoría o formación.</div>
-        </div>
-      </div>
-      <div class="way-item">
-        <div>
-          <div class="way-title">Reporta errores</div>
-          <div class="way-desc">Si encuentras un problema en alguna herramienta o un dato incorrecto, cuéntanoslo. Cada reporte mejora el proyecto.</div>
-        </div>
-      </div>
-      <div class="way-item">
-        <div>
-          <div class="way-title">Traduce y adapta</div>
-          <div class="way-desc">Algunas herramientas pueden adaptarse a contextos locales o idiomas específicos. ¿Tienes experiencia en eso?</div>
-        </div>
-      </div>
+    <div class="anec-nav">
+      <button class="anec-nav-btn" id="anec-prev" onclick="anecPrev()" aria-label="Anterior">
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="anec-dots" id="anec-dots"></div>
+      <button class="anec-nav-btn" id="anec-next" onclick="anecNext()" aria-label="Siguiente">
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
-  </div>
-</section>
 
-<!-- ════════ HERRAMIENTAS PARA CONTRIBUIR ════════ -->
-<section class="colectivo-band" style="padding-top:0;">
-  <div class="container">
-    <div class="section-label" style="margin-bottom:.5rem;">Herramientas para participar</div>
-    <p style="font-size:.92rem;color:var(--text-muted);margin-bottom:2rem;max-width:560px;">Usa el Buscador de Citas PDF para localizar fuentes en cualquier documento y proponer nuevas entradas al Repositorio Bibliográfico de Sintropía.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
+    <!-- Formulario de contribución -->
+    <div class="anec-form-wrap" id="anec-form-wrap">
+      <h3 class="anec-form-title">Comparte tu experiencia</h3>
+      <p class="anec-form-sub">Tu respuesta es anónima y será revisada antes de publicarse. Si ya enviaste una contribución con el mismo correo, actualizaremos tu entrada.</p>
 
-      <!-- Repositorio Bibliográfico -->
-      <div class="way-item" style="flex-direction:column;gap:.75rem;padding:1.5rem;background:var(--bg-card);border:1px solid rgba(99,30,235,.25);border-radius:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--text-main);">Repositorio Bibliográfico</div>
-          <div style="width:14px;height:14px;border-radius:50%;background:var(--purple);flex-shrink:0;"></div>
+      <form class="anec-form" id="anec-form" onsubmit="anecEnviar(event)">
+
+        <!-- Fila 1 -->
+        <div class="anec-field">
+          <label>Edad <span class="req">*</span></label>
+          <select class="anec-select" name="edad" required>
+            <option value="">Selecciona...</option>
+            <option>15-20</option><option>21-25</option><option>26-30</option>
+            <option>31-35</option><option>36-40</option><option>41-50</option>
+            <option>51-60</option><option>61 o más</option>
+          </select>
         </div>
-        <p style="font-size:.85rem;color:var(--text-muted);line-height:1.7;">Busca entre más de 843 citas académicas organizadas por categoría, autor y año. Exporta en APA, MLA o Chicago con un clic. También puedes proponer nuevas citas desde cualquier disciplina o libro. Acceso parcial gratuito; suscripción anual para el repositorio completo.</p>
-        <a href="https://sintropiassociales-del.github.io/index.html" target="_blank" style="display:inline-flex;align-items:center;gap:.5rem;background:var(--purple);color:#fff;font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:.65rem 1.2rem;border-radius:50px;text-decoration:none;width:fit-content;transition:background .2s;">
-          Abrir herramienta
-          <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </a>
-      </div>
-
-      <!-- Buscador de Citas PDF -->
-      <div class="way-item" style="flex-direction:column;gap:.75rem;padding:1.5rem;background:var(--bg-card);border:1px solid rgba(255,121,41,.2);border-radius:16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--text-main);">Buscador de citas en PDF</div>
-          <div style="width:14px;height:14px;border-radius:50%;background:var(--orange);flex-shrink:0;"></div>
+        <div class="anec-field">
+          <label>Género <span class="req">*</span></label>
+          <select class="anec-select" name="genero" required>
+            <option value="">Selecciona...</option>
+            <option>Hombre</option>
+            <option>Mujer</option>
+            <option>No binario / género fluido</option>
+            <option>Prefiero no decir</option>
+          </select>
         </div>
-        <p style="font-size:.85rem;color:var(--text-muted);line-height:1.7;">Carga cualquier libro, reporte o tesis. Busca por palabra clave y extrae párrafos con número de página exacto — listos para proponer al Repositorio.</p>
-        <a href="https://sintropiassociales-del.github.io/panel/muestra_pdfcitas.html" target="_blank" style="display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text-main);font-family:var(--font-display);font-weight:700;font-size:.85rem;padding:.65rem 1.2rem;border-radius:50px;border:1px solid rgba(255,255,255,.2);text-decoration:none;width:fit-content;transition:border-color .2s;">
-          Abrir herramienta
-          <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </a>
-      </div>
 
-    </div>
-  </div>
-</section>
+        <!-- Fila 2 -->
+        <div class="anec-field">
+          <label>Estado donde resides <span class="req">*</span></label>
+          <select class="anec-select" name="estado" id="anec-estado" onchange="anecCargarAlcaldias()" required>
+            <option value="">Selecciona...</option>
+            <option>Aguascalientes</option><option>Baja California</option><option>Baja California Sur</option>
+            <option>Campeche</option><option>Chiapas</option><option>Chihuahua</option>
+            <option>Ciudad de México</option><option>Coahuila</option><option>Colima</option>
+            <option>Durango</option><option>Estado de México</option><option>Guanajuato</option>
+            <option>Guerrero</option><option>Hidalgo</option><option>Jalisco</option>
+            <option>Michoacán</option><option>Morelos</option><option>Nayarit</option>
+            <option>Nuevo León</option><option>Oaxaca</option><option>Puebla</option>
+            <option>Querétaro</option><option>Quintana Roo</option><option>San Luis Potosí</option>
+            <option>Sinaloa</option><option>Sonora</option><option>Tabasco</option>
+            <option>Tamaulipas</option><option>Tlaxcala</option><option>Veracruz</option>
+            <option>Yucatán</option><option>Zacatecas</option>
+          </select>
+        </div>
+        <div class="anec-field">
+          <label>Alcaldía o Municipio <span class="req">*</span></label>
+          <input type="text" class="anec-input" name="alcaldia" id="anec-alcaldia-input" placeholder="Escribe tu alcaldía o municipio" required>
+          <div class="anec-form-note" id="anec-alcaldia-note" style="display:none;"></div>
+        </div>
 
-<!-- ════════ CTA ════════ -->
-<section class="cta-band">
-  <div class="container-narrow">
-    <div class="section-label">¿Listo para sumarte?</div>
-    <h2 class="cta-title">El conocimiento<br>es un bien <span>común</span></h2>
-    <p class="cta-sub">Cualquier contribución, grande o pequeña, mantiene vivo este proyecto.</p>
-    <div class="cta-btns">
-      <a href="#donacion" class="btn-primary">Donar ahora</a>
-      <a href="herramientas.html" class="btn-outline">Explorar herramientas</a>
+        <!-- Fila 3 -->
+        <div class="anec-field">
+          <label>Último grado de estudios <span class="req">*</span></label>
+          <select class="anec-select" name="estudios" required>
+            <option value="">Selecciona...</option>
+            <option>Sin estudios formales</option><option>Primaria</option><option>Secundaria</option>
+            <option>Preparatoria / Bachillerato</option><option>Técnico / Carrera técnica</option>
+            <option>Licenciatura</option><option>Especialización</option>
+            <option>Maestría</option><option>Doctorado</option>
+          </select>
+        </div>
+        <div class="anec-field">
+          <label>Ocupación actual <span class="req">*</span></label>
+          <input type="text" class="anec-input" name="ocupacion" placeholder="p.ej. Docente, Diseñador, Desempleado/a" required maxlength="120">
+        </div>
+
+        <!-- Fila 4 — áreas -->
+        <div class="anec-field full">
+          <label>Áreas de trabajo donde te gustaría ejercer</label>
+          <input type="text" class="anec-input" name="areas_trabajo" placeholder="p.ej. Educación, Tecnología, Salud..." maxlength="250">
+        </div>
+
+        <!-- Fila 5 — categoría -->
+        <div class="anec-field">
+          <label>Categoría profesional de tu puesto</label>
+          <select class="anec-select" name="categoria_profesional">
+            <option value="">Selecciona...</option>
+            <option>Sin categoría asignada</option>
+            <option>Auxiliar / Asistente</option>
+            <option>Técnico / Operativo</option>
+            <option>Analista / Especialista</option>
+            <option>Coordinador / Supervisor</option>
+            <option>Gerente / Director</option>
+            <option>Dueño / Emprendedor</option>
+            <option>Freelance / Independiente</option>
+          </select>
+        </div>
+
+        <!-- Fila 6 — cómo encontró empleo -->
+        <div class="anec-field">
+          <label>¿Cómo has encontrado empleo efectivamente?</label>
+          <input type="text" class="anec-input" name="como_empleo" placeholder="p.ej. Redes de contacto, bolsa de trabajo..." maxlength="250">
+        </div>
+
+        <!-- Si otro -->
+        <div class="anec-field full">
+          <label>Si respondiste "otro", cuéntanos cuál</label>
+          <input type="text" class="anec-input" name="otro_via" placeholder="Opcional" maxlength="200">
+        </div>
+
+        <!-- Trabajo ideal -->
+        <div class="anec-field full">
+          <label>¿Cuál sería tu trabajo ideal? <span class="req">*</span></label>
+          <textarea class="anec-textarea" name="trabajo_ideal" placeholder="Cuéntanos cómo sería el trabajo que más te gustaría tener..." required maxlength="600"></textarea>
+        </div>
+
+        <!-- Curso -->
+        <div class="anec-field full">
+          <label>¿Qué curso te gustaría que ofertáramos?</label>
+          <input type="text" class="anec-input" name="curso_deseado" placeholder="Opcional — tu respuesta orienta nuestra oferta formativa" maxlength="250">
+        </div>
+
+        <!-- Email — para deduplicación (no se muestra públicamente) -->
+        <div class="anec-field full">
+          <label>Correo electrónico <span class="req">*</span></label>
+          <input type="email" class="anec-input" name="email" id="anec-email" placeholder="No se publicará. Sirve para identificar tu entrada." required maxlength="200">
+          <div class="anec-form-note">Tu correo no es visible públicamente. Si ya enviaste una contribución, esta actualizará la anterior.</div>
+        </div>
+
+        <!-- Enviar -->
+        <div class="anec-submit-row">
+          <button type="submit" class="anec-submit-btn" id="anec-submit-btn">
+            <svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M2 8h12M8 2l6 6-6 6" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Enviar mi anecdotario
+          </button>
+          <p class="anec-submit-note">Tu contribución será revisada por el equipo antes de aparecer en el carrusel.</p>
+        </div>
+
+      </form>
+      <div class="anec-msg" id="anec-msg"></div>
     </div>
   </div>
 </section>
@@ -447,7 +595,7 @@ function selectAmount(btn, amount) {
     <div class="footer-inner">
       <div class="footer-logo">SINTROPÍA SOCIAL</div>
       <div class="footer-links">
-        <a href="inicio.html">Inicio</a>
+        <a href="index.html">Inicio</a>
         <a href="herramientas.html">Herramientas</a>
         <a href="servicios.html">Servicios</a>
         <a href="newsletter.html">Newsletter</a>
@@ -457,6 +605,231 @@ function selectAmount(btn, amount) {
     <div class="footer-copy">© 2024 Sintropía Social · Investigación y acción colectiva</div>
   </div>
 </footer>
+
+<script>
+/* ══════════════════════════════════════
+   ANECDOTARIO — datos de muestra del Excel
+   (reemplazar con llamada real a la API cuando haya datos aprobados)
+   ══════════════════════════════════════ */
+
+var ANEC_DATA = [
+  {label:'Edad', value:'26–30 años', sub:'Rango más frecuente en las respuestas'},
+  {label:'Género', value:'57% Mujeres', sub:'Participación mayoritaria femenina'},
+  {label:'Estado', value:'Ciudad de México', sub:'Principal estado de residencia reportado'},
+  {label:'Alcaldía / Municipio', value:'Iztapalapa', sub:'Alcaldía más mencionada en CDMX'},
+  {label:'Último grado de estudios', value:'Licenciatura', sub:'Nivel educativo predominante'},
+  {label:'Ocupación', value:'Docente / Educación', sub:'Campo laboral más frecuente'},
+  {label:'Trabajo ideal', value:'"Flexible, con impacto social y bien remunerado"', sub:'Patrón recurrente en las respuestas'},
+  {label:'Áreas de interés', value:'Educación · Tecnología · Salud', sub:'Top 3 áreas preferidas'},
+  {label:'¿Cómo encontró empleo?', value:'Redes de contacto', sub:'Vía más efectiva reportada'},
+  {label:'Curso deseado', value:'Habilidades digitales y IA', sub:'Formación más solicitada'}
+];
+
+var anecIdx = 0;
+var anecVisible = 3;
+
+function anecGetVisible(){
+  return window.innerWidth <= 480 ? 1 : window.innerWidth <= 768 ? 1 : 3;
+}
+
+function anecRender(){
+  anecVisible = anecGetVisible();
+  var track = document.getElementById('anec-track');
+  var dots = document.getElementById('anec-dots');
+  if(!track || !dots) return;
+
+  track.innerHTML = ANEC_DATA.map(function(d,i){
+    return '<div class="anec-slide">'+
+      '<div class="anec-slide-label">'+d.label+'</div>'+
+      '<div class="anec-slide-value">'+d.value+'</div>'+
+      '<div class="anec-slide-sub">'+d.sub+'</div>'+
+    '</div>';
+  }).join('');
+
+  var maxIdx = Math.max(0, ANEC_DATA.length - anecVisible);
+  dots.innerHTML = '';
+  for(var i=0;i<=maxIdx;i++){
+    (function(idx){
+      var d=document.createElement('div');
+      d.className='anec-dot'+(idx===anecIdx?' active':'');
+      d.onclick=function(){anecGoTo(idx);};
+      dots.appendChild(d);
+    })(i);
+  }
+  anecGoTo(anecIdx);
+}
+
+function anecGoTo(idx){
+  anecVisible = anecGetVisible();
+  var maxIdx = Math.max(0, ANEC_DATA.length - anecVisible);
+  anecIdx = Math.max(0, Math.min(idx, maxIdx));
+  var track = document.getElementById('anec-track');
+  if(!track) return;
+  var slideW = track.querySelector('.anec-slide');
+  if(!slideW) return;
+  var w = slideW.offsetWidth + 20; /* gap aprox */
+  track.style.transform = 'translateX(-'+(anecIdx*w)+'px)';
+  document.querySelectorAll('.anec-dot').forEach(function(d,i){
+    d.classList.toggle('active', i===anecIdx);
+  });
+  document.getElementById('anec-prev').disabled = anecIdx===0;
+  document.getElementById('anec-next').disabled = anecIdx>=maxIdx;
+}
+
+function anecPrev(){anecGoTo(anecIdx-1);}
+function anecNext(){anecGoTo(anecIdx+1);}
+
+window.addEventListener('resize', anecRender);
+document.addEventListener('DOMContentLoaded', anecRender);
+
+/* ══════════════════════════════════════
+   VALIDACIÓN DE ALCALDÍAS POR ESTADO
+   ══════════════════════════════════════ */
+var ALCALDIAS_CDMX = ['Álvaro Obregón','Azcapotzalco','Benito Juárez','Coyoacán','Cuajimalpa de Morelos','Cuauhtémoc','Gustavo A. Madero','Iztacalco','Iztapalapa','La Magdalena Contreras','Miguel Hidalgo','Milpa Alta','Tláhuac','Tlalpan','Venustiano Carranza','Xochimilco'];
+var MUNS_EDOMEX = ['Atizapán de Zaragoza','Chalco','Chimalhuacán','Cuautitlán Izcalli','Ecatepec de Morelos','Huixquilucan','Ixtapaluca','Jocotitlán','La Paz','Lerma','Naucalpan de Juárez','Netzahualcóyotl','Nicolás Romero','Tenango del Valle','Texcoco','Tlalnepantla de Baz','Toluca','Tultitlán','Valle de México'];
+
+function anecCargarAlcaldias(){
+  var estado = document.getElementById('anec-estado').value;
+  var note = document.getElementById('anec-alcaldia-note');
+  var input = document.getElementById('anec-alcaldia-input');
+  note.style.display = 'none';
+  input.value = '';
+
+  if(estado === 'Ciudad de México'){
+    note.textContent = 'Alcaldías válidas: '+ALCALDIAS_CDMX.join(', ')+'.';
+    note.style.display = 'block';
+  } else if(estado === 'Estado de México'){
+    note.textContent = 'Algunos municipios: '+MUNS_EDOMEX.join(', ')+', y más.';
+    note.style.display = 'block';
+  }
+}
+
+/* Validar alcaldía al perder foco (solo CDMX) */
+document.addEventListener('DOMContentLoaded', function(){
+  var input = document.getElementById('anec-alcaldia-input');
+  if(!input) return;
+  input.addEventListener('blur', function(){
+    var estado = document.getElementById('anec-estado').value;
+    if(estado !== 'Ciudad de México') return;
+    var val = input.value.trim();
+    if(!val) return;
+    /* normalizar: quitar acentos para comparar */
+    function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+    var match = ALCALDIAS_CDMX.some(function(a){return norm(a)===norm(val);});
+    var note = document.getElementById('anec-alcaldia-note');
+    if(!match){
+      note.textContent = '⚠️ "'+val+'" no corresponde a una alcaldía de CDMX. Si es correcta, déjala; si no, revisa el listado arriba.';
+      note.style.display = 'block';
+      note.style.color = '#f8a';
+    } else {
+      note.style.color = '';
+    }
+  });
+});
+
+/* ══════════════════════════════════════
+   SANITIZACIÓN ANTI-FORMULA-INJECTION
+   ══════════════════════════════════════ */
+function sanitize(val){
+  if(typeof val !== 'string') return String(val||'');
+  val = val.trim();
+  /* Quitar caracteres que Google Sheets interpreta como inicio de fórmula */
+  val = val.replace(/^[=+\-@\t\r]+/, '');
+  /* Reemplazar saltos de línea para evitar inyección multi-celda */
+  val = val.replace(/[\n\r]/g, ' ');
+  return val.substring(0, 1000); /* límite de longitud */
+}
+
+/* ══════════════════════════════════════
+   BACKEND
+   ══════════════════════════════════════ */
+var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyDEA_placeholder_update_this/exec';
+
+function api(action, params, cb){
+  var url = WEBAPP_URL + '?action=' + encodeURIComponent(action) + '&callback=_cb_' + action;
+  Object.keys(params||{}).forEach(function(k){
+    url += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(params[k]||'');
+  });
+  var s = document.createElement('script');
+  var fn = '_cb_' + action;
+  window[fn] = function(data){
+    delete window[fn];
+    if(s.parentNode) s.parentNode.removeChild(s);
+    cb(null, data);
+  };
+  s.onerror = function(){
+    delete window[fn];
+    if(s.parentNode) s.parentNode.removeChild(s);
+    cb(new Error('Error de red'));
+  };
+  s.src = url;
+  document.head.appendChild(s);
+}
+
+/* ══════════════════════════════════════
+   ENVÍO DEL FORMULARIO
+   ══════════════════════════════════════ */
+function anecEnviar(e){
+  e.preventDefault();
+  var form = document.getElementById('anec-form');
+  var btn = document.getElementById('anec-submit-btn');
+  var msg = document.getElementById('anec-msg');
+  var fd = new FormData(form);
+
+  /* Pre-fill email si usuario tiene sesión */
+  try{
+    var u=JSON.parse(localStorage.getItem('ss_user')||'null');
+    if(u && u.email && !fd.get('email')){
+      fd.set('email', u.email);
+      document.getElementById('anec-email').value = u.email;
+    }
+  }catch(err){}
+
+  var payload = {
+    edad:            sanitize(fd.get('edad')||''),
+    genero:          sanitize(fd.get('genero')||''),
+    estado:          sanitize(fd.get('estado')||''),
+    alcaldia:        sanitize(fd.get('alcaldia')||''),
+    estudios:        sanitize(fd.get('estudios')||''),
+    ocupacion:       sanitize(fd.get('ocupacion')||''),
+    areas_trabajo:   sanitize(fd.get('areas_trabajo')||''),
+    categoria_prof:  sanitize(fd.get('categoria_profesional')||''),
+    como_empleo:     sanitize(fd.get('como_empleo')||''),
+    otro_via:        sanitize(fd.get('otro_via')||''),
+    trabajo_ideal:   sanitize(fd.get('trabajo_ideal')||''),
+    curso_deseado:   sanitize(fd.get('curso_deseado')||''),
+    email:           sanitize(fd.get('email')||'')
+  };
+
+  if(!payload.email){
+    msg.textContent = 'Por favor indica tu correo electrónico para poder registrar tu contribución.';
+    msg.className = 'anec-msg err';
+    msg.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="16" height="16"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.6" stroke-dasharray="25 12"><animateTransform attributeName="transform" type="rotate" from="0 8 8" to="360 8 8" dur=".8s" repeatCount="indefinite"/></circle></svg> Enviando...';
+  msg.style.display = 'none';
+
+  api('guardarAnecdotario', payload, function(err, data){
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" width="16" height="16"><path d="M2 8h12M8 2l6 6-6 6" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Enviar mi anecdotario';
+
+    if(err || !data || data.ok === false){
+      msg.textContent = (data && data.error) || 'Ocurrió un error al enviar. Intenta de nuevo más tarde.';
+      msg.className = 'anec-msg err';
+    } else {
+      msg.textContent = data.actualizado
+        ? '✓ Tu entrada fue actualizada. Gracias por participar.'
+        : '✓ Tu anecdotario fue enviado. El equipo lo revisará antes de publicarlo.';
+      msg.className = 'anec-msg ok';
+      form.reset();
+    }
+    msg.style.display = 'block';
+  });
+}
+</script>
 
 </body>
 </html>
