@@ -150,7 +150,8 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .anec-track { display: flex; gap: 1.25rem; transition: transform .4s cubic-bezier(.4,0,.2,1); }
 .anec-slide { flex: 0 0 calc(33.333% - .84rem); background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 18px; padding: 1.75rem; min-height: 180px; display: flex; flex-direction: column; gap: .6rem; }
 .anec-slide-label { font-family: var(--font-display); font-size: .65rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--purple); }
-.anec-slide-value { font-family: var(--font-display); font-size: 1.45rem; font-weight: 800; color: var(--text-main); line-height: 1.2; flex: 1; }
+.anec-slide-pregunta { font-size: .8rem; font-weight: 600; color: var(--text-muted); font-style: italic; line-height: 1.3; margin-top: -.2rem; }
+.anec-slide-value { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--text-main); line-height: 1.2; flex: 1; }
 .anec-slide-sub { font-size: .78rem; color: var(--text-muted); line-height: 1.5; }
 @media(max-width:768px) { .anec-slide { flex: 0 0 calc(80% - .6rem); } }
 @media(max-width:480px) { .anec-slide { flex: 0 0 calc(92% - .3rem); } }
@@ -163,34 +164,35 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .anec-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.2); cursor: pointer; transition: all .2s; flex-shrink: 0; }
 .anec-dot.active { background: var(--purple); width: 20px; border-radius: 3px; }
 
-/* Formulario Anecdotario */
-.anec-form-wrap { background: var(--bg-darker); border: 1px solid rgba(99,30,235,.2); border-radius: 22px; padding: 2.5rem; }
-.anec-form-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-bottom: .5rem; }
-.anec-form-sub { font-size: .86rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
+/* Formulario Anecdotario — fondo claro */
+.anec-form-wrap { background: #F7F5FF; border: 1px solid rgba(99,30,235,.15); border-radius: 22px; padding: 2.5rem; }
+.anec-form-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-bottom: .5rem; color: #1A0A3C; }
+.anec-form-sub { font-size: .86rem; color: #6B7280; margin-bottom: 2rem; line-height: 1.6; }
 .anec-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 .anec-field { display: flex; flex-direction: column; gap: .4rem; }
 .anec-field.full { grid-column: 1 / -1; }
-.anec-field label { font-size: .78rem; font-weight: 600; color: rgba(240,238,248,.7); letter-spacing: .04em; }
+.anec-field label { font-size: .78rem; font-weight: 600; color: #374151; letter-spacing: .04em; }
 .anec-field label span.req { color: var(--purple); margin-left: .2rem; }
 .anec-input, .anec-select, .anec-textarea {
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.12);
+  background: #ffffff;
+  border: 1px solid rgba(99,30,235,.2);
   border-radius: 10px;
   padding: .7rem 1rem;
-  color: var(--text-main);
+  color: #1A0A3C;
   font-family: var(--font-body);
   font-size: .88rem;
-  transition: border-color .18s, background .18s;
+  transition: border-color .18s, box-shadow .18s;
   width: 100%;
 }
 .anec-input:focus, .anec-select:focus, .anec-textarea:focus {
   outline: none;
   border-color: var(--purple);
-  background: rgba(99,30,235,.08);
+  box-shadow: 0 0 0 3px rgba(99,30,235,.1);
 }
-.anec-select option { background: #0e0c18; color: var(--text-main); }
+.anec-input::placeholder, .anec-textarea::placeholder { color: #9CA3AF; }
+.anec-select option { background: #fff; color: #1A0A3C; }
 .anec-textarea { resize: vertical; min-height: 90px; }
-.anec-form-note { font-size: .76rem; color: var(--text-muted); margin-top: .35rem; line-height: 1.5; }
+.anec-form-note { font-size: .76rem; color: #6B7280; margin-top: .35rem; line-height: 1.5; }
 .anec-submit-row { grid-column: 1 / -1; display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; margin-top: .5rem; }
 .anec-submit-btn {
   background: var(--purple);
@@ -209,10 +211,10 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 }
 .anec-submit-btn:hover { background: var(--purple-dk); transform: translateY(-1px); }
 .anec-submit-btn:disabled { opacity: .6; cursor: default; transform: none; }
-.anec-submit-note { font-size: .76rem; color: var(--text-muted); line-height: 1.5; max-width: 320px; }
+.anec-submit-note { font-size: .76rem; color: #6B7280; line-height: 1.5; max-width: 320px; }
 .anec-msg { padding: 1rem 1.4rem; border-radius: 12px; font-size: .88rem; font-weight: 500; margin-top: 1.2rem; display: none; }
-.anec-msg.ok { background: rgba(40,200,100,.12); border: 1px solid rgba(40,200,100,.3); color: #5de8a0; }
-.anec-msg.err { background: rgba(220,50,50,.12); border: 1px solid rgba(220,50,50,.3); color: #f88; }
+.anec-msg.ok { background: rgba(22,163,74,.1); border: 1px solid rgba(22,163,74,.3); color: #15803d; }
+.anec-msg.err { background: rgba(220,38,38,.08); border: 1px solid rgba(220,38,38,.25); color: #dc2626; }
 @media(max-width:600px) { .anec-form { grid-template-columns: 1fr; } .anec-field.full { grid-column: 1; } }
 
 /* ─── FOOTER ─── */
@@ -612,35 +614,49 @@ function selectAmount(btn, amount) {
    (reemplazar con llamada real a la API cuando haya datos aprobados)
    ══════════════════════════════════════ */
 
+/* Fichas del carrusel — 5 campos pedidos.
+   Cada objeto puede tener:
+     label  → etiqueta superior (EDAD, ESTADO, etc.)
+     value  → valor grande
+     sub    → texto pequeño inferior
+     pregunta → si existe, se muestra encima del value en tamaño pequeño
+                (usado para "Trabajo ideal")
+*/
 var ANEC_DATA = [
-  {label:'Edad', value:'26–30 años', sub:'Rango más frecuente en las respuestas'},
-  {label:'Género', value:'57% Mujeres', sub:'Participación mayoritaria femenina'},
-  {label:'Estado', value:'Ciudad de México', sub:'Principal estado de residencia reportado'},
-  {label:'Alcaldía / Municipio', value:'Iztapalapa', sub:'Alcaldía más mencionada en CDMX'},
-  {label:'Último grado de estudios', value:'Licenciatura', sub:'Nivel educativo predominante'},
-  {label:'Ocupación', value:'Docente / Educación', sub:'Campo laboral más frecuente'},
-  {label:'Trabajo ideal', value:'"Flexible, con impacto social y bien remunerado"', sub:'Patrón recurrente en las respuestas'},
-  {label:'Áreas de interés', value:'Educación · Tecnología · Salud', sub:'Top 3 áreas preferidas'},
-  {label:'¿Cómo encontró empleo?', value:'Redes de contacto', sub:'Vía más efectiva reportada'},
-  {label:'Curso deseado', value:'Habilidades digitales y IA', sub:'Formación más solicitada'}
+  {label:'Edad',                   value:'26–30 años',                                sub:'Rango más frecuente en las respuestas'},
+  {label:'Estado',                 value:'Ciudad de México',                           sub:'Principal estado de residencia reportado'},
+  {label:'Alcaldía o Municipio',   value:'Iztapalapa',                                sub:'Alcaldía más mencionada en CDMX'},
+  {label:'Último grado de estudios', value:'Licenciatura',                            sub:'Nivel educativo predominante'},
+  {label:'Trabajo ideal',          pregunta:'¿Cuál sería tu trabajo ideal?',
+                                   value:'"Flexible, con impacto social y bien remunerado"',
+                                   sub:'Patrón recurrente en las respuestas'},
+  {label:'Edad',                   value:'18–25 años',                                sub:'Segundo rango más frecuente'},
+  {label:'Estado',                 value:'Jalisco',                                   sub:'Segundo estado más reportado'},
+  {label:'Alcaldía o Municipio',   value:'Guadalajara Centro',                        sub:'Municipio más mencionado en Jalisco'},
+  {label:'Último grado de estudios', value:'Preparatoria / Bachillerato',             sub:'Segundo nivel educativo predominante'},
+  {label:'Trabajo ideal',          pregunta:'¿Cuál sería tu trabajo ideal?',
+                                   value:'"Desde casa, con horario propio y buen sueldo"',
+                                   sub:'Segunda respuesta más común'}
 ];
 
 var anecIdx = 0;
 var anecVisible = 3;
+var anecAutoTimer = null;
 
 function anecGetVisible(){
-  return window.innerWidth <= 480 ? 1 : window.innerWidth <= 768 ? 1 : 3;
+  return window.innerWidth <= 768 ? 1 : 3;
 }
 
 function anecRender(){
   anecVisible = anecGetVisible();
   var track = document.getElementById('anec-track');
-  var dots = document.getElementById('anec-dots');
+  var dots  = document.getElementById('anec-dots');
   if(!track || !dots) return;
 
-  track.innerHTML = ANEC_DATA.map(function(d,i){
+  track.innerHTML = ANEC_DATA.map(function(d){
     return '<div class="anec-slide">'+
       '<div class="anec-slide-label">'+d.label+'</div>'+
+      (d.pregunta ? '<div class="anec-slide-pregunta">'+d.pregunta+'</div>' : '')+
       '<div class="anec-slide-value">'+d.value+'</div>'+
       '<div class="anec-slide-sub">'+d.sub+'</div>'+
     '</div>';
@@ -648,15 +664,16 @@ function anecRender(){
 
   var maxIdx = Math.max(0, ANEC_DATA.length - anecVisible);
   dots.innerHTML = '';
-  for(var i=0;i<=maxIdx;i++){
+  for(var i = 0; i <= maxIdx; i++){
     (function(idx){
-      var d=document.createElement('div');
-      d.className='anec-dot'+(idx===anecIdx?' active':'');
-      d.onclick=function(){anecGoTo(idx);};
-      dots.appendChild(d);
+      var dot = document.createElement('div');
+      dot.className = 'anec-dot' + (idx === anecIdx ? ' active' : '');
+      dot.onclick = function(){ anecGoTo(idx); anecRestartAuto(); };
+      dots.appendChild(dot);
     })(i);
   }
   anecGoTo(anecIdx);
+  anecStartAuto();
 }
 
 function anecGoTo(idx){
@@ -665,19 +682,43 @@ function anecGoTo(idx){
   anecIdx = Math.max(0, Math.min(idx, maxIdx));
   var track = document.getElementById('anec-track');
   if(!track) return;
-  var slideW = track.querySelector('.anec-slide');
-  if(!slideW) return;
-  var w = slideW.offsetWidth + 20; /* gap aprox */
-  track.style.transform = 'translateX(-'+(anecIdx*w)+'px)';
-  document.querySelectorAll('.anec-dot').forEach(function(d,i){
-    d.classList.toggle('active', i===anecIdx);
+  var slideEl = track.querySelector('.anec-slide');
+  if(!slideEl) return;
+  var gap = 20; /* coincide con gap CSS 1.25rem ≈ 20px */
+  var w = slideEl.offsetWidth + gap;
+  track.style.transform = 'translateX(-' + (anecIdx * w) + 'px)';
+  document.querySelectorAll('.anec-dot').forEach(function(d, i){
+    d.classList.toggle('active', i === anecIdx);
   });
-  document.getElementById('anec-prev').disabled = anecIdx===0;
-  document.getElementById('anec-next').disabled = anecIdx>=maxIdx;
+  var prevBtn = document.getElementById('anec-prev');
+  var nextBtn = document.getElementById('anec-next');
+  if(prevBtn) prevBtn.disabled = anecIdx === 0;
+  if(nextBtn) nextBtn.disabled = anecIdx >= maxIdx;
 }
 
-function anecPrev(){anecGoTo(anecIdx-1);}
-function anecNext(){anecGoTo(anecIdx+1);}
+function anecPrev(){ anecGoTo(anecIdx - 1); anecRestartAuto(); }
+function anecNext(){ anecGoTo(anecIdx + 1); anecRestartAuto(); }
+
+/* ── Autoplay ── */
+function anecStartAuto(){
+  clearInterval(anecAutoTimer);
+  anecAutoTimer = setInterval(function(){
+    var maxIdx = Math.max(0, ANEC_DATA.length - anecGetVisible());
+    anecGoTo(anecIdx >= maxIdx ? 0 : anecIdx + 1);
+  }, 3500);
+}
+function anecRestartAuto(){
+  clearInterval(anecAutoTimer);
+  anecStartAuto();
+}
+/* Pausar al hover */
+document.addEventListener('DOMContentLoaded', function(){
+  var carousel = document.getElementById('anec-carousel');
+  if(carousel){
+    carousel.addEventListener('mouseenter', function(){ clearInterval(anecAutoTimer); });
+    carousel.addEventListener('mouseleave', anecStartAuto);
+  }
+});
 
 window.addEventListener('resize', anecRender);
 document.addEventListener('DOMContentLoaded', anecRender);
