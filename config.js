@@ -156,3 +156,6 @@ function apiFetch(action, params) {
   }
   setInterval(checkSessionExpiry, 60000); // check every minute
 })();
+
+// ── Alias global requerido por index.html (usa WEBAPP_URL como variable global) ──
+var WEBAPP_URL = CONFIG.API_URL;
