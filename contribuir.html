@@ -712,6 +712,271 @@ function selectAmount(btn, amount) {
   </div>
 </section>
 
+<!-- ════════ PANEL ADMIN: ANECDOTARIOS (solo para admin) ════════ -->
+<section id="admin-anec-panel" style="display:none; padding:2.5rem 0 4rem; border-top:2px solid rgba(99,30,235,.35);">
+  <div class="container">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+      <div>
+        <div style="font-family:var(--font-display,Montserrat,sans-serif); font-size:.7rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--orange,#FF7929); margin-bottom:.4rem;">Panel de administración</div>
+        <h2 style="font-family:var(--font-display,Montserrat,sans-serif); font-size:2rem; font-weight:900; text-transform:uppercase; margin:0;">Anecdotarios</h2>
+      </div>
+      <div style="display:flex; gap:.75rem; flex-wrap:wrap;">
+        <button onclick="anecAdminCargar()" class="aadm-btn-sm">↻ Recargar</button>
+        <button onclick="anecAdminExportar()" class="aadm-btn-sm" style="background:rgba(34,197,94,.15);color:#4ade80;border-color:rgba(34,197,94,.3);">⬇ Exportar CSV</button>
+      </div>
+    </div>
+
+    <!-- Estadísticas rápidas -->
+    <div id="anec-stats-row" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; margin-bottom:2rem;">
+      <div class="aadm-stat-card"><div class="aadm-stat-num" id="as-total">—</div><div class="aadm-stat-label">Total recibidos</div></div>
+      <div class="aadm-stat-card"><div class="aadm-stat-num" id="as-pend" style="color:#fbbf24;">—</div><div class="aadm-stat-label">Pendientes</div></div>
+      <div class="aadm-stat-card"><div class="aadm-stat-num" id="as-apro" style="color:#4ade80;">—</div><div class="aadm-stat-label">Aprobados</div></div>
+      <div class="aadm-stat-card"><div class="aadm-stat-num" id="as-rech" style="color:#f87171;">—</div><div class="aadm-stat-label">Rechazados</div></div>
+    </div>
+
+    <!-- Filtros -->
+    <div style="display:flex; gap:.6rem; margin-bottom:1.25rem; flex-wrap:wrap; align-items:center;">
+      <span style="font-size:.78rem; color:var(--text-muted,rgba(240,238,248,.55)); font-weight:600;">Filtrar:</span>
+      <button onclick="anecAdminFiltrar('todos')" class="aadm-filter active" id="aanf-todos">Todos</button>
+      <button onclick="anecAdminFiltrar('pendiente')" class="aadm-filter" id="aanf-pendiente">Pendientes</button>
+      <button onclick="anecAdminFiltrar('aprobado')" class="aadm-filter" id="aanf-aprobado">Aprobados</button>
+      <button onclick="anecAdminFiltrar('rechazado')" class="aadm-filter" id="aanf-rechazado">Rechazados</button>
+      <input type="text" id="aanf-buscar" placeholder="Buscar por email o ciudad…" oninput="anecAdminRender()" style="margin-left:auto; background:rgba(255,255,255,.05); border:1px solid rgba(99,30,235,.25); border-radius:9px; color:var(--text-main,#f0eef8); font-size:.82rem; padding:.4rem .8rem; outline:none; min-width:200px;">
+    </div>
+
+    <div id="anec-admin-list"><div class="aadm-loading">Cargando anecdotarios…</div></div>
+
+    <!-- Modal de detalle -->
+    <div id="anec-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:900; align-items:center; justify-content:center; padding:1rem;">
+      <div id="anec-modal-inner" style="background:#0e0c18; border:1px solid rgba(99,30,235,.4); border-radius:20px; padding:2rem; max-width:680px; width:100%; max-height:85vh; overflow-y:auto; position:relative;">
+        <button onclick="anecCerrarModal()" style="position:absolute; top:1rem; right:1rem; background:none; border:none; color:var(--text-muted,rgba(240,238,248,.55)); font-size:1.4rem; cursor:pointer; line-height:1;">✕</button>
+        <div id="anec-modal-content"></div>
+        <div id="anec-modal-notas-area" style="margin-top:1.5rem;">
+          <label style="display:block; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(200,185,255,.65); margin-bottom:.4rem;">Notas del equipo (internas)</label>
+          <textarea id="anec-modal-notas" rows="3" placeholder="Notas sobre esta contribución…" style="width:100%; background:rgba(255,255,255,.05); border:1px solid rgba(99,30,235,.25); border-radius:9px; color:var(--text-main,#f0eef8); font-size:.88rem; padding:.65rem .9rem; resize:vertical; outline:none;"></textarea>
+        </div>
+        <div style="display:flex; gap:.75rem; margin-top:1rem; flex-wrap:wrap;">
+          <button id="anec-modal-aprobar" onclick="anecModalAccion('aprobado')" style="background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.3); color:#4ade80; padding:.6rem 1.4rem; border-radius:10px; font-size:.88rem; font-weight:600; cursor:pointer; transition:all .15s;">✓ Aprobar</button>
+          <button id="anec-modal-rechazar" onclick="anecModalAccion('rechazado')" style="background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.25); color:#f87171; padding:.6rem 1.4rem; border-radius:10px; font-size:.88rem; font-weight:600; cursor:pointer; transition:all .15s;">✕ Rechazar</button>
+          <a id="anec-modal-contactar" href="#" style="background:rgba(99,30,235,.15); border:1px solid rgba(99,30,235,.3); color:rgba(200,185,255,.9); padding:.6rem 1.4rem; border-radius:10px; font-size:.88rem; font-weight:600; cursor:pointer; transition:all .15s; text-decoration:none;">✉ Contactar</a>
+          <button onclick="anecCerrarModal()" style="background:none; border:1px solid rgba(255,255,255,.12); color:var(--text-muted,rgba(240,238,248,.55)); padding:.6rem 1.4rem; border-radius:10px; font-size:.88rem; cursor:pointer; margin-left:auto;">Cerrar</button>
+        </div>
+        <div id="anec-modal-msg" style="display:none; margin-top:.75rem; padding:.65rem 1rem; border-radius:10px; font-size:.85rem; font-weight:500;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ─── ADMIN ANEC STYLES ─── */
+.aadm-stat-card { background: rgba(99,30,235,.08); border: 1px solid rgba(99,30,235,.18); border-radius: 14px; padding: 1.1rem 1.25rem; text-align: center; }
+.aadm-stat-num { font-family: var(--font-display,Montserrat,sans-serif); font-size: 2rem; font-weight: 900; color: var(--text-main,#f0eef8); }
+.aadm-stat-label { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted,rgba(240,238,248,.55)); margin-top: .2rem; }
+.aadm-filter { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: var(--text-muted,rgba(240,238,248,.55)); padding: .35rem .9rem; border-radius: 50px; font-size: .8rem; font-weight: 500; cursor: pointer; transition: all .15s; }
+.aadm-filter.active, .aadm-filter:hover { background: rgba(99,30,235,.3); border-color: var(--purple,#631EEB); color: rgba(200,185,255,.9); }
+.aadm-btn-sm { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text-muted,rgba(240,238,248,.55)); padding: .4rem .9rem; border-radius: 8px; font-size: .8rem; font-weight: 500; cursor: pointer; transition: all .15s; }
+.aadm-btn-sm:hover { background: rgba(255,255,255,.1); color: #fff; }
+.aadm-loading { color: var(--text-muted,rgba(240,238,248,.55)); font-size: .88rem; padding: 1.5rem 0; text-align: center; }
+.aadm-card { background: var(--bg-card,#15112a); border: 1px solid rgba(99,30,235,.18); border-radius: 14px; padding: 1.1rem 1.4rem; margin-bottom: .75rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; transition: border-color .15s; cursor: pointer; }
+.aadm-card:hover { border-color: rgba(99,30,235,.45); }
+.aadm-badge { display: inline-block; padding: .2rem .65rem; border-radius: 50px; font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.aadm-badge.pendiente { background: rgba(234,179,8,.15); color: #fbbf24; border: 1px solid rgba(234,179,8,.3); }
+.aadm-badge.aprobado { background: rgba(34,197,94,.15); color: #4ade80; border: 1px solid rgba(34,197,94,.3); }
+.aadm-badge.rechazado { background: rgba(239,68,68,.12); color: #f87171; border: 1px solid rgba(239,68,68,.25); }
+.aadm-card-actions { display: flex; gap: .45rem; flex-direction: column; align-items: stretch; min-width: 130px; }
+.aadm-action-btn { padding: .4rem .85rem; border-radius: 8px; font-size: .78rem; font-weight: 600; cursor: pointer; transition: all .15s; text-align: center; }
+.aadm-aprobar { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3); color: #4ade80; }
+.aadm-aprobar:hover { background: rgba(34,197,94,.28); }
+.aadm-rechazar { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.25); color: #f87171; }
+.aadm-rechazar:hover { background: rgba(239,68,68,.22); }
+.aadm-detalle { background: rgba(99,30,235,.15); border: 1px solid rgba(99,30,235,.3); color: rgba(200,185,255,.9); }
+.aadm-detalle:hover { background: rgba(99,30,235,.28); }
+@media(max-width:620px){
+  .aadm-card { grid-template-columns: 1fr; }
+  .aadm-card-actions { flex-direction: row; }
+}
+</style>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   ADMIN PANEL — CONTRIBUIR.HTML (Anecdotarios)
+══════════════════════════════════════════════════════════════ */
+
+(function(){
+  try{
+    var u=JSON.parse(localStorage.getItem('ss_user')||'null');
+    var a=JSON.parse(localStorage.getItem('ss_admin')||'null');
+    var AE=['d.salgado.lpz@gmail.com','sintropiassociales@gmail.com','dsalgado@sintropiasocial.com'];
+    var isAdmin=(a&&a.token)||(u&&u.isAdmin)||(u&&u.email&&AE.indexOf(u.email.toLowerCase())!==-1);
+    if(isAdmin){document.getElementById('admin-anec-panel').style.display='block';anecAdminCargar();}
+  }catch(e){}
+})();
+
+var _anecData=[], _anecFiltro='todos', _anecActual=null;
+
+function anecAdminApi(action,params,cb){
+  var cbN='_aanCb_'+action+'_'+Date.now();
+  var p=new URLSearchParams();
+  p.append('action',action); p.append('callback',cbN);
+  if(params)Object.keys(params).forEach(function(k){p.append(k,params[k]);});
+  window[cbN]=function(data){delete window[cbN];if(s.parentNode)s.parentNode.removeChild(s);cb(null,data);};
+  var s=document.createElement('script');
+  s.onerror=function(){delete window[cbN];if(s.parentNode)s.parentNode.removeChild(s);cb(new Error('red'));};
+  s.src=WEBAPP_URL+'?'+p.toString();
+  document.head.appendChild(s);
+  setTimeout(function(){if(window[cbN]){delete window[cbN];cb(new Error('timeout'));}},15000);
+}
+
+function anecAdminCargar(){
+  document.getElementById('anec-admin-list').innerHTML='<div class="aadm-loading">Cargando anecdotarios…</div>';
+  anecAdminApi('listarAnecdotarios',{},function(err,data){
+    if(err||!data||!data.ok){
+      document.getElementById('anec-admin-list').innerHTML='<div class="aadm-loading">No se pudo cargar. ¿El GS está desplegado con esta acción?</div>';
+      return;
+    }
+    _anecData=data.anecdotarios||[];
+    // Actualizar stats
+    var tot=_anecData.length;
+    var pen=_anecData.filter(function(x){return(x.estado||'pendiente')==='pendiente';}).length;
+    var apr=_anecData.filter(function(x){return x.estado==='aprobado';}).length;
+    var rec=_anecData.filter(function(x){return x.estado==='rechazado';}).length;
+    document.getElementById('as-total').textContent=tot;
+    document.getElementById('as-pend').textContent=pen;
+    document.getElementById('as-apro').textContent=apr;
+    document.getElementById('as-rech').textContent=rec;
+    anecAdminRender();
+  });
+}
+
+function anecAdminFiltrar(f){
+  _anecFiltro=f;
+  document.querySelectorAll('.aadm-filter').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('aanf-'+f).classList.add('active');
+  anecAdminRender();
+}
+
+function anecAdminRender(){
+  var q=(document.getElementById('aanf-buscar').value||'').toLowerCase();
+  var lista=_anecData.filter(function(a){
+    var estOk=_anecFiltro==='todos'||(a.estado||'pendiente')===_anecFiltro;
+    var qOk=!q||(a.email||'').toLowerCase().indexOf(q)!==-1||(a.alcaldia||a.municipio||'').toLowerCase().indexOf(q)!==-1||(a.estado_geo||a.estado||'').toLowerCase().indexOf(q)!==-1;
+    return estOk&&qOk;
+  });
+  if(!lista.length){document.getElementById('anec-admin-list').innerHTML='<div class="aadm-loading">No hay entradas en este filtro.</div>';return;}
+  function aesc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  document.getElementById('anec-admin-list').innerHTML=lista.map(function(a,i){
+    var est=a.estado||'pendiente';
+    var fch=a.fecha?new Date(a.fecha).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}):'—';
+    var idx=_anecData.indexOf(a);
+    return '<div class="aadm-card" onclick="anecAbrirModal('+idx+')">'+
+      '<div>'+
+        '<div style="display:flex; align-items:center; gap:.6rem; margin-bottom:.4rem;">'+
+          '<span class="aadm-badge '+est+'">'+est+'</span>'+
+          '<span style="color:var(--text-muted,rgba(240,238,248,.55));font-size:.78rem;">'+fch+'</span>'+
+        '</div>'+
+        '<div style="color:var(--text-main,#f0eef8); font-size:.88rem; font-weight:600; margin-bottom:.3rem;">'+aesc(a.email||'Sin email')+'</div>'+
+        '<div style="display:flex; gap:1rem; flex-wrap:wrap; font-size:.79rem; color:var(--text-muted,rgba(240,238,248,.55));">'+
+          '<span>'+aesc(a.edad||'')+(a.genero?' · '+aesc(a.genero):'')+'</span>'+
+          '<span>'+aesc(a.alcaldia||a.municipio||'')+(a.estado_geo||a.estado_form?' · '+aesc(a.estado_geo||a.estado_form||''):'')+'</span>'+
+          '<span>'+aesc(a.ocupacion||'')+'</span>'+
+        '</div>'+
+        (a.trabajo_ideal?'<p style="margin-top:.5rem; font-size:.82rem; color:var(--text-muted,rgba(240,238,248,.55)); line-height:1.55;">'+aesc(a.trabajo_ideal.substring(0,120))+(a.trabajo_ideal.length>120?'…':'')+'</p>':'')+
+      '</div>'+
+      '<div class="aadm-card-actions" onclick="event.stopPropagation()">'+
+        '<button class="aadm-action-btn aadm-detalle" onclick="anecAbrirModal('+idx+')">🔍 Ver detalle</button>'+
+        (est!=='aprobado'?'<button class="aadm-action-btn aadm-aprobar" onclick="anecAccion('+idx+',\'aprobado\')">✓ Aprobar</button>':'')+
+        (est!=='rechazado'?'<button class="aadm-action-btn aadm-rechazar" onclick="anecAccion('+idx+',\'rechazado\')">✕ Rechazar</button>':'')+
+        '<a class="aadm-action-btn aadm-detalle" href="mailto:'+aesc(a.email||'')+'?subject=Tu+contribución+al+anecdotario" style="text-decoration:none; display:block;" onclick="event.stopPropagation()">✉ Contactar</a>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function anecAbrirModal(idx){
+  _anecActual=idx;
+  var a=_anecData[idx];
+  function aesc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function row(label,val){return val?'<tr><td style="color:rgba(200,185,255,.6);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:.5rem .9rem;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.05);">'+label+'</td><td style="color:var(--text-main,#f0eef8);font-size:.86rem;padding:.5rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);">'+aesc(val)+'</td></tr>':'';}
+  var est=a.estado||'pendiente';
+  var fch=a.fecha?new Date(a.fecha).toLocaleDateString('es-MX',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'—';
+  document.getElementById('anec-modal-content').innerHTML=
+    '<div style="display:flex; align-items:center; gap:.75rem; margin-bottom:1.5rem;">'+
+      '<span style="font-family:var(--font-display,Montserrat,sans-serif); font-size:1.2rem; font-weight:800;">Anecdotario</span>'+
+      '<span class="aadm-badge '+est+'">'+est+'</span>'+
+    '</div>'+
+    '<div style="overflow-x:auto; margin-bottom:.5rem;"><table style="width:100%; border-collapse:collapse;">'+
+      row('Email',a.email)+
+      row('Fecha',fch)+
+      row('Edad',a.edad)+
+      row('Género',a.genero)+
+      row('Estado/Ciudad',a.estado_geo||a.estado_form)+
+      row('Alcaldía/Municipio',a.alcaldia)+
+      row('Estudios',a.estudios)+
+      row('Ocupación',a.ocupacion)+
+      row('Áreas de trabajo',a.areas_trabajo)+
+      row('Categoría profesional',a.categoria_prof||a.categoria_profesional)+
+      row('¿Cómo llegó al trabajo?',a.como_empleo)+
+      row('Otro canal',a.otro_via)+
+    '</table></div>'+
+    (a.trabajo_ideal?'<div style="margin-top:1rem;"><div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(200,185,255,.6);margin-bottom:.4rem;">Trabajo ideal</div><div style="background:rgba(255,255,255,.04);border-radius:10px;padding:1rem;font-size:.88rem;line-height:1.65;color:var(--text-main,#f0eef8);">'+aesc(a.trabajo_ideal)+'</div></div>':'')+
+    (a.curso_deseado?'<div style="margin-top:.75rem;"><div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(200,185,255,.6);margin-bottom:.4rem;">Curso deseado</div><div style="background:rgba(255,255,255,.04);border-radius:10px;padding:1rem;font-size:.88rem;line-height:1.65;color:var(--text-main,#f0eef8);">'+aesc(a.curso_deseado)+'</div></div>':'');
+  document.getElementById('anec-modal-notas').value=a._notas||'';
+  document.getElementById('anec-modal-contactar').href='mailto:'+(a.email||'')+'?subject=Tu+contribución+al+anecdotario';
+  document.getElementById('anec-modal-aprobar').style.display=est!=='aprobado'?'block':'none';
+  document.getElementById('anec-modal-rechazar').style.display=est!=='rechazado'?'block':'none';
+  document.getElementById('anec-modal-msg').style.display='none';
+  var m=document.getElementById('anec-modal');
+  m.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function anecCerrarModal(){
+  document.getElementById('anec-modal').style.display='none';
+  document.body.style.overflow='';
+  _anecActual=null;
+}
+
+function anecModalAccion(accion){
+  if(_anecActual===null)return;
+  anecAccion(_anecActual,accion,true);
+}
+
+function anecAccion(idx,accion,desdeModal){
+  var a=_anecData[idx];
+  var notas=desdeModal?(document.getElementById('anec-modal-notas').value||''):'';
+  if(!confirm('¿'+(accion==='aprobado'?'Aprobar':'Rechazar')+' esta contribución?'))return;
+  anecAdminApi('actualizarAnecdotario',{email:a.email||'',fecha:a.fecha||'',estado:accion,notas:notas},function(err,data){
+    if(!err&&data&&data.ok){
+      _anecData[idx].estado=accion;
+      if(notas)_anecData[idx]._notas=notas;
+      anecAdminRender();
+      if(desdeModal){
+        var msg=document.getElementById('anec-modal-msg');
+        msg.textContent='✓ Estado actualizado a: '+accion;
+        msg.style.display='block';
+        msg.style.background='rgba(34,197,94,.15)';msg.style.color='#4ade80';msg.style.border='1px solid rgba(34,197,94,.3)';
+        document.getElementById('anec-modal-aprobar').style.display=accion!=='aprobado'?'block':'none';
+        document.getElementById('anec-modal-rechazar').style.display=accion!=='rechazado'?'block':'none';
+      }
+    }else{
+      alert('Error al actualizar. Verifica Apps Script.');
+    }
+  });
+}
+
+function anecAdminExportar(){
+  if(!_anecData.length){anecAdminCargar();setTimeout(function(){if(_anecData.length)anecAdminExportar();},2000);return;}
+  var cols=['email','fecha','estado','edad','genero','estado_geo','alcaldia','estudios','ocupacion','areas_trabajo','categoria_prof','como_empleo','otro_via','trabajo_ideal','curso_deseado'];
+  var csv=cols.join(',')+'\n'+_anecData.map(function(r){return cols.map(function(c){return '"'+(r[c]||'').toString().replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='anecdotarios_'+new Date().toISOString().split('T')[0]+'.csv'; a.click();
+}
+
+// Cerrar modal con Escape
+document.addEventListener('keydown',function(e){if(e.key==='Escape')anecCerrarModal();});
+document.getElementById('anec-modal').addEventListener('click',function(e){if(e.target===this)anecCerrarModal();});
+</script>
+
 <!-- ════════ FOOTER ════════ -->
 <footer>
   <div class="container">
@@ -944,7 +1209,7 @@ function sanitize(val){
 /* ══════════════════════════════════════
    BACKEND
    ══════════════════════════════════════ */
-var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyDEA_placeholder_update_this/exec';
+var WEBAPP_URL = 'https://script.google.com/macros/s/AKfycby0B5nxI1nNybyp7UqtCB4ld8MC_NFg9tvEgamV3lTFVUxzLoDjyEIwh4l_leGYNQ_FiQ/exec';
 
 function api(action, params, cb){
   var url = WEBAPP_URL + '?action=' + encodeURIComponent(action) + '&callback=_cb_' + action;

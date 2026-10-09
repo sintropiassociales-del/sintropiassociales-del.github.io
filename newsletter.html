@@ -731,6 +731,477 @@ function cerrarSesion(){
   </div>
 </section>
 
+<!-- ════════ PANEL ADMINISTRADOR (solo visible para admin) ════════ -->
+<section id="admin-panel" style="display:none; padding: 2.5rem 0 4rem; border-top: 2px solid rgba(99,30,235,.35);">
+  <div class="container">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+      <div>
+        <div style="font-family:var(--font-display); font-size:.7rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem;">Panel de administración</div>
+        <h2 style="font-family:var(--font-display); font-size:2rem; font-weight:900; text-transform:uppercase; margin:0;">Newsletter &amp; Blog</h2>
+      </div>
+      <div style="display:flex; gap:.75rem; flex-wrap:wrap;">
+        <button onclick="adminTab('articulos')" class="adm-tab active" id="tab-articulos">📨 Artículos propuestos</button>
+        <button onclick="adminTab('blog')" class="adm-tab" id="tab-blog">✍️ Publicar en blog</button>
+        <button onclick="adminTab('interesados')" class="adm-tab" id="tab-interesados">👥 Interesados</button>
+      </div>
+    </div>
+
+    <!-- ─── PESTAÑA 1: ARTÍCULOS ─── -->
+    <div id="adm-articulos" class="adm-pane">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; flex-wrap:wrap; gap:.75rem;">
+        <p style="color:var(--text-muted); font-size:.9rem; margin:0;">Revisa cada propuesta y decide si pasa a editorial, se pide revisión o se descarta.</p>
+        <button onclick="adminCargarArticulos()" class="adm-btn-sm">↻ Recargar</button>
+      </div>
+      <div style="display:flex; gap:.6rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+        <button onclick="adminFiltrarArticulos('todos')" class="adm-filter active" id="af-todos">Todos</button>
+        <button onclick="adminFiltrarArticulos('pendiente')" class="adm-filter" id="af-pendiente">Pendientes</button>
+        <button onclick="adminFiltrarArticulos('aprobado')" class="adm-filter" id="af-aprobado">Aprobados</button>
+        <button onclick="adminFiltrarArticulos('rechazado')" class="adm-filter" id="af-rechazado">Rechazados</button>
+      </div>
+      <div id="adm-articulos-list"><div class="adm-loading">Cargando propuestas…</div></div>
+    </div>
+
+    <!-- ─── PESTAÑA 2: BLOG ─── -->
+    <div id="adm-blog" class="adm-pane" style="display:none;">
+      <div style="display:grid; grid-template-columns: 1fr 340px; gap:2rem; align-items:start;">
+        <!-- Editor -->
+        <div>
+          <div class="adm-field-group">
+            <label class="adm-label">Título del post *</label>
+            <input type="text" id="blog-titulo" class="adm-input" placeholder="El título que verán los lectores">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
+            <div class="adm-field-group">
+              <label class="adm-label">Categoría *</label>
+              <select id="blog-categoria" class="adm-input">
+                <option value="">Selecciona…</option>
+                <option>Mercado Laboral</option><option>Educación Crítica</option>
+                <option>IA y Automatización</option><option>Metodología Cualitativa</option>
+                <option>Comunidades Locales</option><option>Prospectiva Social</option>
+                <option>Herramientas Digitales</option><option>Políticas Públicas</option>
+                <option>Investigación Participativa</option><option>Acción Colectiva</option>
+              </select>
+            </div>
+            <div class="adm-field-group">
+              <label class="adm-label">Autor</label>
+              <input type="text" id="blog-autor" class="adm-input" placeholder="Nombre del autor" value="David Salgado">
+            </div>
+            <div class="adm-field-group">
+              <label class="adm-label">Tiempo lectura</label>
+              <input type="text" id="blog-tiempo" class="adm-input" placeholder="ej. 5 min">
+            </div>
+          </div>
+          <div class="adm-field-group">
+            <label class="adm-label">Resumen / lead *</label>
+            <textarea id="blog-resumen" class="adm-input" rows="3" placeholder="2-3 líneas para el preview del post…" style="resize:vertical;"></textarea>
+          </div>
+          <div class="adm-field-group">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:.5rem;">
+              <label class="adm-label" style="margin:0;">Contenido *</label>
+              <div style="display:flex; gap:.4rem; flex-wrap:wrap;">
+                <button onclick="blogFormato('bold')" class="adm-fmt-btn"><b>B</b></button>
+                <button onclick="blogFormato('italic')" class="adm-fmt-btn"><i>I</i></button>
+                <button onclick="blogFormato('h2')" class="adm-fmt-btn">H2</button>
+                <button onclick="blogFormato('h3')" class="adm-fmt-btn">H3</button>
+                <button onclick="blogFormato('ul')" class="adm-fmt-btn">• Lista</button>
+                <button onclick="blogFormato('quote')" class="adm-fmt-btn">"</button>
+                <button onclick="blogFormato('link')" class="adm-fmt-btn">🔗</button>
+                <button onclick="blogTogglePreview()" class="adm-fmt-btn" id="btn-preview-toggle" style="background:rgba(99,30,235,.25);color:rgba(200,185,255,.9);">👁 Preview</button>
+              </div>
+            </div>
+            <textarea id="blog-contenido" class="adm-input adm-editor" rows="18" placeholder="Escribe el contenido del post. Puedes usar HTML básico: &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;&lt;li&gt;, &lt;blockquote&gt;, &lt;a href=''&gt;…" style="font-family:monospace;font-size:.85rem;resize:vertical;"></textarea>
+            <div id="blog-preview-box" style="display:none; background:var(--bg-darker); border:1px solid rgba(99,30,235,.3); border-radius:14px; padding:1.5rem; margin-top:.75rem; line-height:1.75; font-size:.95rem;" class="blog-render"></div>
+          </div>
+          <div class="adm-field-group">
+            <label class="adm-label">Etiquetas (separadas por coma)</label>
+            <input type="text" id="blog-tags" class="adm-input" placeholder="ej. empleo, jóvenes, CDMX">
+          </div>
+          <div style="display:flex; gap:.75rem; margin-top:.5rem; flex-wrap:wrap;">
+            <button onclick="blogPublicar('borrador')" class="adm-btn-secondary">💾 Guardar borrador</button>
+            <button onclick="blogPublicar('publicado')" class="adm-btn-primary">🚀 Publicar ahora</button>
+            <button onclick="blogLimpiar()" class="adm-btn-ghost">✕ Limpiar</button>
+          </div>
+          <div id="blog-msg" style="margin-top:.75rem; display:none; padding:.75rem 1rem; border-radius:10px; font-size:.88rem; font-weight:500;"></div>
+        </div>
+
+        <!-- Panel lateral portada + opciones -->
+        <div>
+          <div class="adm-card" style="margin-bottom:1.25rem;">
+            <div class="adm-card-title">🖼 Portada del post</div>
+            <div id="blog-portada-preview" onclick="document.getElementById('blog-portada-input').click()" style="width:100%; aspect-ratio:16/9; background:rgba(99,30,235,.1); border:2px dashed rgba(99,30,235,.3); border-radius:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; overflow:hidden; margin-bottom:.75rem;">
+              <div id="blog-portada-placeholder" style="text-align:center; color:var(--text-muted); font-size:.83rem;">
+                <div style="font-size:2rem; margin-bottom:.5rem;">📷</div>
+                Haz clic para subir portada<br><small>JPG, PNG, WebP · máx 4MB</small>
+              </div>
+              <img id="blog-portada-img" style="display:none; width:100%; height:100%; object-fit:cover;" alt="Portada">
+            </div>
+            <input type="file" id="blog-portada-input" accept="image/*" style="display:none;" onchange="blogCargarPortada(this)">
+            <button onclick="document.getElementById('blog-portada-input').click()" class="adm-btn-sm" style="width:100%;">📁 Seleccionar imagen</button>
+            <div id="blog-portada-name" style="font-size:.75rem; color:var(--text-muted); margin-top:.4rem; text-align:center;"></div>
+          </div>
+          <div class="adm-card" style="margin-bottom:1.25rem;">
+            <div class="adm-card-title">⚙️ Opciones</div>
+            <div class="adm-field-group">
+              <label class="adm-label">Slug (URL)</label>
+              <input type="text" id="blog-slug" class="adm-input" placeholder="se-genera-automático">
+            </div>
+            <div class="adm-field-group">
+              <label class="adm-label">Fecha de publicación</label>
+              <input type="date" id="blog-fecha" class="adm-input">
+            </div>
+            <label style="display:flex; align-items:center; gap:.5rem; font-size:.85rem; color:var(--text-muted); cursor:pointer; margin-top:.25rem;">
+              <input type="checkbox" id="blog-destacado"> Marcar como destacado
+            </label>
+          </div>
+          <div class="adm-card">
+            <div class="adm-card-title">📋 Borradores recientes</div>
+            <div id="blog-borradores-list" style="font-size:.83rem; color:var(--text-muted);">
+              <div class="adm-loading" style="font-size:.83rem;">Cargando…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Posts publicados -->
+      <div style="margin-top:2.5rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+          <h3 style="font-family:var(--font-display); font-size:1.1rem; font-weight:800; text-transform:uppercase; margin:0;">Posts publicados</h3>
+          <button onclick="adminCargarBlog()" class="adm-btn-sm">↻ Recargar</button>
+        </div>
+        <div id="adm-blog-list"><div class="adm-loading">Cargando posts…</div></div>
+      </div>
+    </div>
+
+    <!-- ─── PESTAÑA 3: INTERESADOS ─── -->
+    <div id="adm-interesados" class="adm-pane" style="display:none;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; flex-wrap:wrap; gap:.75rem;">
+        <p style="color:var(--text-muted); font-size:.9rem; margin:0;">Personas que se registraron vía formulario de interés.</p>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+          <button onclick="adminCargarInteresados()" class="adm-btn-sm">↻ Recargar</button>
+          <button onclick="adminExportarInteresados()" class="adm-btn-sm" style="background:rgba(34,197,94,.15); color:#4ade80; border-color:rgba(34,197,94,.3);">⬇ Exportar CSV</button>
+        </div>
+      </div>
+      <div id="adm-interesados-list"><div class="adm-loading">Cargando registros…</div></div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+/* ─── ADMIN PANEL STYLES ─── */
+.adm-tab { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: var(--text-muted); padding: .5rem 1.1rem; border-radius: 50px; font-family: var(--font-body); font-size: .83rem; font-weight: 600; cursor: pointer; transition: all .18s; }
+.adm-tab:hover { background: rgba(255,255,255,.1); color: #fff; }
+.adm-tab.active { background: var(--purple); border-color: var(--purple); color: #fff; }
+.adm-pane { animation: fadeInAdm .2s ease; }
+@keyframes fadeInAdm { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+.adm-filter { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); color: var(--text-muted); padding: .35rem .9rem; border-radius: 50px; font-family: var(--font-body); font-size: .8rem; font-weight: 500; cursor: pointer; transition: all .15s; }
+.adm-filter:hover, .adm-filter.active { background: rgba(99,30,235,.3); border-color: var(--purple); color: rgba(200,185,255,.9); }
+.adm-btn-sm { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: var(--text-muted); padding: .4rem .9rem; border-radius: 8px; font-family: var(--font-body); font-size: .8rem; font-weight: 500; cursor: pointer; transition: all .15s; }
+.adm-btn-sm:hover { background: rgba(255,255,255,.1); color: #fff; }
+.adm-btn-primary { background: var(--purple); border: none; color: #fff; padding: .6rem 1.4rem; border-radius: 10px; font-family: var(--font-body); font-size: .88rem; font-weight: 600; cursor: pointer; transition: all .18s; }
+.adm-btn-primary:hover { background: var(--purple-dk); transform: translateY(-1px); }
+.adm-btn-secondary { background: rgba(99,30,235,.18); border: 1px solid rgba(99,30,235,.35); color: rgba(200,185,255,.9); padding: .6rem 1.4rem; border-radius: 10px; font-family: var(--font-body); font-size: .88rem; font-weight: 600; cursor: pointer; transition: all .18s; }
+.adm-btn-secondary:hover { background: rgba(99,30,235,.3); }
+.adm-btn-ghost { background: none; border: 1px solid rgba(255,255,255,.12); color: var(--text-muted); padding: .6rem 1.4rem; border-radius: 10px; font-family: var(--font-body); font-size: .88rem; cursor: pointer; transition: all .18s; }
+.adm-btn-ghost:hover { border-color: rgba(255,255,255,.25); color: #fff; }
+.adm-card { background: var(--bg-card); border: 1px solid rgba(99,30,235,.2); border-radius: 14px; padding: 1.25rem; }
+.adm-card-title { font-family: var(--font-display); font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--purple); margin-bottom: 1rem; }
+.adm-label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(200,185,255,.65); margin-bottom: .35rem; }
+.adm-field-group { margin-bottom: .9rem; }
+.adm-input { width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(99,30,235,.25); border-radius: 9px; color: var(--text-main); font-family: var(--font-body); font-size: .88rem; padding: .6rem .85rem; transition: border-color .15s; -webkit-appearance: none; appearance: none; }
+.adm-input:focus { outline: none; border-color: var(--purple); background: rgba(99,30,235,.08); }
+.adm-editor { min-height: 280px; }
+.adm-fmt-btn { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: rgba(200,185,255,.8); padding: .25rem .55rem; border-radius: 6px; font-family: var(--font-body); font-size: .78rem; cursor: pointer; transition: all .15s; }
+.adm-fmt-btn:hover { background: rgba(99,30,235,.25); color: #fff; }
+.adm-loading { color: var(--text-muted); font-size: .88rem; padding: 1.5rem 0; text-align: center; }
+.adm-article-card { background: var(--bg-card); border: 1px solid rgba(99,30,235,.18); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: .9rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; }
+.adm-article-card:hover { border-color: rgba(99,30,235,.4); }
+.adm-article-meta { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .45rem; align-items: center; }
+.adm-badge { display: inline-block; padding: .2rem .65rem; border-radius: 50px; font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.adm-badge.pendiente { background: rgba(234,179,8,.15); color: #fbbf24; border: 1px solid rgba(234,179,8,.3); }
+.adm-badge.aprobado { background: rgba(34,197,94,.15); color: #4ade80; border: 1px solid rgba(34,197,94,.3); }
+.adm-badge.rechazado { background: rgba(239,68,68,.12); color: #f87171; border: 1px solid rgba(239,68,68,.25); }
+.adm-article-actions { display: flex; gap: .5rem; flex-direction: column; align-items: stretch; min-width: 140px; }
+.adm-action-aprobar { background: rgba(34,197,94,.15); border: 1px solid rgba(34,197,94,.3); color: #4ade80; padding: .4rem .85rem; border-radius: 8px; font-family: var(--font-body); font-size: .79rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+.adm-action-aprobar:hover { background: rgba(34,197,94,.28); }
+.adm-action-rechazar { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.25); color: #f87171; padding: .4rem .85rem; border-radius: 8px; font-family: var(--font-body); font-size: .79rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+.adm-action-rechazar:hover { background: rgba(239,68,68,.22); }
+.adm-action-contactar { background: rgba(99,30,235,.15); border: 1px solid rgba(99,30,235,.3); color: rgba(200,185,255,.9); padding: .4rem .85rem; border-radius: 8px; font-family: var(--font-body); font-size: .79rem; font-weight: 600; cursor: pointer; transition: all .15s; text-decoration: none; display: block; text-align: center; }
+.adm-action-contactar:hover { background: rgba(99,30,235,.28); }
+.adm-table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+.adm-table th { text-align: left; padding: .6rem .9rem; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(200,185,255,.55); border-bottom: 1px solid rgba(99,30,235,.2); }
+.adm-table td { padding: .7rem .9rem; border-bottom: 1px solid rgba(255,255,255,.05); color: var(--text-muted); vertical-align: top; }
+.adm-table tr:hover td { background: rgba(255,255,255,.02); }
+.blog-render h2 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; margin: 1.5rem 0 .6rem; color: var(--text-main); }
+.blog-render h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin: 1.2rem 0 .5rem; color: var(--text-main); }
+.blog-render p { margin-bottom: 1rem; }
+.blog-render blockquote { border-left: 3px solid var(--purple); padding: .5rem 1rem; color: var(--text-muted); font-style: italic; margin: 1rem 0; }
+.blog-render ul, .blog-render ol { padding-left: 1.4rem; margin-bottom: 1rem; }
+.blog-render li { margin-bottom: .35rem; }
+.blog-render a { color: rgba(200,185,255,.9); }
+.adm-blog-post-row { display: grid; grid-template-columns: 64px 1fr auto auto; gap: 1rem; align-items: center; background: var(--bg-card); border: 1px solid rgba(99,30,235,.15); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: .6rem; }
+.adm-blog-post-thumb { width: 64px; height: 42px; border-radius: 8px; background: rgba(99,30,235,.15); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+.adm-blog-post-title { font-size: .9rem; font-weight: 600; color: var(--text-main); margin-bottom: .2rem; }
+.adm-blog-post-meta { font-size: .76rem; color: var(--text-muted); }
+@media(max-width:760px){
+  .adm-article-card { grid-template-columns: 1fr; }
+  .adm-article-actions { flex-direction: row; }
+  #adm-blog > div:first-child { grid-template-columns: 1fr; }
+  .adm-blog-post-row { grid-template-columns: 1fr auto; }
+  .adm-blog-post-thumb { display: none; }
+}
+</style>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   ADMIN PANEL — NEWSLETTER.HTML
+══════════════════════════════════════════════════════════════ */
+
+// Mostrar panel si es admin
+(function(){
+  try{
+    var u=JSON.parse(localStorage.getItem('ss_user')||'null');
+    var a=JSON.parse(localStorage.getItem('ss_admin')||'null');
+    var AE=['d.salgado.lpz@gmail.com','sintropiassociales@gmail.com','dsalgado@sintropiasocial.com'];
+    var isAdmin=(a&&a.token)||(u&&u.isAdmin)||(u&&u.email&&AE.indexOf(u.email.toLowerCase())!==-1);
+    if(isAdmin){
+      document.getElementById('admin-panel').style.display='block';
+      adminCargarArticulos();
+      adminCargarBlog();
+      adminCargarInteresados();
+      if(u&&u.nombre){var el=document.getElementById('blog-autor');if(el)el.value=u.nombre+(u.apellido?' '+u.apellido:'');}
+      var fd=document.getElementById('blog-fecha');if(fd)fd.value=new Date().toISOString().split('T')[0];
+    }
+  }catch(e){}
+})();
+
+var _articulosData=[], _filtroArticulos='todos', _portadaBase64=null;
+
+function adminTab(tab){
+  document.querySelectorAll('.adm-tab').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.adm-pane').forEach(function(p){p.style.display='none';});
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('adm-'+tab).style.display='block';
+}
+
+function adminApi(action,params,cb){
+  var cbN='_admCb_'+action+'_'+Date.now();
+  var p=new URLSearchParams();
+  p.append('action',action);p.append('callback',cbN);
+  if(params)Object.keys(params).forEach(function(k){p.append(k,params[k]);});
+  window[cbN]=function(data){delete window[cbN];if(s.parentNode)s.parentNode.removeChild(s);cb(null,data);};
+  var s=document.createElement('script');
+  s.onerror=function(){delete window[cbN];if(s.parentNode)s.parentNode.removeChild(s);cb(new Error('red'));};
+  s.src=WEBAPP_URL+'?'+p.toString();
+  document.head.appendChild(s);
+  setTimeout(function(){if(window[cbN]){delete window[cbN];cb(new Error('timeout'));}},15000);
+}
+
+/* ── ARTÍCULOS ── */
+function adminCargarArticulos(){
+  document.getElementById('adm-articulos-list').innerHTML='<div class="adm-loading">Cargando propuestas…</div>';
+  adminApi('listarArticulos',{},function(err,data){
+    if(err||!data||!data.ok){document.getElementById('adm-articulos-list').innerHTML='<div class="adm-loading">No se pudo cargar. Verifica Apps Script.</div>';return;}
+    _articulosData=data.articulos||[];
+    adminRenderArticulos();
+  });
+}
+function adminFiltrarArticulos(f){
+  _filtroArticulos=f;
+  document.querySelectorAll('.adm-filter').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('af-'+f).classList.add('active');
+  adminRenderArticulos();
+}
+function adminRenderArticulos(){
+  var lista=_articulosData.filter(function(a){return _filtroArticulos==='todos'||(a.estado||'pendiente').toLowerCase()===_filtroArticulos;});
+  if(!lista.length){document.getElementById('adm-articulos-list').innerHTML='<div class="adm-loading">No hay propuestas en esta categoría.</div>';return;}
+  document.getElementById('adm-articulos-list').innerHTML=lista.map(function(a){
+    var est=a.estado||'pendiente';
+    var fch=a.fecha?new Date(a.fecha).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}):'—';
+    return '<div class="adm-article-card">'+
+      '<div>'+
+        '<div style="font-size:.95rem;font-weight:600;color:var(--text-main);margin-bottom:.3rem;">'+escH(a.titulo||'(sin título)')+'</div>'+
+        '<div class="adm-article-meta">'+
+          '<span class="adm-badge '+est+'">'+est+'</span>'+
+          '<span style="color:var(--text-muted);font-size:.8rem;">· '+escH(a.nombre||a.email||'Anónimo')+'</span>'+
+          '<span style="color:var(--text-muted);font-size:.8rem;">· '+escH(a.categoria||'')+'</span>'+
+          '<span style="color:var(--text-muted);font-size:.8rem;">· '+fch+'</span>'+
+        '</div>'+
+        '<p style="font-size:.83rem;color:var(--text-muted);margin-top:.6rem;line-height:1.6;">'+escH((a.resumen||'').substring(0,200))+(a.resumen&&a.resumen.length>200?'…':'')+'</p>'+
+        (a.enlace?'<a href="'+escH(a.enlace)+'" target="_blank" style="font-size:.79rem;color:rgba(200,185,255,.8);text-decoration:underline;">Ver borrador ↗</a>':'')+
+      '</div>'+
+      '<div class="adm-article-actions">'+
+        (est!=='aprobado'?'<button class="adm-action-aprobar" onclick="adminAccionArticulo(\''+escH(a.email||'')+'\',\''+escH(a.titulo||'')+'\',\'aprobado\')">✓ Aprobar</button>':'')+
+        (est!=='rechazado'?'<button class="adm-action-rechazar" onclick="adminAccionArticulo(\''+escH(a.email||'')+'\',\''+escH(a.titulo||'')+'\',\'rechazado\')">✕ Rechazar</button>':'')+
+        '<a class="adm-action-contactar" href="mailto:'+escH(a.email||'')+'?subject=Tu+propuesta:+'+encodeURIComponent(a.titulo||'')+'">✉ Contactar</a>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+function adminAccionArticulo(email,titulo,accion){
+  if(!confirm('¿'+(accion==='aprobado'?'Aprobar':'Rechazar')+' esta propuesta?'))return;
+  adminApi('actualizarArticulo',{email:email,titulo:titulo,estado:accion},function(err,data){
+    if(!err&&data&&data.ok){adminCargarArticulos();}
+    else{alert('Error al actualizar. Verifica la conexión con Apps Script.');}
+  });
+}
+
+/* ── BLOG ── */
+function adminCargarBlog(){
+  document.getElementById('adm-blog-list').innerHTML='<div class="adm-loading">Cargando posts…</div>';
+  document.getElementById('blog-borradores-list').innerHTML='<div class="adm-loading" style="font-size:.83rem;">Cargando…</div>';
+  adminApi('listarBlog',{},function(err,data){
+    var posts=(data&&data.posts)?data.posts:[];
+    var pub=posts.filter(function(p){return p.estado==='publicado';});
+    var bor=posts.filter(function(p){return p.estado==='borrador';});
+    document.getElementById('adm-blog-list').innerHTML=pub.length?pub.map(function(p){
+      var fch=p.fecha?new Date(p.fecha).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}):'—';
+      return '<div class="adm-blog-post-row">'+
+        '<div class="adm-blog-post-thumb">📝</div>'+
+        '<div><div class="adm-blog-post-title">'+escH(p.titulo||'Sin título')+'</div><div class="adm-blog-post-meta">'+escH(p.categoria||'')+' · '+fch+' · '+escH(p.autor||'')+'</div></div>'+
+        '<span class="adm-badge aprobado">publicado</span>'+
+        '<button onclick="blogCargarEnEditor('+JSON.stringify(p).replace(/</g,'\\u003c')+')" class="adm-btn-sm">Editar</button>'+
+      '</div>';
+    }).join(''):'<div class="adm-loading">Sin posts publicados aún.</div>';
+    document.getElementById('blog-borradores-list').innerHTML=bor.length?bor.map(function(p){
+      return '<div style="padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer;" onclick="blogCargarEnEditor('+JSON.stringify(p).replace(/</g,'\\u003c')+')">'+
+        '<div style="font-size:.82rem;color:var(--text-main);font-weight:500;">'+escH(p.titulo||'Sin título')+'</div>'+
+        '<div style="font-size:.73rem;color:var(--text-muted);">'+(p.fecha?new Date(p.fecha).toLocaleDateString('es-MX'):'')+'</div>'+
+      '</div>';
+    }).join(''):'<div style="color:var(--text-muted);font-size:.83rem;padding:.5rem 0;">Sin borradores.</div>';
+  });
+}
+function blogPublicar(estado){
+  var titulo=document.getElementById('blog-titulo').value.trim();
+  var contenido=document.getElementById('blog-contenido').value.trim();
+  if(!titulo||!contenido){blogMsg('err','El título y el contenido son obligatorios.');return;}
+  var payload={
+    titulo:titulo, categoria:document.getElementById('blog-categoria').value,
+    autor:document.getElementById('blog-autor').value, tiempo:document.getElementById('blog-tiempo').value,
+    resumen:document.getElementById('blog-resumen').value, contenido:contenido,
+    tags:document.getElementById('blog-tags').value,
+    slug:document.getElementById('blog-slug').value||titulo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-'),
+    fecha:document.getElementById('blog-fecha').value||new Date().toISOString().split('T')[0],
+    destacado:document.getElementById('blog-destacado').checked?'1':'',
+    estado:estado, portada:_portadaBase64||''
+  };
+  blogMsg('','Guardando…');
+  adminApi('publicarBlog',payload,function(err,data){
+    if(!err&&data&&data.ok){
+      blogMsg('ok',estado==='publicado'?'✓ Post publicado exitosamente.':'✓ Borrador guardado.');
+      if(estado==='publicado')adminCargarBlog();
+    }else{blogMsg('err','Error al guardar. Verifica Apps Script.');}
+  });
+}
+function blogMsg(tipo,txt){
+  var el=document.getElementById('blog-msg');
+  el.style.display=txt?'block':'none'; el.textContent=txt;
+  el.style.background=tipo==='ok'?'rgba(34,197,94,.15)':tipo==='err'?'rgba(239,68,68,.13)':'rgba(255,255,255,.06)';
+  el.style.color=tipo==='ok'?'#4ade80':tipo==='err'?'#f87171':'var(--text-muted)';
+  el.style.border='1px solid '+(tipo==='ok'?'rgba(34,197,94,.3)':tipo==='err'?'rgba(239,68,68,.25)':'rgba(255,255,255,.1)');
+}
+function blogLimpiar(){
+  ['blog-titulo','blog-categoria','blog-autor','blog-tiempo','blog-resumen','blog-contenido','blog-tags','blog-slug'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('blog-destacado').checked=false;
+  document.getElementById('blog-portada-img').style.display='none';
+  document.getElementById('blog-portada-placeholder').style.display='block';
+  document.getElementById('blog-portada-name').textContent='';
+  document.getElementById('blog-fecha').value=new Date().toISOString().split('T')[0];
+  document.getElementById('blog-preview-box').style.display='none';
+  _portadaBase64=null; blogMsg('','');
+}
+function blogTogglePreview(){
+  var box=document.getElementById('blog-preview-box');
+  if(box.style.display==='none'){
+    box.innerHTML=document.getElementById('blog-contenido').value||'<em style="color:var(--text-muted)">Sin contenido aún…</em>';
+    box.style.display='block';
+    document.getElementById('btn-preview-toggle').textContent='✕ Cerrar preview';
+  }else{box.style.display='none';document.getElementById('btn-preview-toggle').textContent='👁 Preview';}
+}
+function blogFormato(tipo){
+  var ta=document.getElementById('blog-contenido');
+  var s=ta.selectionStart, e=ta.selectionEnd, sel=ta.value.substring(s,e), r='';
+  if(tipo==='bold')r='<strong>'+(sel||'texto')+'</strong>';
+  else if(tipo==='italic')r='<em>'+(sel||'texto')+'</em>';
+  else if(tipo==='h2')r='\n<h2>'+(sel||'Subtítulo')+'</h2>\n';
+  else if(tipo==='h3')r='\n<h3>'+(sel||'Subtítulo menor')+'</h3>\n';
+  else if(tipo==='ul')r='\n<ul>\n  <li>'+(sel||'elemento')+'</li>\n</ul>\n';
+  else if(tipo==='quote')r='\n<blockquote>'+(sel||'cita')+'</blockquote>\n';
+  else if(tipo==='link'){var url=prompt('URL del enlace:','https://');r='<a href="'+(url||'#')+'">'+(sel||'texto')+'</a>';}
+  ta.value=ta.value.substring(0,s)+r+ta.value.substring(e);
+  ta.focus(); ta.selectionStart=ta.selectionEnd=s+r.length;
+}
+function blogCargarPortada(input){
+  var file=input.files[0];
+  if(!file)return;
+  if(file.size>4*1024*1024){alert('La imagen no debe superar 4MB.');return;}
+  document.getElementById('blog-portada-name').textContent=file.name;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    _portadaBase64=ev.target.result;
+    var img=document.getElementById('blog-portada-img');
+    img.src=ev.target.result; img.style.display='block';
+    document.getElementById('blog-portada-placeholder').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+function blogCargarEnEditor(p){
+  adminTab('blog');
+  document.getElementById('blog-titulo').value=p.titulo||'';
+  document.getElementById('blog-categoria').value=p.categoria||'';
+  document.getElementById('blog-autor').value=p.autor||'';
+  document.getElementById('blog-tiempo').value=p.tiempo||'';
+  document.getElementById('blog-resumen').value=p.resumen||'';
+  document.getElementById('blog-contenido').value=p.contenido||'';
+  document.getElementById('blog-tags').value=p.tags||'';
+  document.getElementById('blog-slug').value=p.slug||'';
+  document.getElementById('blog-fecha').value=p.fecha||'';
+  document.getElementById('blog-destacado').checked=!!p.destacado;
+  window.scrollTo({top:document.getElementById('adm-blog').offsetTop-80,behavior:'smooth'});
+}
+
+/* ── INTERESADOS ── */
+function adminCargarInteresados(){
+  document.getElementById('adm-interesados-list').innerHTML='<div class="adm-loading">Cargando registros…</div>';
+  adminApi('listarInteresados',{},function(err,data){
+    var rows=(data&&data.interesados)?data.interesados:[];
+    if(!rows.length){document.getElementById('adm-interesados-list').innerHTML='<div class="adm-loading">Sin registros aún.</div>';return;}
+    var html='<div style="overflow-x:auto;"><table class="adm-table"><thead><tr><th>Nombre</th><th>Email</th><th>Estado</th><th>Municipio</th><th>Interés</th><th>Fecha</th></tr></thead><tbody>';
+    rows.forEach(function(r){
+      var fch=r.fecha?new Date(r.fecha).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}):'—';
+      html+='<tr><td style="color:var(--text-main);font-weight:500;">'+escH(r.nombre||'')+' '+escH(r.apellido||'')+'</td><td><a href="mailto:'+escH(r.email||'')+'" style="color:rgba(200,185,255,.8);">'+escH(r.email||'—')+'</a></td><td>'+escH(r.estado||'—')+'</td><td>'+escH(r.municipio||'—')+'</td><td>'+escH(r.interes||'—')+'</td><td>'+fch+'</td></tr>';
+    });
+    html+='</tbody></table></div>';
+    document.getElementById('adm-interesados-list').innerHTML=html;
+  });
+}
+function adminExportarInteresados(){
+  adminApi('listarInteresados',{},function(err,data){
+    var rows=(data&&data.interesados)?data.interesados:[];
+    if(!rows.length){alert('Sin datos para exportar.');return;}
+    var cols=['nombre','apellido','email','estado','municipio','edad','interes','telefono','fecha'];
+    var csv=cols.join(',')+'\n'+rows.map(function(r){return cols.map(function(c){return '"'+(r[c]||'').toString().replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+    var a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+    a.download='interesados_newsletter_'+new Date().toISOString().split('T')[0]+'.csv'; a.click();
+  });
+}
+
+/* ── Utility ── */
+function escH(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// Auto-slug desde título
+document.addEventListener('DOMContentLoaded',function(){
+  var t=document.getElementById('blog-titulo');
+  if(t)t.addEventListener('input',function(){
+    var sl=document.getElementById('blog-slug');
+    if(sl&&!sl._editado)sl.value=t.value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-');
+  });
+  var sl=document.getElementById('blog-slug');
+  if(sl)sl.addEventListener('input',function(){sl._editado=!!sl.value;});
+});
+</script>
+
 <!-- ════════ FOOTER ════════ -->
 <footer>
   <div class="container">
