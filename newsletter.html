@@ -989,6 +989,13 @@ function adminApi(action,params,cb){
   var cbN='_admCb_'+action+'_'+Date.now();
   var p=new URLSearchParams();
   p.append('action',action);p.append('callback',cbN);
+  // ── Agrega adminToken automáticamente ──
+  try{
+    var _a=JSON.parse(localStorage.getItem('ss_admin')||'null');
+    var _u=JSON.parse(localStorage.getItem('ss_user')||'null');
+    var tok=(_a&&_a.token)||(_u&&_u.sessionToken)||'';
+    if(tok)p.append('adminToken',tok);
+  }catch(e){}
   if(params)Object.keys(params).forEach(function(k){p.append(k,params[k]);});
   window[cbN]=function(data){delete window[cbN];if(s.parentNode)s.parentNode.removeChild(s);cb(null,data);};
   var s=document.createElement('script');
