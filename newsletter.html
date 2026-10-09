@@ -986,9 +986,8 @@ function adminTab(tab){
 }
 
 function adminApi(action,params,cb){
-  var cbN='_admCb_'+action+'_'+Date.now();
   var p=new URLSearchParams();
-  p.append('action',action);p.append('callback',cbN);
+  p.append('action',action);
   // ── Agrega adminToken automáticamente ──
   try{
     var _a=JSON.parse(localStorage.getItem('ss_admin')||'null');
@@ -996,13 +995,12 @@ function adminApi(action,params,cb){
     var tok=(_a&&_a.token)||(_u&&_u.sessionToken)||'';
     if(tok)p.append('adminToken',tok);
   }catch(e){}
-  if(params)Object.keys(params).forEach(function(k){p.append(k,params[k]);});
-  window[cbN]=function(data){delete window[cbN];if(s.parentNode)s.parentNode.removeChild(s);cb(null,data);};
-  var s=document.createElement('script');
-  s.onerror=function(){delete window[cbN];if(s.parentNode)s.parentNode.removeChild(s);cb(new Error('red'));};
-  s.src=WEBAPP_URL+'?'+p.toString();
-  document.head.appendChild(s);
-  setTimeout(function(){if(window[cbN]){delete window[cbN];cb(new Error('timeout'));}},15000);
+  if(params)Object.keys(params).forEach(function(k){p.append(k,String(params[k]));});
+  // ── Usa fetch (no JSONP) para evitar bloqueo de adblockers ──
+  fetch(WEBAPP_URL+'?'+p.toString())
+    .then(function(r){return r.json();})
+    .then(function(data){cb(null,data);})
+    .catch(function(err){cb(err);});
 }
 
 /* ── ARTÍCULOS ── */
