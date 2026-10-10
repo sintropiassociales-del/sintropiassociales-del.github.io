@@ -167,6 +167,20 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: var(--f
 .anec-insight-quote cite { display: block; font-size: .72rem; color: var(--orange); font-style: normal; font-weight: 600; margin-top: .5rem; }
 @media(max-width:700px){ .anec-insight { grid-template-columns: 1fr; gap: 1.5rem; } .anec-bar-label { min-width: 120px; } }
 
+/* Bloque análisis de campo */
+.anec-analysis-wrap { background: linear-gradient(135deg,rgba(99,30,235,.08) 0%,rgba(255,121,41,.05) 100%); border: 1px solid rgba(99,30,235,.22); border-radius: 20px; padding: 2rem 2rem 1.75rem; margin-bottom: 2.5rem; }
+.anec-analysis-label { display: inline-block; font-family: var(--font-display); font-size: .62rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: .65rem; }
+.anec-analysis-title { font-family: var(--font-display); font-size: clamp(1.1rem,2.5vw,1.4rem); font-weight: 800; color: var(--text-main); line-height: 1.2; margin-bottom: .75rem; }
+.anec-analysis-desc { font-size: .86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.5rem; max-width: 640px; }
+.anec-analysis-highlights { display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap: .85rem; margin-bottom: 1.5rem; }
+.anec-ah-item { background: rgba(255,255,255,.04); border: 1px solid rgba(99,30,235,.18); border-radius: 14px; padding: 1rem 1.1rem; }
+.anec-ah-num { font-family: var(--font-display); font-size: 1.7rem; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: .3rem; }
+.anec-ah-txt { font-size: .76rem; color: var(--text-muted); line-height: 1.4; }
+.anec-analysis-excerpt { font-size: .88rem; color: var(--text-muted); line-height: 1.7; border-left: 3px solid var(--orange); padding-left: 1rem; margin-bottom: 1.5rem; font-style: italic; }
+.anec-download-btn { display: inline-flex; align-items: center; gap: .55rem; background: var(--purple); color: #fff; font-family: var(--font-display); font-size: .78rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .7rem 1.4rem; border-radius: 50px; text-decoration: none; transition: background .18s, transform .15s; }
+.anec-download-btn:hover { background: var(--purple-dk); transform: translateY(-1px); }
+@media(max-width:600px){ .anec-analysis-wrap { padding: 1.5rem 1.25rem; } .anec-analysis-highlights { grid-template-columns: 1fr 1fr; } }
+
 /* Carrusel */
 .anec-carousel { position: relative; overflow: hidden; margin-bottom: 2.5rem; }
 .anec-track { display: flex; gap: 1.25rem; transition: transform .4s cubic-bezier(.4,0,.2,1); }
@@ -558,6 +572,49 @@ function selectAmount(btn, amount) {
           <cite>— Respuesta recurrente al preguntar por el trabajo ideal</cite>
         </div>
       </div>
+    </div>
+
+    <!-- Bloque de análisis de campo -->
+    <div class="anec-analysis-wrap">
+      <div class="anec-analysis-header">
+        <span class="anec-analysis-label">Análisis de campo</span>
+        <h3 class="anec-analysis-title">Motivaciones y dinámicas sociolaborales en México</h3>
+        <p class="anec-analysis-desc">
+          Una lectura densa —en el sentido geertziano— de 7,874 encuestas de satisfacción
+          levantadas en el primer trimestre de 2023 en el marco de nuestra alianza con
+          el proyecto de formación sociolaboral.
+        </p>
+      </div>
+      <div class="anec-analysis-highlights">
+        <div class="anec-ah-item">
+          <div class="anec-ah-num">67%</div>
+          <div class="anec-ah-txt">de quienes completaron la formación son mujeres</div>
+        </div>
+        <div class="anec-ah-item">
+          <div class="anec-ah-num">49%</div>
+          <div class="anec-ah-txt">tiene entre 19 y 22 años — la generación del umbral</div>
+        </div>
+        <div class="anec-ah-item">
+          <div class="anec-ah-num">3</div>
+          <div class="anec-ah-txt">perfiles sociolaborales claramente identificados</div>
+        </div>
+        <div class="anec-ah-item">
+          <div class="anec-ah-num">21%</div>
+          <div class="anec-ah-txt">aspira al emprendimiento — mayormente por necesidad estructural</div>
+        </div>
+      </div>
+      <p class="anec-analysis-excerpt">
+        El capital social —las redes de familiares y amigos— sigue siendo la vía de acceso
+        al empleo más efectiva en México, por encima de bolsas digitales, instituciones y agencias.
+        Cualquier proyecto formativo que no contemple cómo se construyen esas redes
+        está capacitando para una inserción que no controla.
+      </p>
+      <a href="analisis-sociolaboral.html" target="_blank" class="anec-download-btn">
+        <svg viewBox="0 0 20 20" fill="none" width="18" height="18" aria-hidden="true">
+          <path d="M10 3v10m0 0l-3.5-3.5M10 13l3.5-3.5M4 17h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Descargar análisis
+      </a>
     </div>
 
     <!-- Carrusel de datos -->

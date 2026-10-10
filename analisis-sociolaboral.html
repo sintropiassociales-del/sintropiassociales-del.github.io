@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis Sociolaboral — Sintropía Social</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #631EEB;
+  --orange: #FF7929;
+  --bg: #ffffff;
+  --fg: #1a0a3c;
+  --muted: #4b5563;
+  --border: #e5e0f7;
+  --accent-bg: #f7f5ff;
+  --font-display: 'Montserrat', sans-serif;
+  --font-body: 'Open Sans', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.75;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 40px 72px;
+}
+@media(max-width:600px){ body { padding: 32px 20px 60px; } }
+
+/* ─── PORTADA ─── */
+.cover {
+  border-bottom: 3px solid var(--purple);
+  padding-bottom: 2.5rem;
+  margin-bottom: 3rem;
+}
+.cover-label {
+  font-family: var(--font-display);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: .6rem;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: var(--fg);
+  margin-bottom: .5rem;
+}
+.cover-subtitle {
+  font-size: 1rem;
+  color: var(--muted);
+  margin-bottom: 1.75rem;
+  max-width: 560px;
+  line-height: 1.6;
+}
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.cover-meta-item {
+  font-size: .78rem;
+  color: var(--muted);
+}
+.cover-meta-item strong {
+  display: block;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: .15rem;
+}
+
+/* ─── TIPOGRAFÍA ─── */
+h2 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--fg);
+  margin: 2.5rem 0 .9rem;
+  padding-left: 1rem;
+  border-left: 4px solid var(--purple);
+}
+h3 {
+  font-family: var(--font-display);
+  font-size: .9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--purple);
+  margin: 1.75rem 0 .5rem;
+}
+p { margin-bottom: 1rem; }
+em { font-style: italic; color: var(--muted); }
+strong { font-weight: 600; }
+
+/* ─── CITA / EPÍGRAFE ─── */
+blockquote {
+  border-left: 3px solid var(--orange);
+  background: var(--accent-bg);
+  margin: 1.5rem 0;
+  padding: 1rem 1.4rem;
+  border-radius: 0 10px 10px 0;
+  font-style: italic;
+  color: var(--muted);
+  font-size: .93rem;
+}
+blockquote cite {
+  display: block;
+  margin-top: .5rem;
+  font-style: normal;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+/* ─── MÉTRICAS DESTACADAS ─── */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+.metric {
+  background: var(--accent-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem 1.25rem;
+}
+.metric-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: .25rem;
+}
+.metric-label {
+  font-size: .73rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+
+/* ─── TABLA DE PERFILES ─── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .86rem;
+  margin: 1.25rem 0 1.75rem;
+}
+th {
+  font-family: var(--font-display);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--purple);
+  text-align: left;
+  padding: .6rem .75rem;
+  border-bottom: 2px solid var(--border);
+}
+td {
+  padding: .55rem .75rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--fg);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--accent-bg); }
+
+/* ─── NOTAS AL PIE ─── */
+.nota {
+  font-size: .76rem;
+  color: var(--muted);
+  line-height: 1.5;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2.5rem;
+}
+
+/* ─── BRANDING ─── */
+.brand-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+  flex-wrap: wrap;
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+.brand-url {
+  font-size: .76rem;
+  color: var(--muted);
+}
+
+/* ─── PRINT ─── */
+@media print {
+  body { padding: 24px 20px; font-size: 13px; }
+  .cover { padding-bottom: 1.5rem; }
+  h2 { page-break-after: avoid; }
+  blockquote, .metric, table { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="cover-label">Sintropía Social · Anecdotario de campo</div>
+  <h1 class="cover-title">
+    Motivaciones y dinámicas<br>sociolaborales en México
+  </h1>
+  <p class="cover-subtitle">
+    Análisis descriptivo de la encuesta de satisfacción aplicada en el marco de
+    nuestra alianza con el proyecto de formación para el empleo.
+    Una lectura densa de los datos desde la investigación social crítica.
+  </p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <strong>Metodología</strong>
+      Descripción densa (Geertz, 1973)
+    </div>
+    <div class="cover-meta-item">
+      <strong>Período</strong>
+      Primer trimestre 2023
+    </div>
+    <div class="cover-meta-item">
+      <strong>Muestra</strong>
+      9,908 respuestas · 7,874 usuarios únicos
+    </div>
+    <div class="cover-meta-item">
+      <strong>Producido por</strong>
+      Sintropía Social
+    </div>
+  </div>
+</div>
+
+<!-- INTRODUCCIÓN -->
+<h2>Punto de entrada: sobre el método y la alianza</h2>
+
+<p>
+  Este documento nace de una colaboración estratégica entre Sintropía Social y
+  <em>nuestra alianza</em>, un proyecto de formación sociolaboral con cobertura nacional.
+  Lo que aquí se presenta no es un informe de gestión: es un ejercicio de
+  <strong>descripción densa</strong> —en el sentido que Clifford Geertz le dio a ese término
+  en 1973— aplicada sobre datos cuantitativos recogidos en un contexto real de trabajo con comunidades.
+</p>
+<p>
+  Leer encuestas con densidad geertziana significa rechazar la ilusión de que los números
+  hablan por sí mismos. Significa devolver al dato su textura social: preguntarnos <em>quiénes</em>
+  respondieron, <em>desde dónde</em> lo hicieron, <em>qué estructura de posibilidades</em>
+  enmarcaba sus respuestas, y qué nos dice todo eso sobre el paisaje sociolaboral mexicano
+  en el período analizado.
+</p>
+<p>
+  El proyecto generó <strong>9,908 respuestas</strong> durante el primer trimestre de 2023.
+  De ese universo, <strong>7,874 personas</strong> completaron su formación y respondieron
+  la encuesta de satisfacción. El análisis que sigue trabaja con ese segundo conjunto.
+</p>
+
+<blockquote>
+  "La cultura no es una potencia, algo a lo que pueden atribuirse causalmente los sucesos
+  sociales, las conductas, las instituciones o los procesos; es un contexto dentro del
+  cual pueden describirse todos esos fenómenos de manera inteligible."
+  <cite>— Clifford Geertz, <em>La interpretación de las culturas</em> (1973)</cite>
+</blockquote>
+
+<!-- SECCIÓN 1 -->
+<h2>I. Perfil de quien aprende: cartografía del sujeto formado</h2>
+
+<p>
+  El primer gesto analítico es resistirse a la abstracción estadística.
+  Antes de hablar de porcentajes, hay que reconocer que detrás de cada punto decimal
+  hay una persona que abrió el proyecto, navegó su contenido y decidió responder.
+  Ese acto —aparentemente trivial— ya contiene información sociológica.
+</p>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="metric-num">67%</div>
+    <div class="metric-label">Mujeres</div>
+  </div>
+  <div class="metric">
+    <div class="metric-num">49%</div>
+    <div class="metric-label">Tienen 19–22 años</div>
+  </div>
+  <div class="metric">
+    <div class="metric-num">51%</div>
+    <div class="metric-label">Nivel universitario</div>
+  </div>
+  <div class="metric">
+    <div class="metric-num">56%</div>
+    <div class="metric-label">Estudia actualmente</div>
+  </div>
+</div>
+
+<h3>Género y acceso diferenciado a la formación</h3>
+<p>
+  Que <strong>dos de cada tres personas que terminaron la formación sean mujeres</strong>
+  (5,284 de 7,874) no es un dato neutro. En un mercado de trabajo que continúa segregando
+  ocupaciones por género y penalizando las trayectorias no lineales —interrupciones por
+  cuidados, jornadas parciales, techos de cristal—, la sobrerepresentación femenina en
+  espacios de formación en línea puede leerse al menos de dos maneras contradictorias:
+  como signo de agencia (las mujeres buscan activamente fortalecer sus herramientas
+  de empleabilidad) y como signo de precariedad estructural (las mujeres necesitan
+  credenciales adicionales para acceder a los mismos puestos que los hombres obtienen
+  con menos formación formal).
+</p>
+<p>
+  Ambas lecturas son simultáneamente verdaderas. Eso es descripción densa.
+</p>
+
+<h3>Geografía de la participación</h3>
+<p>
+  El <strong>26.5%</strong> de quienes respondieron viven en el Estado de México,
+  el <strong>13.9%</strong> en la Ciudad de México y el <strong>9.4%</strong> en Puebla.
+  Juntos, estos tres estados concentran casi la mitad de la muestra. Esto no es
+  meramente un dato de distribución: es un mapa de la desigualdad en el acceso digital
+  y en la percepción de utilidad de la formación en línea. Las regiones con menor
+  conectividad, o donde el mercado de trabajo informal absorbe de manera más contundente
+  a la fuerza laboral joven, no aparecen con la misma densidad en la muestra.
+</p>
+
+<h3>Edad: la generación del umbral</h3>
+<p>
+  <strong>El 49% de quienes respondieron tienen entre 19 y 22 años.</strong>
+  Son personas que ingresaron al mercado laboral —o se preparaban para hacerlo—
+  durante o inmediatamente después de la pandemia de COVID-19. Su experiencia formativa
+  fue digital desde el principio, no por elección sino por circunstancia.
+  Buscar formación adicional en línea no es para ellos una rareza: es la norma.
+</p>
+
+<h3>Escolaridad: la paradoja de la sobrecalificación relativa</h3>
+<p>
+  El <strong>51%</strong> tiene estudios universitarios o de posgrado; el <strong>34%</strong>
+  tiene bachillerato. La hipótesis simplista diría: "el proyecto atrae a personas ya
+  formadas, que no lo necesitan tanto". La lectura densa dice otra cosa: en un mercado
+  laboral donde la licenciatura se ha devaluado como señal de competencia,
+  quienes ya tienen credenciales buscan complementos, especializaciones, certificaciones
+  que vuelvan a diferenciarlos. La formación ya no es una rampa de entrada;
+  es un carril permanente.
+</p>
+
+<h3>Ocupación: tres posiciones frente al trabajo</h3>
+<p>
+  El cruce de datos de ocupación revela tres perfiles distintos pero igualmente
+  significativos:
+</p>
+<table>
+  <thead>
+    <tr>
+      <th>Perfil</th>
+      <th>Descripción</th>
+      <th>Personas</th>
+      <th>%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Estudiante en formación</strong></td>
+      <td>Solo estudia; busca competencias previas al mercado</td>
+      <td>4,420</td>
+      <td>56%</td>
+    </tr>
+    <tr>
+      <td><strong>Trabajador en actualización</strong></td>
+      <td>Trabaja y se capacita simultáneamente</td>
+      <td>1,304</td>
+      <td>16%</td>
+    </tr>
+    <tr>
+      <td><strong>Doble jornada</strong></td>
+      <td>Estudia y trabaja, y además se forma en el proyecto</td>
+      <td>763</td>
+      <td>10%</td>
+    </tr>
+    <tr>
+      <td><strong>Desocupado activo</strong></td>
+      <td>No trabaja ni estudia; capacitación como estrategia de inserción</td>
+      <td>690</td>
+      <td>9%</td>
+    </tr>
+    <tr>
+      <td><strong>Servicio social / prácticas</strong></td>
+      <td>Transición formal entre formación y trabajo</td>
+      <td>262</td>
+      <td>3%</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  El perfil del <strong>desocupado activo</strong> merece atención especial.
+  Son apenas el 8.5% de la muestra, pero representan la población con mayor
+  urgencia y, paradójicamente, con más dificultades para acceder a los contenidos
+  con continuidad. La capacitación como sustituto del empleo es una trampa estructural:
+  se forma a quien ya no puede emplearse, pero sin intervenir en las causas que
+  obstaculizan su inserción.
+</p>
+
+<!-- SECCIÓN 2 -->
+<h2>II. Empleabilidad y dinámicas sociolaborales</h2>
+
+<p>
+  Una encuesta de satisfacción no pregunta directamente por las condiciones del mercado
+  de trabajo. Pero cuando uno la lee con atención —con la lupa geertziana puesta—,
+  las condiciones del mercado aparecen en las grietas: en lo que la gente desea,
+  en cómo ha llegado al empleo, en qué puestos aspira a ocupar.
+</p>
+
+<h3>¿Cómo se consigue empleo en México? El capital social como infraestructura invisible</h3>
+
+<p>
+  El cruce de datos sobre vías de acceso al empleo es uno de los hallazgos más
+  políticamente relevantes del conjunto. <strong>Las redes personales —familiares o amigos—
+  son la vía de acceso al empleo más efectiva</strong>, por encima de las bolsas de trabajo
+  digitales, los mecanismos institucionales y las agencias especializadas.
+</p>
+<p>
+  Esto tiene implicaciones que van más allá de lo práctico: significa que el mercado
+  laboral mexicano sigue funcionando, en buena medida, como un sistema de
+  <em>capital social diferencial</em>. Quien nace en una red de contactos laboralmente
+  activa tiene una ventaja estructural que ningún certificado puede compensar del todo.
+  Los proyectos de formación que no incorporan componentes de articulación de redes
+  están compitiendo con una desigualdad que no pueden resolver solos.
+</p>
+
+<h3>Lo que aspiran a ser: entre el liderazgo y el emprendimiento</h3>
+<p>
+  Preguntadas por el tipo de cargo que les gustaría ocupar, las personas respondentes
+  mostraron una inclinación notable hacia posiciones de alta responsabilidad:
+</p>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="metric-num">21%</div>
+    <div class="metric-label">Aspira a emprender su propio negocio</div>
+  </div>
+  <div class="metric">
+    <div class="metric-num">19%</div>
+    <div class="metric-label">Área de Administración y Finanzas</div>
+  </div>
+  <div class="metric">
+    <div class="metric-num">18%</div>
+    <div class="metric-label">Docencia como campo deseado</div>
+  </div>
+  <div class="metric">
+    <div class="metric-num">9.3%</div>
+    <div class="metric-label">Informática y tecnología</div>
+  </div>
+</div>
+
+<p>
+  El <strong>21% que aspira al emprendimiento</strong> no indica necesariamente vocación
+  empresarial genuina. En contextos de precariedad laboral y escasas oportunidades
+  de empleo formal, el autoempleo se convierte en una aspiración racionalizada:
+  <em>"Si el mercado no me emplea, me empleo yo mismo"</em>.
+  Leer esa cifra sin este contexto produce una conclusión equivocada —"son emprendedores
+  por vocación"— cuando la hipótesis más robusta es que son emprendedores por
+  <em>necesidad estructural</em>.
+</p>
+<p>
+  La <strong>docencia como campo deseado</strong> (18%) es igualmente reveladora.
+  En México, la enseñanza mantiene una función de movilidad social intergeneracional:
+  es una de las pocas profesiones que, con credencial universitaria y plazas disponibles,
+  ofrece estabilidad, prestaciones y reconocimiento comunitario. Que casi una de cada
+  cinco personas aspire a esa trayectoria es un índice del valor diferencial que
+  la docencia conserva en el imaginario sociolaboral mexicano.
+</p>
+
+<h3>Edad y trayectoria: una lectura cruzada</h3>
+<p>
+  El análisis por grupos de edad revela que el grupo de 21-30 años concentra
+  la mayor heterogeneidad de situaciones: hay quienes estudian, quienes trabajan,
+  quienes hacen ambas cosas y quienes no hacen ninguna. Esta es la <em>generación pivote</em>:
+  la que vive en el umbral entre la formación y el trabajo, sin pertenecer plenamente
+  a ninguno de los dos mundos.
+</p>
+<p>
+  Los datos del grupo 31-40 muestran un desplazamiento hacia el trabajo y el desempleo,
+  con menor presencia en la formación pura. Esto sugiere que la formación en línea
+  —cuando se dirige a este grupo etario— compite con cargas laborales y familiares
+  que los grupos más jóvenes aún no tienen. El diseño pedagógico de los cursos
+  debería asumir esa diferencia.
+</p>
+
+<!-- SECCIÓN 3 -->
+<h2>III. El trabajo ideal como documento etnográfico</h2>
+
+<p>
+  La pregunta abierta <em>"¿Cuál sería tu trabajo ideal?"</em> es, para esta lectura,
+  el momento más rico del instrumento. No por los datos que produce —imposibles de
+  cuantificar de manera exhaustiva— sino por el tipo de texto que genera:
+  deseos articulados en palabras propias, sin las categorías prefabricadas de un
+  ítem cerrado.
+</p>
+<p>
+  Los patrones recurrentes en las respuestas abiertas revelan cuatro grandes
+  constelaciones de sentido:
+</p>
+
+<h3>1. Flexibilidad y autonomía</h3>
+<blockquote>
+  "Buen ambiente laboral, flexibilidad de horario, que se trabaje por objetivos,
+  buen salario y mejora profesional."
+  <cite>— Patrón recurrente entre personas de 19–25 años</cite>
+</blockquote>
+<p>
+  La flexibilidad no es un capricho generacional: es una respuesta adaptativa a
+  mercados laborales rígidos que no se ajustan a trayectorias no lineales.
+  Quien cuida a una persona dependiente, quien estudia a la vez que trabaja,
+  quien vive en una periferia urbana con tiempos de traslado largos, necesita
+  flexibilidad no por comodidad sino por viabilidad.
+</p>
+
+<h3>2. Vocación como resistencia</h3>
+<p>
+  Una proporción significativa de respuestas articuló el trabajo ideal en términos
+  de vocación: <em>"hacer lo que amo"</em>, <em>"ejercer mi carrera con pasión"</em>,
+  <em>"sentir que mi trabajo tiene impacto"</em>. Este discurso coexiste —a veces
+  en la misma respuesta— con la exigencia de una remuneración justa.
+</p>
+<p>
+  La vocación como criterio de trabajo ideal puede ser leída como una forma de
+  resistencia simbólica: en un mercado que suele desvincular pasión y remuneración,
+  la insistencia en querer ambas cosas al mismo tiempo es ya una postura crítica,
+  aunque no siempre sea articulada como tal.
+</p>
+
+<h3>3. Reconocimiento y jerarquía</h3>
+<p>
+  Las aspiraciones a cargos directivos y de jefatura no solo señalan ambición personal;
+  señalan una comprensión de cómo funciona el reconocimiento en las organizaciones.
+  <em>"Que se valore mi trabajo"</em>, <em>"tener voz en las decisiones"</em>,
+  <em>"ser tomada en cuenta"</em> son formulaciones que apuntan a una experiencia
+  previa de invisibilización.
+</p>
+
+<h3>4. Emprendimiento como horizonte</h3>
+<p>
+  Como señalamos antes, el emprendimiento aparece con frecuencia no como primera
+  opción sino como horizonte: <em>"si no encuentro trabajo en lo mío, poner mi propio
+  negocio"</em>. La lógica es defensiva, no ofensiva. Esto importa porque los programas
+  de fomento al emprendimiento que asumen una motivación intrínseca —el deseo de
+  emprender como valor en sí mismo— pueden estar diseñando para una audiencia
+  que no existe en los datos.
+</p>
+
+<!-- SECCIÓN 4 -->
+<h2>IV. Conclusiones: lo que los datos dicen cuando se leen de pie</h2>
+
+<p>
+  El proyecto —y nuestra alianza con él— trabajó durante el primer trimestre de 2023
+  con una población que el análisis permite caracterizar con bastante precisión:
+  mayoritariamente joven, mayoritariamente femenina, mayoritariamente urbanizada en
+  el centro del país, con credenciales educativas medias o altas, y con una relación
+  ambivalente pero activa con el mercado de trabajo.
+</p>
+<p>
+  Tres hallazgos merecen convertirse en criterios de diseño para cualquier intervención
+  formativa en este campo:
+</p>
+
+<p>
+  <strong>1. La formación no compite con la incapacidad, compite con la precariedad.</strong>
+  El perfil que más necesita capacitación —personas desocupadas, sin red de contactos,
+  con credenciales medias y en regiones periféricas— es el que menos aparece en los datos.
+  Llegar a ese perfil requiere estrategias distintas a las que funcionan para la
+  población que ya está en la plataforma.
+</p>
+<p>
+  <strong>2. El capital social es infraestructura laboral.</strong>
+  Las redes de contacto siguen siendo la vía de acceso al empleo más efectiva.
+  Cualquier proyecto que forme para el empleo sin contemplar cómo se construyen,
+  activan o compensan esas redes, está formando para una inserción que depende
+  de variables que no controla.
+</p>
+<p>
+  <strong>3. El trabajo ideal es un documento de exigencias razonables.</strong>
+  Flexibilidad, vocación, reconocimiento, remuneración justa: lo que las personas
+  describen como trabajo ideal no es un lujo. Es una descripción razonable de lo
+  que el trabajo debería ser. Que parezca difícil de alcanzar dice más sobre la
+  calidad media del empleo disponible que sobre la ambición desmedida de quienes
+  lo piden.
+</p>
+
+<blockquote>
+  La descripción densa no produce certezas; produce preguntas mejor formuladas.
+  Y una pregunta mejor formulada es, en investigación social, una herramienta
+  de transformación.
+  <cite>— Sintropía Social · Línea de investigación sociolaboral</cite>
+</blockquote>
+
+<!-- NOTA METODOLÓGICA -->
+<div class="nota">
+  <p>
+    <strong>Nota metodológica.</strong>
+    Este análisis trabaja con datos de encuesta de satisfacción aplicada al universo
+    de personas que completaron la formación ofrecida por el proyecto en el primer trimestre
+    de 2023. La metodología de interpretación cualitativa sigue el enfoque de
+    <em>descripción densa</em> propuesto por Clifford Geertz en
+    <em>La interpretación de las culturas</em> (Basic Books, 1973), aplicado
+    a datos cuantitativos de manera complementaria —no sustitutiva— del análisis
+    estadístico descriptivo. Los nombres de organizaciones aliadas han sido
+    omitidos a solicitud expresa del equipo.
+    Los datos corresponden a 7,874 usuarios únicos de un universo de 9,908 respuestas totales.
+  </p>
+</div>
+
+<!-- BRAND -->
+<div class="brand-bar">
+  <div class="brand-name">Sintropía Social</div>
+  <div class="brand-url">sintropiassociales-del.github.io</div>
+</div>
+
+</body>
+</html>
