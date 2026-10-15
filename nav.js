@@ -2,10 +2,6 @@
 //  SINTROPÍA SOCIAL — nav.js
 //  Barra de navegación, modal de login y toasts compartidos.
 //
-//  Extraído de los 10 archivos HTML del sitio (la barra <nav>,
-//  el modal de login, el helper de toasts y el objeto SS_AUTH
-//  eran 100% idénticos byte a byte en las 10 páginas).
-//
 //  Depende de config.js (debe cargarse ANTES que este archivo):
 //  usa CONFIG, Auth, sha256() y api() de config.js.
 //
@@ -18,14 +14,8 @@
 // ============================================================
 
 // ── AUTH SEGURO — TTL 8h ──
-// (Este objeto SS_AUTH estaba duplicado, byte por byte, en las
-// 10 páginas. Es el que de verdad controla el estado de sesión
-// que se muestra en la barra de navegación y en el modal de
-// login. El objeto `Auth` de config.js es un sistema aparte,
-// más antiguo, que usan algunas páginas para su propia lógica
-// de negocio (p.ej. admin.html) — no lo tocamos.)
 var SS_AUTH = (function(){
-  var TTL = 8 * 60 * 60 * 1000; // 8 horas en ms
+  var TTL = 8 * 60 * 60 * 1000;
   var USER_KEY = 'ss_user_v2';
   var ADMIN_KEY = 'ss_admin_v2';
 
@@ -61,11 +51,9 @@ var SS_AUTH = (function(){
     getToken: function(){ var a=_get(ADMIN_KEY); return (a&&a.token)||null; },
     logout:   function(){
       _clear(USER_KEY); _clear(ADMIN_KEY);
-      // Also clear old keys for migration
       ['ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
       window.location.href = 'inicio.html';
     },
-    // Migrate from old storage
     migrate: function(){
       try{
         var oldUser = JSON.parse(localStorage.getItem('ss_user')||localStorage.getItem('sintropia_usuario_actual')||'null');
@@ -76,14 +64,9 @@ var SS_AUTH = (function(){
     }
   };
 })();
-// Run migration on load
 SS_AUTH.migrate();
 
-// ── Nav bar markup (idéntico en las 10 páginas) ──
-// Se añade un ítem extra "Área interna" (id="ss-nav-internal-li"),
-// oculto por defecto, que solo se muestra cuando Auth.isAdmin()
-// (de config.js) es true — enlaza a /plataforma/, fuera del
-// alcance de este trabajo.
+// ── Nav bar markup ──
 var SINTRO_NAV_HTML = `
 <nav class="ss-nav">
   <a href="inicio.html" class="ss-nav-logo">
@@ -92,7 +75,7 @@ var SINTRO_NAV_HTML = `
   </a>
   <ul class="ss-nav-links" id="ss-nav-links">
     <li><a href="inicio.html" data-navkey="inicio">Inicio</a></li>
-    
+
     <li>
       <div class="ss-dd" id="dd-herr">
         <button class="ss-dd-btn" onclick="ssDD('dd-herr')" data-navkey="herramientas">Herramientas
@@ -100,13 +83,14 @@ var SINTRO_NAV_HTML = `
         </button>
         <div class="ss-dd-panel">
           <a href="herramientas.html" data-navkey="herramientas">Ver todas las herramientas</a>
+          <a href="cursos.html" data-navkey="cursos">Cursos</a>
         </div>
       </div>
     </li>
     <li><a href="servicios.html" data-navkey="servicios">Servicios</a></li>
     <li><a href="blog.html" data-navkey="blog">Newsletter</a></li>
     <li><a href="contribuir.html" data-navkey="contribuir">Contribuir</a></li>
-    <li id="ss-nav-internal-li" style="display:none;"><a href="/plataforma/" data-navkey="admin-interna">Área interna</a></li>
+    <li id="ss-nav-internal-li" style="display:none;"><a href="admin.html" data-navkey="admin-interna">Área interna</a></li>
   </ul>
   <div class="ss-nav-end">
     <span id="ss-nav-user">
@@ -120,7 +104,7 @@ var SINTRO_NAV_HTML = `
 </nav>
 `;
 
-// ── Login modal + toast markup (idéntico en las 10 páginas) ──
+// ── Login modal + toast markup ──
 var SINTRO_MODAL_HTML = `
 <div class="ss-modal-bg" id="ss-login-modal" onclick="if(event.target===this)ssCerrarLogin()">
   <div class="ss-modal">
@@ -146,7 +130,21 @@ function ssMobileNav(){ document.getElementById('ss-nav-links').classList.toggle
 document.addEventListener('click',function(e){ if(!e.target.closest('.ss-dd')) document.querySelectorAll('.ss-dd').forEach(function(d){d.classList.remove('open');}); });
 
 // ── AUTH ──
-function ssGetUser(){ return SS_AUTH.getUser() || (function(){ try{ return JSON.parse(localStorage.getItem("ss_user")||"null"); }catch(e){return null;} })(); }
+function ssGetUser(){
+  // Primero intenta el sistema nuevo (SS_AUTH), luego el legado
+  var u = SS_AUTH.getUser();
+  if(u) return u;
+  // Legado: ss_user_v2 ya cubierto arriba; revisar también auth de admin.html
+  try{
+    var legacy = JSON.parse(localStorage.getItem('ss_user')||'null');
+    if(legacy) return legacy;
+  }catch(e){}
+  // Auth de config.js (sistema admin propio de admin.html)
+  try{
+    if(typeof Auth !== 'undefined' && Auth.getUser) return Auth.getUser();
+  }catch(e){}
+  return null;
+}
 function ssSetUser(u){ SS_AUTH.setUser(u); }
 function ssLogout(){ SS_AUTH.logout(); }
 
@@ -158,14 +156,6 @@ function ssAbrirLogin(){
 }
 function ssCerrarLogin(){ var m=document.getElementById('ss-login-modal'); if(m) m.classList.remove('open'); }
 
-// Tracks which page called SintroNav.render(), so ssDoLogin can
-// reproduce the one real per-page difference found in the 10
-// originals: on admin.html the login modal does NOT also try to
-// fetch a separate admin token (admin.html already has its own
-// dedicated admin-login flow elsewhere on the page); on every
-// other page it does, to bridge the session into config.js's
-// Auth (legacy 'ss_admin' key) so admin.html works right away
-// if the user navigates there next.
 var _sintroActivePage = null;
 
 async function ssDoLogin(){
@@ -185,12 +175,12 @@ async function ssDoLogin(){
         if(r.isAdmin) window.location.href='admin.html';
         else location.reload();
       } else {
-        // Also try admin login to get admin token
         if(r.isAdmin || (r.token && r.token.indexOf('admin_')===0)){
           try{
             var ar = await api('loginAdmin',{email:email,passHash:h});
             if(ar&&ar.ok){
               localStorage.setItem('ss_admin', JSON.stringify({token:ar.token,email:ar.email}));
+              SS_AUTH.setAdmin({token:ar.token,email:ar.email});
             }
           }catch(e){}
           ssCerrarLogin();
@@ -219,28 +209,42 @@ function ssToast(msg,type){
 }
 
 // ── Nav user-state rendering ──
-// (Antes era una IIFE anónima inline; aquí es una función con
-// nombre para poder llamarla explícitamente desde render().)
+// Lee el usuario desde TODOS los sistemas de auth posibles:
+// SS_AUTH (nuevo), ss_user legado, Auth de config.js (admin.html)
 function _sintroRenderUserState(){
-  var u = SS_AUTH.getUser() || ssGetUser();
+  var u = ssGetUser();
+
   var el = document.getElementById('ss-nav-user');
-  if(el && u && (u.nombre||u.email)){
-    var label = u.nombre || u.email.split('@')[0];
-    el.innerHTML = '<button onclick="ssLogout()" style="background:var(--morado);color:var(--blanco);padding:.42rem .95rem;border-radius:var(--r-pill);border:none;cursor:pointer;font-family:var(--font-body);font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
+  if(el){
+    if(u && (u.nombre||u.email)){
+      var label = u.nombre || u.email.split('@')[0];
+      el.innerHTML = '<button onclick="ssLogout()" style="background:var(--morado,#631EEB);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
+    } else {
+      // Mostrar botones de entrada si no hay sesión
+      el.innerHTML = '<a href="#" onclick="ssAbrirLogin();return false;" class="btn btn-ghost btn-sm">Entrar</a><a href="registro.html" class="btn btn-primary btn-sm">Unete gratis</a>';
+    }
   }
-  // "Área interna" — solo visible para administradores (Auth.isAdmin(),
-  // el mecanismo real de admin del sitio, ya usado en admin.html).
+
+  // "Área interna" — visible para admins
   var internalLi = document.getElementById('ss-nav-internal-li');
   if(internalLi){
     var isAdm = false;
-    try{ isAdm = (typeof Auth!=='undefined') && Auth.isAdmin(); }catch(e){}
+    // Verificar por múltiples métodos
+    try{ isAdm = SS_AUTH.isAdmin(); }catch(e){}
+    if(!isAdm){ try{ isAdm = !!(u && u.isAdmin); }catch(e){} }
+    if(!isAdm){ try{ isAdm = (typeof Auth!=='undefined') && Auth.isAdmin(); }catch(e){} }
+    // También verificar token legado ss_admin
+    if(!isAdm){
+      try{
+        var legacyAdmin = JSON.parse(localStorage.getItem('ss_admin')||'null');
+        if(legacyAdmin && legacyAdmin.token) isAdm = true;
+      }catch(e){}
+    }
     internalLi.style.display = isAdm ? '' : 'none';
   }
 }
 
 // ── Active-link marking ──
-// No existía ningún marcado "active" en el nav original de las
-// 10 páginas; se añade aquí como mejora nueva y no destructiva.
 function _sintroMarkActive(key){
   if(!key) return;
   var links = document.querySelectorAll('[data-navkey="'+key+'"]');
