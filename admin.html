@@ -1,655 +1,1788 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel Admin — Sintropía Social</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.paypal.com https://script.google.com https://script.googleusercontent.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.paypal.com https://cdnjs.cloudflare.com; frame-src https://www.paypal.com; base-uri 'self'; object-src 'none';">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Sintropía Social</title>
+  
+<link rel="stylesheet" href="sintro-shared.css">
 <style>
-:root {
-  --purple: #631EEB;
-  --purple-light: rgba(99,30,235,.12);
-  --orange: #FF7929;
-  --bg: #f5f4fb;
-  --bg-card: #ffffff;
-  --fg: #1a1630;
-  --fg-muted: #6b6680;
-  --line: rgba(99,30,235,.15);
-  --green: #16a34a;
-  --red: #dc2626;
-  --yellow: #d97706;
-  --r: 12px;
-  --shadow: 0 2px 12px rgba(99,30,235,.10);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0f0d1a; --bg-card: #1a1630; --fg: #ede8ff;
-    --fg-muted: #9d94c0; --line: rgba(99,30,235,.25);
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0f0d1a; --bg-card: #1a1630; --fg: #ede8ff;
-  --fg-muted: #9d94c0; --line: rgba(99,30,235,.25);
-  color-scheme: dark;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; }
+    :root {
+      --primary: #631EEB;
+      --primary-light: #8b5cf6;
+      --accent: #FF7929;
+      --bg: #faf9f7;
+      --bg-alt: #f0efe9;
+      --text: #2c2c2c;
+      --text-light: #666;
+      --white: #fff;
+      --border: #e0ddd5;
+      --success: #28a745;
+      --error: #dc3545;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    /* Login Form */
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .login-box {
+      background: var(--white);
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    .login-box h2 {
+      font-family: var(--font-display);
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .login-box p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      width: 100%;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+    }
+    .btn-primary:hover { background: var(--primary-light); }
+    .btn-primary:disabled {
+      background: var(--text-light);
+      cursor: not-allowed;
+    }
+    .error-msg {
+      background: #fee;
+      color: var(--error);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+    .hint {
+      background: var(--bg-alt);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+    }
+    .hint strong { color: var(--primary); }
 
-/* ── LOGIN ── */
-#login-screen {
-  display: flex; align-items: center; justify-content: center;
-  min-height: 100vh; padding: 24px;
-}
-.login-card {
-  background: var(--bg-card); border-radius: var(--r); box-shadow: var(--shadow);
-  padding: 40px 36px; width: 100%; max-width: 400px;
-  border: 1px solid var(--line);
-}
-.login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
-.login-logo svg { width: 32px; height: 32px; }
-.login-logo span { font-size: 1rem; font-weight: 700; color: var(--purple); }
-.login-card h2 { font-size: 1.35rem; font-weight: 700; margin-bottom: 6px; }
-.login-card p { font-size: .85rem; color: var(--fg-muted); margin-bottom: 24px; }
-.field { margin-bottom: 16px; }
-.field label { display: block; font-size: .78rem; font-weight: 600; color: var(--fg-muted); margin-bottom: 5px; letter-spacing: .04em; text-transform: uppercase; }
-.field input {
-  width: 100%; padding: .6rem .85rem; border-radius: 8px;
-  border: 1px solid var(--line); background: var(--bg); color: var(--fg);
-  font-family: inherit; font-size: .9rem; outline: none; transition: border .2s;
-}
-.field input:focus { border-color: var(--purple); }
-.btn-primary {
-  width: 100%; padding: .7rem 1rem; background: var(--purple); color: #fff;
-  border: none; border-radius: 8px; font-family: inherit; font-size: .9rem;
-  font-weight: 600; cursor: pointer; transition: opacity .15s;
-}
-.btn-primary:hover { opacity: .88; }
-.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
-.error-msg { background: rgba(220,38,38,.1); border: 1px solid rgba(220,38,38,.3); color: var(--red); border-radius: 8px; padding: .6rem .85rem; font-size: .84rem; margin-bottom: 14px; display: none; }
-.divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; color: var(--fg-muted); font-size: .78rem; }
-.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-.btn-google {
-  width: 100%; padding: .65rem 1rem; background: var(--bg-card); color: var(--fg);
-  border: 1.5px solid var(--line); border-radius: 8px; font-family: inherit; font-size: .9rem;
-  font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  gap: 10px; transition: background .15s, border-color .15s; margin-bottom: 2px;
-}
-.btn-google:hover { background: var(--bg); border-color: var(--purple); }
-.btn-google:disabled { opacity: .5; cursor: not-allowed; }
-.btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
+    /* Admin Panel */
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+    
+    .admin-header {
+      background: var(--primary);
+      color: var(--white);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .admin-header h1 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+    }
+    .admin-nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .admin-nav a {
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .admin-nav a:hover { opacity: 1; }
+    .btn-logout {
+      background: rgba(255,255,255,0.2);
+      color: var(--white);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
 
-/* ── PANEL ── */
-#panel { display: none; }
-.topbar {
-  background: var(--bg-card); border-bottom: 1px solid var(--line);
-  padding: 0 24px; height: 60px; display: flex; align-items: center;
-  justify-content: space-between; position: sticky; top: 0; z-index: 10;
-}
-.topbar-left { display: flex; align-items: center; gap: 14px; }
-.topbar-left span { font-size: .78rem; color: var(--fg-muted); }
-.topbar-badge {
-  background: var(--purple-light); color: var(--purple);
-  font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 50px;
-}
-.topbar-right { display: flex; align-items: center; gap: 10px; }
-.btn-sm {
-  padding: .38rem .85rem; border-radius: 7px; font-family: inherit; font-size: .8rem;
-  font-weight: 600; cursor: pointer; border: 1px solid var(--line); background: transparent;
-  color: var(--fg); transition: background .15s;
-}
-.btn-sm:hover { background: var(--line); }
-.btn-danger { border-color: rgba(220,38,38,.3); color: var(--red); }
-.btn-danger:hover { background: rgba(220,38,38,.08); }
+    .admin-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
 
-.main { padding: 28px 24px; max-width: 1100px; margin: 0 auto; }
-.section-title {
-  font-size: 1.1rem; font-weight: 700; margin-bottom: 18px;
-  display: flex; align-items: center; gap: 10px;
-}
-.badge-count {
-  background: var(--orange); color: #fff; font-size: .72rem;
-  font-weight: 700; padding: 2px 8px; border-radius: 50px; min-width: 24px; text-align: center;
-}
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0;
+    }
+    .tab {
+      padding: 1rem 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-light);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .tab:hover { color: var(--primary); }
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
 
-/* ── TABS ── */
-.tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--line); }
-.tab {
-  padding: .55rem 1.1rem; font-family: inherit; font-size: .85rem; font-weight: 600;
-  cursor: pointer; border: none; background: transparent; color: var(--fg-muted);
-  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s;
-}
-.tab.active { color: var(--purple); border-bottom-color: var(--purple); }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-/* ── CITA CARD ── */
-.cita-card {
-  background: var(--bg-card); border: 1px solid var(--line); border-radius: var(--r);
-  padding: 18px 20px; margin-bottom: 14px; transition: box-shadow .15s;
-}
-.cita-card:hover { box-shadow: var(--shadow); }
-.cita-meta {
-  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px;
-}
-.tag {
-  font-size: .72rem; font-weight: 600; padding: 2px 9px; border-radius: 50px;
-  background: var(--purple-light); color: var(--purple);
-}
-.tag-user { background: rgba(255,121,41,.12); color: var(--orange); }
-.tag-date { background: var(--bg); color: var(--fg-muted); border: 1px solid var(--line); }
-.cita-text {
-  font-size: .88rem; line-height: 1.6; color: var(--fg); margin-bottom: 12px;
-  padding: 10px 14px; background: var(--bg); border-radius: 8px; border-left: 3px solid var(--purple);
-}
-.cita-apa { font-size: .78rem; color: var(--fg-muted); margin-bottom: 14px; font-style: italic; }
-.cita-fields {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px;
-  margin-bottom: 14px;
-}
-.cita-field { font-size: .78rem; }
-.cita-field strong { display: block; color: var(--fg-muted); font-weight: 600; font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
-.cita-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.btn-aprobar {
-  padding: .45rem 1.1rem; background: var(--green); color: #fff; border: none;
-  border-radius: 7px; font-family: inherit; font-size: .82rem; font-weight: 600;
-  cursor: pointer; transition: opacity .15s;
-}
-.btn-aprobar:hover { opacity: .85; }
-.btn-rechazar {
-  padding: .45rem 1.1rem; background: transparent; color: var(--red);
-  border: 1px solid rgba(220,38,38,.35); border-radius: 7px;
-  font-family: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; transition: background .15s;
-}
-.btn-rechazar:hover { background: rgba(220,38,38,.08); }
-.btn-editar {
-  padding: .45rem 1.1rem; background: transparent; color: var(--fg-muted);
-  border: 1px solid var(--line); border-radius: 7px;
-  font-family: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; transition: background .15s;
-}
-.btn-editar:hover { background: var(--line); }
-.rechazo-input {
-  width: 100%; padding: .45rem .75rem; border-radius: 7px; border: 1px solid var(--line);
-  background: var(--bg); color: var(--fg); font-family: inherit; font-size: .82rem;
-  margin-top: 8px; display: none; outline: none;
-}
-.rechazo-input:focus { border-color: var(--red); }
-.status-aprobada { color: var(--green); font-size: .78rem; font-weight: 700; }
-.status-rechazada { color: var(--red); font-size: .78rem; font-weight: 700; }
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-card .icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .stat-card .value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--primary);
+    }
+    .stat-card .label {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
 
-/* ── ESTADO VACÍO / LOADING ── */
-.empty { text-align: center; padding: 48px 24px; color: var(--fg-muted); font-size: .9rem; }
-.empty svg { width: 48px; height: 48px; opacity: .3; margin: 0 auto 12px; display: block; }
-.loading-bar {
-  width: 100%; height: 3px; background: var(--line); border-radius: 2px;
-  overflow: hidden; margin-bottom: 24px;
-}
-.loading-bar::after {
-  content: ''; display: block; height: 100%; width: 40%;
-  background: var(--purple); border-radius: 2px;
-  animation: slide 1.2s ease-in-out infinite;
-}
-@keyframes slide { 0%{transform:translateX(-100%)} 100%{transform:translateX(350%)} }
+    /* Tables */
+    .data-table {
+      width: 100%;
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .data-table th,
+    .data-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table th {
+      background: var(--bg-alt);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+    .data-table tr:hover { background: var(--bg); }
+    
+    .action-btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-right: 0.3rem;
+      transition: all 0.2s;
+    }
+    .btn-approve { background: var(--success); color: white; }
+    .btn-reject { background: var(--error); color: white; }
+    .btn-edit { background: var(--accent); color: white; }
+    .btn-delete { background: #666; color: white; }
 
-/* ── TOAST ── */
-#toast {
-  position: fixed; bottom: 24px; right: 24px; background: var(--fg);
-  color: var(--bg); padding: .7rem 1.2rem; border-radius: 9px; font-size: .85rem;
-  font-weight: 600; opacity: 0; transition: opacity .25s; pointer-events: none; z-index: 999;
-  max-width: 320px;
-}
-#toast.show { opacity: 1; }
+    .loading { text-align: center; padding: 2rem; color: var(--text-light); }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 600px) {
-  .topbar { padding: 0 16px; }
-  .main { padding: 20px 16px; }
-  .cita-fields { grid-template-columns: 1fr 1fr; }
-}
-</style>
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h3 {
+      font-family: var(--font-display);
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      justify-content: flex-end;
+    }
+    .modal .btn { width: auto; }
+  </style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Open+Sauce+One:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 </head>
 <body>
+<div id="sintro-nav"></div>
 
-<!-- ════════════════════════════════ LOGIN ════════════════════════════════ -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">
-      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="14" stroke="#631EEB" stroke-width="2.5"/>
-        <path d="M10 16 Q16 8 22 16 Q16 24 10 16Z" fill="#631EEB" opacity=".7"/>
-      </svg>
-      <span>Sintropía Social</span>
+  <!-- Login Form -->
+  <div id="login-container" class="login-container">
+    <div class="login-box">
+      <h2>Panel Admin</h2>
+      <p>Sintropía Social · Acceso restringido</p>
+      
+      <div id="login-error" class="error-msg">Credenciales incorrectas. Inténtalo de nuevo.</div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label>Correo admin</label>
+          <input type="email" id="admin-email" placeholder="admin@sintropiasocial.com" required data-testid="admin-email-input">
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="admin-password" placeholder="••••••••" required data-testid="admin-password-input">
+        </div>
+        <button type="submit" class="btn btn-primary" id="login-btn" data-testid="admin-login-btn">Ingresar al panel</button>
+      </form>
+      
+      <p style="text-align:center;margin-top:1.5rem;font-size:0.85rem;color:var(--text-light);">
+        ¿Olvidaste tu contraseña? <a href="mailto:contacto@sintropiasocial.com">Contactar soporte</a>
+      </p>
     </div>
-    <h2>Panel de administración</h2>
-    <p>Acceso restringido al equipo de Sintropía Social.</p>
-    <div id="login-error" class="error-msg"></div>
+  </div>
 
-    <!-- Botón Google -->
-    <button type="button" class="btn-google" id="btn-google" onclick="iniciarGoogle()">
-      <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"/>
-        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z"/>
-        <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z"/>
-        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58Z"/>
-      </svg>
-      Entrar con Google
+  <!-- Admin Panel -->
+  <div id="admin-panel" class="admin-panel">
+    <header class="admin-header">
+      <h1>Sintropía Social · Admin</h1>
+      
+    </header>
+
+    <div class="admin-content">
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('dashboard')" data-testid="tab-dashboard"> Dashboard</button>
+        <button class="tab" onclick="showTab('pendientes')" data-testid="tab-pendientes">⏳ Pendientes</button>
+        <button class="tab" onclick="showTab('citas')" data-testid="tab-citas"> Citas</button>
+        <button class="tab" onclick="showTab('usuarios')" data-testid="tab-usuarios"> Usuarios</button>
+        <button class="tab" onclick="showTab('blog')" data-testid="tab-blog"> Blog</button>
+        <button class="tab" onclick="showTab('herramientas')" data-testid="tab-herramientas"> ️ Herramientas</button>
+        <button class="tab" onclick="showTab('pdfcitas')" data-testid="tab-pdfcitas"> PDF→Citas</button>
+        <button class="tab" onclick="showTab('cursos')" data-testid="tab-cursos">🎓 Cursos</button>
+      </div>
+
+      <!-- Dashboard Tab -->
+      <div id="tab-dashboard" class="tab-content active">
+
+  <!-- Métricas principales -->
+  <div class="stats-grid" style="margin-bottom:2rem;">
+    <div class="stat-card" style="border-top:3px solid var(--morado);">
+      <div class="value" id="admin-stat-citas">—</div>
+      <div class="label">Citas publicadas</div>
+      <div style="font-size:.75rem;color:var(--tx-light);margin-top:.25rem;">en el repositorio</div>
+    </div>
+    <div class="stat-card" style="border-top:3px solid var(--naranja);">
+      <div class="value" id="admin-stat-usuarios">—</div>
+      <div class="label">Usuarios registrados</div>
+      <div style="font-size:.75rem;color:var(--tx-light);margin-top:.25rem;">cuentas activas</div>
+    </div>
+    <div class="stat-card" style="border-top:3px solid #f59e0b;">
+      <div class="value" id="admin-stat-pendientes">—</div>
+      <div class="label">Pendientes de revisión</div>
+      <div style="font-size:.75rem;color:var(--tx-light);margin-top:.25rem;">citas y contribuciones</div>
+    </div>
+    <div class="stat-card" style="border-top:3px solid #16a34a;">
+      <div class="value" id="admin-stat-suscriptores">—</div>
+      <div class="label">Suscriptores newsletter</div>
+      <div style="font-size:.75rem;color:var(--tx-light);margin-top:.25rem;">correos activos</div>
+    </div>
+  </div>
+
+  <!-- Acciones rápidas -->
+  <h3 style="font-size:.8rem;font-weight:700;color:var(--morado);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;">Acciones rápidas</h3>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:2rem;">
+    <button onclick="showTab('pendientes')" style="background:var(--morado-light);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem;text-align:left;cursor:pointer;transition:all .2s;font-family:var(--font-body);" onmouseover="this.style.borderColor='var(--morado)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:.9rem;font-weight:700;color:var(--morado);margin-bottom:.3rem;">Revisar pendientes</div>
+      <div style="font-size:.76rem;color:var(--tx-light);">Citas enviadas para aprobación</div>
     </button>
+    <button onclick="showTab('pdfcitas')" style="background:var(--morado-light);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem;text-align:left;cursor:pointer;transition:all .2s;font-family:var(--font-body);" onmouseover="this.style.borderColor='var(--morado)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:.9rem;font-weight:700;color:var(--morado);margin-bottom:.3rem;">Citas de PDF</div>
+      <div style="font-size:.76rem;color:var(--tx-light);">Extraídas de documentos subidos</div>
+    </button>
+    <button onclick="showTab('blog')" style="background:var(--naranja-light);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem;text-align:left;cursor:pointer;transition:all .2s;font-family:var(--font-body);" onmouseover="this.style.borderColor='var(--naranja)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:.9rem;font-weight:700;color:var(--naranja);margin-bottom:.3rem;">Publicar en blog</div>
+      <div style="font-size:.76rem;color:var(--tx-light);">Nueva entrada o PDF</div>
+    </button>
+    <button onclick="showTab('usuarios')" style="background:var(--morado-light);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem;text-align:left;cursor:pointer;transition:all .2s;font-family:var(--font-body);" onmouseover="this.style.borderColor='var(--morado)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:.9rem;font-weight:700;color:var(--morado);margin-bottom:.3rem;">Gestionar usuarios</div>
+      <div style="font-size:.76rem;color:var(--tx-light);">Ver, restablecer o eliminar</div>
+    </button>
+    <button onclick="showTab('citas')" style="background:var(--morado-light);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem;text-align:left;cursor:pointer;transition:all .2s;font-family:var(--font-body);" onmouseover="this.style.borderColor='var(--morado)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:.9rem;font-weight:700;color:var(--morado);margin-bottom:.3rem;">Editar repositorio</div>
+      <div style="font-size:.76rem;color:var(--tx-light);">Buscar, editar o eliminar citas</div>
+    </button>
+    <a href="dashboard.html" target="_blank" style="background:var(--naranja-light);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem;text-align:left;display:block;text-decoration:none;transition:all .2s;" onmouseover="this.style.borderColor='var(--naranja)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-size:.9rem;font-weight:700;color:var(--naranja);margin-bottom:.3rem;">Abrir dashboard</div>
+      <div style="font-size:.76rem;color:var(--tx-light);">Visualización interactiva de datos</div>
+    </a>
+  </div>
 
-    <div class="divider">o con contraseña</div>
+  <!-- Estado del sistema -->
+  <h3 style="font-size:1rem;font-weight:700;color:var(--morado);letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.25rem;">Estado del sistema</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx-light);margin-bottom:.75rem;">Apps Script</div>
+      <div id="api-status" style="font-size:.88rem;color:var(--tx-mid);">Verificando conexión...</div>
+      <button onclick="checkAPIStatus()" class="btn btn-outline btn-sm" style="margin-top:.75rem;">Verificar</button>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx-light);margin-bottom:.75rem;">Google Sheet</div>
+      <div style="font-size:.82rem;color:var(--tx-mid);line-height:1.6;">
+        Hojas activas: Hoja 1, Usuarios, Pendientes, Contribuciones, Suscriptores
+      </div>
+      <a href="https://docs.google.com/spreadsheets/d/114sl6Mt-UhQQsv7zyicAAmsYzo3VDPoAvbT-0MakK94" target="_blank" class="btn btn-outline btn-sm" style="margin-top:.75rem;display:inline-flex;">Abrir Sheet</a>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tx-light);margin-bottom:.75rem;">Sesión actual</div>
+      <div id="admin-session-info" style="font-size:.82rem;color:var(--tx-mid);line-height:1.6;">Cargando...</div>
+      <button onclick="ssLogout()" class="btn btn-outline btn-sm" style="margin-top:.75rem;color:var(--err);border-color:var(--err);">Cerrar sesión</button>
+    </div>
+  </div>
 
-    <form id="login-form">
-      <div class="field">
-        <label>Correo</label>
-        <input type="email" id="adm-email" autocomplete="username" required placeholder="correo@ejemplo.com">
+</div>
+<div id="tab-pendientes" class="tab-content">
+        <h3>Citas pendientes de aprobación</h3>
+        <div id="pendientes-loading" class="loading">Cargando...</div>
+        <table class="data-table" id="pendientes-table" style="display:none;">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Autor</th>
+              <th>Categoría</th>
+              <th>Cita</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="pendientes-body"></tbody>
+        </table>
       </div>
-      <div class="field">
-        <label>Contraseña</label>
-        <input type="password" id="adm-pass" autocomplete="current-password" required placeholder="••••••••">
-      </div>
-      <button type="submit" class="btn-primary" id="login-btn">Entrar al panel</button>
-    </form>
+
+      <!-- Citas Tab -->
+      <div id="tab-citas" class="tab-content">
+  <!-- Toolbar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+    <div>
+      <h3 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:.25rem;">Repositorio de citas</h3>
+      <p style="font-size:.83rem;color:var(--tx-light);">Busca, edita o elimina citas del repositorio principal.</p>
+    </div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button onclick="exportarCitasCSV()" class="btn btn-outline btn-sm">Exportar CSV</button>
+      <button onclick="loadAdminData()" class="btn btn-primary btn-sm">Recargar</button>
+    </div>
+  </div>
+
+  <!-- Filtros rápidos -->
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:.75rem;margin-bottom:1.25rem;">
+    <input id="cita-buscar" type="text" placeholder="Buscar por cita, autor, categoría..." oninput="filtrarCitasAdmin()" style="padding:.65rem 1rem;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:var(--font-body);font-size:.86rem;outline:none;"/>
+    <select id="cita-filtro-cat" onchange="filtrarCitasAdmin()" style="padding:.65rem 1rem;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:var(--font-body);font-size:.86rem;outline:none;">
+      <option value="">Todas las categorías</option>
+    </select>
+    <select id="cita-filtro-anio" onchange="filtrarCitasAdmin()" style="padding:.65rem 1rem;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:var(--font-body);font-size:.86rem;outline:none;">
+      <option value="">Todos los años</option>
+    </select>
+  </div>
+  <div id="citas-count" style="font-size:.8rem;color:var(--tx-light);margin-bottom:.75rem;"></div>
+
+  <!-- Table -->
+  <div id="admin-citas-container">
+    <div class="loading">Cargando citas...</div>
   </div>
 </div>
-
-<!-- ════════════════════════════════ PANEL ════════════════════════════════ -->
-<div id="panel">
-  <div class="topbar">
-    <div class="topbar-left">
-      <strong style="font-size:.9rem;">Panel Admin</strong>
-      <span id="adm-email-display"></span>
+<div id="tab-usuarios" class="tab-content">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+    <div>
+      <h3 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:.25rem;">Usuarios registrados</h3>
+      <p style="font-size:.83rem;color:var(--tx-light);">Gestiona las cuentas, restablece contraseñas o elimina usuarios.</p>
     </div>
-    <div class="topbar-right">
-      <a href="index.html" class="btn-sm">← Sitio</a>
-      <button class="btn-sm btn-danger" onclick="logout()">Cerrar sesión</button>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+      <input id="usu-buscar" type="text" placeholder="Buscar usuario..." oninput="filtrarUsuariosAdmin()" style="padding:.55rem .9rem;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:var(--font-body);font-size:.84rem;outline:none;"/>
+      <button onclick="loadAdminData()" class="btn btn-primary btn-sm">Recargar</button>
     </div>
   </div>
-
-  <div class="main">
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('pendientes')">
-        Citas pendientes <span class="badge-count" id="badge-pendientes">0</span>
-      </button>
-      <button class="tab" onclick="switchTab('aprobadas')">Aprobadas</button>
-      <button class="tab" onclick="switchTab('rechazadas')">Rechazadas</button>
+  <!-- Métricas de usuarios -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;margin-bottom:1.5rem;">
+    <div style="background:var(--morado-light);border-radius:10px;padding:1rem;text-align:center;">
+      <div id="usu-total" style="font-size:1.8rem;font-weight:700;color:var(--morado);font-family:var(--font-display);">—</div>
+      <div style="font-size:.75rem;color:var(--tx-light);">Total usuarios</div>
     </div>
-
-    <!-- Pendientes -->
-    <div id="tab-pendientes" class="tab-panel active">
-      <div class="section-title">
-        Citas en revisión
-        <button class="btn-sm" onclick="cargarPendientes()" style="font-size:.75rem;">↻ Actualizar</button>
-      </div>
-      <div id="loading-pendientes" class="loading-bar"></div>
-      <div id="lista-pendientes"></div>
+    <div style="background:#f0fdf4;border-radius:10px;padding:1rem;text-align:center;">
+      <div id="usu-activos" style="font-size:1.8rem;font-weight:700;color:#16a34a;font-family:var(--font-display);">—</div>
+      <div style="font-size:.75rem;color:var(--tx-light);">Activos</div>
     </div>
-
-    <!-- Aprobadas -->
-    <div id="tab-aprobadas" class="tab-panel">
-      <div class="section-title">Citas aprobadas</div>
-      <div id="loading-aprobadas" class="loading-bar" style="display:none;"></div>
-      <div id="lista-aprobadas"></div>
+    <div style="background:var(--naranja-light);border-radius:10px;padding:1rem;text-align:center;">
+      <div id="usu-nuevos" style="font-size:1.8rem;font-weight:700;color:var(--naranja);font-family:var(--font-display);">—</div>
+      <div style="font-size:.75rem;color:var(--tx-light);">Este mes</div>
     </div>
-
-    <!-- Rechazadas -->
-    <div id="tab-rechazadas" class="tab-panel">
-      <div class="section-title">Citas rechazadas</div>
-      <div id="loading-rechazadas" class="loading-bar" style="display:none;"></div>
-      <div id="lista-rechazadas"></div>
-    </div>
+  </div>
+  <div id="admin-usuarios-container">
+    <div class="loading">Cargando usuarios...</div>
   </div>
 </div>
+<div id="tab-blog" class="tab-content">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+    <div>
+      <h3 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:.25rem;">Blog y Newsletter</h3>
+      <p style="font-size:.83rem;color:var(--tx-light);">Publica entradas, sube PDFs y gestiona suscriptores.</p>
+    </div>
+    <div style="display:flex;gap:.5rem;">
+      <a href="blog.html" target="_blank" class="btn btn-outline btn-sm">Ver blog</a>
+    </div>
+  </div>
 
-<div id="toast"></div>
+  <!-- Nueva entrada -->
+  <div style="background:var(--morado-light);border:1px solid var(--border);border-radius:var(--r-md);padding:1.5rem;margin-bottom:1.5rem;">
+    <h4 style="font-size:.85rem;font-weight:700;color:var(--morado);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.1rem;">Nueva entrada</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem;">
+      <div class="campo"><label>Título</label><input id="blog-titulo" placeholder="Título de la entrada"/></div>
+      <div class="campo"><label>Categoría</label><input id="blog-tag" placeholder="Ej: Metodología, Empleo..."/></div>
+    </div>
+    <div class="campo" style="margin-bottom:.75rem;"><label>Contenido</label><textarea id="blog-body" rows="4" placeholder="Escribe el contenido de la entrada..."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem;">
+      <div class="campo"><label>Link externo (opcional)</label><input id="blog-link" placeholder="https://..."/></div>
+      <div>
+        <label style="font-size:.73rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx-light);display:block;margin-bottom:.35rem;">PDF adjunto (opcional)</label>
+        <div class="ss-drop-zone" style="padding:.85rem;cursor:pointer;" onclick="document.getElementById('blog-pdf-input').click()" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="blogHandlePDFDrop(event)">
+          <p id="blog-pdf-name" style="margin:0;font-size:.82rem;">Arrastra un PDF o haz clic</p>
+          <input type="file" id="blog-pdf-input" accept=".pdf" style="display:none" onchange="blogSelectPDF(this)"/>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:.5rem;">
+      <button onclick="blogPublicar()" class="btn btn-primary btn-sm">Publicar entrada</button>
+      <button onclick="blogLimpiar()" class="btn btn-ghost btn-sm">Limpiar</button>
+    </div>
+  </div>
 
-<script src="config.js"></script>
-<script>
-// ══════════════════════════════════════════════════════════════════════
-//  SEGURIDAD: Sanitización contra inyección de fórmulas en Sheets
-//  Cualquier valor que empiece con = + - @ es un vector de ataque
-// ══════════════════════════════════════════════════════════════════════
-function sanitize(val) {
-  if (val === null || val === undefined) return '';
-  var s = String(val).trim();
-  // Bloquea fórmulas de Sheets / CSV injection
-  if (/^[=+\-@\t\r\n|]/.test(s)) s = "'" + s;
-  // Elimina caracteres de control excepto salto de línea normal
-  s = s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
-  return s;
-}
+  <!-- Entradas publicadas -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+    <h4 style="font-size:.85rem;font-weight:700;color:var(--morado);text-transform:uppercase;letter-spacing:.06em;">Entradas publicadas</h4>
+    <span id="blog-count" style="font-size:.78rem;color:var(--tx-light);"></span>
+  </div>
+  <div id="blog-entries-list">
+    <div class="loading">Cargando entradas...</div>
+  </div>
 
-// Escapa HTML para renderizar texto sin riesgo de XSS
-function escHtml(val) {
-  if (val === null || val === undefined) return '';
-  return String(val)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
-}
+  <!-- Suscriptores -->
+  <div style="margin-top:2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.25rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+      <h4 style="font-size:.85rem;font-weight:700;color:var(--morado);text-transform:uppercase;letter-spacing:.06em;">Suscriptores del newsletter</h4>
+      <button onclick="exportarSuscriptoresCSV()" class="btn btn-outline btn-sm">Exportar CSV</button>
+    </div>
+    <div id="suscriptores-list" style="font-size:.84rem;color:var(--tx-mid);">Cargando suscriptores...</div>
+  </div>
+</div>
+<div id="tab-herramientas" class="tab-content">
+  <h3 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:.35rem;">Herramientas del sitio</h3>
+  <p style="font-size:.83rem;color:var(--tx-light);margin-bottom:1.75rem;">Acceso directo a cada herramienta de la plataforma.</p>
 
-function fmt(val) { return escHtml(sanitize(val)); }
-function fmtDate(iso) {
-  if (!iso) return '';
-  try { return new Date(iso).toLocaleString('es-MX', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
-  catch(e) { return escHtml(String(iso).substring(0,16)); }
-}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem;">
 
-// ══════════════════════════════════════════════════════════════════════
-//  GOOGLE LOGIN
-// ══════════════════════════════════════════════════════════════════════
-var GOOGLE_CLIENT_ID = '778086289246-k0np3tkn92ubktvagff2hnohdveg8bgj.apps.googleusercontent.com';
+    <div class="card card-accent" style="display:flex;flex-direction:column;gap:.75rem;">
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--morado);margin-bottom:.4rem;">Repositorio</div>
+        <h4 style="font-size:1rem;margin-bottom:.35rem;">Dashboard bibliográfico</h4>
+        <p style="font-size:.82rem;color:var(--tx-light);">836+ citas sistematizadas con filtros, acceso por niveles y exportación CSV.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:auto;">
+        <a href="index.html" target="_blank" class="btn btn-primary btn-sm">Abrir</a>
+        <button onclick="showTab('citas')" class="btn btn-outline btn-sm">Gestionar citas</button>
+      </div>
+    </div>
 
-function iniciarGoogle() {
-  var btn = document.getElementById('btn-google');
-  var errEl = document.getElementById('login-error');
-  errEl.style.display = 'none';
-  btn.disabled = true;
-  btn.innerHTML = '<span style="opacity:.6">Conectando con Google…</span>';
+    <div class="card" style="border-top:3px solid var(--naranja);display:flex;flex-direction:column;gap:.75rem;">
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--naranja);margin-bottom:.4rem;">Análisis de datos</div>
+        <h4 style="font-size:1rem;margin-bottom:.35rem;">Dashboard interactivo</h4>
+        <p style="font-size:.82rem;color:var(--tx-light);">Sube CSV o Excel, genera gráficas editables, análisis cualitativo y PDF profesional.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:auto;">
+        <a href="dashboard.html" target="_blank" class="btn btn-naranja btn-sm">Abrir</a>
+      </div>
+    </div>
 
-  if (typeof google === 'undefined' || !google.accounts) {
-    errEl.textContent = 'Google no disponible. Recarga la página e intenta de nuevo.';
-    errEl.style.display = 'block';
-    resetBtnGoogle();
-    return;
-  }
+    <div class="card card-accent" style="display:flex;flex-direction:column;gap:.75rem;">
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--morado);margin-bottom:.4rem;">Metodología</div>
+        <h4 style="font-size:1rem;margin-bottom:.35rem;">Diagnóstico social rápido</h4>
+        <p style="font-size:.82rem;color:var(--tx-light);">Árbol de problemas, marco lógico, línea base, SMART, talleres y propuesta de intervención.</p>
+      </div>
+      <div style="margin-top:auto;">
+        <a href="diagnostico.html" target="_blank" class="btn btn-primary btn-sm">Abrir</a>
+      </div>
+    </div>
 
-  google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID,
-    callback: function(response) {
-      if (!response || !response.credential) {
-        errEl.textContent = 'No se recibió credencial de Google.';
-        errEl.style.display = 'block';
-        resetBtnGoogle();
+    <div class="card" style="border-top:3px solid var(--naranja);display:flex;flex-direction:column;gap:.75rem;">
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--naranja);margin-bottom:.4rem;">Investigación</div>
+        <h4 style="font-size:1rem;margin-bottom:.35rem;">Buscador de citas PDF</h4>
+        <p style="font-size:.82rem;color:var(--tx-light);">Extrae citas de PDFs por palabra clave. Las propuestas llegan al admin para aprobación.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:auto;">
+        <a href="pdfcitas.html" target="_blank" class="btn btn-naranja btn-sm">Abrir</a>
+        <button onclick="showTab('pdfcitas')" class="btn btn-outline btn-sm">Ver pendientes</button>
+      </div>
+    </div>
+
+    <div class="card card-accent" style="display:flex;flex-direction:column;gap:.75rem;">
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--morado);margin-bottom:.4rem;">Publicaciones</div>
+        <h4 style="font-size:1rem;margin-bottom:.35rem;">Blog y Newsletter</h4>
+        <p style="font-size:.82rem;color:var(--tx-light);">Publica entradas, sube PDFs y gestiona suscriptores desde el panel de blog.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:auto;">
+        <a href="blog.html" target="_blank" class="btn btn-primary btn-sm">Ver blog</a>
+        <button onclick="showTab('blog')" class="btn btn-outline btn-sm">Publicar</button>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:3px solid var(--naranja);display:flex;flex-direction:column;gap:.75rem;">
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--naranja);margin-bottom:.4rem;">Comunidad</div>
+        <h4 style="font-size:1rem;margin-bottom:.35rem;">Contribuciones</h4>
+        <p style="font-size:.82rem;color:var(--tx-light);">Documentos enviados por usuarios registrados para revisión y publicación.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:auto;">
+        <button onclick="cargarContribuciones()" class="btn btn-naranja btn-sm">Ver contribuciones</button>
+      </div>
+    </div>
+
+    <div class="card card-accent" style="display:flex;flex-direction:column;gap:.75rem;">
+      <div>
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--morado);margin-bottom:.4rem;">Formación</div>
+        <h4 style="font-size:1rem;margin-bottom:.35rem;">Cursos en línea</h4>
+        <p style="font-size:.82rem;color:var(--tx-light);">Plataforma de cursos: catálogo público y módulos completos para revisión y administración.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:auto;">
+        <a href="cursos.html" target="_blank" class="btn btn-primary btn-sm">Catálogo</a>
+        <button onclick="showTab('cursos')" class="btn btn-outline btn-sm">Gestionar cursos</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Contribuciones de usuarios -->
+  <div id="contrib-admin-box" style="display:none;margin-top:2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.25rem;">
+    <h4 style="font-size:.85rem;font-weight:700;color:var(--morado);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1rem;">Contribuciones de usuarios</h4>
+    <div id="contrib-admin-list">Cargando...</div>
+  </div>
+</div>
+<div id="tab-pdfcitas" class="tab-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+          <div>
+            <h3>Citas extraídas de PDF — pendientes de revisión</h3>
+            <p style="font-size:.85rem;color:#666;margin-top:.25rem;">Usuarios subieron PDFs y extrajeron citas. Revísalas una por una o aprueba todas con un clic.</p>
+          </div>
+          <button onclick="aprobarTodasPDF()" style="background:#631EEB;color:white;padding:9px 20px;border-radius:8px;border:none;cursor:pointer;font-size:.88rem;font-weight:600;font-family:inherit;"> Aprobar todas</button>
+        </div>
+        <div id="pdf-pendientes-loading" class="loading">Cargando citas de PDF...</div>
+        <div id="pdf-pendientes-container" style="display:none;">
+          <div id="pdf-pendientes-empty" style="display:none;text-align:center;padding:3rem;color:#aaa;">
+            <div style="font-size:2.5rem;margin-bottom:.75rem;">✓</div>
+            <p>No hay citas de PDF pendientes de revisión.</p>
+          </div>
+          <div id="pdf-pendientes-list" style="display:flex;flex-direction:column;gap:1rem;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<div id="tab-cursos" class="tab-content">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+    <div>
+      <h3 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:.25rem;">Gestión de cursos</h3>
+      <p style="font-size:.83rem;color:var(--tx-light);">Visualiza el contenido completo de cada curso: infografías, lecturas y actividades por módulo.</p>
+    </div>
+    <a href="cursos.html" target="_blank" class="btn btn-primary btn-sm">Ver catálogo público</a>
+  </div>
+
+  <!-- Course selector -->
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem;">
+    <button class="curso-btn active" onclick="showCurso(this,'mps')"
+      style="background:var(--morado-light);border:1.5px solid var(--morado);border-radius:10px;padding:.6rem 1.2rem;font-family:var(--font-display);font-size:.82rem;font-weight:700;color:var(--morado);cursor:pointer;transition:all .18s;">
+      Metodología de Práctica Social
+    </button>
+  </div>
+
+  <!-- Course: MPS -->
+  <div id="curso-mps" class="curso-panel">
+
+    <!-- Course header card -->
+    <div style="background:linear-gradient(135deg,rgba(99,30,235,.12) 0%,rgba(14,165,160,.08) 100%);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.75rem;display:flex;flex-wrap:wrap;gap:1.5rem;align-items:flex-start;">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--morado);margin-bottom:.4rem;">Investigación social</div>
+        <h2 style="font-family:var(--font-display);font-size:1.4rem;font-weight:800;margin-bottom:.5rem;">Metodología de Práctica Social</h2>
+        <p style="font-size:.84rem;color:var(--tx-light);line-height:1.6;">Curso de 30 horas · 6 módulos. Combina fundamentos epistemológicos (Geertz, Bourdieu, Giddens), diseño metodológico mixto y aplicaciones en organizaciones, comunidades y política pública.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.85rem;min-width:240px;">
+        <div style="background:var(--surface);border-radius:10px;padding:.85rem;text-align:center;">
+          <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--morado);">30h</div>
+          <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx-light);">Duración total</div>
+        </div>
+        <div style="background:var(--surface);border-radius:10px;padding:.85rem;text-align:center;">
+          <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--naranja);">6</div>
+          <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx-light);">Módulos</div>
+        </div>
+        <div style="background:var(--surface);border-radius:10px;padding:.85rem;text-align:center;">
+          <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--morado);">600</div>
+          <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx-light);">Puntos totales</div>
+        </div>
+        <div style="background:var(--surface);border-radius:10px;padding:.85rem;text-align:center;">
+          <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:var(--naranja);">$2,500</div>
+          <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx-light);">MXN</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Módulo accordion list -->
+    <div style="font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--tx-light);margin-bottom:.85rem;">Contenido por módulo</div>
+    <div id="modulos-mps" style="display:flex;flex-direction:column;gap:.85rem;">
+
+      <!-- M1 -->
+      <div class="modulo-card" style="border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <button onclick="toggleModulo(this)" style="width:100%;display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--surface);border:none;cursor:pointer;font-family:var(--font-body);text-align:left;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--morado-light);color:var(--morado);font-family:var(--font-display);font-size:.8rem;font-weight:800;flex-shrink:0;">1</span>
+          <span style="flex:1;">
+            <span style="font-size:.9rem;font-weight:700;color:var(--text);">Fundamentos epistemológicos de la Práctica Social</span>
+            <span style="display:block;font-size:.75rem;color:var(--tx-light);margin-top:.15rem;">Geertz · Bourdieu · Giddens · De la Garza Toledo · 5h · 100 pts</span>
+          </span>
+          <span class="modulo-chevron" style="color:var(--tx-light);font-size:.9rem;transition:transform .2s;">▼</span>
+        </button>
+        <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem;margin-bottom:1rem;">
+            <div style="background:var(--surface);border-radius:10px;padding:.9rem;">
+              <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--morado);margin-bottom:.5rem;">Competencias</div>
+              <ul style="font-size:.8rem;color:var(--tx-light);line-height:1.8;padding-left:1rem;">
+                <li>Analítica</li><li>Metodológica</li><li>Reflexiva</li>
+              </ul>
+            </div>
+            <div style="background:var(--surface);border-radius:10px;padding:.9rem;">
+              <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--naranja);margin-bottom:.5rem;">Evaluación</div>
+              <ul style="font-size:.8rem;color:var(--tx-light);line-height:1.8;padding-left:1rem;">
+                <li>80 pts autoevaluación</li><li>20 pts manual</li>
+              </ul>
+            </div>
+          </div>
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--tx-light);margin-bottom:.6rem;">Recursos del módulo</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+            <a href="cursos/modulo1/M1_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
+            <a href="cursos/modulo1/M1_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
+            <a href="cursos/modulo1/M1_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+            <a href="cursos/modulo1/index_1.html" target="_blank" class="btn btn-primary btn-sm">Índice curricular</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- M2 -->
+      <div class="modulo-card" style="border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <button onclick="toggleModulo(this)" style="width:100%;display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--surface);border:none;cursor:pointer;font-family:var(--font-body);text-align:left;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--morado-light);color:var(--morado);font-family:var(--font-display);font-size:.8rem;font-weight:800;flex-shrink:0;">2</span>
+          <span style="flex:1;">
+            <span style="font-size:.9rem;font-weight:700;color:var(--text);">Los cinco componentes de la Práctica Social</span>
+            <span style="display:block;font-size:.75rem;color:var(--tx-light);margin-top:.15rem;">Valores · Intersubjetividad · Acción · Estructura · Tiempo/espacio · 5h · 100 pts</span>
+          </span>
+          <span class="modulo-chevron" style="color:var(--tx-light);font-size:.9rem;transition:transform .2s;">▼</span>
+        </button>
+        <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+            <a href="cursos/modulo2/M2_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
+            <a href="cursos/modulo2/M2_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
+            <a href="cursos/modulo2/M2_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- M3 -->
+      <div class="modulo-card" style="border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <button onclick="toggleModulo(this)" style="width:100%;display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--surface);border:none;cursor:pointer;font-family:var(--font-body);text-align:left;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--morado-light);color:var(--morado);font-family:var(--font-display);font-size:.8rem;font-weight:800;flex-shrink:0;">3</span>
+          <span style="flex:1;">
+            <span style="font-size:.9rem;font-weight:700;color:var(--text);">Diseño metodológico mixto</span>
+            <span style="display:block;font-size:.75rem;color:var(--tx-light);margin-top:.15rem;">Convergente · Secuencial · Muestreo · 5h · 100 pts (70 auto + 30 manual)</span>
+          </span>
+          <span class="modulo-chevron" style="color:var(--tx-light);font-size:.9rem;transition:transform .2s;">▼</span>
+        </button>
+        <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+            <a href="cursos/modulo3/M3_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
+            <a href="cursos/modulo3/M3_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
+            <a href="cursos/modulo3/M3_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- M4 -->
+      <div class="modulo-card" style="border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <button onclick="toggleModulo(this)" style="width:100%;display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--surface);border:none;cursor:pointer;font-family:var(--font-body);text-align:left;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--morado-light);color:var(--morado);font-family:var(--font-display);font-size:.8rem;font-weight:800;flex-shrink:0;">4</span>
+          <span style="flex:1;">
+            <span style="font-size:.9rem;font-weight:700;color:var(--text);">El Ciclo "Del Contexto al Significado"</span>
+            <span style="display:block;font-size:.75rem;color:var(--tx-light);margin-top:.15rem;">6 etapas · Contexto → Significado · 5h · 100 pts (65 auto + 35 manual)</span>
+          </span>
+          <span class="modulo-chevron" style="color:var(--tx-light);font-size:.9rem;transition:transform .2s;">▼</span>
+        </button>
+        <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+            <a href="cursos/modulo4/M4_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
+            <a href="cursos/modulo4/M4_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
+            <a href="cursos/modulo4/M4_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- M5 -->
+      <div class="modulo-card" style="border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <button onclick="toggleModulo(this)" style="width:100%;display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--surface);border:none;cursor:pointer;font-family:var(--font-body);text-align:left;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--morado-light);color:var(--morado);font-family:var(--font-display);font-size:.8rem;font-weight:800;flex-shrink:0;">5</span>
+          <span style="flex:1;">
+            <span style="font-size:.9rem;font-weight:700;color:var(--text);">Análisis cultural y producción de conocimiento</span>
+            <span style="display:block;font-size:.75rem;color:var(--tx-light);margin-top:.15rem;">Codificación · Descripción densa · Ética · 5h · 100 pts (70 auto + 30 manual)</span>
+          </span>
+          <span class="modulo-chevron" style="color:var(--tx-light);font-size:.9rem;transition:transform .2s;">▼</span>
+        </button>
+        <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+            <a href="cursos/modulo5/M5_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
+            <a href="cursos/modulo5/M5_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
+            <a href="cursos/modulo5/M5_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- M6 -->
+      <div class="modulo-card" style="border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <button onclick="toggleModulo(this)" style="width:100%;display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:var(--surface);border:none;cursor:pointer;font-family:var(--font-body);text-align:left;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--morado-light);color:var(--morado);font-family:var(--font-display);font-size:.8rem;font-weight:800;flex-shrink:0;">6</span>
+          <span style="flex:1;">
+            <span style="font-size:.9rem;font-weight:700;color:var(--text);">Aplicaciones: organizaciones, comunidades y política pública</span>
+            <span style="display:block;font-size:.75rem;color:var(--tx-light);margin-top:.15rem;">Proyecto integrador · 5h · 100 pts (60 auto + 40 manual)</span>
+          </span>
+          <span class="modulo-chevron" style="color:var(--tx-light);font-size:.9rem;transition:transform .2s;">▼</span>
+        </button>
+        <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+            <a href="cursos/modulo6/M6_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
+            <a href="cursos/modulo6/M6_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
+            <a href="cursos/modulo6/M6_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /modulos-mps -->
+  </div><!-- /curso-mps -->
+
+</div><!-- /tab-cursos -->
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <h3>Editar cita</h3>
+      <form id="edit-form">
+        <input type="hidden" id="edit-rowNum">
+        <div class="form-group">
+          <label>Autor</label>
+          <input type="text" id="edit-autor">
+        </div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <input type="text" id="edit-categoria">
+        </div>
+        <div class="form-group">
+          <label>Indicador</label>
+          <input type="text" id="edit-indicador">
+        </div>
+        <div class="form-group">
+          <label>Año</label>
+          <input type="text" id="edit-year">
+        </div>
+        <div class="form-group">
+          <label>Población</label>
+          <input type="text" id="edit-poblacion">
+        </div>
+        <div class="form-group">
+          <label>Cita</label>
+          <textarea id="edit-cita" rows="4" style="width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Comentarios</label>
+          <textarea id="edit-comentarios" rows="2" style="width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn" style="background:var(--text-light);color:white;" onclick="closeEditModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Blog Modal -->
+  <div id="blog-modal" class="modal">
+    <div class="modal-content" style="max-width:700px;">
+      <h3 id="blog-modal-title">Nueva entrada de blog</h3>
+      <form id="blog-form">
+        <input type="hidden" id="blog-id">
+        <div class="form-group">
+          <label>Título *</label>
+          <input type="text" id="blog-titulo" required style="width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="blog-categoria" style="width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;">
+              <option value="General">General</option>
+              <option value="Investigación">Investigación</option>
+              <option value="Metodología">Metodología</option>
+              <option value="Noticias">Noticias</option>
+              <option value="Reflexiones">Reflexiones</option>
+              <option value="Recursos">Recursos</option>
+              <option value="Anecdotario">Anecdotario</option>
+            </select>
+            <small style="color:var(--text-light);">"Anecdotario" se muestra en la pestaña Anecdotario de blog.html (frase + atribución); cualquier otra categoría se muestra en la pestaña Newsletter (título + contenido).</small>
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select id="blog-estado" style="width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;">
+              <option value="PUBLICADO">Publicado</option>
+              <option value="BORRADOR">Borrador</option>
+            </select>
+            <small style="color:var(--text-light);">Solo lo Publicado es visible para el público; Borrador queda oculto hasta que lo cambies.</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Autor / Atribución (opcional)</label>
+          <input type="text" id="blog-autor" placeholder="Ej: Equipo Sintropía, o 'Nota de campo · Iztapalapa, 2024'" style="width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;">
+          <small style="color:var(--text-light);">Si lo dejas vacío, se usa tu propio correo. Para Anecdotario, úsalo para la referencia que aparece bajo la frase.</small>
+        </div>
+        <div class="form-group">
+          <label>URL de imagen (opcional)</label>
+          <input type="url" id="blog-imagen" placeholder="https://..." style="width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;">
+        </div>
+        <div class="form-group">
+          <label>Contenido *</label>
+          <textarea id="blog-contenido" rows="10" required style="width:100%;padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-family:inherit;" placeholder="Escribe el contenido de tu artículo... (para Anecdotario, escribe aquí la frase/cita)"></textarea>
+          <small style="color:var(--text-light);">Usa doble salto de línea para separar párrafos.</small>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn" style="background:var(--text-light);color:white;width:auto;" onclick="closeBlogModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" style="width:auto;">Guardar entrada</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+<script src="nav.js"></script>
+  <script>
+    var adminData = {
+      citas: [],
+      usuarios: [],
+      pendientes: [],
+      blogPosts: []
+    };
+
+    // Check if already logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      if (Auth.isAdmin()) {
+        showAdminPanel();
+      }
+    });
+
+    // Login form
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      var email = document.getElementById('admin-email').value.trim().toLowerCase();
+      var password = document.getElementById('admin-password').value;
+      var loginBtn = document.getElementById('login-btn');
+      var errorEl = document.getElementById('login-error');
+      
+      errorEl.classList.remove('show');
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Verificando...';
+      
+      try {
+        // Generate SHA-256 hash of password
+        var passHash = await sha256(password);
+        console.log('Email:', email);
+        console.log('Password hash:', passHash);
+        
+        var result = await api('loginAdmin', {
+          email: email,
+          passHash: passHash
+        });
+        
+        console.log('Login result:', result);
+        
+        if (result.ok) {
+          Auth.setAdmin({ token: result.token, email: result.email });
+          showAdminPanel();
+        } else {
+          errorEl.textContent = result.error || 'Credenciales incorrectas';
+          errorEl.classList.add('show');
+        }
+      } catch(err) {
+        console.error('Login error:', err);
+        errorEl.textContent = 'Error de conexión: ' + err.message;
+        errorEl.classList.add('show');
+      }
+      
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'Ingresar al panel';
+    });
+
+    function showAdminPanel() {
+      document.getElementById('login-container').style.display = 'none';
+      document.getElementById('admin-panel').classList.add('active');
+      loadAdminData();
+    }
+
+    // Escapa texto proveniente de usuarios/formularios antes de insertarlo como HTML,
+    // para evitar que un envío malicioso (citas, registro, blog) ejecute código
+    // dentro de la sesión del administrador.
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    async function loadAdminData() {
+      var token = Auth.getToken();
+      
+      // Load all data in parallel
+      var [citasRes, usuariosRes, pendientesRes, blogRes] = await Promise.all([
+        api('getCitas'),
+        api('getUsuarios', { adminToken: token }),
+        api('getPendientes', { adminToken: token }),
+        api('getBlogPosts', { adminToken: token })
+      ]);
+      
+      adminData.citas = citasRes.ok ? citasRes.data : [];
+      adminData.usuarios = usuariosRes.ok ? usuariosRes.data : [];
+      adminData.pendientes = pendientesRes.ok ? pendientesRes.data : [];
+      adminData.blogPosts = blogRes.ok ? blogRes.data : [];
+      
+      // Update stats
+      document.getElementById('admin-stat-citas').textContent = adminData.citas.length;
+      document.getElementById('admin-stat-usuarios').textContent = adminData.usuarios.length;
+      document.getElementById('admin-stat-pendientes').textContent = adminData.pendientes.length;
+      
+      // Render tables
+      renderPendientes();
+      renderCitas();
+      renderUsuarios();
+      renderBlogPosts();
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+      document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active');});
+      document.querySelector('[onclick="showTab(\'' + tabId + '\')"]').classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+      if(tabId === 'pdfcitas') loadPDFPendientes();
+    }
+
+    function renderPendientes() {
+      var loading = document.getElementById('pendientes-loading');
+      var table = document.getElementById('pendientes-table');
+      var tbody = document.getElementById('pendientes-body');
+      
+      loading.style.display = 'none';
+      tbody.innerHTML = '';
+      
+      if (adminData.pendientes.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No hay citas pendientes</td></tr>';
+      } else {
+        adminData.pendientes.forEach(function(p) {
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td>' + escapeHtml(p['Usuario'] || '-') + '</td>' +
+            '<td>' + escapeHtml(p['Autor'] || '-') + '</td>' +
+            '<td>' + escapeHtml(p['Categoria'] || '-') + '</td>' +
+            '<td>' + escapeHtml((p['Cita'] || '-').slice(0, 100)) + '...</td>' +
+            '<td>' + escapeHtml((p['Fecha'] || '-').slice(0, 10)) + '</td>' +
+            '<td>' +
+              '<button class="action-btn btn-approve" onclick="aprobarCita(' + JSON.stringify(p._rowIndex) + ')"> Aprobar</button>' +
+              '<button class="action-btn btn-reject" onclick="rechazarCita(' + JSON.stringify(p._rowIndex) + ')"> Rechazar</button>' +
+            '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+      table.style.display = 'table';
+    }
+
+    function renderCitas() {
+      var loading = document.getElementById('citas-loading');
+      var table = document.getElementById('citas-table');
+      var tbody = document.getElementById('citas-body');
+      
+      loading.style.display = 'none';
+      tbody.innerHTML = '';
+      
+      adminData.citas.forEach(function(c) {
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' + escapeHtml(c['No'] || '-') + '</td>' +
+          '<td>' + escapeHtml(c['Autor'] || '-') + '</td>' +
+          '<td>' + escapeHtml(c['Categoria'] || '-') + '</td>' +
+          '<td>' + escapeHtml(c['Anio'] || '-') + '</td>' +
+          '<td>' + escapeHtml((c['Cita'] || '-').slice(0, 80)) + '...</td>' +
+          '<td>' +
+            '<button class="action-btn btn-edit" onclick="editCita(' + JSON.stringify(c._row) + ')">Editar</button>' +
+            '<button class="action-btn btn-delete" onclick="eliminarCita(' + JSON.stringify(c._row) + ')">Eliminar</button>' +
+          '</td>';
+        tbody.appendChild(tr);
+      });
+      table.style.display = 'table';
+    }
+
+    function renderUsuarios() {
+      var loading = document.getElementById('usuarios-loading');
+      var table = document.getElementById('usuarios-table');
+      var tbody = document.getElementById('usuarios-body');
+      
+      loading.style.display = 'none';
+      tbody.innerHTML = '';
+      
+      adminData.usuarios.forEach(function(u) {
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' + escapeHtml(u['ID'] || '-') + '</td>' +
+          '<td>' + escapeHtml((u['Nombre'] || '') + ' ' + (u['Apellido'] || '')) + '</td>' +
+          '<td>' + escapeHtml(u['Email'] || '-') + '</td>' +
+          '<td>' + escapeHtml(u['Institucion'] || '-') + '</td>' +
+          '<td>' + escapeHtml((u['Fecha'] || '-').slice(0, 10)) + '</td>' +
+          '<td>' +
+            '<button class="action-btn btn-edit" onclick="resetPassword(' + JSON.stringify(u._row) + ', ' + JSON.stringify(u['Email']) + ')">Reset Pass</button>' +
+            '<button class="action-btn btn-delete" onclick="eliminarUsuario(' + JSON.stringify(u._row) + ')">Eliminar</button>' +
+          '</td>';
+        tbody.appendChild(tr);
+      });
+      table.style.display = 'table';
+    }
+
+    async function aprobarCita(rowIndex) {
+      if (!confirm('¿Aprobar esta cita?')) return;
+      var result = await api('aprobarCita', { adminToken: Auth.getToken(), rowIndex: rowIndex });
+      alert(result.ok ? 'Cita aprobada' : 'Error: ' + result.error);
+      loadAdminData();
+    }
+
+    async function rechazarCita(rowIndex) {
+      var motivo = prompt('Motivo del rechazo (opcional):');
+      var result = await api('rechazarCita', { adminToken: Auth.getToken(), rowIndex: rowIndex, motivo: motivo || '' });
+      alert(result.ok ? 'Cita rechazada' : 'Error: ' + result.error);
+      loadAdminData();
+    }
+
+    function editCita(rowNum) {
+      var cita = adminData.citas.find(c => c._row === rowNum);
+      if (!cita) return;
+      
+      document.getElementById('edit-rowNum').value = rowNum;
+      document.getElementById('edit-autor').value = cita['Autor'] || '';
+      document.getElementById('edit-categoria').value = cita['Categoria'] || '';
+      document.getElementById('edit-indicador').value = cita['Indicador'] || '';
+      document.getElementById('edit-year').value = cita['Anio'] || '';
+      document.getElementById('edit-poblacion').value = cita['Poblacion'] || '';
+      document.getElementById('edit-cita').value = cita['Cita'] || '';
+      document.getElementById('edit-comentarios').value = cita['Comentarios'] || '';
+      
+      document.getElementById('edit-modal').classList.add('active');
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.remove('active');
+    }
+
+    document.getElementById('edit-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var result = await api('editarCita', {
+        adminToken: Auth.getToken(),
+        rowNum: document.getElementById('edit-rowNum').value,
+        autor: document.getElementById('edit-autor').value,
+        categoria: document.getElementById('edit-categoria').value,
+        indicador: document.getElementById('edit-indicador').value,
+        year: document.getElementById('edit-year').value,
+        poblacion: document.getElementById('edit-poblacion').value,
+        cita: document.getElementById('edit-cita').value,
+        comentarios: document.getElementById('edit-comentarios').value
+      });
+      alert(result.ok ? 'Cita actualizada' : 'Error: ' + result.error);
+      closeEditModal();
+      loadAdminData();
+    });
+
+    async function eliminarCita(rowNum) {
+      if (!confirm('¿Eliminar esta cita permanentemente?')) return;
+      var result = await api('eliminarCita', { adminToken: Auth.getToken(), rowNum: rowNum });
+      alert(result.ok ? 'Cita eliminada' : 'Error: ' + result.error);
+      loadAdminData();
+    }
+
+    async function eliminarUsuario(rowNum) {
+      if (!confirm('¿Eliminar este usuario permanentemente?')) return;
+      var result = await api('eliminarUsuario', { adminToken: Auth.getToken(), rowNum: rowNum });
+      alert(result.ok ? 'Usuario eliminado' : 'Error: ' + result.error);
+      loadAdminData();
+    }
+
+    async function resetPassword(rowNum, email) {
+      if (!confirm('¿Restablecer contraseña de ' + email + '?')) return;
+      var result = await api('restablecerPass', { adminToken: Auth.getToken(), rowNum: rowNum, email: email });
+      alert(result.ok ? result.msg : 'Error: ' + result.error);
+    }
+
+    // Blog functions
+    function renderBlogPosts() {
+      var loading = document.getElementById('blog-loading');
+      var table = document.getElementById('blog-table');
+      var tbody = document.getElementById('blog-body');
+      
+      loading.style.display = 'none';
+      tbody.innerHTML = '';
+      
+      if (adminData.blogPosts.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No hay entradas de blog</td></tr>';
+      } else {
+        adminData.blogPosts.forEach(function(post) {
+          var tr = document.createElement('tr');
+          var fecha = post.fecha ? post.fecha.slice(0, 10) : '-';
+          tr.innerHTML =
+            '<td>' + escapeHtml(post.titulo || '-') + '</td>' +
+            '<td>' + escapeHtml(post.categoria || 'General') + '</td>' +
+            '<td>' + escapeHtml(post.autor || 'Admin') + '</td>' +
+            '<td>' + escapeHtml(fecha) + '</td>' +
+            '<td><span style="padding:0.25rem 0.5rem;border-radius:4px;font-size:0.75rem;background:' + (post.estado === 'PUBLICADO' ? '#d4edda' : '#fff3cd') + ';color:' + (post.estado === 'PUBLICADO' ? '#155724' : '#856404') + ';">' + escapeHtml(post.estado || 'BORRADOR') + '</span></td>' +
+            '<td>' +
+              '<button class="action-btn btn-edit" onclick="editBlogPost(' + JSON.stringify(post.id) + ')">Editar</button>' +
+              '<button class="action-btn btn-delete" onclick="deleteBlogPost(' + JSON.stringify(post.id) + ', ' + JSON.stringify(post._row) + ')">Eliminar</button>' +
+            '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+      table.style.display = 'table';
+    }
+
+    function openBlogModal(post) {
+      document.getElementById('blog-modal-title').textContent = post ? 'Editar entrada' : 'Nueva entrada de blog';
+      document.getElementById('blog-id').value = post ? post.id : '';
+      document.getElementById('blog-titulo').value = post ? post.titulo : '';
+      document.getElementById('blog-categoria').value = post ? post.categoria : 'General';
+      document.getElementById('blog-estado').value = post ? post.estado : 'PUBLICADO';
+      document.getElementById('blog-autor').value = post ? (post.autor || '') : '';
+      document.getElementById('blog-imagen').value = post ? post.imagen : '';
+      document.getElementById('blog-contenido').value = post ? post.contenido : '';
+      document.getElementById('blog-modal').classList.add('active');
+    }
+
+    function closeBlogModal() {
+      document.getElementById('blog-modal').classList.remove('active');
+    }
+
+    function editBlogPost(postId) {
+      var post = adminData.blogPosts.find(p => p.id === postId);
+      if (post) openBlogModal(post);
+    }
+
+    document.getElementById('blog-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var postId = document.getElementById('blog-id').value;
+      var action = postId ? 'editarBlogPost' : 'crearBlogPost';
+      
+      var result = await api(action, {
+        adminToken: Auth.getToken(),
+        id: postId || 'B' + Date.now(),
+        titulo: document.getElementById('blog-titulo').value,
+        categoria: document.getElementById('blog-categoria').value,
+        estado: document.getElementById('blog-estado').value,
+        imagen: document.getElementById('blog-imagen').value,
+        contenido: document.getElementById('blog-contenido').value,
+        autor: document.getElementById('blog-autor').value.trim() || Auth.getAdmin().email.split('@')[0]
+      });
+      
+      if (result.ok) {
+        closeBlogModal();
+        loadAdminData();
+        alert(postId ? 'Entrada actualizada' : 'Entrada creada');
+      } else {
+        alert('Error: ' + result.error);
+      }
+    });
+
+    async function deleteBlogPost(postId, rowNum) {
+      if (!confirm('¿Eliminar esta entrada de blog?')) return;
+      var result = await api('eliminarBlogPost', { adminToken: Auth.getToken(), id: postId, rowNum: rowNum });
+      alert(result.ok ? 'Entrada eliminada' : 'Error: ' + result.error);
+      loadAdminData();
+    }
+
+
+    // ── DASHBOARD: API status check ──
+    function checkAPIStatus(){
+      document.getElementById('api-status').textContent = 'Verificando...';
+      api('ping',{}).then(function(r){
+        document.getElementById('api-status').textContent = r && r.ok
+          ? 'Conectado correctamente'
+          : 'Error: ' + (r ? r.error : 'sin respuesta');
+        document.getElementById('api-status').style.color = r && r.ok ? 'var(--ok)' : 'var(--err)';
+      }).catch(function(){
+        document.getElementById('api-status').textContent = 'Sin conexion con Apps Script';
+        document.getElementById('api-status').style.color = 'var(--err)';
+      });
+    }
+
+    // ── DASHBOARD: session info ──
+    function loadSessionInfo(){
+      var u = SS_AUTH.getUser() || ssGetUser();
+      var el = document.getElementById('admin-session-info');
+      if(!el) return;
+      if(u) el.innerHTML = 'Usuario: <strong>'+escapeHtml(u.email)+'</strong><br>Rol: '+(u.isAdmin?'Administrador':'Usuario');
+      else el.textContent = 'No hay sesion activa';
+    }
+
+    // ── CITAS: filter ──
+    var _allCitas = [];
+    function filtrarCitasAdmin(){
+      var q   = (document.getElementById('cita-buscar')||{}).value||'';
+      var cat = (document.getElementById('cita-filtro-cat')||{}).value||'';
+      var yr  = (document.getElementById('cita-filtro-anio')||{}).value||'';
+      var filtered = _allCitas.filter(function(cita){
+        var matchQ   = !q   || JSON.stringify(cita).toLowerCase().includes(q.toLowerCase());
+        var matchCat = !cat || (cita['Categoria']||cita['Categoría']||'')===cat;
+        var matchYr  = !yr  || String(cita['Año']||cita['Anio']||'')===yr;
+        return matchQ && matchCat && matchYr;
+      });
+      var count = document.getElementById('citas-count');
+      if(count) count.textContent = filtered.length + ' de ' + _allCitas.length + ' citas';
+      renderCitasAdmin(filtered);
+    }
+
+    function renderCitasAdmin(citas){
+      var container = document.getElementById('admin-citas-container');
+      if(!container) return;
+      if(!citas||!citas.length){
+        container.innerHTML = '<p style="color:var(--tx-light);font-size:.88rem;padding:2rem;text-align:center;">No se encontraron citas.</p>';
         return;
       }
-      // Decodifica el JWT para extraer el email (solo cliente, sin verificar firma)
-      var parts = response.credential.split('.');
-      var payload = {};
-      try { payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/'))); } catch(e) {}
-      var emailGoogle = (payload.email || '').toLowerCase().trim();
-
-      // Llama loginAdmin con el idToken de Google (el backend lo verifica)
-      api('loginAdmin', { googleIdToken: response.credential, email: emailGoogle })
-        .then(function(res) {
-          if (res && res.ok && res.token) {
-            adminToken = res.token;
-            storeToken(res.token, emailGoogle);
-            mostrarPanel(emailGoogle);
-          } else {
-            errEl.textContent = res && res.error ? res.error : 'No autorizado. Verifica que tu cuenta esté habilitada como admin.';
-            errEl.style.display = 'block';
-            resetBtnGoogle();
-          }
-        }).catch(function() {
-          errEl.textContent = 'Error de conexión con el servidor.';
-          errEl.style.display = 'block';
-          resetBtnGoogle();
-        });
-    },
-    auto_select: false,
-    cancel_on_tap_outside: true
-  });
-
-  google.accounts.id.prompt(function(notification) {
-    // Si el usuario cancela el One Tap, volvemos al botón
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      // Fallback: abre el flujo de popup
-      google.accounts.id.renderButton(
-        document.getElementById('btn-google'),
-        { type: 'standard', theme: 'outline', size: 'large', text: 'signin_with', width: 340 }
-      );
-      resetBtnGoogle();
+      container.innerHTML = '<div style="overflow-x:auto;"><table><thead><tr>'+
+        '<th>No.</th><th>Categoría</th><th>Autor</th><th>Año</th><th>Cita (extracto)</th><th>Acciones</th>'+
+        '</tr></thead><tbody>'+
+        citas.slice(0,100).map(function(cita,i){
+          var texto = String(cita['Cita']||'').substring(0,80)+'…';
+          return '<tr>'+
+            '<td style="white-space:nowrap;">'+escapeHtml(cita['No']||cita['No.']||i+1)+'</td>'+
+            '<td><span class="tag tag-morado">'+escapeHtml(cita['Categoria']||cita['Categoría']||'—')+'</span></td>'+
+            '<td style="white-space:nowrap;">'+escapeHtml(cita['Autor']||'—')+'</td>'+
+            '<td>'+escapeHtml(cita['Año']||cita['Anio']||'—')+'</td>'+
+            '<td style="max-width:300px;font-size:.82rem;color:var(--tx-mid);" title="'+escapeHtml(String(cita['Cita']||''))+'">'+escapeHtml(texto)+'</td>'+
+            '<td style="white-space:nowrap;">'+
+              '<button onclick="editCita('+JSON.stringify(cita._row)+')" class="btn btn-outline btn-sm" style="margin-right:.25rem;">Editar</button>'+
+              '<button onclick="eliminarCita('+JSON.stringify(cita._row)+')" class="btn btn-sm" style="color:var(--err);border:1px solid var(--err);background:none;">Eliminar</button>'+
+            '</td>'+
+          '</tr>';
+        }).join('')+
+        '</tbody></table></div>';
     }
-  });
-}
 
-function resetBtnGoogle() {
-  var btn = document.getElementById('btn-google');
-  if (!btn) return;
-  btn.disabled = false;
-  btn.innerHTML = '<svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58Z"/></svg> Entrar con Google';
-}
-
-// ══════════════════════════════════════════════════════════════════════
-//  AUTH
-// ══════════════════════════════════════════════════════════════════════
-var adminToken = null;
-
-function getStoredToken() {
-  try { var a = JSON.parse(localStorage.getItem('ss_admin') || 'null'); return a && a.token ? a.token : null; }
-  catch(e) { return null; }
-}
-function storeToken(t, email) {
-  try { localStorage.setItem('ss_admin', JSON.stringify({ token: t, email: email, ts: Date.now() })); }
-  catch(e) {}
-}
-function clearToken() {
-  try { localStorage.removeItem('ss_admin'); } catch(e) {}
-  adminToken = null;
-}
-function logout() { clearToken(); location.reload(); }
-
-// ══════════════════════════════════════════════════════════════════════
-//  LOGIN
-// ══════════════════════════════════════════════════════════════════════
-document.getElementById('login-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  var emailRaw = document.getElementById('adm-email').value.trim().toLowerCase();
-  var passRaw  = document.getElementById('adm-pass').value;
-  var btn      = document.getElementById('login-btn');
-  var errEl    = document.getElementById('login-error');
-
-  // Validación básica anti-inyección en login
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(emailRaw)) {
-    errEl.textContent = 'Correo inválido'; errEl.style.display = 'block'; return;
-  }
-  if (passRaw.length < 4 || passRaw.length > 128) {
-    errEl.textContent = 'Contraseña inválida'; errEl.style.display = 'block'; return;
-  }
-
-  errEl.style.display = 'none';
-  btn.disabled = true; btn.textContent = 'Verificando…';
-
-  try {
-    var passHash = await sha256(passRaw);
-    var res = await api('loginAdmin', { email: emailRaw, passHash: passHash });
-    if (res && res.ok && res.token) {
-      adminToken = res.token;
-      storeToken(res.token, emailRaw);
-      mostrarPanel(emailRaw);
-    } else {
-      errEl.textContent = res && res.error ? res.error : 'Credenciales incorrectas';
-      errEl.style.display = 'block';
+    function exportarCitasCSV(){
+      if(!_allCitas.length){ showAdminToast('No hay citas cargadas.'); return; }
+      var keys = Object.keys(_allCitas[0]).filter(function(k){ return k!=='_row'; });
+      var rows = [keys.join(',')];
+      _allCitas.forEach(function(cita){
+        rows.push(keys.map(function(k){ return '"'+String(cita[k]||'').replace(/"/g,'""')+'"'; }).join(','));
+      });
+      var blob = new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+      var a = document.createElement('a'); a.href=URL.createObjectURL(blob);
+      a.download='citas_sintropia_'+Date.now()+'.csv'; a.click();
+      showAdminToast('CSV exportado');
     }
-  } catch(err) {
-    errEl.textContent = 'Error de conexión con el servidor';
-    errEl.style.display = 'block';
-  }
-  btn.disabled = false; btn.textContent = 'Entrar al panel';
-});
 
-function mostrarPanel(email) {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('panel').style.display = 'block';
-  document.getElementById('adm-email-display').textContent = email || '';
-  cargarPendientes();
-}
-
-// ══════════════════════════════════════════════════════════════════════
-//  TABS
-// ══════════════════════════════════════════════════════════════════════
-var tabsLoaded = {};
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(function(t,i){
-    t.classList.toggle('active', ['pendientes','aprobadas','rechazadas'][i] === name);
-  });
-  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-  document.getElementById('tab-' + name).classList.add('active');
-  if (!tabsLoaded[name]) {
-    if (name === 'aprobadas')  cargarPorEstado('APROBADA',  'aprobadas');
-    if (name === 'rechazadas') cargarPorEstado('RECHAZADA', 'rechazadas');
-  }
-}
-
-// ══════════════════════════════════════════════════════════════════════
-//  CARGAR CITAS
-// ══════════════════════════════════════════════════════════════════════
-function cargarPendientes() {
-  var el = document.getElementById('lista-pendientes');
-  var lb = document.getElementById('loading-pendientes');
-  el.innerHTML = ''; lb.style.display = 'block';
-  api('getPendientes', { adminToken: adminToken }).then(function(res) {
-    lb.style.display = 'none';
-    if (!res || !res.ok) { el.innerHTML = '<div class="empty">Error al cargar: ' + escHtml(res && res.error || 'Sin respuesta') + '</div>'; return; }
-    var citas = (res.citas || []).filter(function(c){ return String(c.Estado||'').toUpperCase() === 'PENDIENTE'; });
-    document.getElementById('badge-pendientes').textContent = citas.length;
-    if (!citas.length) { el.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>No hay citas pendientes — todo al día.</div>'; return; }
-    el.innerHTML = citas.map(function(c, i) { return renderCitaCard(c, i, 'pendiente'); }).join('');
-  }).catch(function(){ lb.style.display='none'; el.innerHTML='<div class="empty">Error de conexión.</div>'; });
-}
-
-function cargarPorEstado(estado, tabName) {
-  tabsLoaded[tabName] = true;
-  var el = document.getElementById('lista-' + tabName);
-  var lb = document.getElementById('loading-' + tabName);
-  el.innerHTML = ''; lb.style.display = 'block';
-  api('getCitasPendientes', { adminToken: adminToken, estado: estado }).then(function(res) {
-    lb.style.display = 'none';
-    if (!res || !res.ok) { el.innerHTML = '<div class="empty">Error: ' + escHtml(res && res.error || '') + '</div>'; return; }
-    var citas = res.citas || [];
-    if (!citas.length) { el.innerHTML = '<div class="empty">Sin registros.</div>'; return; }
-    el.innerHTML = citas.map(function(c, i) { return renderCitaCard(c, i, tabName); }).join('');
-  }).catch(function(){ lb.style.display='none'; el.innerHTML='<div class="empty">Error de conexión.</div>'; });
-}
-
-// ══════════════════════════════════════════════════════════════════════
-//  RENDER CARD — Todo el contenido pasa por fmt() / escHtml()
-// ══════════════════════════════════════════════════════════════════════
-function renderCitaCard(c, i, tipo) {
-  var usuario = fmt(c.Usuario) || '<em style="opacity:.5">anónimo</em>';
-  var estado  = String(c.Estado || 'PENDIENTE').toUpperCase();
-  var rowNum  = c._rowNum || c.No || (i + 2); // número de fila real en Sheets
-  var idCita  = 'cita-' + tipo + '-' + i;
-
-  var estadoHtml = '';
-  if (estado === 'APROBADA')   estadoHtml = '<span class="status-aprobada">✓ Aprobada</span>';
-  if (estado.startsWith('RECHAZADA')) estadoHtml = '<span class="status-rechazada">✗ ' + escHtml(estado) + '</span>';
-
-  var accionesHtml = '';
-  if (tipo === 'pendiente') {
-    accionesHtml = `
-      <div class="cita-actions">
-        <button class="btn-aprobar" onclick="aprobar(${i}, ${rowNum}, '${idCita}')">✓ Aprobar</button>
-        <button class="btn-rechazar" onclick="toggleRechazo('rechInput-${idCita}')">✗ Rechazar</button>
-        <input class="rechazo-input" id="rechInput-${idCita}" placeholder="Motivo (opcional) — Enter para rechazar"
-          onkeydown="if(event.key==='Enter'){rechazar(${i}, ${rowNum}, '${idCita}', this.value);}">
-      </div>`;
-  } else {
-    accionesHtml = '<div style="margin-top:4px;">' + estadoHtml + '</div>';
-  }
-
-  return `
-    <div class="cita-card" id="${escHtml(idCita)}">
-      <div class="cita-meta">
-        <span class="tag">${fmt(c.Categoria) || 'Sin categoría'}</span>
-        ${c.Indicador ? '<span class="tag">' + fmt(c.Indicador) + '</span>' : ''}
-        <span class="tag tag-user">👤 ${usuario}</span>
-        ${c.Fecha ? '<span class="tag tag-date">' + fmtDate(c.Fecha) + '</span>' : ''}
-      </div>
-      <div class="cita-text">${fmt(c.Cita) || '<em>Sin texto</em>'}</div>
-      ${c['Cita Apa'] ? '<div class="cita-apa">' + fmt(c['Cita Apa']) + '</div>' : ''}
-      <div class="cita-fields">
-        ${c.Autor      ? '<div class="cita-field"><strong>Autor</strong>' + fmt(c.Autor) + '</div>' : ''}
-        ${c.Anio       ? '<div class="cita-field"><strong>Año</strong>'   + fmt(c.Anio)  + '</div>' : ''}
-        ${c.Publicacion? '<div class="cita-field"><strong>Publicación</strong>' + fmt(c.Publicacion) + '</div>' : ''}
-        ${c.Pagina     ? '<div class="cita-field"><strong>Página</strong>' + fmt(c.Pagina) + '</div>' : ''}
-        ${c.Poblacion  ? '<div class="cita-field"><strong>Población</strong>' + fmt(c.Poblacion) + '</div>' : ''}
-        ${c.Link       ? '<div class="cita-field"><strong>Link</strong><a href="' + escHtml(c.Link) + '" target="_blank" rel="noopener noreferrer">' + fmt(c.Link).substring(0,40) + '…</a></div>' : ''}
-        ${c.Comentarios? '<div class="cita-field"><strong>Comentarios</strong>' + fmt(c.Comentarios) + '</div>' : ''}
-      </div>
-      ${accionesHtml}
-    </div>`;
-}
-
-function toggleRechazo(inputId) {
-  var el = document.getElementById(inputId);
-  if (!el) return;
-  el.style.display = el.style.display === 'block' ? 'none' : 'block';
-  if (el.style.display === 'block') el.focus();
-}
-
-// ══════════════════════════════════════════════════════════════════════
-//  ACCIONES ADMIN
-// ══════════════════════════════════════════════════════════════════════
-function aprobar(idx, rowNum, cardId) {
-  var card = document.getElementById(cardId);
-  if (card) card.style.opacity = '.5';
-  api('aprobarCita', { adminToken: adminToken, id: rowNum }).then(function(res) {
-    if (res && res.ok) {
-      toast('✓ Cita aprobada y publicada en el repositorio', 'ok');
-      if (card) card.remove();
-      var badge = document.getElementById('badge-pendientes');
-      if (badge) badge.textContent = Math.max(0, parseInt(badge.textContent || '0') - 1);
-      tabsLoaded['aprobadas'] = false; // forza recarga
-    } else {
-      toast('Error: ' + (res && res.error || 'Sin respuesta'), 'err');
-      if (card) card.style.opacity = '1';
+    // ── USUARIOS: filter ──
+    var _allUsuarios = [];
+    function filtrarUsuariosAdmin(){
+      var q = (document.getElementById('usu-buscar')||{}).value||'';
+      var filtered = _allUsuarios.filter(function(u){
+        return !q || JSON.stringify(u).toLowerCase().includes(q.toLowerCase());
+      });
+      renderUsuariosAdmin(filtered);
     }
-  });
-}
 
-function rechazar(idx, rowNum, cardId, motivoRaw) {
-  // Sanitiza el motivo antes de enviarlo
-  var motivo = sanitize(motivoRaw || '');
-  var card = document.getElementById(cardId);
-  if (card) card.style.opacity = '.5';
-  api('rechazarCita', { adminToken: adminToken, id: rowNum, motivo: motivo }).then(function(res) {
-    if (res && res.ok) {
-      toast('Cita rechazada', 'ok');
-      if (card) card.remove();
-      var badge = document.getElementById('badge-pendientes');
-      if (badge) badge.textContent = Math.max(0, parseInt(badge.textContent || '0') - 1);
-      tabsLoaded['rechazadas'] = false;
-    } else {
-      toast('Error: ' + (res && res.error || 'Sin respuesta'), 'err');
-      if (card) card.style.opacity = '1';
-    }
-  });
-}
-
-// ══════════════════════════════════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════════════════════════════════
-var _toastTimer;
-function toast(msg, tipo) {
-  var el = document.getElementById('toast');
-  el.textContent = msg;
-  el.style.background = tipo === 'err' ? '#dc2626' : '#1a1630';
-  el.classList.add('show');
-  clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 3500);
-}
-
-// ══════════════════════════════════════════════════════════════════════
-//  INIT — revisa si ya hay sesión guardada
-// ══════════════════════════════════════════════════════════════════════
-(function init() {
-  var stored = getStoredToken();
-  if (stored) {
-    // Verifica que el token siga válido
-    api('getPendientes', { adminToken: stored }).then(function(res) {
-      if (res && res.ok) {
-        adminToken = stored;
-        var adm = null;
-        try { adm = JSON.parse(localStorage.getItem('ss_admin') || 'null'); } catch(e) {}
-        mostrarPanel(adm && adm.email ? adm.email : '');
+    function renderUsuariosAdmin(usuarios){
+      var container = document.getElementById('admin-usuarios-container');
+      if(!container) return;
+      // Update metrics
+      var total = document.getElementById('usu-total');
+      var activos = document.getElementById('usu-activos');
+      var nuevos = document.getElementById('usu-nuevos');
+      if(total) total.textContent = _allUsuarios.length;
+      if(activos) activos.textContent = _allUsuarios.filter(function(u){ return u['Estado']==='ACTIVO'; }).length;
+      if(nuevos){
+        var thisMonth = new Date().getMonth();
+        var thisYear  = new Date().getFullYear();
+        nuevos.textContent = _allUsuarios.filter(function(u){
+          var d = new Date(u['Fecha']||'');
+          return d.getMonth()===thisMonth && d.getFullYear()===thisYear;
+        }).length;
       }
-      // Si no es válido, muestra login (ya está visible por defecto)
+      if(!usuarios.length){ container.innerHTML='<p style="color:var(--tx-light);text-align:center;padding:2rem;">No se encontraron usuarios.</p>'; return; }
+      container.innerHTML = '<div style="overflow-x:auto;"><table><thead><tr>'+
+        '<th>Nombre</th><th>Email</th><th>Institución</th><th>Fecha</th><th>Estado</th><th>Acciones</th>'+
+        '</tr></thead><tbody>'+
+        usuarios.map(function(u){
+          return '<tr>'+
+            '<td>'+escapeHtml(u['Nombre']||'')+'</td>'+
+            '<td style="font-size:.83rem;">'+escapeHtml(u['Email']||'')+'</td>'+
+            '<td style="font-size:.82rem;color:var(--tx-light);">'+escapeHtml(u['Institucion']||'')+'</td>'+
+            '<td style="font-size:.78rem;color:var(--tx-light);">'+escapeHtml(u['Fecha']?new Date(u['Fecha']).toLocaleDateString('es-MX'):'')+'</td>'+
+            '<td><span class="tag '+(u['Estado']==='ACTIVO'?'tag-ok':'tag-err')+'">'+escapeHtml(u['Estado'])+'</span></td>'+
+            '<td style="white-space:nowrap;">'+
+              '<button onclick="resetPassword('+JSON.stringify(u._row)+','+JSON.stringify(u['Email'])+')" class="btn btn-outline btn-sm" style="margin-right:.25rem;">Restablecer</button>'+
+              '<button onclick="eliminarUsuario('+JSON.stringify(u._row)+')" class="btn btn-sm" style="color:var(--err);border:1px solid var(--err);background:none;">Eliminar</button>'+
+            '</td>'+
+          '</tr>';
+        }).join('')+
+        '</tbody></table></div>';
+    }
+
+    // ── BLOG: admin tools ──
+    var blogPDFData = '';
+    function blogSelectPDF(input){
+      var file=input.files[0]; if(!file) return;
+      document.getElementById('blog-pdf-name').textContent=file.name;
+      var r=new FileReader(); r.onload=function(e){blogPDFData=e.target.result;}; r.readAsDataURL(file);
+    }
+    function blogHandlePDFDrop(e){
+      e.preventDefault(); e.currentTarget.classList.remove('over');
+      var file=e.dataTransfer.files[0]; if(!file||!file.name.endsWith('.pdf')) return;
+      document.getElementById('blog-pdf-name').textContent=file.name;
+      var r=new FileReader(); r.onload=function(ev){blogPDFData=ev.target.result;}; r.readAsDataURL(file);
+    }
+    function blogPublicar(){
+      var titulo=(document.getElementById('blog-titulo')||{}).value||'';
+      var tag=(document.getElementById('blog-tag')||{}).value||'Sintropía Social';
+      var body=(document.getElementById('blog-body')||{}).value||'';
+      var link=(document.getElementById('blog-link')||{}).value||'#';
+      if(!titulo||!body){showAdminToast('Completa título y contenido.');return;}
+      var meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      var fecha=meses[new Date().getMonth()]+' '+new Date().getFullYear();
+      var entrada={tag:tag,date:fecha,title:titulo,body:body,link:link,pdf:''};
+      var entries=JSON.parse(localStorage.getItem('ss_blog_entries')||'[]');
+      entries.unshift(entrada);
+      localStorage.setItem('ss_blog_entries',JSON.stringify(entries));
+      api('registrarBlogEntry',{titulo:titulo,tag:tag,body:body,link:link,fecha:fecha,adminEmail:(ssGetUser()||{}).email||''});
+      blogLimpiar();
+      loadBlogEntries();
+      showAdminToast('Entrada publicada correctamente');
+    }
+    function blogLimpiar(){
+      ['blog-titulo','blog-tag','blog-body','blog-link'].forEach(function(id){ var el=document.getElementById(id);if(el)el.value=''; });
+      blogPDFData='';
+      var pn=document.getElementById('blog-pdf-name'); if(pn) pn.textContent='Arrastra un PDF o haz clic';
+    }
+    function loadBlogEntries(){
+      var list=document.getElementById('blog-entries-list');
+      var count=document.getElementById('blog-count');
+      if(!list) return;
+      var entries=JSON.parse(localStorage.getItem('ss_blog_entries')||'[]');
+      if(count) count.textContent=entries.length+' entradas';
+      if(!entries.length){list.innerHTML='<p style="color:var(--tx-light);font-size:.84rem;">No hay entradas publicadas aún.</p>';return;}
+      list.innerHTML=entries.map(function(e,i){
+        return '<div style="display:flex;align-items:flex-start;gap:1rem;padding:.85rem;border:1px solid var(--border);border-radius:var(--r-sm);margin-bottom:.5rem;background:var(--surface);">'+
+          '<div style="flex:1;">'+
+            '<div style="display:flex;gap:.5rem;margin-bottom:.35rem;align-items:center;">'+
+              '<span class="tag tag-morado">'+e.tag+'</span>'+
+              '<span style="font-size:.72rem;color:var(--tx-light);">'+e.date+'</span>'+
+            '</div>'+
+            '<div style="font-size:.88rem;font-weight:600;color:var(--tx);">'+e.title+'</div>'+
+            '<div style="font-size:.8rem;color:var(--tx-light);margin-top:.2rem;">'+e.body.substring(0,80)+'…</div>'+
+          '</div>'+
+          '<button onclick="blogEliminar('+i+')" style="color:var(--err);border:1px solid var(--err);background:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:.78rem;white-space:nowrap;font-family:var(--font-body);">Eliminar</button>'+
+        '</div>';
+      }).join('');
+    }
+    function blogEliminar(i){
+      var entries=JSON.parse(localStorage.getItem('ss_blog_entries')||'[]');
+      entries.splice(i,1);
+      localStorage.setItem('ss_blog_entries',JSON.stringify(entries));
+      loadBlogEntries();
+      showAdminToast('Entrada eliminada');
+    }
+
+    // ── SUSCRIPTORES ──
+    function loadSuscriptores(){
+      var el=document.getElementById('suscriptores-list'); if(!el) return;
+      api('getSuscriptores',{adminToken:Auth.getToken()}).then(function(r){
+        if(r&&r.ok&&r.data&&r.data.length){
+          el.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:.35rem;">'+
+            r.data.map(function(s){ return '<span class="tag tag-morado">'+s['Email']+'</span>'; }).join('')+
+          '</div>'+
+          '<p style="font-size:.75rem;color:var(--tx-light);margin-top:.5rem;">'+r.data.length+' suscriptores</p>';
+        } else {
+          el.textContent='No hay suscriptores registrados aún.';
+        }
+      }).catch(function(){
+        el.textContent='Sin conexión con Apps Script.';
+      });
+    }
+    function exportarSuscriptoresCSV(){
+      api('getSuscriptores',{adminToken:Auth.getToken()}).then(function(r){
+        if(!r||!r.ok||!r.data) return;
+        var rows=['Email,Fecha'].concat(r.data.map(function(s){ return s['Email']+','+s['Fecha']; }));
+        var blob=new Blob([rows.join('\n')],{type:'text/csv'});
+        var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+        a.download='suscriptores_sintropia.csv'; a.click();
+      });
+    }
+
+    // ── CONTRIBUCIONES ──
+    function cargarContribuciones(){
+      var box=document.getElementById('contrib-admin-box');
+      var list=document.getElementById('contrib-admin-list');
+      if(box) box.style.display='block';
+      api('getContribuciones',{adminToken:Auth.getToken()}).then(function(r){
+        if(r&&r.ok&&r.data&&r.data.length){
+          list.innerHTML=r.data.map(function(co){
+            return '<div style="border:1px solid var(--border);border-radius:var(--r-sm);padding:.85rem;margin-bottom:.5rem;">'+
+              '<strong style="font-size:.88rem;">'+co['Titulo']+'</strong>'+
+              '<span class="tag tag-morado" style="margin-left:.5rem;">'+co['Tipo']+'</span>'+
+              '<p style="font-size:.8rem;color:var(--tx-light);margin-top:.25rem;">'+co['Usuario']+' · '+co['Fecha']+'</p>'+
+              '<p style="font-size:.82rem;color:var(--tx-mid);margin-top:.35rem;">'+co['Resumen']+'</p>'+
+            '</div>';
+          }).join('');
+        } else {
+          list.textContent='No hay contribuciones pendientes.';
+        }
+      }).catch(function(){ list.textContent='Sin conexión con Apps Script.'; });
+    }
+
+    // ── OVERRIDE loadAdminData to populate new UI ──
+    var _origLoadAdminData = typeof loadAdminData === 'function' ? loadAdminData : function(){};
+    function loadAdminData(){
+      _origLoadAdminData();
+      // Load citas
+      api('getCitas',{}).then(function(r){
+        if(r&&r.ok){
+          _allCitas=r.data||[];
+          // Populate category filter
+          var cats=[...new Set(_allCitas.map(function(c){ return c['Categoria']||c['Categoría']||''; }).filter(Boolean))].sort();
+          var catSel=document.getElementById('cita-filtro-cat');
+          if(catSel){ cats.forEach(function(cat){ var o=document.createElement('option');o.value=cat;o.textContent=cat;catSel.appendChild(o); }); }
+          // Populate year filter
+          var years=[...new Set(_allCitas.map(function(c){ return String(c['Año']||c['Anio']||''); }).filter(Boolean))].sort().reverse();
+          var yrSel=document.getElementById('cita-filtro-anio');
+          if(yrSel){ years.forEach(function(yr){ var o=document.createElement('option');o.value=yr;o.textContent=yr;yrSel.appendChild(o); }); }
+          filtrarCitasAdmin();
+          // Update dashboard stat
+          var statCitas=document.getElementById('admin-stat-citas'); if(statCitas) statCitas.textContent=_allCitas.length;
+        }
+      });
+      // Load usuarios
+      api('getUsuarios',{adminToken:Auth.getToken()}).then(function(r){
+        if(r&&r.ok){ _allUsuarios=r.data||[]; filtrarUsuariosAdmin(); var statU=document.getElementById('admin-stat-usuarios'); if(statU) statU.textContent=_allUsuarios.length; }
+      });
+      // Load blog entries
+      loadBlogEntries();
+      loadSessionInfo();
+      checkAPIStatus();
+    }
+
+    // ── showTab area hooks ──
+    var _baseShowTab = showTab;
+    function showTabWithHooks(tabId){
+      _baseShowTab(tabId);
+      if(tabId==='blog') { loadBlogEntries(); if(typeof loadSuscriptores==='function') loadSuscriptores(); }
+      if(tabId==='usuarios') { if(typeof filtrarUsuariosAdmin==='function') filtrarUsuariosAdmin(); }
+      if(tabId==='citas') { if(typeof filtrarCitasAdmin==='function') filtrarCitasAdmin(); }
+      if(tabId==='pdfcitas') loadPDFPendientes();
+    }
+    // Replace all tab button onclick to use hooks
+    document.addEventListener('DOMContentLoaded', function(){
+      document.querySelectorAll('[onclick^="showTab"]').forEach(function(el){
+        var match = el.getAttribute('onclick').match(/showTab\('(\w+)'\)/);
+        if(match) el.onclick = function(){ showTabWithHooks(match[1]); };
+      });
     });
+
+    // ── PDF CITAS PENDIENTES ──
+    function loadPDFPendientes() {
+      var loading   = document.getElementById('pdf-pendientes-loading');
+      var container = document.getElementById('pdf-pendientes-container');
+      if (!loading || !container) return;
+
+      var raw = localStorage.getItem('ss_pdf_pendientes');
+      var all = raw ? JSON.parse(raw) : [];
+      var pendientes = all.filter(function(p){ return p.estado === 'pendiente'; });
+
+      loading.style.display = 'none';
+      container.style.display = 'block';
+
+      var list  = document.getElementById('pdf-pendientes-list');
+      var empty = document.getElementById('pdf-pendientes-empty');
+
+      if (!pendientes.length) {
+        empty.style.display = 'block';
+        list.innerHTML = '';
+        return;
+      }
+      empty.style.display = 'none';
+
+      var inp = 'padding:7px 9px;border:1.5px solid rgba(99,30,235,.15);border-radius:7px;font-family:inherit;font-size:.82rem;width:100%;outline:none;box-sizing:border-box;';
+
+      list.innerHTML = pendientes.map(function(p, idx) {
+        var fid = 'pf-'+idx;
+        var cats = ['Sociología','Antropología','Psicología','Educación','Virtualidad',
+          'Administración','Mercados Laborales','Historia','Filosofía','Investigación Social',
+          'Lingüística','Metodología','Intervención Comunitaria','Emprendimiento',
+          'Flexibilidad laboral','Evaluación de Impacto','Empleabilidad','Covid','Otra'];
+        var catOptions = cats.map(function(cat){
+          return '<option'+(p.categoria===cat?' selected':'')+'>'+cat+'</option>';
+        }).join('');
+
+        return '<div id="pcard-'+idx+'" style="background:white;border:1px solid rgba(99,30,235,.15);border-radius:14px;padding:1.25rem;margin-bottom:1rem;">'+
+
+          // Header
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem;">'+
+            '<div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">'+
+              '<span style="background:#f0ebff;color:#631EEB;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:50px;text-transform:uppercase;">'+(p.fuente||'PDF')+'</span>'+
+              '<span style="font-size:.77rem;color:#888;">Pág. '+(p.pagina||'—')+'</span>'+
+              '<span style="font-size:.77rem;color:#888;">Enviada por: '+(p.usuario||'anónimo')+'</span>'+
+              '<span style="font-size:.77rem;color:#888;">'+(p.fecha?new Date(p.fecha).toLocaleDateString('es-MX'):'')+'</span>'+
+            '</div>'+
+            '<span style="background:#fff7ed;color:#FF7929;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:50px;">⏳ PENDIENTE</span>'+
+          '</div>'+
+
+          // ── EDIT FORM ──
+          '<div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:.5rem;margin-bottom:.5rem;">'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">No.</label>'+
+            '<input id="'+fid+'-id" value="'+(p.idNum||'')+'" placeholder="C0001" style="'+inp+'"></div>'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Categoría</label>'+
+            '<select id="'+fid+'-cat" style="'+inp+'"><option value="">Seleccionar...</option>'+catOptions+'</select></div>'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Indicador</label>'+
+            '<input id="'+fid+'-ind" value="'+(p.indicador||'')+'" placeholder="Ej: Cultura, Empleo..." style="'+inp+'"></div>'+
+          '</div>'+
+
+          '<div style="display:grid;grid-template-columns:1fr 80px 80px;gap:.5rem;margin-bottom:.5rem;">'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Población</label>'+
+            '<input id="'+fid+'-pop" value="'+(p.poblacion||'')+'" placeholder="Ej: jóvenes, organizaciones..." style="'+inp+'"></div>'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Año</label>'+
+            '<input id="'+fid+'-year" value="'+(p.year||'')+'" placeholder="2023" style="'+inp+'"></div>'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Página</label>'+
+            '<input id="'+fid+'-pag" value="'+(p.pagina||'')+'" style="'+inp+'"></div>'+
+          '</div>'+
+
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem;">'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Autor(es)</label>'+
+            '<input id="'+fid+'-aut" value="'+(p.autor||'')+'" placeholder="Apellido, N." style="'+inp+'"></div>'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Publicación</label>'+
+            '<input id="'+fid+'-pub" value="'+(p.publicacion||p.fuente||'')+'" placeholder="Título del libro/artículo" style="'+inp+'"></div>'+
+          '</div>'+
+
+          // Cita textual editable
+          '<div style="margin-bottom:.5rem;">'+
+            '<label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Cita textual (editable — corrige OCR si es necesario)</label>'+
+            '<textarea id="'+fid+'-cita" rows="4" style="'+inp+'resize:vertical;min-height:80px;">'+p.cita.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</textarea>'+
+          '</div>'+
+
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem;">'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Cita APA</label>'+
+            '<input id="'+fid+'-apa" value="'+(p.citaAPA||'')+'" placeholder="Se genera al publicar..." style="'+inp+'"></div>'+
+            '<div><label style="font-size:.68rem;font-weight:700;color:#631EEB;text-transform:uppercase;display:block;margin-bottom:3px;">Link</label>'+
+            '<input id="'+fid+'-link" value="'+(p.link||'')+'" placeholder="https://..." style="'+inp+'"></div>'+
+          '</div>'+
+
+          // Action buttons
+          '<div style="display:flex;gap:.5rem;flex-wrap:wrap;">'+
+            '<button onclick="publicarEnSheet('+idx+')" style="background:#631EEB;color:white;padding:8px 18px;border-radius:8px;border:none;cursor:pointer;font-size:.84rem;font-weight:700;font-family:inherit;"> Publicar en Google Sheet</button>'+
+            '<button onclick="aprobarSinSheet('+idx+')" style="background:#16a34a;color:white;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:.83rem;font-weight:600;font-family:inherit;"> Aprobar (solo local)</button>'+
+            '<button onclick="rechazarCitaPDF('+idx+')" style="background:none;border:1.5px solid #ef4444;color:#ef4444;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.83rem;font-family:inherit;"> Rechazar</button>'+
+          '</div>'+
+        '</div>';
+      }).join('');
+    }
+
+    function publicarEnSheet(idx) {
+      var fid = 'pf-'+idx;
+      var cita = document.getElementById(fid+'-cita').value.trim();
+      if(!cita){ showAdminToast('La cita no puede estar vacía.'); return; }
+
+      var autor = document.getElementById(fid+'-aut').value.trim() || '';
+      var cat   = document.getElementById(fid+'-cat').value.trim() || '';
+      var ind   = document.getElementById(fid+'-ind').value.trim() || '';
+      var pop   = document.getElementById(fid+'-pop').value.trim() || '';
+      var year  = document.getElementById(fid+'-year').value.trim() || '';
+      var pag   = document.getElementById(fid+'-pag').value.trim() || '';
+      var pub   = document.getElementById(fid+'-pub').value.trim() || '';
+      var link  = document.getElementById(fid+'-link').value.trim() || '';
+      var idNum = document.getElementById(fid+'-id').value.trim() || '';
+      var apa   = document.getElementById(fid+'-apa').value.trim() ||
+                  autor+(year?' ('+year+').':' (s.f.).')+' '+pub+'.'+(pag?' p. '+pag+'.':'');
+
+      // Send to Apps Script → Google Sheet
+      var btn = document.querySelector('#pcard-'+idx+' button');
+      if(btn){ btn.textContent='Publicando…'; btn.disabled=true; }
+
+      api('enviarCita', {
+        adminToken: Auth.getToken(),
+        categoria: cat, indicador: ind, poblacion: pop,
+        year: year, autor: autor, cita: cita,
+        comentarios: '', publicacion: pub, pagina: pag,
+        citaAPA: apa, link: link, usuarioEmail: 'admin'
+      }).then(function(r){
+        if(r && r.ok){
+          marcarAprobada(idx);
+          showAdminToast('✓ Cita publicada en Google Sheet');
+          var card = document.getElementById('pcard-'+idx);
+          if(card){
+            card.style.borderColor = '#16a34a';
+            card.style.background  = '#f0fdf4';
+            var badge = card.querySelector('span[style*="FF6B1A"]');
+            if(badge){ badge.textContent='✓ PUBLICADA'; badge.style.background='rgba(22,163,74,.12)'; badge.style.color='#16a34a'; }
+          }
+        } else {
+          if(btn){ btn.textContent='📤 Publicar en Google Sheet'; btn.disabled=false; }
+          showAdminToast('Error: '+(r?r.error:'Sin conexión con Apps Script'));
+        }
+      });
+    }
+
+    function aprobarSinSheet(idx){
+      marcarAprobada(idx);
+      showAdminToast('Cita aprobada localmente');
+    }
+
+    function marcarAprobada(idx){
+      var raw = localStorage.getItem('ss_pdf_pendientes');
+      var all = raw ? JSON.parse(raw) : [];
+      var pendientes = all.filter(function(p){ return p.estado==='pendiente'; });
+      if(pendientes[idx]){
+        var id = pendientes[idx].id;
+        all.forEach(function(p){ if(p.id===id) p.estado='aprobada'; });
+        localStorage.setItem('ss_pdf_pendientes', JSON.stringify(all));
+      }
+    }
+
+    
+    function showAdminToast(msg) {
+      var t = document.getElementById('admin-toast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'admin-toast';
+        t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1a0f33;color:white;padding:11px 20px;border-radius:9px;font-size:.85rem;z-index:999;transition:opacity .3s;';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg; t.style.opacity = '1';
+      setTimeout(function(){ t.style.opacity='0'; }, 3000);
+    }
+
+    // Load PDF pendientes when tab is shown
+    var origShowTab = showTab;
+    function showTab(tabId) {
+      origShowTab(tabId);
+      if (tabId === 'pdfcitas') loadPDFPendientes();
+    }
+  </script>
+
+<script>SintroNav.render('#sintro-nav','admin');
+  /* ── CURSOS TAB ── */
+  function showCurso(btn, id) {
+    document.querySelectorAll('.curso-panel').forEach(function(p){ p.style.display = 'none'; });
+    document.querySelectorAll('.curso-btn').forEach(function(b){ b.classList.remove('active'); b.style.borderColor = 'var(--border)'; b.style.background = 'var(--surface)'; b.style.color = 'var(--text)'; });
+    var panel = document.getElementById('curso-' + id);
+    if (panel) panel.style.display = 'block';
+    btn.classList.add('active');
+    btn.style.borderColor = 'var(--morado)';
+    btn.style.background = 'var(--morado-light)';
+    btn.style.color = 'var(--morado)';
   }
-})();
+  function toggleModulo(btn) {
+    var body = btn.nextElementSibling;
+    var chevron = btn.querySelector('.modulo-chevron');
+    var isOpen = body.style.display !== 'none';
+    body.style.display = isOpen ? 'none' : 'block';
+    if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+  }
 </script>
 </body>
 </html>
