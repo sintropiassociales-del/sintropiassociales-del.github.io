@@ -14,11 +14,6 @@
 // ============================================================
 
 // ── AUTH SEGURO — TTL 8h ──
-// NOTA: SS_AUTH coexiste con Auth (config.js).
-// admin.html usa Auth y escribe en ss_admin / ss_user (sin TTL).
-// nav.js usa SS_AUTH (ss_user_v2 / ss_admin_v2, con TTL 8h).
-// La función ssGetUser() y _sintroRenderUserState() leen AMBOS sistemas.
-// NO migramos/borramos ss_admin ni ss_user para no romper admin.html.
 var SS_AUTH = (function(){
   var TTL = 8 * 60 * 60 * 1000;
   var USER_KEY = 'ss_user_v2';
@@ -55,15 +50,21 @@ var SS_AUTH = (function(){
     isAdmin:  function(){ var a=_get(ADMIN_KEY); return !!(a&&a.token); },
     getToken: function(){ var a=_get(ADMIN_KEY); return (a&&a.token)||null; },
     logout:   function(){
-      // Borra ambos sistemas para un logout completo
       _clear(USER_KEY); _clear(ADMIN_KEY);
-      ['ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){
-        try{ localStorage.removeItem(k); }catch(e){}
-      });
+      ['ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
       window.location.href = 'inicio.html';
+    },
+    migrate: function(){
+      try{
+        var oldUser = JSON.parse(localStorage.getItem('ss_user')||localStorage.getItem('sintropia_usuario_actual')||'null');
+        var oldAdmin = JSON.parse(localStorage.getItem('ss_admin')||'null');
+        if(oldUser && !_get(USER_KEY)){ _set(USER_KEY, oldUser); localStorage.removeItem('ss_user'); localStorage.removeItem('sintropia_usuario_actual'); }
+        if(oldAdmin && !_get(ADMIN_KEY)){ _set(ADMIN_KEY, oldAdmin); localStorage.removeItem('ss_admin'); }
+      }catch(e){}
     }
   };
 })();
+SS_AUTH.migrate();
 
 // ── Nav bar markup ──
 var SINTRO_NAV_HTML = `
@@ -129,29 +130,20 @@ function ssMobileNav(){ document.getElementById('ss-nav-links').classList.toggle
 document.addEventListener('click',function(e){ if(!e.target.closest('.ss-dd')) document.querySelectorAll('.ss-dd').forEach(function(d){d.classList.remove('open');}); });
 
 // ── AUTH ──
-// Lee usuario de SS_AUTH (nuevo) o de Auth/ss_user (legado de admin.html / config.js)
 function ssGetUser(){
+  // Primero intenta el sistema nuevo (SS_AUTH), luego el legado
   var u = SS_AUTH.getUser();
   if(u) return u;
+  // Legado: ss_user_v2 ya cubierto arriba; revisar también auth de admin.html
   try{
-    // ss_user: lo escribe Auth.setUser() en config.js (usado por admin.html)
-    var legacy = JSON.parse(localStorage.getItem('ss_user')||
-                            localStorage.getItem('sintropia_usuario_actual')||'null');
+    var legacy = JSON.parse(localStorage.getItem('ss_user')||'null');
     if(legacy) return legacy;
   }catch(e){}
+  // Auth de config.js (sistema admin propio de admin.html)
+  try{
+    if(typeof Auth !== 'undefined' && Auth.getUser) return Auth.getUser();
+  }catch(e){}
   return null;
-}
-// Verifica si hay sesión admin activa en cualquiera de los dos sistemas
-function ssIsAdmin(){
-  if(SS_AUTH.isAdmin()) return true;
-  try{
-    var a = JSON.parse(localStorage.getItem('ss_admin')||'null');
-    if(a && a.token) return true;
-  }catch(e){}
-  try{
-    if(typeof Auth !== 'undefined' && Auth.isAdmin) return Auth.isAdmin();
-  }catch(e){}
-  return false;
 }
 function ssSetUser(u){ SS_AUTH.setUser(u); }
 function ssLogout(){ SS_AUTH.logout(); }
@@ -233,10 +225,22 @@ function _sintroRenderUserState(){
     }
   }
 
-  // "Área interna" — visible para admins (usa ssIsAdmin() que lee ambos sistemas)
+  // "Área interna" — visible para admins
   var internalLi = document.getElementById('ss-nav-internal-li');
   if(internalLi){
-    internalLi.style.display = ssIsAdmin() ? '' : 'none';
+    var isAdm = false;
+    // Verificar por múltiples métodos
+    try{ isAdm = SS_AUTH.isAdmin(); }catch(e){}
+    if(!isAdm){ try{ isAdm = !!(u && u.isAdmin); }catch(e){} }
+    if(!isAdm){ try{ isAdm = (typeof Auth!=='undefined') && Auth.isAdmin(); }catch(e){} }
+    // También verificar token legado ss_admin
+    if(!isAdm){
+      try{
+        var legacyAdmin = JSON.parse(localStorage.getItem('ss_admin')||'null');
+        if(legacyAdmin && legacyAdmin.token) isAdm = true;
+      }catch(e){}
+    }
+    internalLi.style.display = isAdm ? '' : 'none';
   }
 }
 
