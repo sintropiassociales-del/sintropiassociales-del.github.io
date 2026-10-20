@@ -41,48 +41,61 @@ body {
 }
 
 /* ── NAV ── */
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(14,12,24,.92);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
+.ss-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; background: rgba(14,12,24,.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(99,30,235,.2); font-family: var(--font-body); }
+.ss-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px,4vw,40px); height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.ss-nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; flex-shrink: 0; }
+.ss-nav-logo img { height: 34px; width: auto; border-radius: 50%; }
+.ss-nav-logo-name { font-family: var(--font-d); font-size: .95rem; font-weight: 700; color: var(--orange); letter-spacing: .06em; }
+.ss-nav-links { display: flex; align-items: center; gap: .15rem; flex-wrap: nowrap; }
+.ss-nav-links > a { text-decoration: none; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; transition: all .18s; white-space: nowrap; }
+.ss-nav-links > a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.ss-nav-links > a.active { color: #fff; background: rgba(255,255,255,.1); }
+.ss-nav-links > a.nav-newsletter { background: rgba(99,30,235,.25); color: rgba(200,185,255,.9); border-radius: 50px; }
+.ss-nav-links > a.nav-newsletter:hover { background: rgba(99,30,235,.4); color: #fff; }
+.ss-nav-divider { width: 1px; height: 20px; background: rgba(255,255,255,.12); margin: 0 .3rem; flex-shrink: 0; }
+.ss-nav-links > a.nav-entrar { color: rgba(240,238,248,.55); }
+.ss-nav-links > a.nav-entrar:hover { color: #fff; background: none; }
+.ss-nav-cta { background: var(--purple) !important; color: white !important; padding: .42rem 1.1rem !important; border-radius: 50px !important; font-weight: 600 !important; font-size: .83rem !important; white-space: nowrap !important; }
+.ss-nav-cta:hover { background: var(--purple-dk) !important; }
+.ss-dd { position: relative; }
+.ss-dd-btn { display: flex; align-items: center; gap: .3rem; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; cursor: pointer; transition: all .18s; background: none; border: none; font-family: inherit; white-space: nowrap; }
+.ss-dd-btn:hover,.ss-dd.open .ss-dd-btn { color: #fff; background: rgba(255,255,255,.08); }
+.ss-dd-btn svg { width: 11px; height: 11px; transition: transform .18s; flex-shrink: 0; color: rgba(240,238,248,.3); }
+.ss-dd.open .ss-dd-btn svg { transform: rotate(180deg); }
+.ss-dd-panel { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: #0e0c18; border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .6rem; box-shadow: 0 10px 36px rgba(0,0,0,.5); z-index: 600; }
+.ss-dd.open .ss-dd-panel { display: block; }
+.ss-dd-panel.herr { min-width: 240px; }
+.ss-dd-panel.herr a { display: block; padding: .55rem .9rem; border-radius: 9px; text-decoration: none; transition: background .15s; }
+.ss-dd-panel.herr a:hover { background: rgba(255,255,255,.06); }
+.ss-dd-panel.herr a .t { display: block; font-size: .84rem; font-weight: 600; color: #f0eef8; }
+.ss-dd-panel.herr a .s { display: block; font-size: .75rem; color: rgba(240,238,248,.4); margin-top: .1rem; }
+.ss-dd-hr { height: 1px; background: rgba(255,255,255,.07); margin: .4rem .6rem; }
+.ss-dd-panel.serv { min-width: 280px; max-width: 320px; }
+.ss-serv-group { padding: .3rem 0; }
+.ss-serv-group-title { font-size: .67rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(240,238,248,.3); padding: .25rem .9rem .15rem; }
+.ss-serv-item { border-radius: 9px; overflow: hidden; }
+.ss-serv-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: .5rem .9rem; background: none; border: none; cursor: pointer; font-family: inherit; font-size: .84rem; font-weight: 500; color: rgba(240,238,248,.75); text-align: left; transition: background .15s; gap: .5rem; }
+.ss-serv-trigger:hover { background: rgba(255,255,255,.06); }
+.ss-serv-trigger svg { width: 10px; height: 10px; flex-shrink: 0; transition: transform .2s; color: rgba(240,238,248,.3); }
+.ss-serv-item.open .ss-serv-trigger svg { transform: rotate(180deg); }
+.ss-serv-body { display: none; padding: .3rem .9rem .6rem 1.1rem; }
+.ss-serv-item.open .ss-serv-body { display: block; }
+.ss-serv-body p { font-size: .78rem; color: rgba(240,238,248,.45); margin: 0 0 .4rem; line-height: 1.4; }
+.ss-serv-body a { font-size: .78rem; font-weight: 600; color: var(--purple); text-decoration: none; }
+.ss-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: .4rem; }
+.ss-hamburger span { display: block; width: 22px; height: 2px; background: rgba(240,238,248,.7); border-radius: 2px; transition: all .22s; }
+@media(max-width:860px){
+  .ss-nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; bottom: 0; background: rgba(14,12,24,.98); flex-direction: column; align-items: flex-start; padding: 1.5rem clamp(16px,4vw,40px); gap: .25rem; overflow-y: auto; }
+  .ss-nav-links.open { display: flex; }
+  .ss-nav-links > a, .ss-dd-btn { font-size: 1rem; padding: .75rem .9rem; width: 100%; }
+  .ss-dd-panel { position: static; border: none; box-shadow: none; background: rgba(255,255,255,.04); margin-top: .25rem; border-radius: 10px; }
+  .ss-dd.open .ss-dd-panel { display: block; }
+  .ss-hamburger { display: flex; }
+  .ss-nav-divider { display: none; }
+  .ss-nav-cta { margin-top: .5rem; }
 }
-.nav-brand {
-  font-family: var(--font-d);
-  font-size: .75rem;
-  font-weight: 800;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: var(--orange);
-  text-decoration: none;
-}
-.nav-links {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-}
-.nav-links a {
-  font-size: .78rem;
-  font-weight: 600;
-  color: var(--fg-muted);
-  text-decoration: none;
-  transition: color .18s;
-}
-.nav-links a:hover, .nav-links a.active { color: var(--fg); }
-.nav-links a.active {
-  color: var(--orange);
-}
-@media(max-width:640px){
-  .nav { padding: 0 20px; }
-  .nav-links { display: none; }
-}
+/* cursos.html necesita padding-top para el nav fijo */
+body { padding-top: 64px; }
 
 /* ── HERO ── */
 .hero {
@@ -593,16 +606,86 @@ body {
 <body>
 
 <!-- NAV -->
-<nav class="nav">
-  <a href="index.html" class="nav-brand">Sintropía Social</a>
-  <ul class="nav-links">
-    <li><a href="index.html">Inicio</a></li>
-    <li><a href="contribuir.html">Contribuir</a></li>
-    <li><a href="herramientas.html">Herramientas</a></li>
-    <li><a href="cursos.html" class="active">Cursos</a></li>
-    <li><a href="anecdotario.html">Anecdotario</a></li>
-  </ul>
+<nav class="ss-nav">
+  <div class="ss-nav-inner">
+    <a href="index.html" class="ss-nav-logo">
+      <img src="logo.png" alt="Sintropía Social" onerror="this.style.display='none'">
+      <span class="ss-nav-logo-name">SINTROPÍA SOCIAL</span>
+    </a>
+    <div class="ss-nav-links" id="ss-nav-links">
+      <a href="inicio.html">Inicio</a>
+      <div class="ss-dd" id="dd-herr">
+        <button class="ss-dd-btn" onclick="ssToggleDD(this)">
+          Herramientas
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ss-dd-panel herr">
+          <a href="herramientas.html"><span class="t">Ver todas las herramientas</span><span class="s">Diagnóstico, Dashboard, PDF Citas y más</span></a>
+          <a href="cursos.html" class="active"><span class="t">Cursos</span><span class="s">Formación en metodología de práctica social</span></a>
+          <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank"><span class="t" style="color:var(--orange);">Task live — Salas grupales</span><span class="s">Colaboración en vivo sin cuentas</span></a>
+        </div>
+      </div>
+      <div class="ss-dd" id="dd-serv">
+        <button class="ss-dd-btn" onclick="ssToggleDD(this)">
+          Servicios
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ss-dd-panel serv">
+          <div class="ss-serv-group">
+            <div class="ss-serv-group-title">Investigación Social</div>
+            <div class="ss-serv-item" id="si-1"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Investigación de Mercados Laborales</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Análisis riguroso del empleo en territorios específicos.</p><a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank">Contratar</a></div></div>
+            <div class="ss-serv-item" id="si-2"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Estudios de Prospectiva Laboral</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Escenarios del futuro del trabajo ante IA y automatización.</p><a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank">Contratar</a></div></div>
+          </div>
+          <div class="ss-dd-hr"></div>
+          <div class="ss-serv-group">
+            <div class="ss-serv-group-title">Educación</div>
+            <div class="ss-serv-item" id="si-3"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Diseño Curricular por Competencias</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Programas educativos con enfoque crítico y socioemocional.</p><a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank">Contratar</a></div></div>
+          </div>
+          <div class="ss-dd-hr"></div>
+          <div style="padding:.4rem .9rem .3rem;"><a href="servicios.html" style="display:block;text-align:center;padding:.55rem;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--purple);text-decoration:none;background:rgba(99,30,235,.1);">Ver todos los servicios →</a></div>
+        </div>
+      </div>
+      <a href="newsletter.html" class="nav-newsletter">Newsletter</a>
+      <a href="contribuir.html">Contribuir</a>
+      <div class="ss-nav-divider"></div>
+      <span id="ss-nav-user">
+        <a href="index.html?login=1" class="nav-entrar">Entrar</a>
+        <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
+      </span>
+    </div>
+    <button class="ss-hamburger" onclick="ssMobileNav()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
+<script>
+function ssToggleDD(el){el.closest('.ss-dd').classList.toggle('open');}
+function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
+function ssMobileNav(){document.querySelector('.ss-nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd.open').forEach(d=>d.classList.remove('open'));
+});
+// ── Auth: mostrar nombre si hay sesión ──
+(function(){
+  function getUser(){
+    try{ var u=JSON.parse(localStorage.getItem('ss_user_v2')||'null'); if(u&&u.data&&u.data.nombre) return u.data; }catch(e){}
+    try{ var u=JSON.parse(localStorage.getItem('ss_user')||'null'); if(u&&u.nombre) return u; }catch(e){}
+    return null;
+  }
+  function isAdmin(){
+    try{ var a=JSON.parse(localStorage.getItem('ss_admin_v2')||'null'); if(a&&a.data&&a.data.token) return true; }catch(e){}
+    try{ var a=JSON.parse(localStorage.getItem('ss_admin')||'null'); if(a&&a.token) return true; }catch(e){}
+    return false;
+  }
+  var u = getUser();
+  var el = document.getElementById('ss-nav-user');
+  if(el && u){
+    var label = u.nombre || (u.email ? u.email.split('@')[0] : 'Usuario');
+    var adminLink = isAdmin() ? '<a href="admin.html" style="font-size:.78rem;color:rgba(240,238,248,.5);text-decoration:none;padding:.3rem .6rem;">Área interna</a>' : '';
+    el.innerHTML = adminLink + '<button onclick="(function(){['ss_user_v2','ss_admin_v2','ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});window.location.href='inicio.html';})()" style="background:var(--purple,#631EEB);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
+  }
+})();
+</script>
 
 <!-- HERO -->
 <section class="hero">
