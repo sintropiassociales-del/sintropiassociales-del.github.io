@@ -741,7 +741,7 @@ footer {
       <a href="contribuir.html">Contribuir</a>
       <div class="ss-nav-divider"></div>
       <span id="ss-nav-user">
-        <a href="index.html?login=1" class="nav-entrar">Entrar</a>
+        <a href="#" onclick="abrirLoginHerr();return false;" class="nav-entrar">Entrar</a>
         <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
       </span>
     </div>
@@ -1176,9 +1176,11 @@ document.addEventListener('click',function(e){
   <div class="container footer-inner">
     <span class="footer-brand">Sintropía Social</span>
     <ul class="footer-links">
-      <li><a href="index.html">Repositorio</a></li>
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="herramientas.html">Herramientas</a></li>
       <li><a href="servicios.html">Servicios</a></li>
-      <li><a href="blog.html">Anecdotario</a></li>
+      <li><a href="newsletter.html">Newsletter</a></li>
+      <li><a href="contribuir.html">Contribuir</a></li>
       <li><a href="https://sintropiassociales-del.github.io/panel/" target="_blank">Panel</a></li>
     </ul>
   </div>
@@ -1237,6 +1239,67 @@ function toggleTool(id){
   var card=document.getElementById(id);
   if(!card)return;
   card.classList.toggle('open');
+}
+
+/* ── Auth state (lee ambos sistemas: ss_admin_v2 y ss_admin) ── */
+function _herrIsAdmin(){
+  try{var a=JSON.parse(localStorage.getItem('ss_admin_v2')||'null');if(a&&a.data&&a.data.token){if(!a.expires||Date.now()<a.expires)return true;}}catch(e){}
+  try{var b=JSON.parse(localStorage.getItem('ss_admin')||'null');if(b&&b.token)return true;}catch(e){}
+  return false;
+}
+function _herrGetUser(){
+  try{var a=JSON.parse(localStorage.getItem('ss_admin_v2')||'null');if(a&&a.data&&(!a.expires||Date.now()<a.expires))return a.data;}catch(e){}
+  try{var b=JSON.parse(localStorage.getItem('ss_user_v2')||'null');if(b&&b.data&&(!b.expires||Date.now()<b.expires))return b.data;}catch(e){}
+  try{var c=JSON.parse(localStorage.getItem('ss_user')||'null');if(c&&c.token)return c;}catch(e){}
+  try{var d=JSON.parse(localStorage.getItem('ss_admin')||'null');if(d&&d.token)return d;}catch(e){}
+  return null;
+}
+function _herrLogout(){
+  ['ss_admin_v2','ss_user_v2','ss_admin','ss_user','sintropia_usuario_actual'].forEach(function(k){localStorage.removeItem(k);});
+  location.reload();
+}
+function _herrRenderNav(){
+  var el=document.getElementById('ss-nav-user');
+  if(!el)return;
+  var u=_herrGetUser();
+  if(_herrIsAdmin()){
+    var label=(u&&(u.nombre||u.email))?(u.nombre||u.email.split('@')[0]):'Admin';
+    el.innerHTML='<a href="admin.html" style="background:rgba(99,30,235,.2);border:1px solid rgba(99,30,235,.4);color:#c4b5fd;padding:.35rem .85rem;border-radius:8px;font-size:.78rem;font-weight:700;font-family:inherit;margin-right:.4rem;text-decoration:none;">⚙ Área interna</a>'
+      +'<button onclick="_herrLogout()" style="background:var(--purple);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;font-family:inherit;">'+label+' · Salir</button>';
+  } else if(u){
+    var label2=u.nombre||(u.email?u.email.split('@')[0]:'Usuario');
+    el.innerHTML='<button onclick="_herrLogout()" style="background:var(--purple);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;font-family:inherit;">'+label2+' · Salir</button>';
+  }
+}
+document.addEventListener('DOMContentLoaded',_herrRenderNav);
+
+/* ── Login: carga config.js + nav.js y abre el modal estándar ── */
+var _herrNavLoaded = false;
+function abrirLoginHerr(){
+  if(_herrNavLoaded){
+    if(typeof ssAbrirLogin==='function') ssAbrirLogin();
+    return;
+  }
+  // Cargar config.js y nav.js dinámicamente para usar el modal estándar
+  function loadScript(src,cb){
+    var s=document.createElement('script');s.src=src;
+    s.onload=cb;s.onerror=function(){window.location.href='registro.html';};
+    document.head.appendChild(s);
+  }
+  loadScript('config.js',function(){
+    loadScript('nav.js',function(){
+      _herrNavLoaded=true;
+      // nav.js inyecta el modal en el body cuando se llama SintroNav.render,
+      // pero aquí solo necesitamos el modal — lo insertamos manualmente
+      if(document.body.innerHTML.indexOf('ss-login-modal')===-1){
+        var tmp=document.createElement('div');
+        tmp.innerHTML=typeof SINTRO_MODAL_HTML!=='undefined'?SINTRO_MODAL_HTML:'';
+        while(tmp.firstChild)document.body.appendChild(tmp.firstChild);
+      }
+      if(typeof ssAbrirLogin==='function') ssAbrirLogin();
+      else window.location.href='registro.html';
+    });
+  });
 }
 </script>
 
