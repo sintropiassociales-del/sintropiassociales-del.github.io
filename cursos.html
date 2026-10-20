@@ -659,14 +659,22 @@ body { padding-top: 64px; }
   </div>
 </nav>
 <script>
-function ssToggleDD(el){el.closest('.ss-dd').classList.toggle('open');}
+function ssToggleDD(el){
+  var dd = el.closest('.ss-dd');
+  var isOpen = dd.classList.contains('open');
+  document.querySelectorAll('.ss-dd.open').forEach(function(d){ d.classList.remove('open'); });
+  if(!isOpen){ dd.classList.add('open'); }
+}
 function ssLogoutInline(){['ss_user_v2','ss_admin_v2','ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});window.location.href='inicio.html';}
 function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
 function ssMobileNav(){document.querySelector('.ss-nav-links').classList.toggle('open');}
 document.addEventListener('click',function(e){
-  if(!e.target.closest('.ss-dd'))document.querySelectorAll('.ss-dd.open').forEach(d=>d.classList.remove('open'));
+  if(!e.target.closest('.ss-nav')){
+    document.querySelectorAll('.ss-dd.open').forEach(function(d){ d.classList.remove('open'); });
+  }
 });
 // ── Auth: mostrar nombre si hay sesión ──
+document.addEventListener('DOMContentLoaded', function(){
 (function(){
   function getUser(){
     try{ var u=JSON.parse(localStorage.getItem('ss_user_v2')||'null'); if(u&&u.data&&u.data.nombre) return u.data; }catch(e){}
@@ -686,6 +694,7 @@ document.addEventListener('click',function(e){
     el.innerHTML = adminLink + '<button onclick="ssLogoutInline()" style="background:var(--purple,#631EEB);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
   }
 })();
+});
 </script>
 
 <!-- HERO -->
@@ -961,6 +970,13 @@ document.addEventListener('click',function(e){
 </div>
 
 <script>
+/* ── isAdmin global (lee ambos sistemas de auth) ── */
+function isAdmin(){
+  try{ var a=JSON.parse(localStorage.getItem('ss_admin_v2')||'null'); if(a&&a.data&&a.data.token&&Date.now()<a.expires) return true; }catch(e){}
+  try{ var a=JSON.parse(localStorage.getItem('ss_admin')||'null'); if(a&&a.token) return true; }catch(e){}
+  return false;
+}
+
 /* ── MODAL ── */
 const PAYPAL_LINKS = {
   mps: 'https://www.paypal.com/ncp/payment/C9PVHH7NZKAW8' //← pega aquí el link de PayPal cuando lo tengas
