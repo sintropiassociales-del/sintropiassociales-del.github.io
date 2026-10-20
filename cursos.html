@@ -8,599 +8,140 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-/* ── TOKENS ── */
-:root {
-  --purple:    #631EEB;
-  --purple-dk: #4912C2;
-  --purple-lt: #8B5CF6;
-  --orange:    #FF7929;
-  --orange-lt: #FFAA72;
-  --teal:      #0EA5A0;
-  --rose:      #E8386B;
-  --mint:      #00EDAA;
-  --bg:        #0e0c18;
-  --bg-card:   #15112a;
-  --bg-muted:  #1e1836;
-  --fg:        #f0eef8;
-  --fg-muted:  #b8a9d9;
-  --fg-faint:  #7b6fa0;
-  --border:    #2e2850;
-  --font-d:    'Montserrat', sans-serif;
-  --font-b:    'Open Sans', sans-serif;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-b);
-  font-size: 15px;
-  line-height: 1.7;
-  overflow-x: hidden;
-}
-
-/* ── NAV ── */
-.ss-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; background: rgba(14,12,24,.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(99,30,235,.2); font-family: var(--font-body); }
-.ss-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px,4vw,40px); height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
-.ss-nav-logo { display: flex; align-items: center; gap: .6rem; text-decoration: none; flex-shrink: 0; }
-.ss-nav-logo img { height: 34px; width: auto; border-radius: 50%; }
-.ss-nav-logo-name { font-family: var(--font-d); font-size: .95rem; font-weight: 700; color: var(--orange); letter-spacing: .06em; }
-.ss-nav-links { display: flex; align-items: center; gap: .15rem; flex-wrap: nowrap; }
-.ss-nav-links > a { text-decoration: none; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; transition: all .18s; white-space: nowrap; }
-.ss-nav-links > a:hover { color: #fff; background: rgba(255,255,255,.08); }
-.ss-nav-links > a.active { color: #fff; background: rgba(255,255,255,.1); }
-.ss-nav-links > a.nav-newsletter { background: rgba(99,30,235,.25); color: rgba(200,185,255,.9); border-radius: 50px; }
-.ss-nav-links > a.nav-newsletter:hover { background: rgba(99,30,235,.4); color: #fff; }
-.ss-nav-divider { width: 1px; height: 20px; background: rgba(255,255,255,.12); margin: 0 .3rem; flex-shrink: 0; }
-.ss-nav-links > a.nav-entrar { color: rgba(240,238,248,.55); }
-.ss-nav-links > a.nav-entrar:hover { color: #fff; background: none; }
-.ss-nav-cta { background: var(--purple) !important; color: white !important; padding: .42rem 1.1rem !important; border-radius: 50px !important; font-weight: 600 !important; font-size: .83rem !important; white-space: nowrap !important; }
-.ss-nav-cta:hover { background: var(--purple-dk) !important; }
-.ss-dd { position: relative; }
-.ss-dd-btn { display: flex; align-items: center; gap: .3rem; font-size: .86rem; font-weight: 500; color: rgba(240,238,248,.65); padding: .42rem .8rem; border-radius: 8px; cursor: pointer; transition: all .18s; background: none; border: none; font-family: inherit; white-space: nowrap; }
-.ss-dd-btn:hover,.ss-dd.open .ss-dd-btn { color: #fff; background: rgba(255,255,255,.08); }
-.ss-dd-btn svg { width: 11px; height: 11px; transition: transform .18s; flex-shrink: 0; color: rgba(240,238,248,.3); }
-.ss-dd.open .ss-dd-btn svg { transform: rotate(180deg); }
-.ss-dd-panel { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: #0e0c18; border: 1px solid rgba(99,30,235,.3); border-radius: 14px; padding: .6rem; box-shadow: 0 10px 36px rgba(0,0,0,.5); z-index: 600; }
-.ss-dd.open .ss-dd-panel { display: block; }
-.ss-dd-panel.herr { min-width: 240px; }
-.ss-dd-panel.herr a { display: block; padding: .55rem .9rem; border-radius: 9px; text-decoration: none; transition: background .15s; }
-.ss-dd-panel.herr a:hover { background: rgba(255,255,255,.06); }
-.ss-dd-panel.herr a .t { display: block; font-size: .84rem; font-weight: 600; color: #f0eef8; }
-.ss-dd-panel.herr a .s { display: block; font-size: .75rem; color: rgba(240,238,248,.4); margin-top: .1rem; }
-.ss-dd-hr { height: 1px; background: rgba(255,255,255,.07); margin: .4rem .6rem; }
-.ss-dd-panel.serv { min-width: 280px; max-width: 320px; }
-.ss-serv-group { padding: .3rem 0; }
-.ss-serv-group-title { font-size: .67rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(240,238,248,.3); padding: .25rem .9rem .15rem; }
-.ss-serv-item { border-radius: 9px; overflow: hidden; }
-.ss-serv-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: .5rem .9rem; background: none; border: none; cursor: pointer; font-family: inherit; font-size: .84rem; font-weight: 500; color: rgba(240,238,248,.75); text-align: left; transition: background .15s; gap: .5rem; }
-.ss-serv-trigger:hover { background: rgba(255,255,255,.06); }
-.ss-serv-trigger svg { width: 10px; height: 10px; flex-shrink: 0; transition: transform .2s; color: rgba(240,238,248,.3); }
-.ss-serv-item.open .ss-serv-trigger svg { transform: rotate(180deg); }
-.ss-serv-body { display: none; padding: .3rem .9rem .6rem 1.1rem; }
-.ss-serv-item.open .ss-serv-body { display: block; }
-.ss-serv-body p { font-size: .78rem; color: rgba(240,238,248,.45); margin: 0 0 .4rem; line-height: 1.4; }
-.ss-serv-body a { font-size: .78rem; font-weight: 600; color: var(--purple); text-decoration: none; }
-.ss-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: .4rem; }
-.ss-hamburger span { display: block; width: 22px; height: 2px; background: rgba(240,238,248,.7); border-radius: 2px; transition: all .22s; }
+:root{--purple:#631EEB;--purple-dk:#4912C2;--purple-lt:#8B5CF6;--orange:#FF7929;--orange-lt:#FFAA72;--teal:#0EA5A0;--rose:#E8386B;--mint:#00EDAA;--bg:#0e0c18;--bg-card:#15112a;--bg-muted:#1e1836;--fg:#f0eef8;--fg-muted:#b8a9d9;--fg-faint:#7b6fa0;--border:#2e2850;--font-d:'Montserrat',sans-serif;--font-b:'Open Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-b);font-size:15px;line-height:1.7;overflow-x:hidden;padding-top:64px;}
+/* NAV */
+.ss-nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(14,12,24,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(99,30,235,.2);}
+.ss-nav-inner{max-width:1280px;margin:0 auto;padding:0 clamp(16px,4vw,40px);height:64px;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
+.ss-nav-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;flex-shrink:0;}
+.ss-nav-logo img{height:34px;width:auto;border-radius:50%;}
+.ss-nav-logo-name{font-family:var(--font-d);font-size:.95rem;font-weight:700;color:var(--orange);letter-spacing:.06em;}
+.ss-nav-links{display:flex;align-items:center;gap:.15rem;flex-wrap:nowrap;}
+.ss-nav-links>a{text-decoration:none;font-size:.86rem;font-weight:500;color:rgba(240,238,248,.65);padding:.42rem .8rem;border-radius:8px;transition:all .18s;white-space:nowrap;}
+.ss-nav-links>a:hover{color:#fff;background:rgba(255,255,255,.08);}
+.ss-nav-links>a.active{color:#fff;background:rgba(255,255,255,.1);}
+.ss-nav-links>a.nav-newsletter{background:rgba(99,30,235,.25);color:rgba(200,185,255,.9);border-radius:50px;}
+.ss-nav-links>a.nav-newsletter:hover{background:rgba(99,30,235,.4);color:#fff;}
+.ss-nav-divider{width:1px;height:20px;background:rgba(255,255,255,.12);margin:0 .3rem;flex-shrink:0;}
+.ss-nav-links>a.nav-cta{background:var(--purple);color:white;padding:.42rem 1.1rem;border-radius:50px;font-weight:600;font-size:.83rem;}
+.ss-nav-links>a.nav-cta:hover{background:var(--purple-dk);}
+.ss-dd{position:relative;}
+.ss-dd-btn{display:flex;align-items:center;gap:.3rem;font-size:.86rem;font-weight:500;color:rgba(240,238,248,.65);padding:.42rem .8rem;border-radius:8px;cursor:pointer;transition:all .18s;background:none;border:none;font-family:inherit;white-space:nowrap;}
+.ss-dd-btn:hover,.ss-dd.open .ss-dd-btn{color:#fff;background:rgba(255,255,255,.08);}
+.ss-dd-btn svg{width:11px;height:11px;transition:transform .18s;flex-shrink:0;color:rgba(240,238,248,.3);}
+.ss-dd.open .ss-dd-btn svg{transform:rotate(180deg);}
+.ss-dd-panel{display:none;position:absolute;top:calc(100% + 8px);left:0;background:#0e0c18;border:1px solid rgba(99,30,235,.3);border-radius:14px;padding:.6rem;box-shadow:0 10px 36px rgba(0,0,0,.5);z-index:600;}
+.ss-dd.open .ss-dd-panel{display:block;}
+.ss-dd-panel.herr{min-width:240px;}
+.ss-dd-panel.herr a{display:block;padding:.55rem .9rem;border-radius:9px;text-decoration:none;transition:background .15s;}
+.ss-dd-panel.herr a:hover{background:rgba(255,255,255,.06);}
+.ss-dd-panel.herr a .t{display:block;font-size:.84rem;font-weight:600;color:#f0eef8;}
+.ss-dd-panel.herr a .s{display:block;font-size:.75rem;color:rgba(240,238,248,.4);margin-top:.1rem;}
+.ss-dd-hr{height:1px;background:rgba(255,255,255,.07);margin:.4rem .6rem;}
+.ss-dd-panel.serv{min-width:280px;max-width:320px;}
+.ss-serv-group{padding:.3rem 0;}
+.ss-serv-group-title{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,238,248,.3);padding:.25rem .9rem .15rem;}
+.ss-serv-item{border-radius:9px;overflow:hidden;}
+.ss-serv-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;padding:.5rem .9rem;background:none;border:none;cursor:pointer;font-family:inherit;font-size:.84rem;font-weight:500;color:rgba(240,238,248,.75);text-align:left;transition:background .15s;gap:.5rem;}
+.ss-serv-trigger:hover{background:rgba(255,255,255,.06);}
+.ss-serv-trigger svg{width:10px;height:10px;flex-shrink:0;transition:transform .2s;color:rgba(240,238,248,.3);}
+.ss-serv-item.open .ss-serv-trigger svg{transform:rotate(180deg);}
+.ss-serv-body{display:none;padding:.3rem .9rem .6rem 1.1rem;}
+.ss-serv-item.open .ss-serv-body{display:block;}
+.ss-serv-body p{font-size:.78rem;color:rgba(240,238,248,.45);margin:0 0 .4rem;line-height:1.4;}
+.ss-serv-body a{font-size:.78rem;font-weight:600;color:var(--purple);text-decoration:none;}
+.ss-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:.4rem;}
+.ss-hamburger span{display:block;width:22px;height:2px;background:rgba(240,238,248,.7);border-radius:2px;transition:all .22s;}
 @media(max-width:860px){
-  .ss-nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0; bottom: 0; background: rgba(14,12,24,.98); flex-direction: column; align-items: flex-start; padding: 1.5rem clamp(16px,4vw,40px); gap: .25rem; overflow-y: auto; }
-  .ss-nav-links.open { display: flex; }
-  .ss-nav-links > a, .ss-dd-btn { font-size: 1rem; padding: .75rem .9rem; width: 100%; }
-  .ss-dd-panel { position: static; border: none; box-shadow: none; background: rgba(255,255,255,.04); margin-top: .25rem; border-radius: 10px; }
-  .ss-dd.open .ss-dd-panel { display: block; }
-  .ss-hamburger { display: flex; }
-  .ss-nav-divider { display: none; }
-  .ss-nav-cta { margin-top: .5rem; }
+  .ss-nav-links{display:none;position:fixed;top:64px;left:0;right:0;bottom:0;background:rgba(14,12,24,.98);flex-direction:column;align-items:flex-start;padding:1.5rem clamp(16px,4vw,40px);gap:.25rem;overflow-y:auto;}
+  .ss-nav-links.open{display:flex;}
+  .ss-nav-links>a,.ss-dd-btn{font-size:1rem;padding:.75rem .9rem;width:100%;}
+  .ss-dd-panel{position:static;border:none;box-shadow:none;background:rgba(255,255,255,.04);margin-top:.25rem;border-radius:10px;}
+  .ss-hamburger{display:flex;}
+  .ss-nav-divider{display:none;}
 }
-/* cursos.html necesita padding-top para el nav fijo */
-body { padding-top: 64px; }
-
-/* ── HERO ── */
-.hero {
-  background: linear-gradient(135deg, rgba(99,30,235,.35) 0%, rgba(14,12,24,0) 60%);
-  border-bottom: 1px solid var(--border);
-  padding: 72px 40px 60px;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(0,237,170,.08) 0%, transparent 70%);
-  top: -200px; right: -100px;
-  border-radius: 50%;
-  pointer-events: none;
-}
-.hero-inner { max-width: 1100px; margin: 0 auto; }
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  background: rgba(0,237,170,.1);
-  border: 1px solid rgba(0,237,170,.3);
-  color: var(--mint);
-  font-family: var(--font-d);
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  padding: .3rem 1rem;
-  border-radius: 100px;
-  margin-bottom: 1.25rem;
-}
-.hero h1 {
-  font-family: var(--font-d);
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 900;
-  line-height: 1.06;
-  letter-spacing: -.02em;
-  margin-bottom: .85rem;
-}
-.hero h1 em {
-  font-style: normal;
-  color: var(--orange);
-}
-.hero-sub {
-  font-size: 1rem;
-  color: var(--fg-muted);
-  max-width: 580px;
-  line-height: 1.7;
-  margin-bottom: 2rem;
-}
-.hero-stats {
-  display: flex;
-  gap: 2.5rem;
-  flex-wrap: wrap;
-}
-.hero-stat-num {
-  font-family: var(--font-d);
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: var(--mint);
-  line-height: 1;
-}
-.hero-stat-lbl {
-  font-size: .68rem;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--fg-faint);
-  margin-top: .2rem;
-}
-
-/* ── LAYOUT ── */
-.page { max-width: 1100px; margin: 0 auto; padding: 56px 40px; }
-@media(max-width:600px){ .page { padding: 36px 20px; } }
-
-/* ── SECTION HEAD ── */
-.sec-label {
-  font-family: var(--font-d);
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--orange);
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  margin-bottom: 2rem;
-}
-.sec-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(255,121,41,.4), transparent);
-}
-
-/* ── COURSE GRID ── */
-.course-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 3rem;
-}
-
-/* ── COURSE CARD ── */
-.course-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform .2s, border-color .2s;
-  cursor: pointer;
-}
-.course-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(99,30,235,.5);
-}
-.course-card-header {
-  background: linear-gradient(135deg, rgba(99,30,235,.4) 0%, rgba(14,165,160,.25) 100%);
-  padding: 1.5rem 1.6rem 1.25rem;
-  position: relative;
-  min-height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-.course-tag {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: rgba(0,237,170,.12);
-  border: 1px solid rgba(0,237,170,.3);
-  color: var(--mint);
-  font-family: var(--font-d);
-  font-size: .58rem;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  padding: .25rem .7rem;
-  border-radius: 100px;
-}
-.course-card-header h3 {
-  font-family: var(--font-d);
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1.2;
-  margin-top: .5rem;
-}
-.course-card-body {
-  padding: 1.2rem 1.6rem 1.5rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.course-desc {
-  font-size: .83rem;
-  color: var(--fg-muted);
-  line-height: 1.7;
-  margin-bottom: 1.1rem;
-  flex: 1;
-}
-.course-meta-row {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.1rem;
-}
-.course-meta-item {
-  display: flex;
-  align-items: center;
-  gap: .35rem;
-  font-size: .72rem;
-  color: var(--fg-faint);
-}
-.course-meta-item svg { opacity: .6; }
-.course-price {
-  font-family: var(--font-d);
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: var(--orange);
-  margin-bottom: 1rem;
-}
-.course-price small {
-  font-size: .65rem;
-  font-weight: 600;
-  color: var(--fg-faint);
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  margin-left: .2rem;
-}
-.btn-inscribir {
-  width: 100%;
-  font-family: var(--font-d);
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  padding: .75rem 1.25rem;
-  border-radius: 10px;
-  border: none;
-  background: var(--purple);
-  color: #fff;
-  cursor: pointer;
-  transition: background .18s, transform .15s;
-}
-.btn-inscribir:hover { background: var(--purple-dk); transform: translateY(-1px); }
-
-/* ── PRÓXIMAMENTE card ── */
-.course-card.coming-soon {
-  opacity: .75;
-  cursor: default;
-}
-.course-card.coming-soon:hover { transform: none; border-color: var(--border); }
-.course-tag.soon {
-  background: rgba(255,121,41,.1);
-  border-color: rgba(255,121,41,.3);
-  color: var(--orange-lt);
-}
-.btn-pronto {
-  width: 100%;
-  font-family: var(--font-d);
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  padding: .75rem 1.25rem;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  background: transparent;
-  color: var(--fg-faint);
-  cursor: not-allowed;
-}
-
-/* ── MÓDULOS STRIP ── */
-.module-strip {
-  display: flex;
-  gap: .35rem;
-  flex-wrap: wrap;
-  margin-bottom: .9rem;
-}
-.mod-pill {
-  font-size: .65rem;
-  font-weight: 600;
-  padding: .2rem .55rem;
-  border-radius: 6px;
-  background: rgba(99,30,235,.15);
-  border: 1px solid rgba(99,30,235,.25);
-  color: var(--purple-lt);
-  white-space: nowrap;
-}
-
-/* ── MODAL ── */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.72);
-  backdrop-filter: blur(8px);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .22s;
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-
-.modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  max-width: 560px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  transform: translateY(20px) scale(.97);
-  transition: transform .25s cubic-bezier(.4,0,.2,1);
-}
-.modal-overlay.open .modal { transform: translateY(0) scale(1); }
-
-.modal-header {
-  background: linear-gradient(135deg, rgba(99,30,235,.45) 0%, rgba(14,165,160,.25) 100%);
-  padding: 1.75rem 1.75rem 1.4rem;
-  position: relative;
-}
-.modal-close {
-  position: absolute;
-  top: 1rem; right: 1rem;
-  background: rgba(255,255,255,.1);
-  border: none;
-  border-radius: 50%;
-  width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  color: var(--fg-muted);
-  font-size: 1.1rem;
-  transition: background .15s;
-}
-.modal-close:hover { background: rgba(255,255,255,.18); }
-.modal-tag {
-  display: inline-block;
-  background: rgba(0,237,170,.12);
-  border: 1px solid rgba(0,237,170,.3);
-  color: var(--mint);
-  font-family: var(--font-d);
-  font-size: .58rem;
-  font-weight: 700;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  padding: .25rem .7rem;
-  border-radius: 100px;
-  margin-bottom: .75rem;
-}
-.modal-title {
-  font-family: var(--font-d);
-  font-size: 1.25rem;
-  font-weight: 800;
-  line-height: 1.2;
-  padding-right: 2rem;
-}
-.modal-body { padding: 1.5rem 1.75rem 1.75rem; }
-.modal-desc {
-  font-size: .88rem;
-  color: var(--fg-muted);
-  line-height: 1.75;
-  margin-bottom: 1.25rem;
-}
-.modal-modules {
-  margin-bottom: 1.4rem;
-}
-.modal-modules-label {
-  font-family: var(--font-d);
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--fg-faint);
-  margin-bottom: .6rem;
-}
-.modal-mod-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: .35rem;
-}
-.modal-mod-list li {
-  display: flex;
-  align-items: center;
-  gap: .6rem;
-  font-size: .82rem;
-  color: var(--fg-muted);
-}
-.modal-mod-list li::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--purple-lt);
-  flex-shrink: 0;
-}
-.modal-info-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: .75rem;
-  background: var(--bg-muted);
-  border-radius: 12px;
-  padding: .9rem 1rem;
-  margin-bottom: 1.4rem;
-}
-.modal-info-item {}
-.modal-info-lbl {
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--fg-faint);
-  margin-bottom: .2rem;
-}
-.modal-info-val {
-  font-family: var(--font-d);
-  font-size: .82rem;
-  font-weight: 700;
-  color: var(--fg);
-}
-.modal-price-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-  gap: .75rem;
-}
-.modal-price {
-  font-family: var(--font-d);
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--orange);
-  line-height: 1;
-}
-.modal-price span {
-  font-size: .7rem;
-  color: var(--fg-faint);
-  display: block;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  margin-top: .2rem;
-}
-.btn-paypal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: .6rem;
-  width: 100%;
-  font-family: var(--font-d);
-  font-size: .8rem;
-  font-weight: 800;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  padding: .9rem 1.5rem;
-  border-radius: 12px;
-  border: none;
-  background: #FFC439;
-  color: #003087;
-  cursor: pointer;
-  transition: opacity .18s, transform .15s;
-  text-decoration: none;
-}
-.btn-paypal:hover { opacity: .9; transform: translateY(-1px); }
-.btn-paypal svg { flex-shrink: 0; }
-.modal-note {
-  font-size: .72rem;
-  color: var(--fg-faint);
-  text-align: center;
-  margin-top: .85rem;
-  line-height: 1.6;
-}
-
-/* ── FAQ ── */
-.faq { margin-top: 3rem; }
-.faq-item {
-  border-bottom: 1px solid var(--border);
-}
-.faq-q {
-  width: 100%;
-  background: none;
-  border: none;
-  text-align: left;
-  padding: 1rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  cursor: pointer;
-  font-family: var(--font-b);
-  font-size: .88rem;
-  font-weight: 600;
-  color: var(--fg);
-}
-.faq-q span { flex: 1; }
-.faq-icon {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  color: var(--fg-faint);
-  font-size: .9rem;
-  transition: transform .2s, border-color .2s;
-}
-.faq-item.open .faq-icon { transform: rotate(45deg); border-color: var(--purple); color: var(--purple-lt); }
-.faq-a {
-  font-size: .83rem;
-  color: var(--fg-muted);
-  line-height: 1.75;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height .3s ease, padding-bottom .3s;
-}
-.faq-item.open .faq-a { max-height: 300px; padding-bottom: 1rem; }
-
-/* ── BRAND BAR ── */
-.brand-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 40px;
-  border-top: 1px solid var(--border);
-  flex-wrap: wrap;
-  gap: .75rem;
-}
-.brand-name {
-  font-family: var(--font-d);
-  font-size: .75rem;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--orange);
-}
-.brand-url { font-size: .72rem; color: var(--fg-faint); }
+/* HERO */
+.hero{background:linear-gradient(135deg,rgba(99,30,235,.35) 0%,rgba(14,12,24,0) 60%);border-bottom:1px solid var(--border);padding:72px 40px 60px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(0,237,170,.08) 0%,transparent 70%);top:-200px;right:-100px;border-radius:50%;pointer-events:none;}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,237,170,.1);border:1px solid rgba(0,237,170,.3);color:var(--mint);font-family:var(--font-d);font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.3rem 1rem;border-radius:100px;margin-bottom:1.25rem;}
+.hero h1{font-family:var(--font-d);font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.06;letter-spacing:-.02em;margin-bottom:.85rem;}
+.hero h1 em{font-style:normal;color:var(--orange);}
+.hero-sub{font-size:1rem;color:var(--fg-muted);max-width:580px;line-height:1.7;margin-bottom:2rem;}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;}
+.hero-stat-num{font-family:var(--font-d);font-size:1.5rem;font-weight:900;color:var(--mint);line-height:1;}
+.hero-stat-lbl{font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-faint);margin-top:.2rem;}
+/* LAYOUT */
+.page{max-width:1100px;margin:0 auto;padding:56px 40px;}
+@media(max-width:600px){.page{padding:36px 20px;}}
+/* SEC LABEL */
+.sec-label{font-family:var(--font-d);font-size:.6rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:.75rem;margin-bottom:2rem;}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,121,41,.4),transparent);}
+/* COURSE GRID */
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;margin-bottom:3rem;}
+/* COURSE CARD */
+.course-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,border-color .2s;cursor:pointer;}
+.course-card:hover{transform:translateY(-3px);border-color:rgba(99,30,235,.5);}
+.course-card-header{background:linear-gradient(135deg,rgba(99,30,235,.4) 0%,rgba(14,165,160,.25) 100%);padding:1.5rem 1.6rem 1.25rem;position:relative;min-height:120px;display:flex;flex-direction:column;justify-content:flex-end;}
+.course-tag{position:absolute;top:1rem;right:1rem;background:rgba(0,237,170,.12);border:1px solid rgba(0,237,170,.3);color:var(--mint);font-family:var(--font-d);font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;}
+.course-tag.soon{background:rgba(255,121,41,.1);border-color:rgba(255,121,41,.3);color:var(--orange-lt);}
+.course-card-header h3{font-family:var(--font-d);font-size:1rem;font-weight:800;line-height:1.2;margin-top:.5rem;}
+.course-card-body{padding:1.2rem 1.6rem 1.5rem;flex:1;display:flex;flex-direction:column;}
+.course-desc{font-size:.83rem;color:var(--fg-muted);line-height:1.7;margin-bottom:1.1rem;flex:1;}
+.course-meta-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.course-meta-item{display:flex;align-items:center;gap:.35rem;font-size:.72rem;color:var(--fg-faint);}
+.course-price{font-family:var(--font-d);font-size:1.4rem;font-weight:900;color:var(--orange);margin-bottom:1rem;}
+.course-price small{font-size:.65rem;font-weight:600;color:var(--fg-faint);letter-spacing:.05em;text-transform:uppercase;margin-left:.2rem;}
+.btn-inscribir{width:100%;font-family:var(--font-d);font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.25rem;border-radius:10px;border:none;background:var(--purple);color:#fff;cursor:pointer;transition:background .18s,transform .15s;}
+.btn-inscribir:hover{background:var(--purple-dk);transform:translateY(-1px);}
+.course-card.coming-soon{opacity:.75;cursor:default;}
+.course-card.coming-soon:hover{transform:none;border-color:var(--border);}
+.btn-pronto{width:100%;font-family:var(--font-d);font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.25rem;border-radius:10px;border:1.5px solid var(--border);background:transparent;color:var(--fg-faint);cursor:not-allowed;}
+.module-strip{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.9rem;}
+.mod-pill{font-size:.65rem;font-weight:600;padding:.2rem .55rem;border-radius:6px;background:rgba(99,30,235,.15);border:1px solid rgba(99,30,235,.25);color:var(--purple-lt);white-space:nowrap;}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .22s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;transform:translateY(20px) scale(.97);transition:transform .25s cubic-bezier(.4,0,.2,1);}
+.modal-overlay.open .modal{transform:translateY(0) scale(1);}
+.modal-header{background:linear-gradient(135deg,rgba(99,30,235,.45) 0%,rgba(14,165,160,.25) 100%);padding:1.75rem 1.75rem 1.4rem;position:relative;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.1);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--fg-muted);font-size:1.1rem;transition:background .15s;}
+.modal-close:hover{background:rgba(255,255,255,.18);}
+.modal-tag{display:inline-block;background:rgba(0,237,170,.12);border:1px solid rgba(0,237,170,.3);color:var(--mint);font-family:var(--font-d);font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;margin-bottom:.75rem;}
+.modal-title{font-family:var(--font-d);font-size:1.25rem;font-weight:800;line-height:1.2;padding-right:2rem;}
+.modal-body{padding:1.5rem 1.75rem 1.75rem;}
+.modal-desc{font-size:.88rem;color:var(--fg-muted);line-height:1.75;margin-bottom:1.25rem;}
+.modal-modules{margin-bottom:1.4rem;}
+.modal-modules-label{font-family:var(--font-d);font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:.6rem;}
+.modal-mod-list{list-style:none;display:flex;flex-direction:column;gap:.35rem;}
+.modal-mod-list li{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--fg-muted);}
+.modal-mod-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--purple-lt);flex-shrink:0;}
+.modal-info-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;background:var(--bg-muted);border-radius:12px;padding:.9rem 1rem;margin-bottom:1.4rem;}
+.modal-info-lbl{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-faint);margin-bottom:.2rem;}
+.modal-info-val{font-family:var(--font-d);font-size:.82rem;font-weight:700;color:var(--fg);}
+.modal-price-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem;}
+.modal-price{font-family:var(--font-d);font-size:2rem;font-weight:900;color:var(--orange);line-height:1;}
+.modal-price span{font-size:.7rem;color:var(--fg-faint);display:block;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-top:.2rem;}
+.btn-paypal{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;font-family:var(--font-d);font-size:.8rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.9rem 1.5rem;border-radius:12px;border:none;background:#FFC439;color:#003087;cursor:pointer;transition:opacity .18s,transform .15s;text-decoration:none;}
+.btn-paypal:hover{opacity:.9;transform:translateY(-1px);}
+.modal-note{font-size:.72rem;color:var(--fg-faint);text-align:center;margin-top:.85rem;line-height:1.6;}
+/* FAQ */
+.faq-item{border-bottom:1px solid var(--border);}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:1rem 0;display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:pointer;font-family:var(--font-b);font-size:.88rem;font-weight:600;color:var(--fg);}
+.faq-q span{flex:1;}
+.faq-icon{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--fg-faint);font-size:.9rem;transition:transform .2s,border-color .2s;}
+.faq-item.open .faq-icon{transform:rotate(45deg);border-color:var(--purple);color:var(--purple-lt);}
+.faq-a{font-size:.83rem;color:var(--fg-muted);line-height:1.75;max-height:0;overflow:hidden;transition:max-height .3s ease,padding-bottom .3s;}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:1rem;}
+/* BRAND BAR */
+.brand-bar{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 40px;border-top:1px solid var(--border);flex-wrap:wrap;gap:.75rem;}
+.brand-name{font-family:var(--font-d);font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);}
+.brand-url{font-size:.72rem;color:var(--fg-faint);}
+/* ADMIN TABS */
+.atab-content{display:none;}
+.atab-content.active{display:block;}
 </style>
 </head>
 <body>
@@ -633,24 +174,24 @@ body { padding-top: 64px; }
         <div class="ss-dd-panel serv">
           <div class="ss-serv-group">
             <div class="ss-serv-group-title">Investigación Social</div>
-            <div class="ss-serv-item" id="si-1"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Investigación de Mercados Laborales</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Análisis riguroso del empleo en territorios específicos.</p><a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank">Contratar</a></div></div>
-            <div class="ss-serv-item" id="si-2"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Estudios de Prospectiva Laboral</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Escenarios del futuro del trabajo ante IA y automatización.</p><a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank">Contratar</a></div></div>
+            <div class="ss-serv-item"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Investigación de Mercados Laborales</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Análisis riguroso del empleo en territorios específicos.</p><a href="https://www.paypal.com/ncp/payment/Q67GP9SLQ6V4G" target="_blank">Contratar</a></div></div>
+            <div class="ss-serv-item"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Estudios de Prospectiva Laboral</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Escenarios del futuro del trabajo ante IA y automatización.</p><a href="https://www.paypal.com/ncp/payment/NH9LDXJ6C4TZN" target="_blank">Contratar</a></div></div>
           </div>
           <div class="ss-dd-hr"></div>
           <div class="ss-serv-group">
             <div class="ss-serv-group-title">Educación</div>
-            <div class="ss-serv-item" id="si-3"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Diseño Curricular por Competencias</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Programas educativos con enfoque crítico y socioemocional.</p><a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank">Contratar</a></div></div>
+            <div class="ss-serv-item"><button class="ss-serv-trigger" onclick="ssToggleServ(this)"><span>Diseño Curricular por Competencias</span><svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ss-serv-body"><p>Programas educativos con enfoque crítico y socioemocional.</p><a href="https://www.paypal.com/ncp/payment/2E6KN3888QHL6" target="_blank">Contratar</a></div></div>
           </div>
           <div class="ss-dd-hr"></div>
-          <div style="padding:.4rem .9rem .3rem;"><a href="servicios.html" style="display:block;text-align:center;padding:.55rem;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--purple);text-decoration:none;background:rgba(99,30,235,.1);">Ver todos los servicios →</a></div>
+          <div style="padding:.4rem .9rem .3rem"><a href="servicios.html" style="display:block;text-align:center;padding:.55rem;border-radius:9px;font-size:.82rem;font-weight:600;color:var(--purple);text-decoration:none;background:rgba(99,30,235,.1)">Ver todos los servicios →</a></div>
         </div>
       </div>
       <a href="newsletter.html" class="nav-newsletter">Newsletter</a>
       <a href="contribuir.html">Contribuir</a>
       <div class="ss-nav-divider"></div>
       <span id="ss-nav-user">
-        <a href="#" onclick="ssAbrirLoginCursos();return false;" class="nav-entrar">Entrar</a>
-        <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
+        <a href="#" onclick="ssAbrirLogin();return false;" style="color:rgba(240,238,248,.55);font-size:.86rem;font-weight:500;padding:.42rem .8rem;text-decoration:none;">Entrar</a>
+        <a href="registro.html" class="nav-cta">Únete gratis</a>
       </span>
     </div>
     <button class="ss-hamburger" onclick="ssMobileNav()" aria-label="Menú">
@@ -658,42 +199,44 @@ body { padding-top: 64px; }
     </button>
   </div>
 </nav>
+
+<!-- ═══ SCRIPT 1: Nav + isAdmin global (DEBE IR ANTES DEL CONTENIDO) ═══ -->
 <script>
-function ssToggleDD(el){
-  var dd = el.closest('.ss-dd');
-  var isOpen = dd.classList.contains('open');
-  document.querySelectorAll('.ss-dd.open').forEach(function(d){ d.classList.remove('open'); });
-  if(!isOpen){ dd.classList.add('open'); }
-}
-function ssLogoutInline(){['ss_user_v2','ss_admin_v2','ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});window.location.href='inicio.html';}
+/* Funciones de navegación */
+function ssToggleDD(el){var dd=el.closest('.ss-dd');var o=dd.classList.contains('open');document.querySelectorAll('.ss-dd.open').forEach(function(d){d.classList.remove('open');});if(!o)dd.classList.add('open');}
+function ssLogout(){['ss_user_v2','ss_admin_v2','ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});window.location.href='inicio.html';}
 function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
-function ssMobileNav(){document.querySelector('.ss-nav-links').classList.toggle('open');}
-document.addEventListener('click',function(e){
-  if(!e.target.closest('.ss-nav')){
-    document.querySelectorAll('.ss-dd.open').forEach(function(d){ d.classList.remove('open'); });
+function ssMobileNav(){document.getElementById('ss-nav-links').classList.toggle('open');}
+document.addEventListener('click',function(e){if(!e.target.closest('.ss-nav'))document.querySelectorAll('.ss-dd.open').forEach(function(d){d.classList.remove('open');});});
+
+/* ─── isAdmin: verifica AMBOS sistemas de auth ─── */
+function isAdmin(){
+  try{var a=JSON.parse(localStorage.getItem('ss_admin_v2')||'null');if(a&&a.data&&a.data.token){if(!a.expires||Date.now()<a.expires)return true;}}catch(e){}
+  try{var b=JSON.parse(localStorage.getItem('ss_admin')||'null');if(b&&b.token)return true;}catch(e){}
+  return false;
+}
+
+/* ─── getUser: leer sesión ─── */
+function getUser(){
+  try{var u=JSON.parse(localStorage.getItem('ss_user_v2')||'null');if(u&&u.data&&(u.data.nombre||u.data.email)){if(!u.expires||Date.now()<u.expires)return u.data;}}catch(e){}
+  try{var v=JSON.parse(localStorage.getItem('ss_user')||'null');if(v&&(v.nombre||v.email))return v;}catch(e){}
+  return null;
+}
+
+/* ─── Actualizar nav al cargar ─── */
+document.addEventListener('DOMContentLoaded',function(){
+  var u=getUser();
+  var el=document.getElementById('ss-nav-user');
+  if(!el)return;
+  if(isAdmin()){
+    var label=(u&&(u.nombre||u.email))?(u.nombre||u.email.split('@')[0]):'Admin';
+    el.innerHTML=
+      '<button onclick="abrirPanelAdmin()" style="background:rgba(99,30,235,.2);border:1px solid rgba(99,30,235,.4);color:#c4b5fd;padding:.35rem .85rem;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;margin-right:.4rem;">⚙ Panel admin</button>'+
+      '<button onclick="ssLogout()" style="background:var(--purple);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;font-family:inherit;">'+label+' · Salir</button>';
+  } else if(u){
+    var label2=u.nombre||(u.email?u.email.split('@')[0]:'Usuario');
+    el.innerHTML='<button onclick="ssLogout()" style="background:var(--purple);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;font-family:inherit;">'+label2+' · Salir</button>';
   }
-});
-// ── Auth: mostrar nombre si hay sesión ──
-document.addEventListener('DOMContentLoaded', function(){
-(function(){
-  function getUser(){
-    try{ var u=JSON.parse(localStorage.getItem('ss_user_v2')||'null'); if(u&&u.data&&u.data.nombre) return u.data; }catch(e){}
-    try{ var u=JSON.parse(localStorage.getItem('ss_user')||'null'); if(u&&u.nombre) return u; }catch(e){}
-    return null;
-  }
-  function isAdmin(){
-    try{ var a=JSON.parse(localStorage.getItem('ss_admin_v2')||'null'); if(a&&a.data&&a.data.token) return true; }catch(e){}
-    try{ var a=JSON.parse(localStorage.getItem('ss_admin')||'null'); if(a&&a.token) return true; }catch(e){}
-    return false;
-  }
-  var u = getUser();
-  var el = document.getElementById('ss-nav-user');
-  if(el && u){
-    var label = u.nombre || (u.email ? u.email.split('@')[0] : 'Usuario');
-    var adminLink = isAdmin() ? '<a href="admin.html" style="font-size:.78rem;color:rgba(240,238,248,.5);text-decoration:none;padding:.3rem .6rem;">Área interna</a>' : '';
-    el.innerHTML = adminLink + '<button onclick="ssLogoutInline()" style="background:var(--purple,#631EEB);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
-  }
-})();
 });
 </script>
 
@@ -702,23 +245,11 @@ document.addEventListener('DOMContentLoaded', function(){
   <div class="hero-inner">
     <div class="hero-badge">Formación especializada</div>
     <h1>Aprende.<br><em>Transforma.</em> Impacta.</h1>
-    <p class="hero-sub">
-      Cursos de investigación social aplicada, diseñados desde la práctica y para la práctica.
-      Metodología rigurosa, herramientas concretas, aprendizaje a tu ritmo.
-    </p>
+    <p class="hero-sub">Cursos de investigación social aplicada, diseñados desde la práctica y para la práctica. Metodología rigurosa, herramientas concretas, aprendizaje a tu ritmo.</p>
     <div class="hero-stats">
-      <div>
-        <div class="hero-stat-num">30h</div>
-        <div class="hero-stat-lbl">Curso disponible</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">6</div>
-        <div class="hero-stat-lbl">Módulos por curso</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">100%</div>
-        <div class="hero-stat-lbl">En línea · a tu ritmo</div>
-      </div>
+      <div><div class="hero-stat-num">30h</div><div class="hero-stat-lbl">Curso disponible</div></div>
+      <div><div class="hero-stat-num">6</div><div class="hero-stat-lbl">Módulos por curso</div></div>
+      <div><div class="hero-stat-num">100%</div><div class="hero-stat-lbl">En línea · a tu ritmo</div></div>
     </div>
   </div>
 </section>
@@ -726,22 +257,15 @@ document.addEventListener('DOMContentLoaded', function(){
 <!-- CATÁLOGO -->
 <main class="page">
   <div class="sec-label">Catálogo de cursos</div>
-
-  <div class="course-grid" id="course-grid">
-
-    <!-- CURSO ACTIVO: Metodología de Práctica Social -->
+  <div class="course-grid">
+    <!-- Curso activo -->
     <div class="course-card" onclick="openCursoModal('mps')">
       <div class="course-card-header">
         <div class="course-tag">Disponible</div>
-        <div class="hero-badge" style="background:rgba(99,30,235,.18);border-color:rgba(99,30,235,.4);color:var(--purple-lt);margin-bottom:.5rem;font-size:.55rem">Investigación social</div>
         <h3>Metodología de<br>Práctica Social</h3>
       </div>
       <div class="course-card-body">
-        <p class="course-desc">
-          Curso integral que combina fundamentos epistemológicos, diseño mixto
-          y análisis cultural para intervenir organizaciones, comunidades
-          y políticas públicas con rigor y perspectiva crítica.
-        </p>
+        <p class="course-desc">Curso integral que combina fundamentos epistemológicos, diseño mixto y análisis cultural para intervenir organizaciones, comunidades y políticas públicas con rigor y perspectiva crítica.</p>
         <div class="module-strip">
           <span class="mod-pill">M1 · Epistemología</span>
           <span class="mod-pill">M2 · Cinco componentes</span>
@@ -751,150 +275,74 @@ document.addEventListener('DOMContentLoaded', function(){
           <span class="mod-pill">M6 · Aplicaciones</span>
         </div>
         <div class="course-meta-row">
-          <span class="course-meta-item">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            30 horas
-          </span>
-          <span class="course-meta-item">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            6 módulos
-          </span>
-          <span class="course-meta-item">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
-            Infografías + actividades
-          </span>
+          <span class="course-meta-item">⏱ 30 horas</span>
+          <span class="course-meta-item">📚 6 módulos</span>
+          <span class="course-meta-item">🎯 Infografías + actividades</span>
         </div>
         <div class="course-price">$2,500 <small>MXN</small></div>
         <button class="btn-inscribir" onclick="event.stopPropagation();openCursoModal('mps')">Ver curso e inscribirse</button>
       </div>
     </div>
-
-    <!-- PRÓXIMAMENTE: Investigación con comunidades -->
+    <!-- Próximamente 1 -->
     <div class="course-card coming-soon">
       <div class="course-card-header">
         <div class="course-tag soon">Próximamente</div>
-        <div class="hero-badge" style="background:rgba(232,56,107,.1);border-color:rgba(232,56,107,.3);color:#f08aa0;margin-bottom:.5rem;font-size:.55rem">Trabajo comunitario</div>
         <h3>Investigación<br>con comunidades</h3>
       </div>
       <div class="course-card-body">
-        <p class="course-desc">
-          Herramientas para el diagnóstico participativo y el trabajo de campo
-          con comunidades en contextos de vulnerabilidad social.
-          Ética, técnica y posicionamiento crítico.
-        </p>
-        <div class="course-meta-row">
-          <span class="course-meta-item">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ~25 horas
-          </span>
-          <span class="course-meta-item">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            Trabajo de campo
-          </span>
-        </div>
+        <p class="course-desc">Herramientas para el diagnóstico participativo y el trabajo de campo con comunidades en contextos de vulnerabilidad social.</p>
+        <div class="course-meta-row"><span class="course-meta-item">⏱ ~25 horas</span></div>
         <div class="course-price" style="color:var(--fg-faint);font-size:1rem">Precio por anunciar</div>
         <button class="btn-pronto">Próximamente</button>
       </div>
     </div>
-
-    <!-- PRÓXIMAMENTE: Análisis de datos sociales -->
+    <!-- Próximamente 2 -->
     <div class="course-card coming-soon">
       <div class="course-card-header">
         <div class="course-tag soon">Próximamente</div>
-        <div class="hero-badge" style="background:rgba(14,165,160,.1);border-color:rgba(14,165,160,.3);color:var(--teal);margin-bottom:.5rem;font-size:.55rem">Análisis de datos</div>
         <h3>Análisis de datos<br>sociales</h3>
       </div>
       <div class="course-card-body">
-        <p class="course-desc">
-          Encuestas, bases de datos y visualización para el investigador social.
-          Desde el diseño del instrumento hasta la comunicación de hallazgos
-          a públicos no académicos.
-        </p>
-        <div class="course-meta-row">
-          <span class="course-meta-item">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ~20 horas
-          </span>
-          <span class="course-meta-item">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Datos + visualización
-          </span>
-        </div>
+        <p class="course-desc">Encuestas, bases de datos y visualización para el investigador social. Desde el diseño del instrumento hasta la comunicación de hallazgos.</p>
+        <div class="course-meta-row"><span class="course-meta-item">⏱ ~20 horas</span></div>
         <div class="course-price" style="color:var(--fg-faint);font-size:1rem">Precio por anunciar</div>
         <button class="btn-pronto">Próximamente</button>
-      </div>
-    </div>
-
-  </div><!-- /course-grid -->
-
-  <!-- FAQ -->
-  <div class="sec-label" style="margin-top:2rem">Preguntas frecuentes</div>
-  <div class="faq" id="faq">
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>¿Cómo accedo al curso después de pagar?</span>
-        <div class="faq-icon">+</div>
-      </button>
-      <div class="faq-a">
-        Después de completar el pago por PayPal, recibirás un correo con el enlace de acceso
-        al curso en un plazo de 24 horas hábiles. El curso está alojado en nuestra plataforma
-        y puedes avanzar a tu propio ritmo.
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>¿Hay fecha límite para completar el curso?</span>
-        <div class="faq-icon">+</div>
-      </button>
-      <div class="faq-a">
-        El acceso al curso es por 6 meses desde la fecha de inscripción.
-        Puedes pausar y retomar cuando lo necesites dentro de ese período.
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>¿Recibo certificado al terminar?</span>
-        <div class="faq-icon">+</div>
-      </button>
-      <div class="faq-a">
-        Sí. Al completar todos los módulos y actividades, emitimos un certificado
-        digital firmado por Sintropía Social, con el nombre del curso,
-        horas acreditadas y fecha de emisión.
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>¿Puedo pagar en parcialidades o pedir factura?</span>
-        <div class="faq-icon">+</div>
-      </button>
-      <div class="faq-a">
-        Por el momento el pago es de contado a través de PayPal. Para factura o
-        formas de pago alternativas (transferencia bancaria, meses sin intereses),
-        escríbenos a <strong>hola@sintropiasocial.com</strong> antes de realizar tu compra.
-      </div>
-    </div>
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>¿Qué necesito para tomar el curso?</span>
-        <div class="faq-icon">+</div>
-      </button>
-      <div class="faq-a">
-        Conexión a internet, un navegador actualizado y disposición para leer textos
-        de ciencias sociales. No se requieren conocimientos previos de investigación,
-        aunque el nivel de los contenidos es de licenciatura avanzada o posgrado.
       </div>
     </div>
   </div>
 
+  <!-- FAQ -->
+  <div class="sec-label" style="margin-top:2rem">Preguntas frecuentes</div>
+  <div class="faq">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>¿Cómo accedo al curso después de pagar?</span><div class="faq-icon">+</div></button>
+      <div class="faq-a">Después de completar el pago por PayPal, recibirás un correo con el enlace de acceso al curso en un plazo de 24 horas hábiles.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>¿Hay fecha límite para completar el curso?</span><div class="faq-icon">+</div></button>
+      <div class="faq-a">El acceso al curso es por 6 meses desde la fecha de inscripción. Puedes pausar y retomar cuando lo necesites dentro de ese período.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>¿Recibo certificado al terminar?</span><div class="faq-icon">+</div></button>
+      <div class="faq-a">Sí. Al completar todos los módulos y actividades, emitimos un certificado digital firmado por Sintropía Social, con el nombre del curso, horas acreditadas y fecha de emisión.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>¿Puedo pagar en parcialidades o pedir factura?</span><div class="faq-icon">+</div></button>
+      <div class="faq-a">Por el momento el pago es de contado a través de PayPal. Para factura o formas de pago alternativas, escríbenos a <strong>hola@sintropiasocial.com</strong> antes de realizar tu compra.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>¿Qué necesito para tomar el curso?</span><div class="faq-icon">+</div></button>
+      <div class="faq-a">Conexión a internet, un navegador actualizado y disposición para leer textos de ciencias sociales. No se requieren conocimientos previos de investigación.</div>
+    </div>
+  </div>
 </main>
 
-<!-- BRAND BAR -->
 <div class="brand-bar">
   <div class="brand-name">Sintropía Social</div>
   <div class="brand-url">sintropiassociales-del.github.io</div>
 </div>
 
-<!-- ═══ MODAL: Metodología de Práctica Social ═══ -->
+<!-- ═══ MODAL: Curso MPS (PayPal) ═══ -->
 <div class="modal-overlay" id="modal-mps" onclick="closeModal(event,'modal-mps')">
   <div class="modal">
     <div class="modal-header">
@@ -903,14 +351,7 @@ document.addEventListener('DOMContentLoaded', function(){
       <h2 class="modal-title">Metodología de Práctica Social</h2>
     </div>
     <div class="modal-body">
-      <p class="modal-desc">
-        Curso de formación intensiva en metodología de investigación e intervención social.
-        Combina fundamentos epistemológicos del paradigma interpretativo, diseño mixto,
-        análisis cultural (Geertz, Bourdieu, Giddens) y aplicaciones concretas
-        en organizaciones, comunidades y política pública. Incluye infografías interactivas,
-        lecturas académicas descargables y actividades evaluables por módulo.
-      </p>
-
+      <p class="modal-desc">Curso de formación intensiva en metodología de investigación e intervención social. Combina fundamentos epistemológicos del paradigma interpretativo, diseño mixto, análisis cultural y aplicaciones concretas en organizaciones, comunidades y política pública.</p>
       <div class="modal-modules">
         <div class="modal-modules-label">Contenido del curso — 6 módulos</div>
         <ul class="modal-mod-list">
@@ -922,228 +363,132 @@ document.addEventListener('DOMContentLoaded', function(){
           <li>M6 · Aplicaciones: organizaciones, comunidades y política pública</li>
         </ul>
       </div>
-
       <div class="modal-info-row">
-        <div class="modal-info-item">
-          <div class="modal-info-lbl">Duración</div>
-          <div class="modal-info-val">30 horas</div>
-        </div>
-        <div class="modal-info-item">
-          <div class="modal-info-lbl">Modalidad</div>
-          <div class="modal-info-val">En línea</div>
-        </div>
-        <div class="modal-info-item">
-          <div class="modal-info-lbl">Nivel</div>
-          <div class="modal-info-val">Lic. / Posgrado</div>
-        </div>
+        <div><div class="modal-info-lbl">Duración</div><div class="modal-info-val">30 horas</div></div>
+        <div><div class="modal-info-lbl">Modalidad</div><div class="modal-info-val">En línea</div></div>
+        <div><div class="modal-info-lbl">Nivel</div><div class="modal-info-val">Lic. / Posgrado</div></div>
       </div>
-
       <div class="modal-price-row">
-        <div class="modal-price">
-          $2,500
-          <span>MXN · pago único</span>
-        </div>
+        <div class="modal-price">$2,500<span>MXN · pago único</span></div>
       </div>
-
-      <!-- ACCESO ADMIN — visible solo para administradores -->
-      <div id="admin-curso-access" style="display:none;margin-bottom:1rem;">
-        <a href="admin.html#cursos" target="_blank"
-           style="display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.9rem 1.5rem;background:linear-gradient(135deg,#631EEB,#4e18bb);color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:.95rem;font-family:inherit;">
-          🔐 Ver curso completo (Panel admin)
-        </a>
-        <p style="text-align:center;font-size:.75rem;color:rgba(240,238,248,.4);margin:.5rem 0 0;">Acceso de administrador activo</p>
-        <hr style="border:none;border-top:1px solid rgba(255,255,255,.08);margin:1rem 0;">
-      </div>
-
-      <!-- BOTÓN PAYPAL — se actualiza cuando tengas el link -->
-      <a id="paypal-btn-mps" href="#" class="btn-paypal" onclick="checkPaypal(event,'mps')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="#003087"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.166 3.89-.009.113-.023.228-.034.344v.989l.042.024a3.697 3.697 0 0 1 .613.432c.625.55.939 1.32.939 2.286 0 3.5-2.607 5.533-6.928 5.533H13.5l-.397 2.516-.003.02a.64.64 0 0 1-.633.543H7.076zM19.49 7.092c-.06 3.04-2.166 4.647-6.287 4.647h-2.01l-.57 3.604h1.713c.416 0 .77-.298.836-.71l.034-.187.655-4.15.043-.22a.84.84 0 0 1 .836-.712h.527c3.406 0 6.07-1.378 6.85-5.367.327-1.636.158-3.001-.688-3.96A4.26 4.26 0 0 0 19.49 7.092z"/></svg>
-        Pagar con PayPal
+      <a href="https://www.paypal.com/ncp/payment/C9PVHH7NZKAW8" target="_blank" class="btn-paypal">
+        💳 Pagar con PayPal
       </a>
-
-      <p class="modal-note">
-        Pago seguro procesado por PayPal. Recibirás acceso al curso en menos de 24 h hábiles.<br>
-        ¿Preguntas? Escríbenos a <strong>hola@sintropiasocial.com</strong>
-      </p>
+      <p class="modal-note">Pago seguro procesado por PayPal. Recibirás acceso al curso en menos de 24 h hábiles.<br>¿Preguntas? <strong>hola@sintropiasocial.com</strong></p>
     </div>
   </div>
 </div>
 
+<!-- ═══ SCRIPT 2: Modal + FAQ ═══ -->
 <script>
-/* ── isAdmin global (lee ambos sistemas de auth) ── */
-function isAdmin(){
-  try{ var a=JSON.parse(localStorage.getItem('ss_admin_v2')||'null'); if(a&&a.data&&a.data.token&&Date.now()<a.expires) return true; }catch(e){}
-  try{ var a=JSON.parse(localStorage.getItem('ss_admin')||'null'); if(a&&a.token) return true; }catch(e){}
-  return false;
-}
-
-/* ── MODAL ── */
-const PAYPAL_LINKS = {
-  mps: 'https://www.paypal.com/ncp/payment/C9PVHH7NZKAW8' //← pega aquí el link de PayPal cuando lo tengas
-};
-
-function openModal(id) {
-  document.getElementById('modal-' + id).classList.add('open');
-  document.body.style.overflow = 'hidden';
-  var adminBlock = document.getElementById('admin-curso-access');
-  if (adminBlock) { adminBlock.style.display = isAdmin() ? 'block' : 'none'; }
-}
-function closeModalById(id) {
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow = '';
-}
-function closeModal(e, id) {
-  if (e.target === e.currentTarget) closeModalById(id);
-}
-function checkPaypal(e, id) {
-  e.preventDefault();
-  const link = PAYPAL_LINKS[id];
-  if (!link) {
-    alert('El enlace de pago estará disponible muy pronto. Mientras tanto escríbenos a hola@sintropiasocial.com');
-  } else {
-    window.open(link, '_blank');
-  }
-}
-
-/* ── FAQ ── */
-function toggleFaq(btn) {
-  const item = btn.closest('.faq-item');
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-}
-
-/* Cerrar modal con Escape */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay.open').forEach(m => {
-      m.classList.remove('open');
-      document.body.style.overflow = '';
-    });
+function openModal(id){document.getElementById('modal-'+id).classList.add('open');document.body.style.overflow='hidden';}
+function closeModalById(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+function closeModal(e,id){if(e.target===e.currentTarget)closeModalById(id);}
+function toggleFaq(btn){var it=btn.closest('.faq-item');var o=it.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');});if(!o)it.classList.add('open');}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay.open').forEach(function(m){m.classList.remove('open');document.body.style.overflow='';});
+    cerrarPanelAdmin();
+    cerrarLogin();
   }
 });
+
+/* ─── Router: click en tarjeta del curso ─── */
+function openCursoModal(id){
+  if(isAdmin()){
+    abrirPanelAdmin();
+  } else {
+    openModal(id);
+  }
+}
 </script>
 
-<!-- ═══ MODAL LOGIN INLINE (para no redirigir a index.html) ═══ -->
-<div id="cursos-login-modal" style="display:none;position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="if(event.target===this)closeCursosLogin()">
+<!-- ═══ MODAL LOGIN ═══ -->
+<div id="modal-login" style="display:none;position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="if(event.target===this)cerrarLogin()">
   <div style="background:#fff;border-radius:18px;padding:2rem 2rem 1.5rem;width:min(420px,92vw);position:relative;box-shadow:0 24px 64px rgba(0,0,0,.4);">
-    <button onclick="closeCursosLogin()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;font-size:1.2rem;color:#666;line-height:1;">✕</button>
+    <button onclick="cerrarLogin()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;font-size:1.2rem;color:#666;">✕</button>
     <h3 style="font-family:var(--font-d);font-size:1.4rem;font-weight:800;color:#1a1a2e;margin-bottom:.35rem;">Iniciar sesión</h3>
-    <p style="font-size:.87rem;color:#666;margin-bottom:1.25rem;">Accede a tu cuenta para ver el repositorio completo.</p>
-
-    <!-- Google Sign-In placeholder — muestra email si Google está disponible -->
-    <div id="cursos-google-hint" style="display:none;border:1.5px solid #e0e0e0;border-radius:10px;padding:.7rem 1rem;display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;cursor:pointer;font-size:.87rem;color:#333;" onclick="alert('Integración Google disponible próximamente.')">
-      <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      <span id="cursos-google-label">Continuar con Google</span>
-      <svg style="margin-left:auto;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-    </div>
-
-    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;">
-      <hr style="flex:1;border:none;border-top:1px solid #e8e8e8;">
-      <span style="font-size:.78rem;color:#999;">o continúa con email</span>
-      <hr style="flex:1;border:none;border-top:1px solid #e8e8e8;">
-    </div>
-
+    <p style="font-size:.87rem;color:#666;margin-bottom:1.25rem;">Accede a tu cuenta de Sintropía Social.</p>
     <div style="margin-bottom:.85rem;">
       <label style="display:block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.4rem;">Email</label>
-      <input id="cursos-li-email" type="email" placeholder="correo@ejemplo.com"
-        style="width:100%;box-sizing:border-box;padding:.7rem .9rem;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border .15s;"
-        onfocus="this.style.borderColor='#631EEB'" onblur="this.style.borderColor='#e0e0e0'"
-        onkeydown="if(event.key==='Enter')doCursosLogin()">
+      <input id="li-email" type="email" placeholder="correo@ejemplo.com" style="width:100%;box-sizing:border-box;padding:.7rem .9rem;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')hacerLogin()">
     </div>
     <div style="margin-bottom:1.25rem;">
       <label style="display:block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.4rem;">Contraseña</label>
-      <input id="cursos-li-pass" type="password" placeholder="••••••••"
-        style="width:100%;box-sizing:border-box;padding:.7rem .9rem;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border .15s;"
-        onfocus="this.style.borderColor='#631EEB'" onblur="this.style.borderColor='#e0e0e0'"
-        onkeydown="if(event.key==='Enter')doCursosLogin()">
+      <input id="li-pass" type="password" placeholder="••••••••" style="width:100%;box-sizing:border-box;padding:.7rem .9rem;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')hacerLogin()">
     </div>
-    <div id="cursos-li-err" style="display:none;background:#fff0f0;color:#c0392b;padding:.55rem .9rem;border-radius:8px;font-size:.82rem;margin-bottom:.85rem;"></div>
-    <button id="cursos-li-btn" onclick="doCursosLogin()"
-      style="width:100%;padding:.85rem;background:#E8682A;color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .15s;">
-      Entrar
-    </button>
+    <div id="li-err" style="display:none;background:#fff0f0;color:#c0392b;padding:.55rem .9rem;border-radius:8px;font-size:.82rem;margin-bottom:.85rem;"></div>
+    <button id="li-btn" onclick="hacerLogin()" style="width:100%;padding:.85rem;background:#631EEB;color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:700;font-family:inherit;cursor:pointer;">Entrar</button>
     <p style="text-align:center;font-size:.82rem;margin-top:1rem;color:#888;">¿No tienes cuenta? <a href="registro.html" style="color:#631EEB;font-weight:600;">Regístrate gratis</a></p>
   </div>
 </div>
 
-<!-- ═══ MODAL ADMIN: Panel de gestión del curso ═══ -->
-<div id="modal-admin-mps" style="display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;" onclick="if(event.target===this)closeAdminModal()">
-  <div style="background:#0e0c18;border:1px solid rgba(99,30,235,.35);border-radius:20px;width:min(780px,96vw);margin:auto;position:relative;overflow:hidden;">
-
+<!-- ═══ PANEL ADMIN ═══ -->
+<div id="panel-admin-mps" style="display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);overflow-y:auto;padding:2rem 1rem;" onclick="if(event.target===this)cerrarPanelAdmin()">
+  <div style="background:#0e0c18;border:1px solid rgba(99,30,235,.4);border-radius:20px;width:min(840px,96vw);margin:0 auto;position:relative;">
     <!-- Header -->
-    <div style="background:linear-gradient(135deg,rgba(99,30,235,.2),rgba(14,165,160,.1));padding:1.5rem 1.75rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.07);">
-      <button onclick="closeAdminModal()" style="position:absolute;top:1.1rem;right:1.25rem;background:rgba(255,255,255,.08);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;">✕</button>
-      <div style="font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#631EEB;margin-bottom:.4rem;">Panel admin · Metodología de Práctica Social</div>
-      <h2 style="font-family:var(--font-d);font-size:1.35rem;font-weight:800;color:#f0eef8;margin:0;">Gestión del curso</h2>
+    <div style="background:linear-gradient(135deg,rgba(99,30,235,.25),rgba(14,165,160,.12));padding:1.5rem 1.75rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.07);border-radius:20px 20px 0 0;position:relative;">
+      <button onclick="cerrarPanelAdmin()" style="position:absolute;top:1.1rem;right:1.25rem;background:rgba(255,255,255,.08);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;color:#f0eef8;font-size:1rem;">✕</button>
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8B5CF6;margin-bottom:.3rem;">⚙ Panel administrador</div>
+      <h2 style="font-family:var(--font-d);font-size:1.4rem;font-weight:800;color:#f0eef8;margin:0;">Metodología de Práctica Social</h2>
+      <p style="font-size:.78rem;color:rgba(240,238,248,.4);margin-top:.25rem;">Gestión de inscritos, permisos y ligas de acceso</p>
     </div>
-
     <!-- Tabs -->
-    <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.07);padding:0 1.75rem;">
-      <button class="atab active" onclick="showATab(this,'at-inscritos')" style="padding:.85rem 1.1rem;background:none;border:none;border-bottom:2px solid #631EEB;color:#f0eef8;font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;">👥 Inscritos</button>
-      <button class="atab" onclick="showATab(this,'at-permisos')" style="padding:.85rem 1.1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.45);font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;">🔑 Permisos</button>
-      <button class="atab" onclick="showATab(this,'at-ligas')" style="padding:.85rem 1.1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.45);font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;">🔗 Ligas de acceso</button>
-      <button class="atab" onclick="showATab(this,'at-stats')" style="padding:.85rem 1.1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.45);font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;">📊 Estadísticas</button>
+    <div id="admin-tabs" style="display:flex;border-bottom:1px solid rgba(255,255,255,.07);padding:0 1.5rem;gap:.1rem;overflow-x:auto;">
+      <button class="atab-btn" onclick="mostrarTab(this,'tab-inscritos')" style="padding:.8rem 1rem;background:none;border:none;border-bottom:2px solid #631EEB;color:#f0eef8;font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;white-space:nowrap;">👥 Inscritos</button>
+      <button class="atab-btn" onclick="mostrarTab(this,'tab-permisos')"  style="padding:.8rem 1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.4);font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;white-space:nowrap;">🔑 Permisos</button>
+      <button class="atab-btn" onclick="mostrarTab(this,'tab-ligas')"     style="padding:.8rem 1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.4);font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;white-space:nowrap;">🔗 Ligas de acceso</button>
+      <button class="atab-btn" onclick="mostrarTab(this,'tab-stats')"     style="padding:.8rem 1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.4);font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;white-space:nowrap;">📊 Estadísticas</button>
     </div>
 
-    <!-- Tab: Inscritos -->
-    <div id="at-inscritos" class="atab-content" style="padding:1.5rem 1.75rem;">
+    <!-- TAB: Inscritos -->
+    <div id="tab-inscritos" class="atab-content active" style="padding:1.5rem 1.75rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap;gap:.75rem;">
         <div>
           <div style="font-size:.85rem;font-weight:600;color:#f0eef8;">Lista de inscritos</div>
-          <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-top:.15rem;">Usuarios con acceso activo al curso MPS</div>
+          <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-top:.1rem;">Usuarios con acceso al curso MPS</div>
         </div>
-        <button onclick="addInscrito()" style="background:#631EEB;color:#fff;border:none;border-radius:9px;padding:.55rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;">+ Agregar inscrito</button>
+        <button onclick="agregarInscrito()" style="background:#631EEB;color:#fff;border:none;border-radius:9px;padding:.55rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;">+ Agregar inscrito</button>
       </div>
-      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
-        <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
-          <thead>
-            <tr style="border-bottom:1px solid rgba(255,255,255,.07);">
-              <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Nombre</th>
-              <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Correo</th>
-              <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Fecha inscripción</th>
-              <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Estado</th>
-              <th style="padding:.7rem 1rem;"></th>
-            </tr>
-          </thead>
+      <div style="overflow-x:auto;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;">
+        <table style="width:100%;border-collapse:collapse;font-size:.82rem;min-width:500px;">
+          <thead><tr style="border-bottom:1px solid rgba(255,255,255,.07);">
+            <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Nombre</th>
+            <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Correo</th>
+            <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Fecha</th>
+            <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Estado</th>
+            <th style="padding:.7rem 1rem;"></th>
+          </tr></thead>
           <tbody id="inscritos-tbody">
-            <tr><td colspan="5" style="text-align:center;padding:2rem;color:rgba(240,238,248,.3);font-size:.82rem;">Cargando inscritos…</td></tr>
+            <tr><td colspan="5" style="text-align:center;padding:2.5rem;color:rgba(240,238,248,.3);font-size:.82rem;">Sin inscritos registrados.</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Tab: Permisos -->
-    <div id="at-permisos" class="atab-content" style="display:none;padding:1.5rem 1.75rem;">
-      <div style="font-size:.85rem;font-weight:600;color:#f0eef8;margin-bottom:.35rem;">Control de acceso por usuario</div>
-      <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-bottom:1.25rem;">Activa o desactiva el acceso a cada módulo por persona.</div>
-      <div style="background:rgba(99,30,235,.08);border:1px solid rgba(99,30,235,.25);border-radius:12px;padding:1.25rem;">
+    <!-- TAB: Permisos -->
+    <div id="tab-permisos" class="atab-content" style="padding:1.5rem 1.75rem;">
+      <div style="font-size:.85rem;font-weight:600;color:#f0eef8;margin-bottom:.3rem;">Control de acceso por usuario</div>
+      <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-bottom:1.25rem;">Busca un inscrito y gestiona su acceso a cada módulo.</div>
+      <div style="background:rgba(99,30,235,.07);border:1px solid rgba(99,30,235,.2);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
         <div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;">
-          <input id="perm-email" type="email" placeholder="correo del usuario"
-            style="flex:1;min-width:200px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
+          <input id="perm-email" type="email" placeholder="correo del usuario" style="flex:1;min-width:200px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
           <button onclick="buscarPermisos()" style="background:#631EEB;color:#fff;border:none;border-radius:8px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;">Buscar</button>
         </div>
-        <div id="perm-result" style="font-size:.82rem;color:rgba(240,238,248,.4);">Ingresa un correo para ver y editar sus permisos.</div>
+        <div id="perm-result" style="font-size:.82rem;color:rgba(240,238,248,.4);">Ingresa un correo para ver sus permisos.</div>
       </div>
-      <div style="margin-top:1.25rem;">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,238,248,.35);margin-bottom:.75rem;">Módulos disponibles — MPS</div>
-        <div id="modulos-permisos" style="display:flex;flex-direction:column;gap:.5rem;">
-          <!-- Se llena dinámicamente -->
-        </div>
-      </div>
+      <div id="modulos-permisos"></div>
     </div>
 
-    <!-- Tab: Ligas de acceso -->
-    <div id="at-ligas" class="atab-content" style="display:none;padding:1.5rem 1.75rem;">
-      <div style="font-size:.85rem;font-weight:600;color:#f0eef8;margin-bottom:.35rem;">Ligas de acceso al curso</div>
-      <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-bottom:1.25rem;">Genera un link único para que un usuario acceda al curso sin pago manual.</div>
-      <div style="background:rgba(99,30,235,.08);border:1px solid rgba(99,30,235,.25);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
-        <div style="font-size:.78rem;font-weight:600;color:rgba(240,238,248,.7);margin-bottom:.75rem;">Crear nueva liga de acceso</div>
+    <!-- TAB: Ligas -->
+    <div id="tab-ligas" class="atab-content" style="padding:1.5rem 1.75rem;">
+      <div style="font-size:.85rem;font-weight:600;color:#f0eef8;margin-bottom:.3rem;">Ligas de acceso</div>
+      <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-bottom:1.25rem;">Genera un enlace único para que alguien acceda al curso sin pago.</div>
+      <div style="background:rgba(99,30,235,.07);border:1px solid rgba(99,30,235,.2);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
+        <div style="font-size:.78rem;font-weight:600;color:rgba(240,238,248,.7);margin-bottom:.85rem;">Nueva liga</div>
         <div style="display:flex;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap;">
-          <input id="liga-email" type="email" placeholder="correo del destinatario"
-            style="flex:1;min-width:200px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
-          <input id="liga-nombre" type="text" placeholder="nombre (opcional)"
-            style="flex:1;min-width:160px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
+          <input id="liga-email" type="email" placeholder="correo del destinatario" style="flex:1;min-width:200px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
+          <input id="liga-nombre" type="text" placeholder="nombre (opcional)" style="flex:1;min-width:150px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
         </div>
         <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">
           <select id="liga-duracion" style="padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
@@ -1156,251 +501,232 @@ document.addEventListener('keydown', e => {
           <button onclick="generarLiga()" style="background:#631EEB;color:#fff;border:none;border-radius:8px;padding:.6rem 1.25rem;font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;">Generar liga</button>
         </div>
       </div>
-      <div id="liga-generada" style="display:none;background:rgba(14,165,160,.08);border:1px solid rgba(14,165,160,.3);border-radius:10px;padding:1rem;">
-        <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0ea5a0;margin-bottom:.5rem;">Liga generada</div>
+      <div id="liga-generada" style="display:none;background:rgba(14,165,160,.07);border:1px solid rgba(14,165,160,.3);border-radius:10px;padding:1rem;margin-bottom:1.25rem;">
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0ea5a0;margin-bottom:.5rem;">✓ Liga generada</div>
         <div style="display:flex;gap:.65rem;align-items:center;">
-          <input id="liga-url" readonly style="flex:1;padding:.55rem .8rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#f0eef8;font-size:.78rem;font-family:monospace;outline:none;">
-          <button onclick="copiarLiga()" style="background:rgba(14,165,160,.25);color:#0ea5a0;border:1px solid rgba(14,165,160,.4);border-radius:7px;padding:.5rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;">Copiar</button>
+          <input id="liga-url" readonly style="flex:1;padding:.55rem .8rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#f0eef8;font-size:.75rem;font-family:monospace;outline:none;">
+          <button onclick="copiarLiga()" style="background:rgba(14,165,160,.2);color:#0ea5a0;border:1px solid rgba(14,165,160,.4);border-radius:7px;padding:.5rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;">Copiar</button>
         </div>
         <div id="liga-copy-ok" style="display:none;font-size:.72rem;color:#0ea5a0;margin-top:.4rem;">✓ Copiado al portapapeles</div>
       </div>
-      <div style="margin-top:1.5rem;">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,238,248,.35);margin-bottom:.75rem;">Ligas activas</div>
-        <div id="ligas-activas" style="font-size:.82rem;color:rgba(240,238,248,.35);">Sin ligas generadas aún.</div>
-      </div>
+      <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,238,248,.3);margin-bottom:.75rem;">Ligas activas</div>
+      <div id="ligas-activas" style="font-size:.82rem;color:rgba(240,238,248,.35);">Sin ligas generadas aún.</div>
     </div>
 
-    <!-- Tab: Estadísticas -->
-    <div id="at-stats" class="atab-content" style="display:none;padding:1.5rem 1.75rem;">
+    <!-- TAB: Stats -->
+    <div id="tab-stats" class="atab-content" style="padding:1.5rem 1.75rem;">
       <div style="font-size:.85rem;font-weight:600;color:#f0eef8;margin-bottom:1rem;">Resumen del curso</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.85rem;margin-bottom:1.5rem;">
-        <div style="background:rgba(99,30,235,.1);border:1px solid rgba(99,30,235,.2);border-radius:12px;padding:1rem;">
-          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#631EEB;" id="stat-inscritos">—</div>
-          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);">Inscritos totales</div>
-        </div>
-        <div style="background:rgba(14,165,160,.08);border:1px solid rgba(14,165,160,.2);border-radius:12px;padding:1rem;">
-          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#0ea5a0;" id="stat-activos">—</div>
-          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);">Accesos activos</div>
-        </div>
-        <div style="background:rgba(232,104,42,.08);border:1px solid rgba(232,104,42,.2);border-radius:12px;padding:1rem;">
-          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#E8682A;" id="stat-ligas">—</div>
-          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);">Ligas generadas</div>
-        </div>
-        <div style="background:rgba(99,30,235,.1);border:1px solid rgba(99,30,235,.2);border-radius:12px;padding:1rem;">
-          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#631EEB;" id="stat-ingresos">—</div>
-          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);">Ingresos MXN</div>
-        </div>
-      </div>
-      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.1rem;text-align:center;color:rgba(240,238,248,.3);font-size:.82rem;">
-        Las estadísticas detalladas estarán disponibles cuando se conecte el backend de cursos.
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.85rem;margin-bottom:1.5rem;">
+        <div style="background:rgba(99,30,235,.1);border:1px solid rgba(99,30,235,.2);border-radius:12px;padding:1rem;"><div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#8B5CF6;" id="stat-inscritos">—</div><div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);margin-top:.25rem;">Inscritos totales</div></div>
+        <div style="background:rgba(14,165,160,.08);border:1px solid rgba(14,165,160,.2);border-radius:12px;padding:1rem;"><div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#0ea5a0;" id="stat-activos">—</div><div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);margin-top:.25rem;">Accesos activos</div></div>
+        <div style="background:rgba(255,121,41,.08);border:1px solid rgba(255,121,41,.2);border-radius:12px;padding:1rem;"><div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#FF7929;" id="stat-ligas">—</div><div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);margin-top:.25rem;">Ligas generadas</div></div>
+        <div style="background:rgba(0,237,170,.06);border:1px solid rgba(0,237,170,.2);border-radius:12px;padding:1rem;"><div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#00EDAA;" id="stat-ingresos">—</div><div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);margin-top:.25rem;">Ingresos MXN</div></div>
       </div>
     </div>
 
-    <!-- Footer del modal admin -->
-    <div style="padding:1rem 1.75rem;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
-      <a href="admin.html" target="_blank" style="font-size:.78rem;color:rgba(240,238,248,.4);text-decoration:none;">Ir al panel admin completo →</a>
-      <button onclick="closeAdminModal()" style="background:rgba(255,255,255,.07);color:#f0eef8;border:none;border-radius:8px;padding:.5rem 1.1rem;font-size:.82rem;cursor:pointer;font-family:inherit;">Cerrar</button>
+    <!-- Footer del panel -->
+    <div style="padding:1rem 1.75rem;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;border-radius:0 0 20px 20px;">
+      <a href="admin.html" target="_blank" style="font-size:.78rem;color:rgba(240,238,248,.35);text-decoration:none;">Ir al panel admin completo →</a>
+      <button onclick="cerrarPanelAdmin()" style="background:rgba(255,255,255,.07);color:#f0eef8;border:none;border-radius:8px;padding:.5rem 1.1rem;font-size:.82rem;cursor:pointer;font-family:inherit;">Cerrar</button>
     </div>
   </div>
 </div>
 
+<!-- ═══ SCRIPT 3: Login + Panel Admin ═══ -->
 <script>
-// ── Login inline ──
-function ssAbrirLoginCursos(){
-  var m = document.getElementById('cursos-login-modal');
-  m.style.display = 'flex';
-}
-function closeCursosLogin(){
-  document.getElementById('cursos-login-modal').style.display = 'none';
-}
+/* ════ LOGIN ════ */
+function ssAbrirLogin(){document.getElementById('modal-login').style.display='flex';setTimeout(function(){var e=document.getElementById('li-email');if(e)e.focus();},80);}
+function cerrarLogin(){document.getElementById('modal-login').style.display='none';}
 
-async function doCursosLogin(){
-  var email = document.getElementById('cursos-li-email').value.trim();
-  var pass  = document.getElementById('cursos-li-pass').value;
-  var err   = document.getElementById('cursos-li-err');
-  var btn   = document.getElementById('cursos-li-btn');
-  if(!email||!pass){ err.textContent='Completa todos los campos.'; err.style.display='block'; return; }
-  btn.textContent='Entrando...'; btn.disabled=true;
+async function hacerLogin(){
+  var email=(document.getElementById('li-email').value||'').trim();
+  var pass=document.getElementById('li-pass').value||'';
+  var err=document.getElementById('li-err');
+  var btn=document.getElementById('li-btn');
+  if(!email||!pass){err.textContent='Completa todos los campos.';err.style.display='block';return;}
+  btn.textContent='Entrando…';btn.disabled=true;err.style.display='none';
   try{
-    var h = await sha256(pass);
-    var r = await api('loginUsuario',{email:email,passHash:h});
-    if(r&&r.ok){
-      // Guardar sesión
-      var userData = {token:r.token||('u_'+Date.now()),nombre:r.nombre||'',email:r.email||email,isAdmin:r.isAdmin||false};
-      try{ localStorage.setItem('ss_user_v2', JSON.stringify({data:userData,expires:Date.now()+8*3600*1000})); }catch(e){}
-      try{ localStorage.setItem('ss_user', JSON.stringify(userData)); }catch(e){}
-      if(r.isAdmin||(r.token&&r.token.indexOf('admin_')===0)){
-        try{
-          var ar = await api('loginAdmin',{email:email,passHash:h});
-          if(ar&&ar.ok){
-            localStorage.setItem('ss_admin', JSON.stringify({token:ar.token,email:ar.email}));
-            try{ localStorage.setItem('ss_admin_v2', JSON.stringify({data:{token:ar.token,email:ar.email},expires:Date.now()+8*3600*1000})); }catch(e){}
-          }
-        }catch(e){}
-      }
-      closeCursosLogin();
-      location.reload();
-    } else {
-      err.textContent=(r&&r.error)||'Correo o contraseña incorrectos.';
-      err.style.display='block';
-      btn.textContent='Entrar'; btn.disabled=false;
+    /* Si hay API disponible (desde config.js), usarla */
+    if(typeof api==='function'&&typeof sha256==='function'){
+      var h=await sha256(pass);
+      var r=await api('loginUsuario',{email:email,passHash:h});
+      if(r&&r.ok){
+        var ud={token:r.token||('u_'+Date.now()),nombre:r.nombre||'',email:r.email||email,isAdmin:r.isAdmin||false};
+        localStorage.setItem('ss_user_v2',JSON.stringify({data:ud,expires:Date.now()+8*3600000}));
+        localStorage.setItem('ss_user',JSON.stringify(ud));
+        if(r.isAdmin){var at={token:r.token,email:ud.email};localStorage.setItem('ss_admin',JSON.stringify(at));localStorage.setItem('ss_admin_v2',JSON.stringify({data:at,expires:Date.now()+8*3600000}));}
+        cerrarLogin();location.reload();return;
+      } else if(r&&r.error){throw new Error(r.error);}
     }
+    /* Sin API: redirigir a inicio.html para login */
+    cerrarLogin();
+    window.location.href='inicio.html?volver='+encodeURIComponent(window.location.href);
   }catch(e){
-    err.textContent='Error de conexión. Intenta de nuevo.';
-    err.style.display='block';
-    btn.textContent='Entrar'; btn.disabled=false;
+    err.textContent=e.message||'Error de conexión. Intenta de nuevo.';
+    err.style.display='block';btn.textContent='Entrar';btn.disabled=false;
   }
 }
 
-// ── Admin modal ──
-function openCursoModal(id){
-  if(isAdmin()){
-    var m = document.getElementById('modal-admin-mps');
-    m.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    loadAdminData();
-  } else {
-    openModal(id);
-  }
-}
-function closeAdminModal(){
-  document.getElementById('modal-admin-mps').style.display = 'none';
-  document.body.style.overflow = '';
-}
+/* ════ PANEL ADMIN ════ */
+var _inscritos=[];
+var _ligas=[];
 
-// Tabs del panel admin
-function showATab(btn, tabId){
-  document.querySelectorAll('.atab-content').forEach(t => t.style.display = 'none');
-  document.querySelectorAll('.atab').forEach(b => {
-    b.style.borderBottomColor = 'transparent';
-    b.style.color = 'rgba(240,238,248,.45)';
-  });
-  document.getElementById(tabId).style.display = 'block';
-  btn.style.borderBottomColor = '#631EEB';
-  btn.style.color = '#f0eef8';
+function _cargar(){
+  try{_inscritos=JSON.parse(localStorage.getItem('cursos_inscritos_mps')||'[]');}catch(e){_inscritos=[];}
+  try{_ligas=JSON.parse(localStorage.getItem('cursos_ligas_mps')||'[]');}catch(e){_ligas=[];}
+}
+function _guardarInscritos(){try{localStorage.setItem('cursos_inscritos_mps',JSON.stringify(_inscritos));}catch(e){}}
+function _guardarLigas(){try{localStorage.setItem('cursos_ligas_mps',JSON.stringify(_ligas));}catch(e){}}
+
+function abrirPanelAdmin(){
+  if(!isAdmin()){ssAbrirLogin();return;}
+  _cargar();
+  _renderInscritos();
+  _renderModulosPermisos();
+  _renderLigas();
+  _renderStats();
+  document.getElementById('panel-admin-mps').style.display='block';
+  document.body.style.overflow='hidden';
+  /* Activar primer tab */
+  mostrarTab(document.querySelector('.atab-btn'),'tab-inscritos');
 }
 
-// Cargar datos admin (placeholder — conectar al backend cuando esté listo)
-var _ligasGeneradas = JSON.parse(localStorage.getItem('cursos_ligas_mps') || '[]');
-var _inscritosData  = JSON.parse(localStorage.getItem('cursos_inscritos_mps') || '[]');
+function cerrarPanelAdmin(){
+  var p=document.getElementById('panel-admin-mps');
+  if(p)p.style.display='none';
+  document.body.style.overflow='';
+}
 
-function loadAdminData(){
-  // Inscritos
-  var tbody = document.getElementById('inscritos-tbody');
-  if(_inscritosData.length === 0){
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:rgba(240,238,248,.3);font-size:.82rem;">Sin inscritos registrados aún.</td></tr>';
-  } else {
-    tbody.innerHTML = _inscritosData.map(function(u){
-      return '<tr style="border-bottom:1px solid rgba(255,255,255,.05);">' +
-        '<td style="padding:.65rem 1rem;color:#f0eef8;">' + (u.nombre||'—') + '</td>' +
-        '<td style="padding:.65rem 1rem;color:rgba(240,238,248,.6);">' + u.email + '</td>' +
-        '<td style="padding:.65rem 1rem;color:rgba(240,238,248,.45);">' + (u.fecha||'—') + '</td>' +
-        '<td style="padding:.65rem 1rem;"><span style="background:rgba(14,165,160,.15);color:#0ea5a0;border-radius:20px;padding:.2rem .65rem;font-size:.72rem;font-weight:700;">' + (u.estado||'Activo') + '</span></td>' +
-        '<td style="padding:.65rem 1rem;"><button onclick="revocarAcceso('' + u.email + '')" style="background:rgba(255,80,80,.1);color:#ff8080;border:1px solid rgba(255,80,80,.2);border-radius:6px;padding:.25rem .65rem;font-size:.72rem;cursor:pointer;font-family:inherit;">Revocar</button></td>' +
-        '</tr>';
-    }).join('');
-  }
-  // Módulos para permisos
-  var mods = ['M1 · Epistemología','M2 · Cinco componentes','M3 · Diseño mixto','M4 · Ciclo del contexto','M5 · Análisis cultural','M6 · Aplicaciones'];
-  document.getElementById('modulos-permisos').innerHTML = mods.map(function(m,i){
-    return '<div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:.65rem 1rem;">' +
-      '<span style="font-size:.84rem;color:#f0eef8;">' + m + '</span>' +
-      '<label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">' +
-        '<input type="checkbox" checked style="width:15px;height:15px;accent-color:#631EEB;cursor:pointer;">' +
-        '<span style="font-size:.75rem;color:rgba(240,238,248,.4);">Habilitado</span>' +
-      '</label>' +
+/* ── Tabs ── */
+function mostrarTab(btn,tabId){
+  document.querySelectorAll('.atab-content').forEach(function(t){t.style.display='none';t.classList.remove('active');});
+  document.querySelectorAll('.atab-btn').forEach(function(b){b.style.borderBottomColor='transparent';b.style.color='rgba(240,238,248,.4)';});
+  var t=document.getElementById(tabId);
+  if(t){t.style.display='block';t.classList.add('active');}
+  if(btn){btn.style.borderBottomColor='#631EEB';btn.style.color='#f0eef8';}
+}
+
+/* ── Inscritos ── */
+function _renderInscritos(){
+  var tbody=document.getElementById('inscritos-tbody');
+  if(!tbody)return;
+  if(!_inscritos.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2.5rem;color:rgba(240,238,248,.3);font-size:.82rem;">Sin inscritos registrados aún.</td></tr>';return;}
+  tbody.innerHTML=_inscritos.map(function(u,i){
+    var c=u.estado==='Revocado'?'#ff8080':'#0ea5a0';
+    var bg=u.estado==='Revocado'?'rgba(255,80,80,.1)':'rgba(14,165,160,.12)';
+    var acc=u.estado!=='Revocado'
+      ?'<button onclick="revocarAcceso('+i+')" style="background:rgba(255,80,80,.1);color:#ff8080;border:1px solid rgba(255,80,80,.2);border-radius:6px;padding:.25rem .65rem;font-size:.72rem;cursor:pointer;font-family:inherit;">Revocar</button>'
+      :'<button onclick="restaurarAcceso('+i+')" style="background:rgba(14,165,160,.1);color:#0ea5a0;border:1px solid rgba(14,165,160,.25);border-radius:6px;padding:.25rem .65rem;font-size:.72rem;cursor:pointer;font-family:inherit;">Restaurar</button>';
+    return '<tr style="border-bottom:1px solid rgba(255,255,255,.05);">'+
+      '<td style="padding:.65rem 1rem;color:#f0eef8;">'+(u.nombre||'—')+'</td>'+
+      '<td style="padding:.65rem 1rem;color:rgba(240,238,248,.6);font-size:.8rem;">'+(u.email||'—')+'</td>'+
+      '<td style="padding:.65rem 1rem;color:rgba(240,238,248,.4);font-size:.78rem;">'+(u.fecha||'—')+'</td>'+
+      '<td style="padding:.65rem 1rem;"><span style="background:'+bg+';color:'+c+';border-radius:20px;padding:.2rem .65rem;font-size:.72rem;font-weight:700;">'+(u.estado||'Activo')+'</span></td>'+
+      '<td style="padding:.65rem 1rem;">'+acc+'</td>'+
+    '</tr>';
+  }).join('');
+}
+
+function agregarInscrito(){
+  var email=prompt('Correo del nuevo inscrito:');
+  if(!email||!email.trim())return;
+  email=email.trim().toLowerCase();
+  if(_inscritos.find(function(u){return u.email===email;})){alert('Ese correo ya está en la lista.');return;}
+  var nombre=prompt('Nombre (opcional, Enter para omitir):')||'';
+  _inscritos.push({email:email,nombre:nombre.trim(),fecha:new Date().toLocaleDateString('es-MX'),estado:'Activo',pago:false});
+  _guardarInscritos();_renderInscritos();_renderStats();
+}
+
+function revocarAcceso(idx){
+  if(!confirm('¿Revocar acceso de '+(_inscritos[idx]||{}).email+'?'))return;
+  _inscritos[idx].estado='Revocado';
+  _guardarInscritos();_renderInscritos();_renderStats();
+}
+
+function restaurarAcceso(idx){
+  _inscritos[idx].estado='Activo';
+  _guardarInscritos();_renderInscritos();_renderStats();
+}
+
+/* ── Permisos ── */
+var _MODULOS=['M1 · Epistemología','M2 · Cinco componentes','M3 · Diseño mixto','M4 · Ciclo del contexto','M5 · Análisis cultural','M6 · Aplicaciones'];
+
+function _renderModulosPermisos(){
+  var el=document.getElementById('modulos-permisos');
+  if(!el)return;
+  el.innerHTML=_MODULOS.map(function(m,i){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:.65rem 1rem;margin-bottom:.4rem;">'+
+      '<span style="font-size:.84rem;color:#f0eef8;">'+m+'</span>'+
+      '<label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;"><input type="checkbox" checked style="width:15px;height:15px;accent-color:#631EEB;cursor:pointer;"><span style="font-size:.75rem;color:rgba(240,238,248,.4);">Habilitado</span></label>'+
     '</div>';
   }).join('');
-  // Stats
-  document.getElementById('stat-inscritos').textContent = _inscritosData.length;
-  document.getElementById('stat-activos').textContent = _inscritosData.filter(function(u){return u.estado==='Activo';}).length || _inscritosData.length;
-  document.getElementById('stat-ligas').textContent = _ligasGeneradas.length;
-  document.getElementById('stat-ingresos').textContent = '$' + (_inscritosData.filter(function(u){return u.pago;}).length * 2500).toLocaleString();
-  // Ligas activas
-  renderLigas();
-}
-
-function addInscrito(){
-  var email = prompt('Correo del nuevo inscrito:');
-  if(!email) return;
-  var nombre = prompt('Nombre (opcional):') || '';
-  var hoy = new Date().toLocaleDateString('es-MX');
-  _inscritosData.push({email:email,nombre:nombre,fecha:hoy,estado:'Activo',pago:false});
-  localStorage.setItem('cursos_inscritos_mps', JSON.stringify(_inscritosData));
-  loadAdminData();
-}
-
-function revocarAcceso(email){
-  if(!confirm('¿Revocar acceso de ' + email + '?')) return;
-  _inscritosData = _inscritosData.map(function(u){
-    return u.email===email ? Object.assign({},u,{estado:'Revocado'}) : u;
-  });
-  localStorage.setItem('cursos_inscritos_mps', JSON.stringify(_inscritosData));
-  loadAdminData();
 }
 
 function buscarPermisos(){
-  var email = document.getElementById('perm-email').value.trim();
-  var res = document.getElementById('perm-result');
-  if(!email){ res.textContent='Ingresa un correo.'; return; }
-  var u = _inscritosData.find(function(x){return x.email===email;});
-  res.innerHTML = u
-    ? '<span style="color:#0ea5a0;font-weight:600;">✓ ' + (u.nombre||u.email) + '</span> — <span style="color:rgba(240,238,248,.5);">Estado: ' + u.estado + '</span><br><span style="font-size:.78rem;color:rgba(240,238,248,.35);">Ajusta los módulos abajo.</span>'
-    : '<span style="color:rgba(240,238,248,.4);">No encontrado en la lista de inscritos.</span>';
+  var email=(document.getElementById('perm-email').value||'').trim().toLowerCase();
+  var res=document.getElementById('perm-result');
+  if(!email){res.textContent='Ingresa un correo.';return;}
+  var u=_inscritos.find(function(x){return x.email===email;});
+  res.innerHTML=u
+    ?'<span style="color:#0ea5a0;font-weight:600;">✓ '+(u.nombre||u.email)+'</span> — Estado: <strong style="color:#f0eef8;">'+u.estado+'</strong>'
+    :'<span style="color:rgba(240,238,248,.4);">No se encontró ese correo en la lista.</span>';
 }
 
+/* ── Ligas ── */
 function generarLiga(){
-  var email = document.getElementById('liga-email').value.trim();
-  var nombre = document.getElementById('liga-nombre').value.trim();
-  var dias = parseInt(document.getElementById('liga-duracion').value);
-  if(!email){ alert('Ingresa el correo del destinatario.'); return; }
-  var token = btoa(email + ':' + Date.now()).replace(/=/g,'');
-  var expira = dias === 0 ? null : new Date(Date.now() + dias*86400000).toLocaleDateString('es-MX');
-  var liga = { token:token, email:email, nombre:nombre, expira:expira||'Sin expiración', creada: new Date().toLocaleDateString('es-MX') };
-  _ligasGeneradas.push(liga);
-  localStorage.setItem('cursos_ligas_mps', JSON.stringify(_ligasGeneradas));
-  var url = window.location.origin + '/cursos.html?acceso=' + token;
-  document.getElementById('liga-url').value = url;
-  document.getElementById('liga-generada').style.display = 'block';
-  renderLigas();
-  // Auto-agregar a inscritos si no existe
-  if(!_inscritosData.find(function(u){return u.email===email;})){
-    _inscritosData.push({email:email,nombre:nombre,fecha:new Date().toLocaleDateString('es-MX'),estado:'Activo',pago:false});
-    localStorage.setItem('cursos_inscritos_mps', JSON.stringify(_inscritosData));
-    loadAdminData();
+  var email=(document.getElementById('liga-email').value||'').trim().toLowerCase();
+  var nombre=(document.getElementById('liga-nombre').value||'').trim();
+  var dias=parseInt(document.getElementById('liga-duracion').value)||0;
+  if(!email){alert('Ingresa el correo del destinatario.');return;}
+  var token=btoa(email+':mps:'+Date.now()).replace(/[=+\/]/g,'');
+  var expMs=dias===0?null:Date.now()+dias*86400000;
+  var expStr=dias===0?'Sin expiración':new Date(expMs).toLocaleDateString('es-MX');
+  var liga={token:token,email:email,nombre:nombre||email,expira:expStr,expMs:expMs,creada:new Date().toLocaleDateString('es-MX')};
+  _ligas.push(liga);_guardarLigas();
+  if(!_inscritos.find(function(u){return u.email===email;})){
+    _inscritos.push({email:email,nombre:nombre,fecha:liga.creada,estado:'Activo',pago:false});
+    _guardarInscritos();_renderInscritos();
   }
+  var url=window.location.origin+window.location.pathname+'?acceso='+token;
+  document.getElementById('liga-url').value=url;
+  document.getElementById('liga-generada').style.display='block';
+  document.getElementById('liga-copy-ok').style.display='none';
+  _renderLigas();_renderStats();
 }
 
 function copiarLiga(){
-  var url = document.getElementById('liga-url').value;
+  var url=document.getElementById('liga-url').value;
   navigator.clipboard.writeText(url).then(function(){
     document.getElementById('liga-copy-ok').style.display='block';
-    setTimeout(function(){ document.getElementById('liga-copy-ok').style.display='none'; },2500);
-  }).catch(function(){
-    document.getElementById('liga-url').select();
-  });
+    setTimeout(function(){document.getElementById('liga-copy-ok').style.display='none';},2500);
+  }).catch(function(){try{document.getElementById('liga-url').select();document.execCommand('copy');}catch(e){}});
 }
 
-function renderLigas(){
-  var el = document.getElementById('ligas-activas');
-  if(!el) return;
-  if(_ligasGeneradas.length===0){ el.textContent='Sin ligas generadas aún.'; return; }
-  el.innerHTML = _ligasGeneradas.slice().reverse().map(function(l){
-    return '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem;">' +
-      '<div>' +
-        '<div style="font-size:.83rem;color:#f0eef8;font-weight:600;">' + (l.nombre||l.email) + '</div>' +
-        '<div style="font-size:.72rem;color:rgba(240,238,248,.4);">' + l.email + ' · Expira: ' + l.expira + '</div>' +
-      '</div>' +
-      '<span style="font-size:.7rem;color:rgba(240,238,248,.3);">Creada ' + l.creada + '</span>' +
+function _renderLigas(){
+  var el=document.getElementById('ligas-activas');
+  if(!el)return;
+  if(!_ligas.length){el.innerHTML='<p style="color:rgba(240,238,248,.3);font-size:.82rem;">Sin ligas generadas aún.</p>';return;}
+  el.innerHTML=_ligas.slice().reverse().map(function(l){
+    return '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:9px;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem;">'+
+      '<div><div style="font-size:.83rem;color:#f0eef8;font-weight:600;">'+l.nombre+'</div><div style="font-size:.72rem;color:rgba(240,238,248,.4);margin-top:.1rem;">'+l.email+' · Expira: '+l.expira+'</div></div>'+
+      '<span style="font-size:.7rem;color:rgba(240,238,248,.25);flex-shrink:0;">Creada '+l.creada+'</span>'+
     '</div>';
   }).join('');
 }
 
-// Escape cierra modal admin
-document.addEventListener('keydown', function(e){
-  if(e.key==='Escape') closeAdminModal();
-});
+/* ── Stats ── */
+function _renderStats(){
+  var activos=_inscritos.filter(function(u){return u.estado==='Activo';}).length;
+  var ingresos=_inscritos.filter(function(u){return u.pago;}).length*2500;
+  var si=document.getElementById('stat-inscritos');
+  var sa=document.getElementById('stat-activos');
+  var sl=document.getElementById('stat-ligas');
+  var sm=document.getElementById('stat-ingresos');
+  if(si)si.textContent=_inscritos.length;
+  if(sa)sa.textContent=activos;
+  if(sl)sl.textContent=_ligas.length;
+  if(sm)sm.textContent='$'+ingresos.toLocaleString('es-MX');
+}
 </script>
-
 </body>
 </html>
