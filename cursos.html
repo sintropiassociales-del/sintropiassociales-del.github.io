@@ -649,7 +649,7 @@ body { padding-top: 64px; }
       <a href="contribuir.html">Contribuir</a>
       <div class="ss-nav-divider"></div>
       <span id="ss-nav-user">
-        <a href="index.html?login=1" class="nav-entrar">Entrar</a>
+        <a href="#" onclick="ssAbrirLoginCursos();return false;" class="nav-entrar">Entrar</a>
         <a href="registro.html" class="ss-nav-cta">Únete gratis</a>
       </span>
     </div>
@@ -721,7 +721,7 @@ document.addEventListener('click',function(e){
   <div class="course-grid" id="course-grid">
 
     <!-- CURSO ACTIVO: Metodología de Práctica Social -->
-    <div class="course-card" onclick="openModal('mps')">
+    <div class="course-card" onclick="openCursoModal('mps')">
       <div class="course-card-header">
         <div class="course-tag">Disponible</div>
         <div class="hero-badge" style="background:rgba(99,30,235,.18);border-color:rgba(99,30,235,.4);color:var(--purple-lt);margin-bottom:.5rem;font-size:.55rem">Investigación social</div>
@@ -756,7 +756,7 @@ document.addEventListener('click',function(e){
           </span>
         </div>
         <div class="course-price">$2,500 <small>MXN</small></div>
-        <button class="btn-inscribir" onclick="event.stopPropagation();openModal('mps')">Ver curso e inscribirse</button>
+        <button class="btn-inscribir" onclick="event.stopPropagation();openCursoModal('mps')">Ver curso e inscribirse</button>
       </div>
     </div>
 
@@ -1007,5 +1007,384 @@ document.addEventListener('keydown', e => {
   }
 });
 </script>
+
+<!-- ═══ MODAL LOGIN INLINE (para no redirigir a index.html) ═══ -->
+<div id="cursos-login-modal" style="display:none;position:fixed;inset:0;z-index:1200;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="if(event.target===this)closeCursosLogin()">
+  <div style="background:#fff;border-radius:18px;padding:2rem 2rem 1.5rem;width:min(420px,92vw);position:relative;box-shadow:0 24px 64px rgba(0,0,0,.4);">
+    <button onclick="closeCursosLogin()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;font-size:1.2rem;color:#666;line-height:1;">✕</button>
+    <h3 style="font-family:var(--font-d);font-size:1.4rem;font-weight:800;color:#1a1a2e;margin-bottom:.35rem;">Iniciar sesión</h3>
+    <p style="font-size:.87rem;color:#666;margin-bottom:1.25rem;">Accede a tu cuenta para ver el repositorio completo.</p>
+
+    <!-- Google Sign-In placeholder — muestra email si Google está disponible -->
+    <div id="cursos-google-hint" style="display:none;border:1.5px solid #e0e0e0;border-radius:10px;padding:.7rem 1rem;display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;cursor:pointer;font-size:.87rem;color:#333;" onclick="alert('Integración Google disponible próximamente.')">
+      <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span id="cursos-google-label">Continuar con Google</span>
+      <svg style="margin-left:auto;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;">
+      <hr style="flex:1;border:none;border-top:1px solid #e8e8e8;">
+      <span style="font-size:.78rem;color:#999;">o continúa con email</span>
+      <hr style="flex:1;border:none;border-top:1px solid #e8e8e8;">
+    </div>
+
+    <div style="margin-bottom:.85rem;">
+      <label style="display:block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.4rem;">Email</label>
+      <input id="cursos-li-email" type="email" placeholder="correo@ejemplo.com"
+        style="width:100%;box-sizing:border-box;padding:.7rem .9rem;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border .15s;"
+        onfocus="this.style.borderColor='#631EEB'" onblur="this.style.borderColor='#e0e0e0'"
+        onkeydown="if(event.key==='Enter')doCursosLogin()">
+    </div>
+    <div style="margin-bottom:1.25rem;">
+      <label style="display:block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555;margin-bottom:.4rem;">Contraseña</label>
+      <input id="cursos-li-pass" type="password" placeholder="••••••••"
+        style="width:100%;box-sizing:border-box;padding:.7rem .9rem;border:1.5px solid #e0e0e0;border-radius:10px;font-size:.9rem;font-family:inherit;outline:none;transition:border .15s;"
+        onfocus="this.style.borderColor='#631EEB'" onblur="this.style.borderColor='#e0e0e0'"
+        onkeydown="if(event.key==='Enter')doCursosLogin()">
+    </div>
+    <div id="cursos-li-err" style="display:none;background:#fff0f0;color:#c0392b;padding:.55rem .9rem;border-radius:8px;font-size:.82rem;margin-bottom:.85rem;"></div>
+    <button id="cursos-li-btn" onclick="doCursosLogin()"
+      style="width:100%;padding:.85rem;background:#E8682A;color:#fff;border:none;border-radius:12px;font-size:.95rem;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .15s;">
+      Entrar
+    </button>
+    <p style="text-align:center;font-size:.82rem;margin-top:1rem;color:#888;">¿No tienes cuenta? <a href="registro.html" style="color:#631EEB;font-weight:600;">Regístrate gratis</a></p>
+  </div>
+</div>
+
+<!-- ═══ MODAL ADMIN: Panel de gestión del curso ═══ -->
+<div id="modal-admin-mps" style="display:none;position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;" onclick="if(event.target===this)closeAdminModal()">
+  <div style="background:#0e0c18;border:1px solid rgba(99,30,235,.35);border-radius:20px;width:min(780px,96vw);margin:auto;position:relative;overflow:hidden;">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,rgba(99,30,235,.2),rgba(14,165,160,.1));padding:1.5rem 1.75rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.07);">
+      <button onclick="closeAdminModal()" style="position:absolute;top:1.1rem;right:1.25rem;background:rgba(255,255,255,.08);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;">✕</button>
+      <div style="font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#631EEB;margin-bottom:.4rem;">Panel admin · Metodología de Práctica Social</div>
+      <h2 style="font-family:var(--font-d);font-size:1.35rem;font-weight:800;color:#f0eef8;margin:0;">Gestión del curso</h2>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.07);padding:0 1.75rem;">
+      <button class="atab active" onclick="showATab(this,'at-inscritos')" style="padding:.85rem 1.1rem;background:none;border:none;border-bottom:2px solid #631EEB;color:#f0eef8;font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;">👥 Inscritos</button>
+      <button class="atab" onclick="showATab(this,'at-permisos')" style="padding:.85rem 1.1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.45);font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;">🔑 Permisos</button>
+      <button class="atab" onclick="showATab(this,'at-ligas')" style="padding:.85rem 1.1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.45);font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;">🔗 Ligas de acceso</button>
+      <button class="atab" onclick="showATab(this,'at-stats')" style="padding:.85rem 1.1rem;background:none;border:none;border-bottom:2px solid transparent;color:rgba(240,238,248,.45);font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:-1px;">📊 Estadísticas</button>
+    </div>
+
+    <!-- Tab: Inscritos -->
+    <div id="at-inscritos" class="atab-content" style="padding:1.5rem 1.75rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap;gap:.75rem;">
+        <div>
+          <div style="font-size:.85rem;font-weight:600;color:#f0eef8;">Lista de inscritos</div>
+          <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-top:.15rem;">Usuarios con acceso activo al curso MPS</div>
+        </div>
+        <button onclick="addInscrito()" style="background:#631EEB;color:#fff;border:none;border-radius:9px;padding:.55rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;">+ Agregar inscrito</button>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
+          <thead>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.07);">
+              <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Nombre</th>
+              <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Correo</th>
+              <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Fecha inscripción</th>
+              <th style="text-align:left;padding:.7rem 1rem;color:rgba(240,238,248,.4);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">Estado</th>
+              <th style="padding:.7rem 1rem;"></th>
+            </tr>
+          </thead>
+          <tbody id="inscritos-tbody">
+            <tr><td colspan="5" style="text-align:center;padding:2rem;color:rgba(240,238,248,.3);font-size:.82rem;">Cargando inscritos…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Permisos -->
+    <div id="at-permisos" class="atab-content" style="display:none;padding:1.5rem 1.75rem;">
+      <div style="font-size:.85rem;font-weight:600;color:#f0eef8;margin-bottom:.35rem;">Control de acceso por usuario</div>
+      <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-bottom:1.25rem;">Activa o desactiva el acceso a cada módulo por persona.</div>
+      <div style="background:rgba(99,30,235,.08);border:1px solid rgba(99,30,235,.25);border-radius:12px;padding:1.25rem;">
+        <div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;">
+          <input id="perm-email" type="email" placeholder="correo del usuario"
+            style="flex:1;min-width:200px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
+          <button onclick="buscarPermisos()" style="background:#631EEB;color:#fff;border:none;border-radius:8px;padding:.6rem 1.1rem;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;">Buscar</button>
+        </div>
+        <div id="perm-result" style="font-size:.82rem;color:rgba(240,238,248,.4);">Ingresa un correo para ver y editar sus permisos.</div>
+      </div>
+      <div style="margin-top:1.25rem;">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,238,248,.35);margin-bottom:.75rem;">Módulos disponibles — MPS</div>
+        <div id="modulos-permisos" style="display:flex;flex-direction:column;gap:.5rem;">
+          <!-- Se llena dinámicamente -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Ligas de acceso -->
+    <div id="at-ligas" class="atab-content" style="display:none;padding:1.5rem 1.75rem;">
+      <div style="font-size:.85rem;font-weight:600;color:#f0eef8;margin-bottom:.35rem;">Ligas de acceso al curso</div>
+      <div style="font-size:.75rem;color:rgba(240,238,248,.4);margin-bottom:1.25rem;">Genera un link único para que un usuario acceda al curso sin pago manual.</div>
+      <div style="background:rgba(99,30,235,.08);border:1px solid rgba(99,30,235,.25);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
+        <div style="font-size:.78rem;font-weight:600;color:rgba(240,238,248,.7);margin-bottom:.75rem;">Crear nueva liga de acceso</div>
+        <div style="display:flex;gap:.75rem;margin-bottom:.75rem;flex-wrap:wrap;">
+          <input id="liga-email" type="email" placeholder="correo del destinatario"
+            style="flex:1;min-width:200px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
+          <input id="liga-nombre" type="text" placeholder="nombre (opcional)"
+            style="flex:1;min-width:160px;padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
+        </div>
+        <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">
+          <select id="liga-duracion" style="padding:.6rem .85rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#f0eef8;font-size:.84rem;font-family:inherit;outline:none;">
+            <option value="30">30 días</option>
+            <option value="90">90 días</option>
+            <option value="180" selected>6 meses</option>
+            <option value="365">1 año</option>
+            <option value="0">Sin expiración</option>
+          </select>
+          <button onclick="generarLiga()" style="background:#631EEB;color:#fff;border:none;border-radius:8px;padding:.6rem 1.25rem;font-size:.84rem;font-weight:600;cursor:pointer;font-family:inherit;">Generar liga</button>
+        </div>
+      </div>
+      <div id="liga-generada" style="display:none;background:rgba(14,165,160,.08);border:1px solid rgba(14,165,160,.3);border-radius:10px;padding:1rem;">
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0ea5a0;margin-bottom:.5rem;">Liga generada</div>
+        <div style="display:flex;gap:.65rem;align-items:center;">
+          <input id="liga-url" readonly style="flex:1;padding:.55rem .8rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#f0eef8;font-size:.78rem;font-family:monospace;outline:none;">
+          <button onclick="copiarLiga()" style="background:rgba(14,165,160,.25);color:#0ea5a0;border:1px solid rgba(14,165,160,.4);border-radius:7px;padding:.5rem .9rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;">Copiar</button>
+        </div>
+        <div id="liga-copy-ok" style="display:none;font-size:.72rem;color:#0ea5a0;margin-top:.4rem;">✓ Copiado al portapapeles</div>
+      </div>
+      <div style="margin-top:1.5rem;">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,238,248,.35);margin-bottom:.75rem;">Ligas activas</div>
+        <div id="ligas-activas" style="font-size:.82rem;color:rgba(240,238,248,.35);">Sin ligas generadas aún.</div>
+      </div>
+    </div>
+
+    <!-- Tab: Estadísticas -->
+    <div id="at-stats" class="atab-content" style="display:none;padding:1.5rem 1.75rem;">
+      <div style="font-size:.85rem;font-weight:600;color:#f0eef8;margin-bottom:1rem;">Resumen del curso</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.85rem;margin-bottom:1.5rem;">
+        <div style="background:rgba(99,30,235,.1);border:1px solid rgba(99,30,235,.2);border-radius:12px;padding:1rem;">
+          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#631EEB;" id="stat-inscritos">—</div>
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);">Inscritos totales</div>
+        </div>
+        <div style="background:rgba(14,165,160,.08);border:1px solid rgba(14,165,160,.2);border-radius:12px;padding:1rem;">
+          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#0ea5a0;" id="stat-activos">—</div>
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);">Accesos activos</div>
+        </div>
+        <div style="background:rgba(232,104,42,.08);border:1px solid rgba(232,104,42,.2);border-radius:12px;padding:1rem;">
+          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#E8682A;" id="stat-ligas">—</div>
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);">Ligas generadas</div>
+        </div>
+        <div style="background:rgba(99,30,235,.1);border:1px solid rgba(99,30,235,.2);border-radius:12px;padding:1rem;">
+          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:900;color:#631EEB;" id="stat-ingresos">—</div>
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,238,248,.4);">Ingresos MXN</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.1rem;text-align:center;color:rgba(240,238,248,.3);font-size:.82rem;">
+        Las estadísticas detalladas estarán disponibles cuando se conecte el backend de cursos.
+      </div>
+    </div>
+
+    <!-- Footer del modal admin -->
+    <div style="padding:1rem 1.75rem;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
+      <a href="admin.html" target="_blank" style="font-size:.78rem;color:rgba(240,238,248,.4);text-decoration:none;">Ir al panel admin completo →</a>
+      <button onclick="closeAdminModal()" style="background:rgba(255,255,255,.07);color:#f0eef8;border:none;border-radius:8px;padding:.5rem 1.1rem;font-size:.82rem;cursor:pointer;font-family:inherit;">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Login inline ──
+function ssAbrirLoginCursos(){
+  var m = document.getElementById('cursos-login-modal');
+  m.style.display = 'flex';
+}
+function closeCursosLogin(){
+  document.getElementById('cursos-login-modal').style.display = 'none';
+}
+
+async function doCursosLogin(){
+  var email = document.getElementById('cursos-li-email').value.trim();
+  var pass  = document.getElementById('cursos-li-pass').value;
+  var err   = document.getElementById('cursos-li-err');
+  var btn   = document.getElementById('cursos-li-btn');
+  if(!email||!pass){ err.textContent='Completa todos los campos.'; err.style.display='block'; return; }
+  btn.textContent='Entrando...'; btn.disabled=true;
+  try{
+    var h = await sha256(pass);
+    var r = await api('loginUsuario',{email:email,passHash:h});
+    if(r&&r.ok){
+      // Guardar sesión
+      var userData = {token:r.token||('u_'+Date.now()),nombre:r.nombre||'',email:r.email||email,isAdmin:r.isAdmin||false};
+      try{ localStorage.setItem('ss_user_v2', JSON.stringify({data:userData,expires:Date.now()+8*3600*1000})); }catch(e){}
+      try{ localStorage.setItem('ss_user', JSON.stringify(userData)); }catch(e){}
+      if(r.isAdmin||(r.token&&r.token.indexOf('admin_')===0)){
+        try{
+          var ar = await api('loginAdmin',{email:email,passHash:h});
+          if(ar&&ar.ok){
+            localStorage.setItem('ss_admin', JSON.stringify({token:ar.token,email:ar.email}));
+            try{ localStorage.setItem('ss_admin_v2', JSON.stringify({data:{token:ar.token,email:ar.email},expires:Date.now()+8*3600*1000})); }catch(e){}
+          }
+        }catch(e){}
+      }
+      closeCursosLogin();
+      location.reload();
+    } else {
+      err.textContent=(r&&r.error)||'Correo o contraseña incorrectos.';
+      err.style.display='block';
+      btn.textContent='Entrar'; btn.disabled=false;
+    }
+  }catch(e){
+    err.textContent='Error de conexión. Intenta de nuevo.';
+    err.style.display='block';
+    btn.textContent='Entrar'; btn.disabled=false;
+  }
+}
+
+// ── Admin modal ──
+function openCursoModal(id){
+  if(isAdmin()){
+    var m = document.getElementById('modal-admin-mps');
+    m.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    loadAdminData();
+  } else {
+    openModal(id);
+  }
+}
+function closeAdminModal(){
+  document.getElementById('modal-admin-mps').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// Tabs del panel admin
+function showATab(btn, tabId){
+  document.querySelectorAll('.atab-content').forEach(t => t.style.display = 'none');
+  document.querySelectorAll('.atab').forEach(b => {
+    b.style.borderBottomColor = 'transparent';
+    b.style.color = 'rgba(240,238,248,.45)';
+  });
+  document.getElementById(tabId).style.display = 'block';
+  btn.style.borderBottomColor = '#631EEB';
+  btn.style.color = '#f0eef8';
+}
+
+// Cargar datos admin (placeholder — conectar al backend cuando esté listo)
+var _ligasGeneradas = JSON.parse(localStorage.getItem('cursos_ligas_mps') || '[]');
+var _inscritosData  = JSON.parse(localStorage.getItem('cursos_inscritos_mps') || '[]');
+
+function loadAdminData(){
+  // Inscritos
+  var tbody = document.getElementById('inscritos-tbody');
+  if(_inscritosData.length === 0){
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:rgba(240,238,248,.3);font-size:.82rem;">Sin inscritos registrados aún.</td></tr>';
+  } else {
+    tbody.innerHTML = _inscritosData.map(function(u){
+      return '<tr style="border-bottom:1px solid rgba(255,255,255,.05);">' +
+        '<td style="padding:.65rem 1rem;color:#f0eef8;">' + (u.nombre||'—') + '</td>' +
+        '<td style="padding:.65rem 1rem;color:rgba(240,238,248,.6);">' + u.email + '</td>' +
+        '<td style="padding:.65rem 1rem;color:rgba(240,238,248,.45);">' + (u.fecha||'—') + '</td>' +
+        '<td style="padding:.65rem 1rem;"><span style="background:rgba(14,165,160,.15);color:#0ea5a0;border-radius:20px;padding:.2rem .65rem;font-size:.72rem;font-weight:700;">' + (u.estado||'Activo') + '</span></td>' +
+        '<td style="padding:.65rem 1rem;"><button onclick="revocarAcceso('' + u.email + '')" style="background:rgba(255,80,80,.1);color:#ff8080;border:1px solid rgba(255,80,80,.2);border-radius:6px;padding:.25rem .65rem;font-size:.72rem;cursor:pointer;font-family:inherit;">Revocar</button></td>' +
+        '</tr>';
+    }).join('');
+  }
+  // Módulos para permisos
+  var mods = ['M1 · Epistemología','M2 · Cinco componentes','M3 · Diseño mixto','M4 · Ciclo del contexto','M5 · Análisis cultural','M6 · Aplicaciones'];
+  document.getElementById('modulos-permisos').innerHTML = mods.map(function(m,i){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:.65rem 1rem;">' +
+      '<span style="font-size:.84rem;color:#f0eef8;">' + m + '</span>' +
+      '<label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;">' +
+        '<input type="checkbox" checked style="width:15px;height:15px;accent-color:#631EEB;cursor:pointer;">' +
+        '<span style="font-size:.75rem;color:rgba(240,238,248,.4);">Habilitado</span>' +
+      '</label>' +
+    '</div>';
+  }).join('');
+  // Stats
+  document.getElementById('stat-inscritos').textContent = _inscritosData.length;
+  document.getElementById('stat-activos').textContent = _inscritosData.filter(function(u){return u.estado==='Activo';}).length || _inscritosData.length;
+  document.getElementById('stat-ligas').textContent = _ligasGeneradas.length;
+  document.getElementById('stat-ingresos').textContent = '$' + (_inscritosData.filter(function(u){return u.pago;}).length * 2500).toLocaleString();
+  // Ligas activas
+  renderLigas();
+}
+
+function addInscrito(){
+  var email = prompt('Correo del nuevo inscrito:');
+  if(!email) return;
+  var nombre = prompt('Nombre (opcional):') || '';
+  var hoy = new Date().toLocaleDateString('es-MX');
+  _inscritosData.push({email:email,nombre:nombre,fecha:hoy,estado:'Activo',pago:false});
+  localStorage.setItem('cursos_inscritos_mps', JSON.stringify(_inscritosData));
+  loadAdminData();
+}
+
+function revocarAcceso(email){
+  if(!confirm('¿Revocar acceso de ' + email + '?')) return;
+  _inscritosData = _inscritosData.map(function(u){
+    return u.email===email ? Object.assign({},u,{estado:'Revocado'}) : u;
+  });
+  localStorage.setItem('cursos_inscritos_mps', JSON.stringify(_inscritosData));
+  loadAdminData();
+}
+
+function buscarPermisos(){
+  var email = document.getElementById('perm-email').value.trim();
+  var res = document.getElementById('perm-result');
+  if(!email){ res.textContent='Ingresa un correo.'; return; }
+  var u = _inscritosData.find(function(x){return x.email===email;});
+  res.innerHTML = u
+    ? '<span style="color:#0ea5a0;font-weight:600;">✓ ' + (u.nombre||u.email) + '</span> — <span style="color:rgba(240,238,248,.5);">Estado: ' + u.estado + '</span><br><span style="font-size:.78rem;color:rgba(240,238,248,.35);">Ajusta los módulos abajo.</span>'
+    : '<span style="color:rgba(240,238,248,.4);">No encontrado en la lista de inscritos.</span>';
+}
+
+function generarLiga(){
+  var email = document.getElementById('liga-email').value.trim();
+  var nombre = document.getElementById('liga-nombre').value.trim();
+  var dias = parseInt(document.getElementById('liga-duracion').value);
+  if(!email){ alert('Ingresa el correo del destinatario.'); return; }
+  var token = btoa(email + ':' + Date.now()).replace(/=/g,'');
+  var expira = dias === 0 ? null : new Date(Date.now() + dias*86400000).toLocaleDateString('es-MX');
+  var liga = { token:token, email:email, nombre:nombre, expira:expira||'Sin expiración', creada: new Date().toLocaleDateString('es-MX') };
+  _ligasGeneradas.push(liga);
+  localStorage.setItem('cursos_ligas_mps', JSON.stringify(_ligasGeneradas));
+  var url = window.location.origin + '/cursos.html?acceso=' + token;
+  document.getElementById('liga-url').value = url;
+  document.getElementById('liga-generada').style.display = 'block';
+  renderLigas();
+  // Auto-agregar a inscritos si no existe
+  if(!_inscritosData.find(function(u){return u.email===email;})){
+    _inscritosData.push({email:email,nombre:nombre,fecha:new Date().toLocaleDateString('es-MX'),estado:'Activo',pago:false});
+    localStorage.setItem('cursos_inscritos_mps', JSON.stringify(_inscritosData));
+    loadAdminData();
+  }
+}
+
+function copiarLiga(){
+  var url = document.getElementById('liga-url').value;
+  navigator.clipboard.writeText(url).then(function(){
+    document.getElementById('liga-copy-ok').style.display='block';
+    setTimeout(function(){ document.getElementById('liga-copy-ok').style.display='none'; },2500);
+  }).catch(function(){
+    document.getElementById('liga-url').select();
+  });
+}
+
+function renderLigas(){
+  var el = document.getElementById('ligas-activas');
+  if(!el) return;
+  if(_ligasGeneradas.length===0){ el.textContent='Sin ligas generadas aún.'; return; }
+  el.innerHTML = _ligasGeneradas.slice().reverse().map(function(l){
+    return '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem;">' +
+      '<div>' +
+        '<div style="font-size:.83rem;color:#f0eef8;font-weight:600;">' + (l.nombre||l.email) + '</div>' +
+        '<div style="font-size:.72rem;color:rgba(240,238,248,.4);">' + l.email + ' · Expira: ' + l.expira + '</div>' +
+      '</div>' +
+      '<span style="font-size:.7rem;color:rgba(240,238,248,.3);">Creada ' + l.creada + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+// Escape cierra modal admin
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape') closeAdminModal();
+});
+</script>
+
 </body>
 </html>
