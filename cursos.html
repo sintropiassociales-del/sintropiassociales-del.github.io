@@ -615,7 +615,7 @@ body { padding-top: 64px; }
     <div class="ss-nav-links" id="ss-nav-links">
       <a href="inicio.html">Inicio</a>
       <div class="ss-dd" id="dd-herr">
-        <button class="ss-dd-btn" onclick="ssToggleDD(this)">
+        <button class="ss-dd-btn" onclick="event.stopPropagation();ssToggleDD(this)">
           Herramientas
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
@@ -626,7 +626,7 @@ body { padding-top: 64px; }
         </div>
       </div>
       <div class="ss-dd" id="dd-serv">
-        <button class="ss-dd-btn" onclick="ssToggleDD(this)">
+        <button class="ss-dd-btn" onclick="event.stopPropagation();ssToggleDD(this)">
           Servicios
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
@@ -660,6 +660,7 @@ body { padding-top: 64px; }
 </nav>
 <script>
 function ssToggleDD(el){el.closest('.ss-dd').classList.toggle('open');}
+function ssLogoutInline(){['ss_user_v2','ss_admin_v2','ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});window.location.href='inicio.html';}
 function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
 function ssMobileNav(){document.querySelector('.ss-nav-links').classList.toggle('open');}
 document.addEventListener('click',function(e){
@@ -682,7 +683,7 @@ document.addEventListener('click',function(e){
   if(el && u){
     var label = u.nombre || (u.email ? u.email.split('@')[0] : 'Usuario');
     var adminLink = isAdmin() ? '<a href="admin.html" style="font-size:.78rem;color:rgba(240,238,248,.5);text-decoration:none;padding:.3rem .6rem;">Área interna</a>' : '';
-    el.innerHTML = adminLink + '<button onclick="(function(){['ss_user_v2','ss_admin_v2','ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});window.location.href='inicio.html';})()" style="background:var(--purple,#631EEB);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
+    el.innerHTML = adminLink + '<button onclick="ssLogoutInline()" style="background:var(--purple,#631EEB);color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
   }
 })();
 </script>
@@ -967,10 +968,12 @@ function closeModal(e, id) {
   if (e.target === e.currentTarget) closeModalById(id);
 }
 function checkPaypal(e, id) {
+  e.preventDefault();
   const link = PAYPAL_LINKS[id];
   if (!link) {
-    e.preventDefault();
     alert('El enlace de pago estará disponible muy pronto. Mientras tanto escríbenos a hola@sintropiasocial.com');
+  } else {
+    window.open(link, '_blank');
   }
 }
 
