@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Políticas de Uso · Sintropía Social</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --morado: #631eeb;
+      --morado-light: rgba(99,30,235,.08);
+      --bg: #ffffff;
+      --fg: #1a1730;
+      --fg-mid: #3d3556;
+      --fg-light: #6e6990;
+      --border: rgba(99,30,235,.15);
+      --surface: #f7f6fc;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0e0c18;
+        --fg: #f0eef8;
+        --fg-mid: #c5bfe8;
+        --fg-light: #8b84b0;
+        --border: rgba(99,30,235,.2);
+        --surface: #1a1730;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0e0c18;
+      --fg: #f0eef8;
+      --fg-mid: #c5bfe8;
+      --fg-light: #8b84b0;
+      --border: rgba(99,30,235,.2);
+      --surface: #1a1730;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Open Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    /* ── NAV ── */
+    nav.top-nav {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: .85rem clamp(16px,4vw,48px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    nav.top-nav .brand {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--morado);
+      text-decoration: none;
+    }
+    nav.top-nav .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    nav.top-nav .nav-links a {
+      font-size: .88rem;
+      color: var(--fg-light);
+      text-decoration: none;
+      transition: color .15s;
+    }
+    nav.top-nav .nav-links a:hover { color: var(--fg); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--morado) 0%, #9b59e8 100%);
+      color: #fff;
+      padding: 3.5rem clamp(16px,4vw,48px) 3rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: .75rem;
+      text-wrap: balance;
+    }
+    .hero p {
+      font-size: 1rem;
+      opacity: .85;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+    .hero .updated {
+      display: inline-block;
+      margin-top: 1.25rem;
+      font-size: .8rem;
+      opacity: .7;
+      background: rgba(255,255,255,.12);
+      padding: .3rem .9rem;
+      border-radius: 20px;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2.5rem clamp(16px,4vw,40px) 4rem;
+    }
+
+    /* Índice */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--morado);
+      border-radius: 0 10px 10px 0;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .toc h3 {
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--morado);
+      margin-bottom: .85rem;
+    }
+    .toc ol {
+      padding-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+    }
+    .toc a {
+      color: var(--fg-mid);
+      text-decoration: none;
+      font-size: .9rem;
+    }
+    .toc a:hover { color: var(--morado); text-decoration: underline; }
+
+    /* Secciones */
+    section {
+      margin-bottom: 2.75rem;
+      scroll-margin-top: 80px;
+    }
+    section h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--morado);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: .5rem;
+      margin-bottom: 1.1rem;
+    }
+    section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--fg);
+      margin: 1.25rem 0 .5rem;
+    }
+    section p {
+      color: var(--fg-mid);
+      margin-bottom: .85rem;
+    }
+    section ul, section ol {
+      padding-left: 1.4rem;
+      color: var(--fg-mid);
+      display: flex;
+      flex-direction: column;
+      gap: .45rem;
+      margin-bottom: .85rem;
+    }
+    section li { line-height: 1.6; }
+
+    .highlight-box {
+      background: var(--morado-light);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+      margin: 1.1rem 0;
+      color: var(--fg-mid);
+      font-size: .95rem;
+    }
+    .highlight-box strong { color: var(--fg); }
+
+    /* Contacto */
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .contact-card p { color: var(--fg-mid); margin-bottom: .6rem; }
+    .contact-card a {
+      display: inline-block;
+      background: var(--morado);
+      color: #fff;
+      text-decoration: none;
+      padding: .6rem 1.6rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: .9rem;
+      margin-top: .4rem;
+    }
+    .contact-card a:hover { opacity: .9; }
+
+    /* Footer */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem clamp(16px,4vw,48px);
+    }
+    footer .fi {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+    footer .fb { color: var(--morado); font-weight: 700; font-size: .9rem; }
+    footer ul { list-style: none; display: flex; flex-wrap: wrap; gap: .25rem .1rem; }
+    footer ul a {
+      text-decoration: none;
+      font-size: .82rem;
+      color: var(--fg-light);
+      padding: .3rem .65rem;
+      border-radius: 6px;
+    }
+    footer ul a:hover { color: var(--fg); background: rgba(99,30,235,.08); }
+  </style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="inicio.html" class="brand">Sintropía Social</a>
+  <ul class="nav-links">
+    <li><a href="inicio.html">Inicio</a></li>
+    <li><a href="herramientas.html">Herramientas</a></li>
+    <li><a href="servicios.html">Servicios</a></li>
+    <li><a href="newsletter.html">Newsletter</a></li>
+    <li><a href="contribuir.html">Contribuir</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <h1>Políticas de Uso</h1>
+  <p>Condiciones de uso, privacidad y tratamiento de datos para los servicios de Sintropía Social</p>
+  <span class="updated">Última actualización: octubre 2024</span>
+</div>
+
+<main>
+  <nav class="toc">
+    <h3>Contenido</h3>
+    <ol>
+      <li><a href="#aceptacion">Aceptación de las condiciones</a></li>
+      <li><a href="#servicios">Descripción de los servicios</a></li>
+      <li><a href="#uso-aceptable">Uso aceptable</a></li>
+      <li><a href="#datos">Datos personales y privacidad</a></li>
+      <li><a href="#contenido">Contenido y propiedad intelectual</a></li>
+      <li><a href="#newsletter">Newsletter y comunicaciones</a></li>
+      <li><a href="#cookies">Cookies y tecnologías similares</a></li>
+      <li><a href="#responsabilidad">Limitación de responsabilidad</a></li>
+      <li><a href="#modificaciones">Modificaciones a estas políticas</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ol>
+  </nav>
+
+  <section id="aceptacion">
+    <h2>1. Aceptación de las condiciones</h2>
+    <p>Al acceder o utilizar cualquier servicio de <strong>Sintropía Social</strong> —incluyendo el sitio web, las herramientas, la newsletter, los cursos y cualquier otro producto o plataforma que operemos— aceptas estar vinculado a estas Políticas de Uso.</p>
+    <p>Si no estás de acuerdo con alguna de las condiciones aquí descritas, te pedimos que no utilices nuestros servicios. El uso continuado de los servicios implica la aceptación plena de estas políticas.</p>
+    <div class="highlight-box">
+      <strong>Sintropía Social</strong> es un proyecto dedicado al fortalecimiento de organizaciones sociales, comunidades y personas comprometidas con la transformación social. Nuestra misión orienta todas las decisiones sobre cómo tratamos tus datos y tu participación.
+    </div>
+  </section>
+
+  <section id="servicios">
+    <h2>2. Descripción de los servicios</h2>
+    <p>Sintropía Social ofrece los siguientes servicios principales:</p>
+    <ul>
+      <li><strong>Herramientas digitales:</strong> recursos y utilidades para el análisis sociolaboral, gestión de proyectos comunitarios y trabajo organizacional.</li>
+      <li><strong>Newsletter:</strong> publicación periódica con contenido sobre transformación social, herramientas y reflexiones del equipo.</li>
+      <li><strong>Cursos y formación:</strong> espacios de aprendizaje sobre metodologías de organización, análisis social y desarrollo comunitario.</li>
+      <li><strong>Servicios de consultoría:</strong> acompañamiento a organizaciones y equipos en procesos de diagnóstico, planificación y acción colectiva.</li>
+      <li><strong>Anecdotario:</strong> repositorio colaborativo de citas, reflexiones y saberes de la práctica organizacional.</li>
+    </ul>
+    <p>Los servicios están disponibles para personas, organizaciones y equipos que trabajan en contextos de transformación social, sin importar su tamaño o ubicación geográfica.</p>
+  </section>
+
+  <section id="uso-aceptable">
+    <h2>3. Uso aceptable</h2>
+    <h3>3.1 Usos permitidos</h3>
+    <p>Puedes utilizar los servicios de Sintropía Social para:</p>
+    <ul>
+      <li>Acceder a herramientas y recursos con fines de aprendizaje, investigación o trabajo organizacional.</li>
+      <li>Registrarte en nuestra newsletter y recibir comunicaciones periódicas.</li>
+      <li>Inscribirte en cursos y participar activamente en los espacios de formación.</li>
+      <li>Contribuir con contenido al Anecdotario, siempre que sea de tu autoría o cuentes con los permisos necesarios.</li>
+      <li>Solicitar servicios de consultoría o acompañamiento para tu organización.</li>
+    </ul>
+
+    <h3>3.2 Usos no permitidos</h3>
+    <p>Queda expresamente prohibido:</p>
+    <ul>
+      <li>Utilizar los servicios para actividades ilegales, fraudulentas o que violen derechos de terceros.</li>
+      <li>Compartir, redistribuir o comercializar los materiales y recursos sin autorización expresa.</li>
+      <li>Suplantar la identidad de Sintropía Social o de cualquier persona vinculada al proyecto.</li>
+      <li>Introducir virus, malware u otro código dañino en los sistemas.</li>
+      <li>Recopilar datos de usuarios u otros participantes sin su consentimiento.</li>
+      <li>Usar los servicios para difundir desinformación, discurso de odio o contenido discriminatorio.</li>
+    </ul>
+  </section>
+
+  <section id="datos">
+    <h2>4. Datos personales y privacidad</h2>
+    <h3>4.1 Qué datos recopilamos</h3>
+    <p>Recopilamos únicamente los datos necesarios para prestarte los servicios que solicitas:</p>
+    <ul>
+      <li><strong>Datos de registro:</strong> nombre, correo electrónico y contraseña (almacenada de forma cifrada).</li>
+      <li><strong>Datos de uso:</strong> interacciones con los servicios, cursos completados, herramientas utilizadas.</li>
+      <li><strong>Contenido que compartes:</strong> contribuciones al Anecdotario, consultas enviadas o materiales que nos envíes voluntariamente.</li>
+    </ul>
+
+    <h3>4.2 Para qué usamos tus datos</h3>
+    <ul>
+      <li>Prestarte los servicios que has solicitado o contratado.</li>
+      <li>Enviarte comunicaciones relacionadas con los servicios a los que te has suscrito.</li>
+      <li>Mejorar continuamente nuestras herramientas y contenidos.</li>
+      <li>Cumplir con obligaciones legales aplicables.</li>
+    </ul>
+
+    <h3>4.3 Tus derechos</h3>
+    <p>Tienes derecho a:</p>
+    <ul>
+      <li><strong>Acceso:</strong> solicitar información sobre los datos que tenemos sobre ti.</li>
+      <li><strong>Rectificación:</strong> corregir datos incorrectos o desactualizados.</li>
+      <li><strong>Eliminación:</strong> solicitar la eliminación de tus datos personales.</li>
+      <li><strong>Portabilidad:</strong> recibir tus datos en un formato estructurado y legible.</li>
+      <li><strong>Oposición:</strong> oponerte al tratamiento de tus datos para fines de comunicación.</li>
+    </ul>
+    <p>Para ejercer cualquiera de estos derechos, escríbenos a <strong>contacto@sintropiasocial.com</strong> con el asunto "Derechos sobre datos personales".</p>
+
+    <h3>4.4 Almacenamiento y seguridad</h3>
+    <p>Los datos se almacenan en servidores seguros con acceso restringido. Las contraseñas se guardan únicamente en forma de hash irreversible. No vendemos ni cedemos tus datos a terceros con fines comerciales.</p>
+  </section>
+
+  <section id="contenido">
+    <h2>5. Contenido y propiedad intelectual</h2>
+    <h3>5.1 Contenido de Sintropía Social</h3>
+    <p>Todos los materiales, textos, herramientas, diseños y recursos publicados por Sintropía Social están protegidos por derechos de autor. Su reproducción total o parcial requiere autorización expresa y por escrito.</p>
+    <p>Algunos recursos se publican bajo licencias Creative Commons, en cuyo caso se indica explícitamente la licencia aplicable junto al recurso.</p>
+
+    <h3>5.2 Contenido que tú aportas</h3>
+    <p>Al contribuir con contenido a nuestros servicios (Anecdotario, foros, cursos), confirmas que:</p>
+    <ul>
+      <li>El contenido es de tu autoría o cuentas con los permisos necesarios para compartirlo.</li>
+      <li>Autorizas a Sintropía Social a publicar, reproducir y distribuir el contenido en el marco de sus servicios.</li>
+      <li>El contenido no vulnera derechos de terceros ni contiene material ilegal o inapropiado.</li>
+    </ul>
+    <p>Nos reservamos el derecho de no publicar o retirar contenido que no cumpla estas condiciones o que consideremos inapropiado para la misión del proyecto.</p>
+  </section>
+
+  <section id="newsletter">
+    <h2>6. Newsletter y comunicaciones</h2>
+    <p>Al suscribirte a nuestra newsletter aceptas recibir comunicaciones periódicas sobre actividades, publicaciones y proyectos de Sintropía Social.</p>
+    <ul>
+      <li>Puedes darte de baja en cualquier momento haciendo clic en el enlace de baja que incluye cada correo.</li>
+      <li>También puedes solicitar la baja escribiendo a <strong>contacto@sintropiasocial.com</strong>.</li>
+      <li>No compartiremos tu correo con terceros sin tu consentimiento explícito.</li>
+      <li>La frecuencia de envío es variable; procuramos no saturar tu bandeja de entrada.</li>
+    </ul>
+  </section>
+
+  <section id="cookies">
+    <h2>7. Cookies y tecnologías similares</h2>
+    <p>Nuestro sitio utiliza tecnologías de almacenamiento local (localStorage del navegador) para:</p>
+    <ul>
+      <li>Mantener tu sesión activa mientras navegas por el sitio.</li>
+      <li>Recordar preferencias de visualización.</li>
+      <li>Almacenar datos de cursos y progreso de forma temporal.</li>
+    </ul>
+    <p>No utilizamos cookies de seguimiento con fines publicitarios ni compartimos estos datos con plataformas de análisis externas. Puedes limpiar el almacenamiento local desde la configuración de tu navegador en cualquier momento.</p>
+  </section>
+
+  <section id="responsabilidad">
+    <h2>8. Limitación de responsabilidad</h2>
+    <p>Los servicios de Sintropía Social se prestan "tal como están". Si bien hacemos nuestro mejor esfuerzo para mantener la disponibilidad y calidad, no garantizamos:</p>
+    <ul>
+      <li>Disponibilidad ininterrumpida de los servicios.</li>
+      <li>Ausencia de errores o inexactitudes en los contenidos.</li>
+      <li>Que los servicios sean adecuados para todos los usos o contextos posibles.</li>
+    </ul>
+    <p>En ningún caso Sintropía Social será responsable por daños indirectos, pérdida de datos o perjuicios derivados del uso o imposibilidad de uso de los servicios.</p>
+  </section>
+
+  <section id="modificaciones">
+    <h2>9. Modificaciones a estas políticas</h2>
+    <p>Podemos actualizar estas políticas cuando sea necesario para reflejar cambios en nuestros servicios, la legislación aplicable o las mejores prácticas del sector.</p>
+    <p>Cuando realicemos cambios significativos, te lo notificaremos a través de la newsletter o mediante un aviso visible en el sitio. La fecha de última actualización siempre estará indicada al inicio de este documento.</p>
+    <p>El uso continuado de los servicios tras la publicación de cambios implica la aceptación de las políticas actualizadas.</p>
+  </section>
+
+  <section id="contacto">
+    <h2>10. Contacto</h2>
+    <p>Si tienes preguntas, dudas o deseas ejercer tus derechos sobre tus datos personales, puedes contactarnos:</p>
+    <div class="contact-card">
+      <p><strong>Sintropía Social</strong><br>Equipo de coordinación</p>
+      <p>contacto@sintropiasocial.com</p>
+      <a href="mailto:contacto@sintropiasocial.com">Escribirnos por correo</a>
+    </div>
+    <p style="margin-top:1.25rem;font-size:.88rem;">Nos comprometemos a responder toda consulta en un plazo máximo de 5 días hábiles.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="fi">
+    <span class="fb">Sintropía Social</span>
+    <ul>
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="herramientas.html">Herramientas</a></li>
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="newsletter.html">Newsletter</a></li>
+      <li><a href="contribuir.html">Contribuir</a></li>
+      <li><a href="politicas-de-uso.html">Políticas</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

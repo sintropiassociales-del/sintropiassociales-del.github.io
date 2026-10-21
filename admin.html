@@ -958,9 +958,21 @@
       blogPosts: []
     };
 
-    // Check if already logged in
+    // Check if already logged in — verifica ambos sistemas de auth (ss_admin y ss_admin_v2)
+    function _checkAnyAdminSession() {
+      // Sistema nuevo (nav.js): ss_admin_v2 con TTL
+      try {
+        var v2 = JSON.parse(localStorage.getItem('ss_admin_v2') || 'null');
+        if (v2 && v2.data && v2.data.token) {
+          if (!v2.expires || Date.now() < v2.expires) return true;
+        }
+      } catch(e) {}
+      // Sistema viejo (config.js): ss_admin sin TTL
+      return Auth.isAdmin();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-      if (Auth.isAdmin()) {
+      if (_checkAnyAdminSession()) {
         showAdminPanel();
       }
     });
