@@ -60,7 +60,7 @@ var SS_AUTH = (function(){
       ['ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){
         try{ localStorage.removeItem(k); }catch(e){}
       });
-      window.location.href = 'inicio.html';
+      window.location.href = 'index.html';
     }
   };
 })();
@@ -70,12 +70,12 @@ var SS_AUTH = (function(){
 // ── Nav bar markup ──
 var SINTRO_NAV_HTML = `
 <nav class="ss-nav">
-  <a href="inicio.html" class="ss-nav-logo">
+  <a href="index.html" class="ss-nav-logo">
     <img src="logo.png" alt="Sintropía Social" onerror="this.style.display='none'"/>
     Sintropía Social
   </a>
   <ul class="ss-nav-links" id="ss-nav-links">
-    <li><a href="inicio.html" data-navkey="inicio">Inicio</a></li>
+    <li><a href="index.html" data-navkey="inicio">Inicio</a></li>
 
     <li>
       <div class="ss-dd" id="dd-herr">
@@ -181,7 +181,8 @@ async function ssDoLogin(){
     var h = await sha256(pass);
     var r = await api('loginUsuario',{email:email,passHash:h});
     if(r&&r.ok){
-      ssSetUser({ token:r.token||('u_'+Date.now()), nombre:r.nombre||'', email:r.email||email, isAdmin:r.isAdmin||false });
+      var _fixEnc=function(s){try{return s?decodeURIComponent(escape(s)):s;}catch(e){return s;}};
+      ssSetUser({ token:r.token||('u_'+Date.now()), nombre:_fixEnc(r.nombre||''), email:r.email||email, isAdmin:r.isAdmin||false });
       if(_sintroActivePage === 'admin'){
         ssCerrarLogin();
         if(r.isAdmin) window.location.href='admin.html';

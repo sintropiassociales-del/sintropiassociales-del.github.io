@@ -2017,7 +2017,8 @@ function setupLoginForm() {
       var passHash = await sha256(password);
       var result = await api('loginUsuario', { email: email, passHash: passHash });
       if (result.ok) {
-        Auth.setUser({ token: result.token || ('user_' + result.id), nombre: (result.user && result.user.nombre) || result.nombre || '', apellido: (result.user && result.user.apellido) || result.apellido || '', email: (result.user && result.user.email) || result.email || '', institucion: (result.user && result.user.institucion) || result.institucion || '', isAdmin: result.isAdmin || false });
+        var _fixEnc = function(s){ try{ return s ? decodeURIComponent(escape(s)) : s; } catch(e){ return s; } };
+        Auth.setUser({ token: result.token || ('user_' + result.id), nombre: _fixEnc((result.user && result.user.nombre) || result.nombre || ''), apellido: _fixEnc((result.user && result.user.apellido) || result.apellido || ''), email: (result.user && result.user.email) || result.email || '', institucion: _fixEnc((result.user && result.user.institucion) || result.institucion || ''), isAdmin: result.isAdmin || false });
         closeLoginModal(); updateNavUser(Auth.getUser());
         document.getElementById('guest-banner').style.display = 'none';
         filterCitas();

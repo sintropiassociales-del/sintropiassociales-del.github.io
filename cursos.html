@@ -154,7 +154,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font-b);font-size:15
       <span class="ss-nav-logo-name">SINTROPÍA SOCIAL</span>
     </a>
     <div class="ss-nav-links" id="ss-nav-links">
-      <a href="inicio.html">Inicio</a>
+      <a href="index.html">Inicio</a>
       <div class="ss-dd" id="dd-herr">
         <button class="ss-dd-btn" onclick="event.stopPropagation();ssToggleDD(this)">
           Herramientas
@@ -204,7 +204,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--font-b);font-size:15
 <script>
 /* Funciones de navegación */
 function ssToggleDD(el){var dd=el.closest('.ss-dd');var o=dd.classList.contains('open');document.querySelectorAll('.ss-dd.open').forEach(function(d){d.classList.remove('open');});if(!o)dd.classList.add('open');}
-function ssLogout(){['ss_user_v2','ss_admin_v2','ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});window.location.href='inicio.html';}
+function ssLogout(){['ss_user_v2','ss_admin_v2','ss_user','ss_admin','sintropia_usuario_actual'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});window.location.href='index.html';}
 function ssToggleServ(el){el.closest('.ss-serv-item').classList.toggle('open');}
 function ssMobileNav(){document.getElementById('ss-nav-links').classList.toggle('open');}
 document.addEventListener('click',function(e){if(!e.target.closest('.ss-nav'))document.querySelectorAll('.ss-dd.open').forEach(function(d){d.classList.remove('open');});});
@@ -560,7 +560,7 @@ async function hacerLogin(){
     }
     /* Sin API: redirigir a inicio.html para login */
     cerrarLogin();
-    window.location.href='inicio.html?volver='+encodeURIComponent(window.location.href);
+    window.location.href='index.html?volver='+encodeURIComponent(window.location.href);
   }catch(e){
     err.textContent=e.message||'Error de conexión. Intenta de nuevo.';
     err.style.display='block';btn.textContent='Entrar';btn.disabled=false;
