@@ -958,6 +958,22 @@
       blogPosts: []
     };
 
+    // Parche: Auth.getToken() original solo lee ss_admin (config.js).
+    // Si el admin entró via nav.js, el token está en ss_admin_v2.
+    // Sobreescribimos getToken para leer ambos.
+    (function(){
+      var _origGetToken = Auth.getToken.bind(Auth);
+      Auth.getToken = function(){
+        var t = _origGetToken();
+        if(t) return t;
+        try{
+          var v2 = JSON.parse(localStorage.getItem('ss_admin_v2')||'null');
+          if(v2&&v2.data&&v2.data.token&&(!v2.expires||Date.now()<v2.expires)) return v2.data.token;
+        }catch(e){}
+        return null;
+      };
+    })();
+
     // Check if already logged in — verifica ambos sistemas de auth (ss_admin y ss_admin_v2)
     function _checkAnyAdminSession() {
       // Sistema nuevo (nav.js): ss_admin_v2 con TTL
@@ -1065,6 +1081,8 @@
       renderCitas();
       renderUsuarios();
       renderBlogPosts();
+      // Cargar suscriptores (stat en dashboard y lista en tab Blog)
+      loadSuscriptores();
     }
 
     function showTab(tabId) {
@@ -1511,6 +1529,9 @@
             r.data.map(function(s){ return '<span class="tag tag-morado">'+s['Email']+'</span>'; }).join('')+
           '</div>'+
           '<p style="font-size:.75rem;color:var(--tx-light);margin-top:.5rem;">'+r.data.length+' suscriptores</p>';
+          // Actualizar stat en dashboard
+          var stat=document.getElementById('admin-stat-suscriptores');
+          if(stat) stat.textContent=r.data.length;
         } else {
           el.textContent='No hay suscriptores registrados aún.';
         }
