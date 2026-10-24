@@ -291,6 +291,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Open+Sauce+One:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
 <!-- Sesión unificada (todas las páginas) -->
 <script src="sesion.js"></script>
+
+<style id="ss-admin-ui">
+/* ── Ajustes visuales del panel (oct 2026) ── */
+.admin-header{background:linear-gradient(120deg,#2a0f6b 0%,#631EEB 100%)!important;padding:1.4rem clamp(16px,4vw,2.5rem)!important;}
+.admin-header h1{color:#fff!important;font-size:1.2rem!important;font-weight:700;letter-spacing:.01em;}
+.admin-header h1::after{content:"Panel de administración";display:block;font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:.25rem;}
+.admin-content{padding:1.75rem clamp(16px,4vw,2.5rem)!important;}
+.tabs{gap:.35rem!important;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)!important;margin-bottom:1.75rem!important;}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;padding:.75rem 1.05rem!important;font-size:.9rem!important;font-weight:500;color:#5b5470!important;border-radius:8px 8px 0 0;}
+.tab:hover{color:var(--morado,#631EEB)!important;background:rgba(99,30,235,.05);}
+.tab.active{color:var(--morado,#631EEB)!important;font-weight:700!important;border-bottom:2px solid var(--morado,#631EEB)!important;}
+/* Cursos y Salud estaban fuera del contenedor: mismos márgenes que el resto */
+#tab-cursos,#tab-salud{max-width:1400px;margin:0 auto;padding:0 clamp(16px,4vw,2.5rem) 2.5rem;}
+#tab-cursos h3,#tab-salud h3{color:#1a1033;}
+#tab-cursos .btn,#tab-salud .btn,.admin-content .btn{width:auto!important;display:inline-flex;align-items:center;justify-content:center;}
+.btn-sm{padding:.5rem 1rem!important;font-size:.85rem!important;border-radius:999px!important;}
+.btn-outline{background:#fff;border:1px solid rgba(99,30,235,.35);color:var(--morado,#631EEB);text-decoration:none;}
+.btn-outline:hover{background:rgba(99,30,235,.07);}
+.ctab{border-radius:999px!important;padding:.45rem 1rem!important;transition:all .15s;}
+.stat-card{box-shadow:0 1px 2px rgba(26,16,51,.04);}
+</style>
 </head>
 <body>
 <div id="sintro-nav"></div>
@@ -330,15 +352,15 @@
 
     <div class="admin-content">
       <div class="tabs">
-        <button class="tab active" onclick="showTab('dashboard')" data-testid="tab-dashboard"> Dashboard</button>
-        <button class="tab" onclick="showTab('pendientes')" data-testid="tab-pendientes">⏳ Pendientes</button>
-        <button class="tab" onclick="showTab('citas')" data-testid="tab-citas"> Citas</button>
-        <button class="tab" onclick="showTab('usuarios')" data-testid="tab-usuarios"> Usuarios</button>
-        <button class="tab" onclick="showTab('blog')" data-testid="tab-blog"> Blog</button>
-        <button class="tab" onclick="showTab('herramientas')" data-testid="tab-herramientas"> ️ Herramientas</button>
-        <button class="tab" onclick="showTab('pdfcitas')" data-testid="tab-pdfcitas"> PDF→Citas</button>
-        <button class="tab" onclick="showTab('cursos')" data-testid="tab-cursos">🎓 Cursos</button>
-        <button class="tab" onclick="showTab('salud')" data-testid="tab-salud">📊 Salud</button>
+        <button class="tab active" onclick="showTab('dashboard')" data-testid="tab-dashboard">Dashboard</button>
+        <button class="tab" onclick="showTab('pendientes')" data-testid="tab-pendientes">Pendientes</button>
+        <button class="tab" onclick="showTab('citas')" data-testid="tab-citas">Citas</button>
+        <button class="tab" onclick="showTab('usuarios')" data-testid="tab-usuarios">Usuarios</button>
+        <button class="tab" onclick="showTab('blog')" data-testid="tab-blog">Blog</button>
+        <button class="tab" onclick="showTab('herramientas')" data-testid="tab-herramientas">Herramientas</button>
+        <button class="tab" onclick="showTab('pdfcitas')" data-testid="tab-pdfcitas">PDF→Citas</button>
+        <button class="tab" onclick="showTab('cursos')" data-testid="tab-cursos">Cursos</button>
+        <button class="tab" onclick="showTab('salud')" data-testid="tab-salud">Salud</button>
       </div>
 
       <!-- Dashboard Tab -->
@@ -658,7 +680,7 @@
         <div id="pdf-pendientes-loading" class="loading">Cargando citas de PDF...</div>
         <div id="pdf-pendientes-container" style="display:none;">
           <div id="pdf-pendientes-empty" style="display:none;text-align:center;padding:3rem;color:#aaa;">
-            <div style="font-size:2.5rem;margin-bottom:.75rem;">✓</div>
+            
             <p>No hay citas de PDF pendientes de revisión.</p>
           </div>
           <div id="pdf-pendientes-list" style="display:flex;flex-direction:column;gap:1rem;"></div>
@@ -821,10 +843,10 @@
           </div>
           <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--tx-light);margin-bottom:.6rem;">Recursos del módulo</div>
           <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
-            <a href="cursos/modulo1/M1_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
-            <a href="cursos/modulo1/M1_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
-            <a href="cursos/modulo1/M1_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
-            <a href="cursos/modulo1/index_1.html" target="_blank" class="btn btn-primary btn-sm">Índice curricular</a>
+            <a href="cursos/practica-social/modulo-1/M1_infografia.html" target="_blank" class="btn btn-outline btn-sm">Infografía interactiva</a>
+            <a href="cursos/practica-social/modulo-1/M1_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">Lectura PDF</a>
+            <a href="cursos/practica-social/modulo-1/M1_actividad.html" target="_blank" class="btn btn-outline btn-sm">Actividad</a>
+            <a href="cursos/practica-social/index.html" target="_blank" class="btn btn-primary btn-sm">Portada del curso</a>
           </div>
         </div>
       </div>
@@ -841,9 +863,9 @@
         </button>
         <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
           <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
-            <a href="cursos/modulo2/M2_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
-            <a href="cursos/modulo2/M2_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
-            <a href="cursos/modulo2/M2_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+            <a href="cursos/practica-social/modulo-2/M2_infografia.html" target="_blank" class="btn btn-outline btn-sm">Infografía interactiva</a>
+            <a href="cursos/practica-social/modulo-2/M2_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">Lectura PDF</a>
+            <a href="cursos/practica-social/modulo-2/M2_actividad.html" target="_blank" class="btn btn-outline btn-sm">Actividad</a>
           </div>
         </div>
       </div>
@@ -860,9 +882,9 @@
         </button>
         <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
           <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
-            <a href="cursos/modulo3/M3_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
-            <a href="cursos/modulo3/M3_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
-            <a href="cursos/modulo3/M3_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+            <a href="cursos/practica-social/modulo-3/M3_infografia.html" target="_blank" class="btn btn-outline btn-sm">Infografía interactiva</a>
+            <a href="cursos/practica-social/modulo-3/M3_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">Lectura PDF</a>
+            <a href="cursos/practica-social/modulo-3/M3_actividad.html" target="_blank" class="btn btn-outline btn-sm">Actividad</a>
           </div>
         </div>
       </div>
@@ -879,9 +901,9 @@
         </button>
         <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
           <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
-            <a href="cursos/modulo4/M4_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
-            <a href="cursos/modulo4/M4_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
-            <a href="cursos/modulo4/M4_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+            <a href="cursos/practica-social/modulo-4/M4_infografia.html" target="_blank" class="btn btn-outline btn-sm">Infografía interactiva</a>
+            <a href="cursos/practica-social/modulo-4/M4_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">Lectura PDF</a>
+            <a href="cursos/practica-social/modulo-4/M4_actividad.html" target="_blank" class="btn btn-outline btn-sm">Actividad</a>
           </div>
         </div>
       </div>
@@ -898,9 +920,9 @@
         </button>
         <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
           <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
-            <a href="cursos/modulo5/M5_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
-            <a href="cursos/modulo5/M5_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
-            <a href="cursos/modulo5/M5_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+            <a href="cursos/practica-social/modulo-5/M5_infografia.html" target="_blank" class="btn btn-outline btn-sm">Infografía interactiva</a>
+            <a href="cursos/practica-social/modulo-5/M5_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">Lectura PDF</a>
+            <a href="cursos/practica-social/modulo-5/M5_actividad.html" target="_blank" class="btn btn-outline btn-sm">Actividad</a>
           </div>
         </div>
       </div>
@@ -917,9 +939,9 @@
         </button>
         <div class="modulo-body" style="display:none;padding:1.25rem;border-top:1px solid var(--border);background:var(--bg);">
           <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
-            <a href="cursos/modulo6/M6_infografia.html" target="_blank" class="btn btn-outline btn-sm">🗂 Infografía interactiva</a>
-            <a href="cursos/modulo6/M6_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">📄 Lectura PDF</a>
-            <a href="cursos/modulo6/M6_actividad.html" target="_blank" class="btn btn-outline btn-sm">✏️ Actividad</a>
+            <a href="cursos/practica-social/modulo-6/M6_infografia.html" target="_blank" class="btn btn-outline btn-sm">Infografía interactiva</a>
+            <a href="cursos/practica-social/modulo-6/M6_lectura.pdf" target="_blank" class="btn btn-outline btn-sm">Lectura PDF</a>
+            <a href="cursos/practica-social/modulo-6/M6_actividad.html" target="_blank" class="btn btn-outline btn-sm">Actividad</a>
           </div>
         </div>
       </div>
@@ -1009,17 +1031,17 @@
   </div>
 
   <!-- Problemáticas detectadas -->
-  <div style="background:var(--surface);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;">
-    <div style="font-weight:700;font-size:.9rem;margin-bottom:.6rem;">Problemas detectados (errores en páginas, últimos 7 días)</div>
+  <div style="background:var(--surface);border-radius:14px;padding:1.25rem 1.25rem 1.1rem;margin:1.25rem 0;">
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tx-light);margin-bottom:.7rem;">Problemas detectados · últimos 7 días</div>
     <div id="salud-errores" style="max-height:260px;overflow:auto;">Cargando...</div>
   </div>
   <!-- Estado del sitio -->
   <div style="background:var(--surface);border-radius:14px;padding:1.25rem;margin-top:1.25rem;">
     <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx-light);margin-bottom:.85rem;">Estado del sitio</div>
     <div id="salud-estado" style="display:flex;flex-wrap:wrap;gap:.75rem;">
-      <span style="font-size:.82rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.3rem .85rem;font-weight:600;">✓ API conectada</span>
-      <span id="salud-modo-sitio" style="font-size:.82rem;background:rgba(99,30,235,.1);color:var(--morado);border-radius:999px;padding:.3rem .85rem;font-weight:600;">✓ Sitio activo</span>
-      <span style="font-size:.82rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.3rem .85rem;font-weight:600;">✓ GitHub Pages</span>
+      <span style="font-size:.82rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.3rem .85rem;font-weight:600;">API conectada</span>
+      <span id="salud-modo-sitio" style="font-size:.82rem;background:rgba(99,30,235,.1);color:var(--morado);border-radius:999px;padding:.3rem .85rem;font-weight:600;">Sitio activo</span>
+      <span style="font-size:.82rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.3rem .85rem;font-weight:600;">GitHub Pages</span>
     </div>
   </div>
 
@@ -1842,7 +1864,7 @@
               '<span style="font-size:.77rem;color:#888;">Enviada por: '+(p.usuario||'anónimo')+'</span>'+
               '<span style="font-size:.77rem;color:#888;">'+(p.fecha?new Date(p.fecha).toLocaleDateString('es-MX'):'')+'</span>'+
             '</div>'+
-            '<span style="background:#fff7ed;color:#FF7929;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:50px;">⏳ PENDIENTE</span>'+
+            '<span style="background:#fff7ed;color:#FF7929;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:50px;">PENDIENTE</span>'+
           '</div>'+
 
           // ── EDIT FORM ──
@@ -1924,16 +1946,16 @@
       }).then(function(r){
         if(r && r.ok){
           marcarAprobada(idx);
-          showAdminToast('✓ Cita publicada en Google Sheet');
+          showAdminToast('Cita publicada en Google Sheet');
           var card = document.getElementById('pcard-'+idx);
           if(card){
             card.style.borderColor = '#16a34a';
             card.style.background  = '#f0fdf4';
             var badge = card.querySelector('span[style*="FF6B1A"]');
-            if(badge){ badge.textContent='✓ PUBLICADA'; badge.style.background='rgba(22,163,74,.12)'; badge.style.color='#16a34a'; }
+            if(badge){ badge.textContent='PUBLICADA'; badge.style.background='rgba(22,163,74,.12)'; badge.style.color='#16a34a'; }
           }
         } else {
-          if(btn){ btn.textContent='📤 Publicar en Google Sheet'; btn.disabled=false; }
+          if(btn){ btn.textContent='Publicar en Google Sheet'; btn.disabled=false; }
           showAdminToast('Error: '+(r?r.error:'Sin conexión con Apps Script'));
         }
       });
@@ -2061,7 +2083,7 @@
         var rows=d.completados.map(function(u){
           return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);">'
             +'<div><span style="font-weight:600;">'+_esc(u.nombre||'')+'</span> <span style="color:var(--tx-light);font-size:.8rem;">'+_esc(u.email||'')+'</span></div>'
-            +'<span style="font-size:.75rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.2rem .65rem;">✓ Completado '+_esc(u.fecha||'')+(u.constancia?' · constancia '+_esc(u.constancia):'')+'</span>'
+            +'<span style="font-size:.75rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.2rem .65rem;">Completado '+_esc(u.fecha||'')+(u.constancia?' · constancia '+_esc(u.constancia):'')+'</span>'
             +'</div>';
         });
         el.innerHTML=rows.join('');
@@ -2084,7 +2106,7 @@
     _cApi('registrarCurso',{nombre:nombre+' '+apellidos,email:email,institucion:institucion,curso:curso,duracion:duracion})
       .then(function(d){
         if(d&&d.ok){
-          if(st) st.innerHTML='<span style="color:#16a34a;">✓ Listo. Se mandó la liga de acceso a '+_esc(email)+' desde contacto@sintropiasocial.com.</span>'
+          if(st) st.innerHTML='<span style="color:#16a34a;">Listo. Se mandó la liga de acceso a '+_esc(email)+' desde contacto@sintropiasocial.com.</span>'
             +(d.liga?'<div style="margin-top:.5rem;font-size:.75rem;word-break:break-all;color:var(--tx-light);">Liga personal: <a href="'+_esc(d.liga)+'" target="_blank">'+_esc(d.liga)+'</a></div>':'');
           ['ca-nombre','ca-apellidos','ca-email','ca-institucion'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
         } else {
@@ -2105,7 +2127,7 @@
     _cApi('enviarConstancia',{email:email,nombre:nombre,curso:curso,fecha:fecha})
       .then(function(d){
         if(d&&d.ok){
-          if(st) st.innerHTML='<span style="color:#16a34a;">✓ Constancia enviada a '+_esc(email)+'</span>';
+          if(st) st.innerHTML='<span style="color:#16a34a;">Constancia enviada a '+_esc(email)+'</span>';
         } else {
           if(st) st.innerHTML='<span style="color:var(--error);">Error: '+(d&&d.error?_esc(d.error):'respuesta inesperada')+'</span>';
         }
@@ -2161,7 +2183,7 @@
       var sleeping=!!(r&&r.dormido);
       var el=document.getElementById('salud-modo-sitio');
       if(el){
-        el.textContent = sleeping ? '⚠️ Sitio en mantenimiento' : '✓ Sitio activo';
+        el.textContent = sleeping ? 'Sitio en mantenimiento' : 'Sitio activo';
         el.style.background = sleeping ? 'rgba(220,38,38,.1)' : 'rgba(22,163,74,.12)';
         el.style.color = sleeping ? '#dc2626' : '#16a34a';
       }
