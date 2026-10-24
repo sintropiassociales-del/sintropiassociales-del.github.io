@@ -32,6 +32,7 @@
   var LEGACY = ['ss_user','ss_user_v2','ss_admin','ss_admin_v2','sintropia_usuario_actual'];
   var META = 'ss_session';
   var ADMIN_NOMBRE = 'David Salgado López';
+  var ADMIN_EMAILS = ['d.salgado.lpz@gmail.com','sintropiassociales@gmail.com','dsalgado@sintropiasocial.com'];
 
   // ── localStorage seguro ──
   function rd(k){ try{ return JSON.parse(localStorage.getItem(k) || 'null'); }catch(e){ return null; } }
@@ -97,7 +98,7 @@
 
   function logout(){
     clearAll();
-    try{ sessionStorage.removeItem('ss_estado_sitio'); }catch(e){}
+    try{ sessionStorage.removeItem('ss_estado_sitio'); sessionStorage.removeItem('ss_elevar_intento'); }catch(e){}
     window.location.href = 'index.html';
   }
 
@@ -278,6 +279,34 @@
     document.documentElement.style.overflow = 'hidden';
   }
 
+  // ── 6. SESIÓN DE USUARIO ABIERTA CON CORREO DE ADMIN ──
+  // Si la sesión se abrió antes de que el servidor reconociera al admin, se
+  // pide al servidor que la convierta en sesión de admin (una vez por pestaña).
+  function elevar(){
+    if(IS_ADMIN || !USER || !USER.email) return;
+    if(ADMIN_EMAILS.indexOf(String(USER.email).toLowerCase()) === -1) return;
+    try{ if(sessionStorage.getItem('ss_elevar_intento')) return; sessionStorage.setItem('ss_elevar_intento','1'); }catch(e){}
+    jsonp('elevarSesion', { token: USER.token || '' }).then(function(r){
+      if(r && r.ok && r.isAdmin){
+        USER.isAdmin = true;
+        wr('ss_user', USER);
+        wr('ss_admin', { token: USER.token, email: USER.email });
+        location.reload();
+      } else {
+        avisoReentrar();
+      }
+    });
+  }
+  function avisoReentrar(){
+    if(document.getElementById('ssx-reentrar')) return;
+    var d = document.createElement('div');
+    d.id = 'ssx-reentrar';
+    d.style.cssText = 'position:fixed;left:16px;right:16px;bottom:16px;z-index:9999;max-width:520px;margin:0 auto;background:#1a1530;color:#f0eef8;border:1px solid #631EEB;border-radius:14px;padding:14px 16px;font-size:.88rem;line-height:1.5;box-shadow:0 10px 30px rgba(0,0,0,.4);font-family:inherit;';
+    d.innerHTML = 'Tu correo es de administrador, pero esta sesión es anterior al cambio. '+
+      '<button type="button" onclick="SSX.logout()" style="margin-left:.4rem;background:#FF7929;color:#fff;border:none;border-radius:999px;padding:.35rem .9rem;font-weight:700;cursor:pointer;font-family:inherit;">Salir y volver a entrar</button>';
+    document.body.appendChild(d);
+  }
+
   // ── Arranque: después de los scripts propios de cada página ──
   function apply(){ renderNavUser(); adminNav(); }
   function boot(){
@@ -285,6 +314,7 @@
     apply();
     footerLink();
     sleepCheck();
+    elevar();
     // Si algún script de la página vuelve a pintar el botón, lo re-homologamos
     var el = document.getElementById('ss-nav-user');
     if(el && USER && window.MutationObserver){
