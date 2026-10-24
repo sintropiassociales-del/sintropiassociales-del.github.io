@@ -31,6 +31,7 @@
 
   var LEGACY = ['ss_user','ss_user_v2','ss_admin','ss_admin_v2','sintropia_usuario_actual'];
   var META = 'ss_session';
+  var ADMIN_NOMBRE = 'David Salgado López';
 
   // ── localStorage seguro ──
   function rd(k){ try{ return JSON.parse(localStorage.getItem(k) || 'null'); }catch(e){ return null; } }
@@ -73,7 +74,11 @@
       if(fp(admin) !== meta.a) user = { nombre: admin.nombre||'', email: admin.email, token: admin.token, isAdmin:true };
       else admin = null;
     }
-    if(user && admin) user.isAdmin = true;
+    if(user && admin){
+      user.isAdmin = true;
+      // El servidor no devuelve nombre para el admin (o devuelve "Admin")
+      if(!user.nombre || /^admin$/i.test(String(user.nombre).trim())) user.nombre = ADMIN_NOMBRE;
+    }
 
     // Escribir en TODAS las llaves para que cualquier página la lea
     var exp = now + TTL;
@@ -227,18 +232,40 @@
   }
   window.SSX.api = jsonp;
 
+  function pagina(){
+    var f = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/i,'');
+    return f || 'index';
+  }
+  // Una sola llamada por página: cuenta la visita (Salud y crecimiento)
+  // y responde si el sitio está dormido. El admin no cuenta ni se bloquea.
   function sleepCheck(){
-    if(IS_ADMIN) return;                                  // el admin siempre ve el sitio
+    if(IS_ADMIN) return;
     if(/admin\.html$/i.test(location.pathname)) return;   // para poder entrar
     var cached = null;
     try{ cached = JSON.parse(sessionStorage.getItem('ss_estado_sitio') || 'null'); }catch(e){}
-    if(cached && Date.now() - cached.t < 120000){ if(cached.dormido) showSleep(); return; }
-    jsonp('getEstadoSitio', {}).then(function(r){
-      var dormido = !!(r && r.ok && r.dormido);
-      try{ sessionStorage.setItem('ss_estado_sitio', JSON.stringify({ dormido: dormido, t: Date.now() })); }catch(e){}
-      if(dormido) showSleep();
+    if(cached && cached.dormido && Date.now() - cached.t < 120000) showSleep();
+    jsonp('visita', { pagina: pagina() }).then(function(r){
+      if(!r || !r.ok) return;
+      try{ sessionStorage.setItem('ss_estado_sitio', JSON.stringify({ dormido: !!r.dormido, t: Date.now() })); }catch(e){}
+      if(r.dormido) showSleep(); else hideSleep();
     });
   }
+  function hideSleep(){ var d=document.getElementById('ssx-sleep'); if(d){ d.remove(); document.documentElement.style.overflow=''; } }
+
+  // Reporte de errores de JavaScript → pestaña Salud (máx. 3 por página)
+  var _errN = 0;
+  window.addEventListener('error', function(ev){
+    try{
+      if(_errN >= 3) return;
+      var src = ev.filename || '';
+      if(src && src.indexOf(location.origin) !== 0) return;  // ignora extensiones y terceros
+      if(!ev.message || /Script error/i.test(ev.message)) return;
+      _errN++;
+      var line = ev.lineno ? ' (línea ' + ev.lineno + ')' : '';
+      jsonp('registrarError', { pagina: pagina(), mensaje: ev.message + line, ua: navigator.userAgent.slice(0,120) });
+    }catch(e){}
+  });
+
   function showSleep(){
     if(document.getElementById('ssx-sleep')) return;
     var d = document.createElement('div');

@@ -722,15 +722,16 @@
           <label style="display:block;font-size:.78rem;color:var(--tx-light);margin-bottom:.3rem;">Curso</label>
           <select id="ca-curso" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);font-size:.88rem;">
             <option value="mps">Metodología de Práctica Social</option>
+            <option value="tdc">Teoría de Cambio</option>
           </select>
         </div>
         <div>
           <label style="display:block;font-size:.78rem;color:var(--tx-light);margin-bottom:.3rem;">Duración</label>
           <select id="ca-duracion" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);font-size:.88rem;">
-            <option value="30h">30 horas</option>
             <option value="60d">60 días</option>
-            <option value="6m">6 meses</option>
-            <option value="indefinido">Indefinido</option>
+            <option value="6m" selected>6 meses</option>
+            <option value="1a">1 año</option>
+            <option value="indefinido">Sin vencimiento</option>
           </select>
         </div>
       </div>
@@ -946,6 +947,7 @@
         <label style="display:block;font-size:.78rem;color:var(--tx-light);margin-bottom:.3rem;">Curso completado</label>
         <select id="cc-curso" style="width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);font-size:.88rem;">
           <option value="mps">Metodología de Práctica Social (30h)</option>
+          <option value="tdc">Teoría de Cambio (30h)</option>
         </select>
       </div>
       <div style="margin-bottom:1.25rem;">
@@ -1006,6 +1008,11 @@
     </div>
   </div>
 
+  <!-- Problemáticas detectadas -->
+  <div style="background:var(--surface);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;">
+    <div style="font-weight:700;font-size:.9rem;margin-bottom:.6rem;">Problemas detectados (errores en páginas, últimos 7 días)</div>
+    <div id="salud-errores" style="max-height:260px;overflow:auto;">Cargando...</div>
+  </div>
   <!-- Estado del sitio -->
   <div style="background:var(--surface);border-radius:14px;padding:1.25rem;margin-top:1.25rem;">
     <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx-light);margin-bottom:.85rem;">Estado del sitio</div>
@@ -2019,14 +2026,27 @@
           el.innerHTML=_cErr(d,'<p style="color:var(--tx-light);">Sin usuarios inscritos aún.</p>'); return;
         }
         var rows=d.inscritos.map(function(u){
-          return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);">'
-            +'<div><span style="font-weight:600;">'+_esc(u.nombre||'')+'</span> <span style="color:var(--tx-light);font-size:.8rem;">'+_esc(u.email||'')+'</span></div>'
-            +'<span style="font-size:.75rem;background:rgba(99,30,235,.1);color:var(--morado);border-radius:999px;padding:.2rem .65rem;">'+_esc(u.curso||'MPS')+'</span>'
-            +'</div>';
+          var hechos=String(u.avance||'').split(',').filter(String).length;
+          var est=u.estado==='COMPLETADO'
+            ? '<span style="font-size:.72rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.2rem .65rem;">Terminado '+_esc(u.completado||'')+'</span>'
+            : '<button onclick="cMarcarCompletado(\''+_esc(u.email)+'\',\''+_esc(u.curso)+'\',this)" style="font-size:.72rem;background:none;border:1px solid var(--morado);color:var(--morado);border-radius:999px;padding:.2rem .7rem;cursor:pointer;">Marcar como terminado</button>';
+          return '<div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;padding:.7rem 0;border-bottom:1px solid var(--border);">'
+            +'<div><span style="font-weight:600;">'+_esc(u.nombre||'')+'</span> <span style="color:var(--tx-light);font-size:.8rem;">'+_esc(u.email||'')+'</span>'
+            +'<div style="font-size:.75rem;color:var(--tx-light);margin-top:.15rem;">'+_esc(u.cursoNombre||u.curso||'')+' · inscrito '+_esc(u.fecha||'')+(u.expira?' · vence '+_esc(u.expira):'')+' · avance '+hechos+'/6 módulos</div></div>'
+            +est+'</div>';
         });
         el.innerHTML=rows.join('');
       })
       .catch(function(){ el.innerHTML='<p style="color:var(--error);">Error al cargar. Verifica la conexión.</p>'; });
+  }
+
+  function cMarcarCompletado(email,curso,btn){
+    if(!confirm('¿Marcar a '+email+' como terminado? Se le enviará su constancia automáticamente.')) return;
+    btn.disabled=true; btn.textContent='Enviando constancia…';
+    _cApi('marcarCompletado',{email:email,curso:curso}).then(function(d){
+      if(d&&d.ok){ cLoadInscritos(); }
+      else { alert((d&&d.error)||'No se pudo completar.'); btn.disabled=false; btn.textContent='Marcar como terminado'; }
+    });
   }
 
   function cLoadCompletados(){
@@ -2041,7 +2061,7 @@
         var rows=d.completados.map(function(u){
           return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);">'
             +'<div><span style="font-weight:600;">'+_esc(u.nombre||'')+'</span> <span style="color:var(--tx-light);font-size:.8rem;">'+_esc(u.email||'')+'</span></div>'
-            +'<span style="font-size:.75rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.2rem .65rem;">✓ Completado '+_esc(u.fecha||'')+'</span>'
+            +'<span style="font-size:.75rem;background:rgba(22,163,74,.12);color:#16a34a;border-radius:999px;padding:.2rem .65rem;">✓ Completado '+_esc(u.fecha||'')+(u.constancia?' · constancia '+_esc(u.constancia):'')+'</span>'
             +'</div>';
         });
         el.innerHTML=rows.join('');
@@ -2064,7 +2084,8 @@
     _cApi('registrarCurso',{nombre:nombre+' '+apellidos,email:email,institucion:institucion,curso:curso,duracion:duracion})
       .then(function(d){
         if(d&&d.ok){
-          if(st) st.innerHTML='<span style="color:#16a34a;">✓ Registro enviado. Se mandó la liga de acceso a '+_esc(email)+'</span>';
+          if(st) st.innerHTML='<span style="color:#16a34a;">✓ Listo. Se mandó la liga de acceso a '+_esc(email)+' desde contacto@sintropiasocial.com.</span>'
+            +(d.liga?'<div style="margin-top:.5rem;font-size:.75rem;word-break:break-all;color:var(--tx-light);">Liga personal: <a href="'+_esc(d.liga)+'" target="_blank">'+_esc(d.liga)+'</a></div>':'');
           ['ca-nombre','ca-apellidos','ca-email','ca-institucion'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
         } else {
           if(st) st.innerHTML='<span style="color:var(--error);">Error: '+(d&&d.error?_esc(d.error):'respuesta inesperada')+'</span>';
@@ -2111,6 +2132,13 @@
               +'<span>'+_esc(p.page)+'</span><span style="font-weight:700;color:var(--morado);">'+p.visits+'</span></div>';
           }).join('');
         }
+        var elErr=document.getElementById('salud-errores');
+        if(elErr){
+          var er=d.erroresRecientes||[];
+          elErr.innerHTML=er.length?er.map(function(x){
+            return '<div style="padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.8rem;"><span style="color:var(--tx-light);">'+_esc(x.fecha)+' · '+_esc(x.pagina)+'</span><br>'+_esc(x.mensaje)+'</div>';
+          }).join(''):'<span style="color:#16a34a;font-size:.82rem;">Sin errores en los últimos 7 días.</span>';
+        }
         if(d.registros){
           var el2=document.getElementById('salud-registros');
           if(el2) el2.innerHTML=d.registros.map(function(r){
@@ -2128,16 +2156,16 @@
         document.getElementById('salud-paginas').innerHTML='<span style="color:var(--tx-light);font-size:.82rem;">Datos detallados no disponibles.</span>';
         document.getElementById('salud-registros').innerHTML='<span style="color:var(--tx-light);font-size:.82rem;">Datos detallados no disponibles.</span>';
       });
-    // Estado de modo mantenimiento
-    try{
-      var sleeping=localStorage.getItem('ss_site_sleeping')==='1';
+    // Estado de modo mantenimiento (desde el servidor)
+    _cApi('getEstadoSitio',{}).then(function(r){
+      var sleeping=!!(r&&r.dormido);
       var el=document.getElementById('salud-modo-sitio');
       if(el){
         el.textContent = sleeping ? '⚠️ Sitio en mantenimiento' : '✓ Sitio activo';
         el.style.background = sleeping ? 'rgba(220,38,38,.1)' : 'rgba(22,163,74,.12)';
         el.style.color = sleeping ? '#dc2626' : '#16a34a';
       }
-    }catch(e){}
+    });
   }
 
   /* ── LIGAS DIRECTAS: admin.html?tab=cursos#acceso, ?tab=salud, etc. ──

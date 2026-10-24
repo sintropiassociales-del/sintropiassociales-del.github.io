@@ -400,7 +400,8 @@ document.addEventListener('keydown',function(e){
 /* ─── Router: click en tarjeta del curso ─── */
 function openCursoModal(id){
   if(isAdmin()){
-    abrirPanelAdmin();
+    /* El admin gestiona el curso desde el panel real (datos en el servidor) */
+    window.location.href='admin.html?tab=cursos#contenido';
   } else {
     openModal(id);
   }

@@ -580,6 +580,7 @@ function renderNL(){
 
 function renderAnec(){
   var grid = document.getElementById('anec-grid');
+  if(!grid) return;
   grid.innerHTML = '<p style="color:var(--muted,#9B97A8);font-size:.85rem;">Cargando…</p>';
   fetchBlogPosts().then(function(posts){
     var anecPosts = posts.filter(function(p){ return p.categoria === 'Anecdotario'; });

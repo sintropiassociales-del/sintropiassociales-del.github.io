@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acceso al curso — Sintropía Social</title>
+<style>
+  :root{--bg:#0e0c18;--card:#17142a;--fg:#f0eef8;--muted:rgba(240,238,248,.6);--purple:#631EEB;--orange:#FF7929;--green:#00EDAA;}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font-family:"Open Sauce Sans",Inter,Arial,sans-serif;display:flex;flex-direction:column;}
+  header{padding:18px 16px;border-bottom:1px solid rgba(99,30,235,.25);}
+  header a{color:var(--orange);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:.85rem;text-decoration:none;}
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:32px 16px;}
+  .card{width:100%;max-width:520px;background:var(--card);border:1px solid rgba(99,30,235,.4);border-radius:20px;padding:32px 28px;}
+  .tag{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;}
+  h1{font-size:1.6rem;margin:.5rem 0 .75rem;line-height:1.25;}
+  p{color:var(--muted);line-height:1.6;margin:.4rem 0;}
+  .btn{display:inline-block;margin-top:1.25rem;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;padding:12px 24px;border-radius:12px;}
+  .meta{margin-top:1rem;font-size:.85rem;color:var(--muted);}
+  .err{color:#fca5a5;}
+  .dots span{display:inline-block;width:8px;height:8px;margin:0 3px;border-radius:50%;background:var(--purple);animation:b 1s infinite alternate}
+  .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+  @keyframes b{to{opacity:.2;transform:translateY(-4px)}}
+</style>
+<!-- Sesión unificada (todas las páginas) -->
+<script src="sesion.js"></script>
+</head>
+<body>
+<header><a href="index.html">Sintropía Social</a></header>
+<main>
+  <div class="card" id="card">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <p>Verificando tu acceso…</p>
+  </div>
+</main>
+<script src="config.js"></script>
+<script>
+(function(){
+  var card = document.getElementById('card');
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  var t = new URLSearchParams(location.search).get('t');
+  if(!t){
+    try{ var g = JSON.parse(localStorage.getItem('ss_curso_acceso')||'null'); if(g && g.t) t = g.t; }catch(e){}
+  }
+  if(!t){
+    card.innerHTML = '<div class="tag">Acceso al curso</div><h1>Falta tu liga personal</h1><p>Abre la liga que te llegó por correo desde contacto@sintropiasocial.com.</p>';
+    return;
+  }
+  api('validarAccesoCurso', { t: t }).then(function(r){
+    if(!r || !r.ok){
+      card.innerHTML = '<div class="tag">Acceso al curso</div><h1>No pudimos abrir el curso</h1><p class="err">'+esc((r&&r.error)||'Error de conexión. Intenta de nuevo.')+'</p>';
+      return;
+    }
+    try{ localStorage.setItem('ss_curso_acceso', JSON.stringify({ t: t, curso: r.curso, nombre: r.nombre })); }catch(e){}
+    var hechos = String(r.avance||'').split(',').filter(String).length;
+    var url = r.cursoUrl ? r.cursoUrl + (r.cursoUrl.indexOf('?')<0?'?':'&') + 't=' + encodeURIComponent(t) : '';
+    card.innerHTML =
+      '<div class="tag">'+(r.estado==='COMPLETADO'?'Curso terminado':'Acceso activo')+'</div>'+
+      '<h1>'+esc(r.cursoNombre||'Curso')+'</h1>'+
+      '<p>Hola '+esc((r.nombre||'').split(' ')[0])+', tu lugar en el curso está confirmado.</p>'+
+      '<div class="meta">Avance: '+hechos+' de '+(r.modulos||6)+' módulos'+(r.expira?' · Acceso hasta el '+esc(r.expira):'')+'</div>'+
+      '<div id="go"><p class="meta">Revisando el contenido…</p></div>';
+    var go = document.getElementById('go');
+    if(!r.cursoUrl){ go.innerHTML = '<p>El contenido se publicará pronto. Te avisaremos por correo.</p>'; return; }
+    // Si la carpeta del curso aún no está publicada, no mandamos a una página vacía
+    fetch(r.cursoUrl, { method: 'HEAD', cache: 'no-cache' }).then(function(res){
+      go.innerHTML = res.ok
+        ? '<a class="btn" href="'+esc(url)+'">Entrar al curso →</a>'
+        : '<p>El contenido del curso se está publicando. Te avisaremos por correo cuando esté listo; guarda esta liga.</p>';
+    }).catch(function(){ go.innerHTML = '<a class="btn" href="'+esc(url)+'">Entrar al curso →</a>'; });
+  });
+})();
+</script>
+</body>
+</html>

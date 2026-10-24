@@ -755,7 +755,9 @@ function uLoadCitasAdmin(){
   var el=document.getElementById('u-citas-list');
   if(el) el.innerHTML='<div style="text-align:center;padding:2rem;"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
   uAPI('getPendientes',{adminToken:uAdminToken()}).then(function(r){
-    var lista=(r&&r.ok&&r.data)?r.data:(r&&r.pendientes)?r.pendientes:[];
+    var lista=(r&&r.ok&&r.data)?r.data:(r&&r.citas)?r.citas:[];
+    /* El servidor devuelve todas las filas; aquí sólo las que faltan por revisar */
+    lista=lista.filter(function(c){ return String(c.Estado||c.estado||'PENDIENTE').toUpperCase()==='PENDIENTE'; });
     document.getElementById('pstat-total').textContent=lista.length;
     document.getElementById('pstat-aprobadas').textContent=_uAprobadasHoy;
     if(r&&r.ok===false){
@@ -810,8 +812,8 @@ function uLoadContribAdmin(){
   var el=document.getElementById('u-contrib-list');
   if(el) el.innerHTML='<div style="text-align:center;padding:2rem;"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
   uAPI('getContribuciones',{adminToken:uAdminToken()}).then(function(r){
-    var lista=(r&&r.ok&&r.data)?r.data:[];
-    document.getElementById('pstat-pendientes').textContent=lista.length;
+    var lista=(r&&r.ok&&r.data)?r.data.slice().reverse():[];
+    document.getElementById('pstat-pendientes').textContent=lista.filter(function(c){return /pend/i.test(c.Estado||c.estado||'pendiente');}).length;
     if(r&&r.ok===false){ el.innerHTML='<p style="color:var(--red);font-size:.85rem;padding:1.5rem;text-align:center;">'+esc(r.error||'No se pudo cargar.')+'</p>'; return; }
     if(!lista.length){ el.innerHTML='<div class="empty-state"><div class="empty-state-icon">✓</div><p>No hay contribuciones de usuarios por revisar.</p></div>'; return; }
     el.innerHTML=lista.map(function(co){
@@ -819,6 +821,7 @@ function uLoadContribAdmin(){
         '<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem;flex-wrap:wrap;">'+
           '<h4>'+esc(co.Titulo||co.titulo||'Sin título')+'</h4>'+
           '<span style="font-size:.7rem;background:var(--purple-dim);color:var(--purple);padding:2px 9px;border-radius:20px;">'+esc(co.Tipo||co.tipo||'Contribución')+'</span>'+
+          '<span style="font-size:.7rem;color:var(--orange);font-weight:600;">'+esc(co.Estado||co.estado||'pendiente')+'</span>'+
         '</div>'+
         '<p style="font-size:.78rem;color:var(--muted);">'+esc(co.Usuario||co.usuario||'')+' · '+esc(String(co.Fecha||co.fecha||'').slice(0,10))+'</p>'+
         '<p>'+esc(String(co.Resumen||co.resumen||'').substring(0,300))+'</p>'+
