@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 5 — Actividad evaluable · Sintropía Social</title>
+<link href="https://fonts.cdnfonts.com/css/open-sauce-sans" rel="stylesheet">
+<style>
+:root{--purple:#5C1BDE;--orange:#FF5C1A;--mint:#00EDAA;--dark:#0D0D1A;--light:#F5F3FF;--gray:#8885A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sauce Sans',sans-serif;background:var(--dark);color:var(--light);line-height:1.6;padding-bottom:60px}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px}
+header{padding:48px 0 24px}
+.tag{display:inline-block;color:var(--mint);border:1px solid rgba(0,237,170,.3);background:rgba(0,237,170,.1);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:14px}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.15}h1 em{font-style:normal;color:var(--orange)}
+.intro{color:var(--gray);margin-top:10px;font-size:14.5px}
+.q{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px 26px;margin-top:22px}
+.q h2{font-size:17px;margin-bottom:4px}
+.pts{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.q p.s{font-size:14px;color:rgba(245,243,255,.8);margin-bottom:12px}
+label.o{display:block;padding:10px 14px;margin:6px 0;border:1px solid rgba(255,255,255,.1);border-radius:10px;cursor:pointer;font-size:14px}
+label.o:hover{border-color:var(--orange)}
+label.o input{margin-right:8px;accent-color:var(--orange)}
+.row{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px;flex-wrap:wrap}
+.row span{flex:1 1 280px}
+select,textarea{background:#17172b;color:var(--light);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 10px;font:14px 'Open Sauce Sans',sans-serif}
+select{min-width:230px;max-width:100%}
+textarea{width:100%;min-height:78px;margin:4px 0 10px;resize:vertical}
+.fl{font-size:12px;color:var(--mint);letter-spacing:1px;text-transform:uppercase}
+.fb{margin-top:12px;font-size:13.5px;padding:10px 14px;border-radius:10px;display:none}
+.fb.ok{display:block;background:rgba(0,237,170,.1);border-left:3px solid var(--mint)}
+.fb.no{display:block;background:rgba(255,92,26,.1);border-left:3px solid var(--orange)}
+button.go{background:var(--orange);color:#fff;border:0;border-radius:12px;padding:14px 28px;font:700 15px 'Open Sauce Sans',sans-serif;cursor:pointer;margin-top:28px}
+button.sec{background:transparent;color:var(--light);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px 22px;font:14px 'Open Sauce Sans',sans-serif;cursor:pointer;margin-top:10px}
+#res{display:none;margin-top:28px;background:linear-gradient(135deg,rgba(92,27,222,.25),rgba(255,92,26,.12));border:1px solid rgba(92,27,222,.5);border-radius:16px;padding:26px}
+#res .big{font-size:40px;font-weight:800;color:var(--mint)}
+.refs{margin-top:44px;font-size:12.5px;color:rgba(245,243,255,.65)}
+.refs li{list-style:none;margin:0 0 8px 20px;text-indent:-20px;padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="tag">Módulo 5 · Actividad evaluable</div>
+  <h1>Análisis <em>cultural</em> y producción de conocimiento</h1>
+  <p class="intro">5 preguntas · 100 puntos (70 se califican automáticamente; 30 los revisa el/la facilitador/a con rúbrica). Los fragmentos son ficticios y con fines didácticos.</p>
+</header>
+<form id="f" onsubmit="return false">
+<div class="q" data-k="1"><h2>1. Ejercicio de codificación</h2><div class="pts">30 puntos (5 por fragmento)</div>
+<p class="s">Asigna a cada fragmento el componente que domina. En F1 y F6 la lectura admite matices: la respuesta principal da puntaje completo y la secundaria, parcial.</p>
+<div class="row"><span><b>F1.</b> «Aquí un trabajo bueno es el que te deja ver a tus hijos en la tarde, aunque ganes menos.»</span><select name="q1f1"><option value="">Elegir…</option><option value="sig">Significado</option><option value="age">Agencia</option><option value="est">Estructura</option><option value="con">Contexto</option><option value="rec">Recursos</option></select></div><div class="row"><span><b>F2.</b> «Para entrar a la fábrica necesitas que alguien te recomiende; mandar currículum no sirve.»</span><select name="q1f2"><option value="">Elegir…</option><option value="sig">Significado</option><option value="age">Agencia</option><option value="est">Estructura</option><option value="con">Contexto</option><option value="rec">Recursos</option></select></div><div class="row"><span><b>F3.</b> «Mi comadre me presta su local los fines de semana para vender; sin eso no podría.»</span><select name="q1f3"><option value="">Elegir…</option><option value="sig">Significado</option><option value="age">Agencia</option><option value="est">Estructura</option><option value="con">Contexto</option><option value="rec">Recursos</option></select></div><div class="row"><span><b>F4.</b> «Cuando cerraron el ingenio el pueblo cambió: antes todos trabajaban ahí y ahora se van a la ciudad.»</span><select name="q1f4"><option value="">Elegir…</option><option value="sig">Significado</option><option value="age">Agencia</option><option value="est">Estructura</option><option value="con">Contexto</option><option value="rec">Recursos</option></select></div><div class="row"><span><b>F5.</b> «Armamos entre las vecinas una cooperativa de costura porque nadie nos iba a dar empleo.»</span><select name="q1f5"><option value="">Elegir…</option><option value="sig">Significado</option><option value="age">Agencia</option><option value="est">Estructura</option><option value="con">Contexto</option><option value="rec">Recursos</option></select></div><div class="row"><span><b>F6.</b> «Una mujer sola no puede aceptar turno de noche; se ve mal.»</span><select name="q1f6"><option value="">Elegir…</option><option value="sig">Significado</option><option value="age">Agencia</option><option value="est">Estructura</option><option value="con">Contexto</option><option value="rec">Recursos</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="2"><h2>2. Descripción densa</h2><div class="pts">15 puntos</div>
+<p class="s">¿Cuál de estos textos se acerca más a una descripción densa?</p>
+<label class="o"><input type="radio" name="q2" value="a">«Las participantes llegaron a las 5 p. m., se sentaron en círculo y hablaron durante dos horas.»</label>
+<label class="o"><input type="radio" name="q2" value="b">«Asistió la mayoría de las participantes a la sesión.»</label>
+<label class="o"><input type="radio" name="q2" value="c">«Al sentarse en círculo y sin mesa, las participantes marcaron que nadie presidía; quien tomaba la palabra la pasaba con un gesto, y eso contrastaba con las juntas del sindicato, donde habla primero el dirigente.»</label>
+<label class="o"><input type="radio" name="q2" value="d">«La reunión fue productiva y todas estuvieron contentas.»</label>
+<div class="fb"></div></div>
+
+<div class="q" data-k="3"><h2>3. Caso ético</h2><div class="pts">15 puntos</div>
+<p class="s">Una participante criticó con detalle a su jefa, la única gerente mujer de una empresa pequeña. El cliente pide el informe con citas textuales "sin recortes". ¿Qué haces?</p>
+<label class="o"><input type="radio" name="q3" value="a">Entregas la cita completa, porque el cliente pagó el estudio.</label>
+<label class="o"><input type="radio" name="q3" value="b">Quitas el nombre y entregas la cita, aunque el cargo y la anécdota hagan evidente quién es.</label>
+<label class="o"><input type="radio" name="q3" value="c">Generalizas o eliminas los detalles identificables, o pides permiso a la participante, y recuerdas al cliente lo pactado en el consentimiento.</label>
+<label class="o"><input type="radio" name="q3" value="d">Eliminas toda la crítica para evitar conflictos.</label>
+<div class="fb"></div></div>
+
+<div class="q" data-k="4"><h2>4. Visualización</h2><div class="pts">10 puntos (2.5 por pareja)</div>
+<p class="s">Elige la visualización más adecuada para cada propósito.</p>
+<div class="row"><span>Comparar la presencia de categorías entre tres cooperativas.</span><select name="q4a"><option value="">Elegir…</option><option value="red">Red de actores</option><option value="mat">Matriz de códigos</option><option value="map">Mapa</option><option value="lin">Línea de tiempo</option></select></div><div class="row"><span>Mostrar cómo cambió el pueblo antes y después del cierre del ingenio.</span><select name="q4b"><option value="">Elegir…</option><option value="red">Red de actores</option><option value="mat">Matriz de códigos</option><option value="map">Mapa</option><option value="lin">Línea de tiempo</option></select></div><div class="row"><span>Identificar qué actores no están conectados entre sí.</span><select name="q4c"><option value="">Elegir…</option><option value="red">Red de actores</option><option value="mat">Matriz de códigos</option><option value="map">Mapa</option><option value="lin">Línea de tiempo</option></select></div><div class="row"><span>Ubicar dónde están los espacios comunitarios disponibles.</span><select name="q4d"><option value="">Elegir…</option><option value="red">Red de actores</option><option value="mat">Matriz de códigos</option><option value="map">Mapa</option><option value="lin">Línea de tiempo</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="5"><h2>5. Narrativa interpretativa</h2><div class="pts">30 puntos · revisión manual (rúbrica en la Guía del Facilitador)</div>
+<p class="s">Con los seis fragmentos de la pregunta 1 (o con un material propio, si el/la facilitador/a lo autoriza), escribe una narrativa interpretativa de una cuartilla (aprox. 250 a 300 palabras). Debe: (1) proponer un tema central, (2) apoyarse en al menos tres fragmentos citados, (3) relacionar al menos tres componentes de la Práctica Social y (4) incluir una frase sobre tu posición como quien interpreta.</p>
+<textarea name="m1" style="min-height:240px"></textarea>
+</div>
+</form>
+<button class="go" id="send">Calificar actividad</button>
+<div id="res">
+  <div class="big" id="score"></div>
+  <p id="detail" style="margin-top:6px"></p>
+  <p style="margin-top:12px;font-size:13px;color:var(--gray)">La Pregunta 5 (30 pts) se suma después de la revisión del/la facilitador/a. La calificación se calcula en tu navegador y no se guarda automáticamente en ninguna plataforma.</p>
+  <button class="sec" id="copy">Copiar mis respuestas</button>
+</div>
+<div class="refs"><strong>Referencias (APA 7)</strong>
+<ul>
+<li>Braun, V., y Clarke, V. (2006). Using thematic analysis in psychology. <i>Qualitative Research in Psychology, 3</i>(2), 77–101. https://doi.org/10.1191/1478088706qp063oa</li>
+<li>Geertz, C. (1973). <i>The interpretation of cultures</i>. Basic Books.</li>
+<li>Guillemin, M., y Gillam, L. (2004). Ethics, reflexivity, and "ethically important moments" in research. <i>Qualitative Inquiry, 10</i>(2), 261–280. https://doi.org/10.1177/1077800403262360</li>
+<li>Miles, M. B., Huberman, A. M., y Saldaña, J. (2014). <i>Qualitative data analysis: A methods sourcebook</i> (3.ª ed.). SAGE.</li>
+<li>Saldaña, J. (2021). <i>The coding manual for qualitative researchers</i> (4.ª ed.). SAGE.</li>
+</ul></div>
+</div>
+<script>
+var F=document.getElementById('f');
+var K1={"q1f1": {"sig": 5, "rec": 0}, "q1f2": {"est": 5}, "q1f3": {"rec": 5}, "q1f4": {"con": 5}, "q1f5": {"age": 5}, "q1f6": {"est": 5, "sig": 2.5}},K4={"q4a": "mat", "q4b": "lin", "q4c": "red", "q4d": "map"};
+function v(n){var e=F.elements[n];return e&&e.value||''}
+function fb(k,ok,msg){var b=document.querySelector('[data-k="'+k+'"] .fb');b.className='fb '+(ok?'ok':'no');b.innerHTML=msg}
+document.getElementById('send').onclick=function(){
+var s=0,d=[],p1=0,n1=0;
+for(var k in K1){var m=K1[k],a=v(k);if(a&&m[a]!==undefined){p1+=m[a];if(m[a]===5)n1++}}
+s+=p1;
+fb(1,n1===6,'Puntaje: '+p1+'/30. Claves: F1 Significado (define qué es un buen trabajo; Recursos es lectura secundaria sin puntaje), F2 Estructura, F3 Recursos, F4 Contexto, F5 Agencia, F6 Estructura (norma informal); Significado da puntaje parcial porque la frase también expresa un valor ("se ve mal").');
+d.push('P1: '+p1+'/30');
+var ok=v('q2')==='c',p2=ok?15:0;s+=p2;
+fb(2,ok,ok?'Correcto. Conecta la conducta con un significado (nadie preside) y con un contexto de contraste (el sindicato).':'La descripción densa interpreta la conducta en su contexto; las otras opciones solo describen, miden o evalúan sin evidencia.');
+d.push('P2: '+p2+'/15');
+ok=v('q3')==='c';var p3=ok?15:0;s+=p3;
+fb(3,ok,ok?'Correcto. Quitar el nombre no basta si cargo y anécdota identifican a la persona; se protege su identidad y se recurre a lo acordado en el consentimiento.':'Revisa: el anonimato exige que la persona no sea identificable y el consentimiento fija lo que puede entregarse al cliente.');
+d.push('P3: '+p3+'/15');
+var n4=0;for(var j in K4){if(v(j)===K4[j])n4++}
+var p4=n4*2.5;s+=p4;
+fb(4,n4===4,'Aciertos: '+n4+'/4. Comparar casos: matriz; cambio en el tiempo: línea de tiempo; conexiones entre actores: red; ubicación de espacios: mapa.');
+d.push('P4: '+p4+'/10');
+document.getElementById('score').textContent=s+' / 70 automáticos';
+document.getElementById('detail').textContent=d.join(' · ')+' · P5: pendiente de revisión (30 pts)';
+document.getElementById('res').style.display='block';
+document.getElementById('res').scrollIntoView({behavior:'smooth'});
+};
+document.getElementById('copy').onclick=function(){
+var t='MÓDULO 5 — Respuestas\n';
+Array.prototype.forEach.call(F.elements,function(e){if(e.name&&(e.type!=='radio'||e.checked))t+=e.name+': '+e.value+'\n'});
+var b=document.getElementById('copy');
+if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){b.textContent='Copiado'},function(){b.textContent='No se pudo copiar'})}else{b.textContent='No se pudo copiar'}};
+</script>
+<script src="../curso.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 6 — Actividad evaluable · Sintropía Social</title>
+<link href="https://fonts.cdnfonts.com/css/open-sauce-sans" rel="stylesheet">
+<style>
+:root{--purple:#5C1BDE;--orange:#FF5C1A;--mint:#00EDAA;--dark:#0D0D1A;--light:#F5F3FF;--gray:#8885A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sauce Sans',sans-serif;background:var(--dark);color:var(--light);line-height:1.6;padding-bottom:60px}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px}
+header{padding:48px 0 24px}
+.tag{display:inline-block;color:var(--mint);border:1px solid rgba(0,237,170,.3);background:rgba(0,237,170,.1);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:14px}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.15}h1 em{font-style:normal;color:var(--orange)}
+.intro{color:var(--gray);margin-top:10px;font-size:14.5px}
+.q{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px 26px;margin-top:22px}
+.q h2{font-size:17px;margin-bottom:4px}
+.pts{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.q p.s{font-size:14px;color:rgba(245,243,255,.8);margin-bottom:12px}
+label.o{display:block;padding:10px 14px;margin:6px 0;border:1px solid rgba(255,255,255,.1);border-radius:10px;cursor:pointer;font-size:14px}
+label.o:hover{border-color:var(--orange)}
+label.o input{margin-right:8px;accent-color:var(--orange)}
+.row{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px;flex-wrap:wrap}
+.row span{flex:1 1 280px}
+select,textarea{background:#17172b;color:var(--light);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 10px;font:14px 'Open Sauce Sans',sans-serif}
+select{min-width:230px;max-width:100%}
+textarea{width:100%;min-height:78px;margin:4px 0 10px;resize:vertical}
+.fl{font-size:12px;color:var(--mint);letter-spacing:1px;text-transform:uppercase}
+.fb{margin-top:12px;font-size:13.5px;padding:10px 14px;border-radius:10px;display:none}
+.fb.ok{display:block;background:rgba(0,237,170,.1);border-left:3px solid var(--mint)}
+.fb.no{display:block;background:rgba(255,92,26,.1);border-left:3px solid var(--orange)}
+button.go{background:var(--orange);color:#fff;border:0;border-radius:12px;padding:14px 28px;font:700 15px 'Open Sauce Sans',sans-serif;cursor:pointer;margin-top:28px}
+button.sec{background:transparent;color:var(--light);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px 22px;font:14px 'Open Sauce Sans',sans-serif;cursor:pointer;margin-top:10px}
+#res{display:none;margin-top:28px;background:linear-gradient(135deg,rgba(92,27,222,.25),rgba(255,92,26,.12));border:1px solid rgba(92,27,222,.5);border-radius:16px;padding:26px}
+#res .big{font-size:40px;font-weight:800;color:var(--mint)}
+.refs{margin-top:44px;font-size:12.5px;color:rgba(245,243,255,.65)}
+.refs li{list-style:none;margin:0 0 8px 20px;text-indent:-20px;padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="tag">Módulo 6 · Actividad evaluable</div>
+  <h1><em>Aplicaciones</em> y proyecto integrador</h1>
+  <p class="intro">5 preguntas · 100 puntos (60 se califican automáticamente; 40 los revisa el/la facilitador/a con rúbrica). La P5 es la ficha del proyecto integrador; el documento completo de 2,500 a 3,000 palabras se entrega aparte en el LMS.</p>
+</header>
+<form id="f" onsubmit="return false">
+<div class="q" data-k="1"><h2>1. Elegir el enfoque de aplicación</h2><div class="pts">15 puntos (5 por caso)</div>
+<p class="s">Elige el enfoque que mejor corresponde a cada caso.</p>
+<div class="row"><span><b>A.</b> Una cooperativa tiene alta rotación y choques entre el personal antiguo y el nuevo.</span><select name="q1a"><option value="">Elegir…</option><option value="org">Cultura organizacional</option><option value="com">Diagnóstico comunitario participativo</option><option value="eva">Evaluación de programa con enfoque cultural</option></select></div><div class="row"><span><b>B.</b> Un barrio debe decidir dónde instalar un espacio comunitario y quiénes lo administrarán.</span><select name="q1b"><option value="">Elegir…</option><option value="org">Cultura organizacional</option><option value="com">Diagnóstico comunitario participativo</option><option value="eva">Evaluación de programa con enfoque cultural</option></select></div><div class="row"><span><b>C.</b> Un gobierno municipal quiere saber si su programa de capacitación para jóvenes cambió algo en la vida de quienes participaron.</span><select name="q1c"><option value="">Elegir…</option><option value="org">Cultura organizacional</option><option value="com">Diagnóstico comunitario participativo</option><option value="eva">Evaluación de programa con enfoque cultural</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="2"><h2>2. Evaluación con enfoque cultural</h2><div class="pts">15 puntos</div>
+<p class="s">Un informe concluye que un programa de empleo juvenil fue exitoso porque el 90 % de los jóvenes asistió a los talleres. ¿Cuál es la principal limitación desde un enfoque cultural?</p>
+<label class="o"><input type="radio" name="q2" value="a">Ninguna: la asistencia es la mejor medida de éxito.</label>
+<label class="o"><input type="radio" name="q2" value="b">Mide actividad (proceso), pero no recoge qué cambió en las prácticas, recursos y significados de los jóvenes, ni qué entienden ellos por "éxito".</label>
+<label class="o"><input type="radio" name="q2" value="c">El problema es que no se usó una muestra más grande.</label>
+<label class="o"><input type="radio" name="q2" value="d">Debería medirse solo con entrevistas, sin ningún dato numérico.</label>
+<div class="fb"></div></div>
+
+<div class="q" data-k="3"><h2>3. Límites y reflexividad</h2><div class="pts">15 puntos (3 por afirmación)</div>
+<p class="s">Marca cada afirmación como verdadera o falsa.</p>
+<div class="row"><span>a) Seguir las seis etapas del ciclo garantiza resultados objetivos.</span><select name="q3a"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div><div class="row"><span>b) Reconocer la posición de quien investiga forma parte del rigor.</span><select name="q3b"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div><div class="row"><span>c) Una intervención es sostenible cuando el equipo externo sigue operándola indefinidamente.</span><select name="q3c"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div><div class="row"><span>d) Los hallazgos cualitativos son transferibles, pero no estadísticamente generalizables.</span><select name="q3d"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div><div class="row"><span>e) La metodología debe adaptarse al contexto y no aplicarse como receta.</span><select name="q3e"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="4"><h2>4. Datos masivos y etnografía digital</h2><div class="pts">15 puntos</div>
+<p class="s">Un equipo descarga 200,000 publicaciones de una red social para "entender cómo ven el trabajo las y los jóvenes del país". ¿Cuál es la postura metodológica más sólida?</p>
+<label class="o"><input type="radio" name="q4" value="a">Tratarlo como una radiografía completa de la juventud, por su tamaño.</label>
+<label class="o"><input type="radio" name="q4" value="b">Usarlo como una fuente más, reconociendo quién publica en esa plataforma y cómo, cuidando la privacidad, y complementarlo con trabajo situado que explique los significados.</label>
+<label class="o"><input type="radio" name="q4" value="c">Descartarlo, porque los datos digitales no son confiables.</label>
+<label class="o"><input type="radio" name="q4" value="d">Publicarlo con nombres de usuario, porque los datos son públicos.</label>
+<div class="fb"></div></div>
+
+<div class="q" data-k="5"><h2>5. Ficha del proyecto integrador</h2><div class="pts">40 puntos · revisión manual (rúbrica en la Guía del Facilitador)</div>
+<p class="s">Resume tu propuesta de investigación-intervención sobre un problema real de tu contexto profesional. Cada campo, 3 a 5 líneas.</p>
+<span class="fl">1. Problema y contexto</span><textarea name="m1"></textarea>
+<span class="fl">2. Pregunta y componentes de la Práctica Social que organizan el análisis</span><textarea name="m2"></textarea>
+<span class="fl">3. Diseño metodológico mixto y muestreo</span><textarea name="m3"></textarea>
+<span class="fl">4. Ciclo de intervención: seis etapas y cronograma</span><textarea name="m4"></textarea>
+<span class="fl">5. Plan de análisis, ética y devolución</span><textarea name="m5"></textarea>
+<span class="fl">6. Indicadores de proceso y de resultado, y sostenibilidad</span><textarea name="m6"></textarea>
+<span class="fl">7. Reflexión final: tu posicionamiento y los límites de tu propuesta</span><textarea name="m7"></textarea>
+</div>
+</form>
+<button class="go" id="send">Calificar actividad</button>
+<div id="res">
+  <div class="big" id="score"></div>
+  <p id="detail" style="margin-top:6px"></p>
+  <p style="margin-top:12px;font-size:13px;color:var(--gray)">La Pregunta 5 (40 pts) se suma después de la revisión del/la facilitador/a. La calificación se calcula en tu navegador y no se guarda automáticamente en ninguna plataforma.</p>
+  <button class="sec" id="copy">Copiar mis respuestas</button>
+</div>
+<div class="refs"><strong>Referencias (APA 7)</strong>
+<ul>
+<li>boyd, d., y Crawford, K. (2012). Critical questions for big data: Provocations for a cultural, technological, and scholarly phenomenon. <i>Information, Communication &amp; Society, 15</i>(5), 662–679. https://doi.org/10.1080/1369118X.2012.678878</li>
+<li>Bourdieu, P., y Wacquant, L. (1992). <i>An invitation to reflexive sociology</i>. University of Chicago Press.</li>
+<li>Funnell, S. C., y Rogers, P. J. (2011). <i>Purposeful program theory: Effective use of theories of change and logic models</i>. Jossey-Bass.</li>
+<li>Haraway, D. (1988). Situated knowledges: The science question in feminism and the privilege of partial perspective. <i>Feminist Studies, 14</i>(3), 575–599. https://doi.org/10.2307/3178066</li>
+<li>Schein, E. H. (2010). <i>Organizational culture and leadership</i> (4.ª ed.). Jossey-Bass.</li>
+</ul></div>
+</div>
+<script>
+var F=document.getElementById('f');
+var K1={"q1a": "org", "q1b": "com", "q1c": "eva"},K3={"q3a": "f", "q3b": "v", "q3c": "f", "q3d": "v", "q3e": "v"};
+function v(n){var e=F.elements[n];return e&&e.value||''}
+function cnt(K){var n=0;for(var k in K){if(v(k)===K[k])n++}return n}
+function fb(k,ok,msg){var b=document.querySelector('[data-k="'+k+'"] .fb');b.className='fb '+(ok?'ok':'no');b.innerHTML=msg}
+document.getElementById('send').onclick=function(){
+var s=0,d=[];
+var n1=cnt(K1),p1=n1*5;s+=p1;
+fb(1,n1===3,'Aciertos: '+n1+'/3. A) cultura organizacional; B) diagnóstico comunitario participativo; C) evaluación de programa con enfoque cultural.');
+d.push('P1: '+p1+'/15');
+var ok=v('q2')==='b',p2=ok?15:0;s+=p2;
+fb(2,ok,ok?'Correcto. La asistencia es un indicador de proceso; falta saber qué cambió y qué significa el éxito para los jóvenes.':'Revisa: el problema no es el tamaño de la muestra ni la ausencia de números, sino que se mide actividad y no cambio ni significado.');
+d.push('P2: '+p2+'/15');
+var n3=cnt(K3),p3=n3*3;s+=p3;
+fb(3,n3===5,'Aciertos: '+n3+'/5. Claves: a) F (seguir etapas no garantiza objetividad), b) V, c) F (sostenible es que la práctica continúe sin depender del equipo externo), d) V, e) V.');
+d.push('P3: '+p3+'/15');
+ok=v('q4')==='b';var p4=ok?15:0;s+=p4;
+fb(4,ok,ok?'Correcto. El tamaño no elimina sesgos de quién publica; además, que sea público no lo vuelve éticamente libre de usar (boyd y Crawford, 2012).':'Revisa: ni el tamaño garantiza representatividad ni es razonable descartar los datos; la ética también aplica a datos públicos.');
+d.push('P4: '+p4+'/15');
+document.getElementById('score').textContent=s+' / 60 automáticos';
+document.getElementById('detail').textContent=d.join(' · ')+' · P5: pendiente de revisión (40 pts)';
+document.getElementById('res').style.display='block';
+document.getElementById('res').scrollIntoView({behavior:'smooth'});
+};
+document.getElementById('copy').onclick=function(){
+var t='MÓDULO 6 — Respuestas\n';
+Array.prototype.forEach.call(F.elements,function(e){if(e.name&&(e.type!=='radio'||e.checked))t+=e.name+': '+e.value+'\n'});
+var b=document.getElementById('copy');
+if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){b.textContent='Copiado'},function(){b.textContent='No se pudo copiar'})}else{b.textContent='No se pudo copiar'}};
+</script>
+<script src="../curso.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 3 — Actividad evaluable · Sintropía Social</title>
+<link href="https://fonts.cdnfonts.com/css/open-sauce-sans" rel="stylesheet">
+<style>
+:root{--purple:#5C1BDE;--orange:#FF5C1A;--mint:#00EDAA;--dark:#0D0D1A;--light:#F5F3FF;--gray:#8885A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sauce Sans',sans-serif;background:var(--dark);color:var(--light);line-height:1.6;padding-bottom:60px}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px}
+header{padding:48px 0 24px}
+.tag{display:inline-block;color:var(--mint);border:1px solid rgba(0,237,170,.3);background:rgba(0,237,170,.1);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:14px}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.15}h1 em{font-style:normal;color:var(--orange)}
+.intro{color:var(--gray);margin-top:10px;font-size:14.5px}
+.q{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px 26px;margin-top:22px}
+.q h2{font-size:17px;margin-bottom:4px}
+.pts{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.q p.s{font-size:14px;color:rgba(245,243,255,.8);margin-bottom:12px}
+label.o{display:block;padding:10px 14px;margin:6px 0;border:1px solid rgba(255,255,255,.1);border-radius:10px;cursor:pointer;font-size:14px}
+label.o:hover{border-color:var(--orange)}
+label.o input{margin-right:8px;accent-color:var(--orange)}
+.row{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px;flex-wrap:wrap}
+.row span{flex:1 1 280px}
+select,textarea,input[type=text]{background:#17172b;color:var(--light);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 10px;font:14px 'Open Sauce Sans',sans-serif}
+select{min-width:210px}
+textarea{width:100%;min-height:78px;margin:4px 0 10px;resize:vertical}
+.fl{font-size:12px;color:var(--mint);letter-spacing:1px;text-transform:uppercase}
+.fb{margin-top:12px;font-size:13.5px;padding:10px 14px;border-radius:10px;display:none}
+.fb.ok{display:block;background:rgba(0,237,170,.1);border-left:3px solid var(--mint)}
+.fb.no{display:block;background:rgba(255,92,26,.1);border-left:3px solid var(--orange)}
+button.go{background:var(--orange);color:#fff;border:0;border-radius:12px;padding:14px 28px;font:700 15px 'Open Sauce Sans',sans-serif;cursor:pointer;margin-top:28px}
+button.sec{background:transparent;color:var(--light);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px 22px;font:14px 'Open Sauce Sans',sans-serif;cursor:pointer;margin:10px 10px 0 0}
+#res{display:none;margin-top:28px;background:linear-gradient(135deg,rgba(92,27,222,.25),rgba(255,92,26,.12));border:1px solid rgba(92,27,222,.5);border-radius:16px;padding:26px}
+#res .big{font-size:44px;font-weight:800;color:var(--mint)}
+.refs{margin-top:44px;font-size:12.5px;color:rgba(245,243,255,.65)}
+.refs li{list-style:none;margin:0 0 8px 20px;text-indent:-20px;padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="tag">Módulo 3 · Actividad evaluable</div>
+  <h1>Diseño <em>metodológico</em> mixto</h1>
+  <p class="intro">5 preguntas · 100 puntos (70 se califican automáticamente; 30 los revisa el/la facilitador/a con rúbrica). Puedes consultar la infografía y la lectura.</p>
+</header>
+
+<form id="f" onsubmit="return false">
+<div class="q" data-k="1"><h2>1. Elegir el diseño</h2><div class="pts">15 puntos</div>
+<p class="s">Una organización aplicó una encuesta a 400 jóvenes y encontró que las mujeres abandonan los programas de capacitación con más frecuencia, sin saber por qué. ¿Qué diseño es el más adecuado para el siguiente paso?</p>
+<label class="o"><input type="radio" name="q1" value="a">Convergente: repetir la encuesta junto con entrevistas.</label>
+<label class="o"><input type="radio" name="q1" value="b">Secuencial explicativo: entrevistar a mujeres que abandonaron y que permanecieron para explicar el patrón.</label>
+<label class="o"><input type="radio" name="q1" value="c">Secuencial exploratorio: construir un nuevo cuestionario desde cero.</label>
+<label class="o"><input type="radio" name="q1" value="d">Solo cuantitativo: aumentar la muestra a 2,000.</label>
+<div class="fb"></div></div>
+
+<div class="q" data-k="2"><h2>2. Relacionar escenarios y diseños</h2><div class="pts">20 puntos (≈6.7 por escenario)</div>
+<p class="s">Asigna el diseño que mejor corresponde a cada situación.</p>
+<div class="row"><span>A. No existen escalas validadas para medir "bienestar laboral" en comunidades indígenas de la región.</span><select name="q2a"><option value="">Elegir…</option><option value="conv">Convergente</option><option value="exp">Secuencial explicativo</option><option value="expl">Secuencial exploratorio</option></select></div>
+<div class="row"><span>B. Tienes 6 semanas y quieres contrastar lo que dicen los trabajadores con lo que muestran los registros de la empresa.</span><select name="q2b"><option value="">Elegir…</option><option value="conv">Convergente</option><option value="exp">Secuencial explicativo</option><option value="expl">Secuencial exploratorio</option></select></div>
+<div class="row"><span>C. Un diagnóstico de clima laboral arrojó una caída inesperada en una sola área y debes entenderla.</span><select name="q2c"><option value="">Elegir…</option><option value="conv">Convergente</option><option value="exp">Secuencial explicativo</option><option value="expl">Secuencial exploratorio</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="3"><h2>3. Muestreo y saturación</h2><div class="pts">20 puntos (4 por afirmación)</div>
+<p class="s">Marca cada afirmación como verdadera o falsa.</p>
+<div class="row"><span>a) En la fase cualitativa se detiene el trabajo de campo cuando ya no emergen códigos nuevos relevantes.</span><select name="q3a"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div>
+<div class="row"><span>b) 12 entrevistas bastan en cualquier estudio, sin importar la heterogeneidad de la población.</span><select name="q3b"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div>
+<div class="row"><span>c) Los casos entrevistados pueden usarse para afirmar porcentajes de la población general.</span><select name="q3c"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div>
+<div class="row"><span>d) El muestreo intencional selecciona casos por su capacidad de informar sobre el fenómeno.</span><select name="q3d"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div>
+<div class="row"><span>e) Cada componente de un estudio mixto se justifica con su propia lógica de muestreo.</span><select name="q3e"><option value="">—</option><option value="v">Verdadera</option><option value="f">Falsa</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="4"><h2>4. Interpretar un joint display</h2><div class="pts">15 puntos</div>
+<p class="s">Cuali: las participantes dicen que "no hay quién cuide a mis hijos si trabajo por turnos". Cuanti: el 81 % de las encuestadas con hijos menores reporta no contar con apoyo de cuidados; la tasa de abandono es 2.4 veces mayor en ese grupo. ¿Cuál es la lectura integrada más sólida?</p>
+<label class="o"><input type="radio" name="q4" value="a">Los hallazgos convergen: la falta de recursos de cuidado (componente Recursos) limita la agencia y ayuda a explicar el abandono.</label>
+<label class="o"><input type="radio" name="q4" value="b">Los hallazgos divergen, así que se descarta el dato cualitativo.</label>
+<label class="o"><input type="radio" name="q4" value="c">Se prueba que el cuidado es la única causa del abandono.</label>
+<label class="o"><input type="radio" name="q4" value="d">El dato cuantitativo basta; el cualitativo es anecdótico.</label>
+<div class="fb"></div></div>
+
+<div class="q" data-k="5"><h2>5. Diseña tu estudio mixto</h2><div class="pts">30 puntos · revisión manual (rúbrica en la Guía del Facilitador)</div>
+<p class="s">Piensa en un problema real de tu entorno. Completa cada campo en 2–4 líneas.</p>
+<span class="fl">Pregunta de investigación común</span><textarea name="m1"></textarea>
+<span class="fl">Diseño elegido y justificación</span><textarea name="m2"></textarea>
+<span class="fl">Muestreo cuali y cuanti</span><textarea name="m3"></textarea>
+<span class="fl">Punto de integración y 2–3 componentes de la Práctica Social que usarías</span><textarea name="m4"></textarea>
+<span class="fl">Un riesgo de rigor y cómo lo atenderías</span><textarea name="m5"></textarea>
+</div>
+</form>
+
+<button class="go" id="send">Calificar actividad</button>
+<div id="res">
+  <div class="big" id="score"></div>
+  <p id="detail" style="margin-top:6px"></p>
+  <p style="margin-top:12px;font-size:13px;color:var(--gray)">La Pregunta 5 (30 pts) se suma después de la revisión del/la facilitador/a. La calificación se calcula en tu navegador y no se guarda automáticamente en ninguna plataforma.</p>
+  <button class="sec" id="copy">Copiar mis respuestas</button>
+</div>
+
+<div class="refs"><strong>Referencias (APA 7)</strong>
+<ul>
+<li>Creswell, J. W., y Plano Clark, V. L. (2018). <i>Designing and conducting mixed methods research</i> (3.ª ed.). SAGE.</li>
+<li>Fetters, M. D., Curry, L. A., y Creswell, J. W. (2013). Achieving integration in mixed methods designs. <i>Health Services Research, 48</i>(6, parte 2), 2134–2156. https://doi.org/10.1111/1475-6773.12117</li>
+<li>Guest, G., Bunce, A., y Johnson, L. (2006). How many interviews are enough? An experiment with data saturation and variability. <i>Field Methods, 18</i>(1), 59–82. https://doi.org/10.1177/1525822X05279903</li>
+<li>Lincoln, Y. S., y Guba, E. G. (1985). <i>Naturalistic inquiry</i>. SAGE.</li>
+<li>Patton, M. Q. (2015). <i>Qualitative research and evaluation methods</i> (4.ª ed.). SAGE.</li>
+</ul></div>
+</div>
+<script>
+var F=document.getElementById('f');
+function v(n){var e=F.elements[n];return e&&e.value||''}
+function fb(k,ok,msg){var b=document.querySelector('[data-k="'+k+'"] .fb');b.className='fb '+(ok?'ok':'no');b.innerHTML=msg}
+document.getElementById('send').onclick=function(){
+var s=0,d=[];
+// Q1
+var ok=v('q1')==='b';if(ok)s+=15;
+fb(1,ok,ok?'Correcto. El patrón ya está medido; falta explicarlo, y eso es lo propio del diseño secuencial explicativo.':'No es la mejor opción. Ya existe el dato cuantitativo y la pregunta pendiente es el porqué: corresponde un diseño secuencial explicativo.');
+d.push('P1: '+(ok?15:0)+'/15');
+// Q2
+var a2={q2a:'expl',q2b:'conv',q2c:'exp'},n2=0;for(var k in a2){if(v(k)===a2[k])n2++}
+var p2=Math.round(n2*20/3*10)/10;s+=p2;
+fb(2,n2===3,'Aciertos: '+n2+'/3. Claves: A) exploratorio (hay que construir el instrumento desde el campo); B) convergente (dos fuentes en paralelo y poco tiempo); C) explicativo (un resultado cuanti que requiere explicación).');
+d.push('P2: '+p2+'/20');
+// Q3
+var a3={q3a:'v',q3b:'f',q3c:'f',q3d:'v',q3e:'v'},n3=0;for(var j in a3){if(v(j)===a3[j])n3++}
+s+=n3*4;
+fb(3,n3===5,'Aciertos: '+n3+'/5. Claves: a) V, b) F (la saturación depende de la heterogeneidad; Guest et al., 2006, es orientación), c) F (la muestra intencional no permite inferencia estadística), d) V, e) V.');
+d.push('P3: '+(n3*4)+'/20');
+// Q4
+ok=v('q4')==='a';if(ok)s+=15;
+fb(4,ok,ok?'Correcto. Los dos conjuntos de datos apuntan en la misma dirección y se complementan: el cuali explica el mecanismo y el cuanti indica su magnitud. Aun así, no se prueba causa única.':'Revisa: los datos convergen. Descartar una fuente o afirmar causa única va más allá de lo que respaldan los hallazgos.');
+d.push('P4: '+(ok?15:0)+'/15');
+document.getElementById('score').textContent=Math.round(s*10)/10+' / 70 automáticos';
+document.getElementById('detail').textContent=d.join(' · ')+' · P5: pendiente de revisión (30 pts)';
+document.getElementById('res').style.display='block';
+document.getElementById('res').scrollIntoView({behavior:'smooth'});
+};
+document.getElementById('copy').onclick=function(){
+var t='MÓDULO 3 — Respuestas\n';['q1','q2a','q2b','q2c','q3a','q3b','q3c','q3d','q3e','q4','m1','m2','m3','m4','m5'].forEach(function(n){t+=n+': '+v(n)+'\n'});
+if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){document.getElementById('copy').textContent='Copiado'},function(){alert(t)})}else{alert(t)}};
+</script>
+<script src="../curso.js"></script>
+</body>
+</html>

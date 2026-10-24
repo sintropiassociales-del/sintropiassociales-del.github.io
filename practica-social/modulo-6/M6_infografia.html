@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 6 — Aplicaciones · Sintropía Social · Sintropía Social</title>
+<link href="https://fonts.cdnfonts.com/css/open-sauce-sans" rel="stylesheet">
+<style>
+:root{--purple:#5C1BDE;--orange:#FF5C1A;--mint:#00EDAA;--dark:#0D0D1A;--light:#F5F3FF;--gray:#8885A0;--amber:#F59E0B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sauce Sans',sans-serif;background:var(--dark);color:var(--light);overflow-x:hidden;line-height:1.6}
+.header{background:linear-gradient(160deg,#0A0025,#1A0550 60%,var(--dark));padding:60px 48px 50px;position:relative;overflow:hidden}
+.header::before{content:'06';font-size:260px;font-weight:800;color:rgba(92,27,222,.07);position:absolute;right:-20px;top:-40px;line-height:1}
+.tag{display:inline-block;background:rgba(0,237,170,.1);border:1px solid rgba(0,237,170,.3);color:var(--mint);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:20px}
+h1{font-size:clamp(28px,4.5vw,52px);font-weight:800;line-height:1.1;max-width:780px;position:relative}
+h1 em{font-style:normal;color:var(--orange)}
+.sub{color:var(--gray);margin-top:14px;max-width:640px;position:relative}
+.main{max-width:1100px;margin:0 auto;padding:56px 40px}
+.label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:10px;margin:48px 0 24px}
+.label:first-child{margin-top:0}
+.label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,92,26,.5),transparent)}
+.box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:26px 30px;font-size:14.5px;color:rgba(245,243,255,.82)}
+.box strong{color:var(--mint)}
+.steps{display:flex;gap:10px;flex-wrap:wrap}
+.st{flex:1 1 170px;background:rgba(92,27,222,.12);border:1px solid rgba(92,27,222,.45);border-radius:14px;padding:16px;font-size:13.5px}
+.st b{display:block;color:var(--mint);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.st em{display:block;margin-top:8px;font-style:normal;color:var(--gray);font-size:12.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px;font-size:13.5px}
+.card b{display:block;color:var(--orange);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.frag{background:rgba(255,255,255,.04);border-left:3px solid var(--purple);border-radius:0 12px 12px 0;padding:14px 18px;margin-bottom:6px;font-size:15px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 6px}
+.btns button{background:rgba(255,255,255,.05);color:var(--light);border:1px solid rgba(255,255,255,.15);border-radius:100px;padding:7px 16px;font:13px 'Open Sauce Sans',sans-serif;cursor:pointer}
+.btns button:hover{border-color:var(--orange)}
+.fx{font-size:13.5px;padding:10px 14px;border-radius:10px;margin-bottom:22px;min-height:20px}
+.fx.ok{background:rgba(0,237,170,.1);border-left:3px solid var(--mint)}
+.fx.no{background:rgba(255,92,26,.1);border-left:3px solid var(--orange)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.two{grid-template-columns:1fr}.header{padding:40px 20px}.main{padding:36px 18px}}
+.thin{border-top:3px solid var(--gray)}.thick{border-top:3px solid var(--mint)}
+.warn{border-left:3px solid var(--amber);padding:14px 18px;background:rgba(245,158,11,.07);border-radius:0 10px 10px 0;font-size:13.5px;margin-top:18px}
+.refs li{list-style:none;margin:0 0 12px 22px;text-indent:-22px;padding-left:22px;font-size:13px;color:rgba(245,243,255,.75)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{padding:10px 18px;border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,.08);border-bottom:none;background:rgba(255,255,255,.03);cursor:pointer;font:700 13px 'Open Sauce Sans',sans-serif;color:var(--gray)}
+.tab.on{color:var(--light);background:rgba(92,27,222,.25);border-color:rgba(92,27,222,.6)}
+.panel{display:none;border:1px solid rgba(92,27,222,.4);border-radius:0 16px 16px 16px;padding:28px;background:rgba(92,27,222,.07)}
+.panel.on{display:block}.panel h3{font-size:22px;margin-bottom:4px}.panel .q{color:var(--mint);font-size:14px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{padding:11px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}th{color:var(--orange);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}.tw{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="tag">Módulo 6 · 5 horas</div>
+  <h1><em>Aplicaciones:</em> organizaciones, comunidades y política pública</h1>
+  <p class="sub">La metodología no es una receta: se adapta. Aquí la llevamos a tres campos de trabajo y la contrastamos con sus propios límites.</p>
+</div>
+<div class="main">
+
+<div class="label">Un mismo marco, tres campos</div>
+<div class="tabs" id="tabs">
+  <button class="tab on" data-p="p1">Organizaciones</button>
+  <button class="tab" data-p="p2">Comunidades</button>
+  <button class="tab" data-p="p3">Política pública</button>
+</div>
+<div class="panel on" id="p1">
+  <h3>Cultura organizacional desde la Práctica Social</h3>
+  <div class="q">¿Qué sentido le dan las personas a trabajar aquí y qué estructuras sostienen o frenan lo que dicen valorar?</div>
+  <div class="tw"><table>
+  <tr><th>Componente</th><th>Qué mirar</th></tr>
+  <tr><td>Significado</td><td>Relatos fundacionales, lenguaje interno, qué significa "buen desempeño"</td></tr>
+  <tr><td>Agencia</td><td>Quién puede proponer, decidir o frenar cambios</td></tr>
+  <tr><td>Estructura</td><td>Reglas formales e informales, jerarquías, incentivos</td></tr>
+  <tr><td>Contexto</td><td>Historia de la organización, sector, momento de crecimiento o crisis</td></tr>
+  <tr><td>Recursos</td><td>Tiempo, presupuesto, redes, saberes del equipo</td></tr>
+  </table></div>
+  <div class="card" style="margin-top:16px"><b>Idea clave</b>Schein (2010) distingue tres niveles de cultura: artefactos visibles, valores declarados y supuestos básicos compartidos. La diferencia entre lo declarado y lo que se hace es un buen punto de entrada del diagnóstico.</div>
+</div>
+<div class="panel" id="p2">
+  <h3>Diagnóstico comunitario participativo</h3>
+  <div class="q">¿Quién define el problema, con qué recursos locales se cuenta y qué quiere transformar la propia comunidad?</div>
+  <div class="grid">
+    <div class="card"><b>Técnicas</b>Cartografía social, líneas de tiempo comunitarias, mapas de actores, talleres de priorización (Chambers, 1994).</div>
+    <div class="card"><b>Participación</b>Cornwall y Jewkes (1995) recuerdan que "participativo" puede significar desde consultar hasta que la comunidad dirija. Define el grado desde el inicio.</div>
+    <div class="card"><b>Producto</b>Un diagnóstico que la comunidad reconoce como propio y que le sirve para gestionar.</div>
+  </div>
+</div>
+<div class="panel" id="p3">
+  <h3>Evaluación de programas con enfoque cultural</h3>
+  <div class="q">¿Funcionó el programa para quienes participaron y según qué significado de "funcionar"?</div>
+  <div class="grid">
+    <div class="card"><b>Más que cobertura</b>Además de cuántos asistieron, pregunta qué cambió en sus prácticas, recursos y significados.</div>
+    <div class="card"><b>Teoría del cambio</b>Explicita cómo se espera que las actividades produzcan resultados y qué supuestos culturales hay detrás (Funnell y Rogers, 2011).</div>
+    <div class="card"><b>Evaluar con restricciones</b>Cuando hay poco tiempo o presupuesto, Bamberger et al. (2012) proponen estrategias para conservar la validez; documenta las limitaciones.</div>
+  </div>
+</div>
+
+<div class="label">Intervenciones sostenibles</div>
+<div class="grid">
+  <div class="card"><b>Apropiación</b>Si el equipo externo se va y la práctica se detiene, no hubo sostenibilidad.</div>
+  <div class="card"><b>Recursos locales</b>Se diseña con los medios que el contexto puede mantener.</div>
+  <div class="card"><b>Estructura</b>Una práctica nueva necesita una regla, un rol o un espacio que la sostenga.</div>
+  <div class="card"><b>Aprendizaje</b>El ciclo de retroalimentación permite ajustar sin empezar de cero.</div>
+</div>
+
+<div class="label">Límites y reflexividad crítica</div>
+<div class="box">Ninguna metodología es neutral. Bourdieu y Wacquant (1992) piden objetivar también la posición de quien investiga; Haraway (1988) habla de conocimientos situados: toda mirada se hace desde algún lugar. <strong>Límites del modelo:</strong> los hallazgos cualitativos son transferibles, no estadísticamente generalizables; el cambio cultural es lento y no se agota en un proyecto; y el equipo externo tiene poder que condiciona lo que las personas dicen. Declarar esos límites fortalece la propuesta.</div>
+
+<div class="label">Tendencias: etnografía digital y datos masivos</div>
+<div class="grid">
+  <div class="card"><b>Etnografía digital</b>Aplica la mirada etnográfica a prácticas mediadas por tecnología, sin separar lo "en línea" de lo cotidiano (Pink et al., 2016).</div>
+  <div class="card"><b>Datos masivos</b>Ofrecen escala, pero plantean sesgos de quién participa en cada plataforma, problemas de interpretación y de privacidad (boyd y Crawford, 2012).</div>
+  <div class="card"><b>En la práctica</b>Úsalos como una fuente más y complementa con trabajo situado que explique el significado.</div>
+</div>
+
+<div class="label">Proyecto integrador</div>
+<div class="box tw"><table>
+<tr><th>Sección</th><th>Contenido</th><th>Extensión orientativa</th></tr>
+<tr><td>1. Problema y contexto</td><td>Situación, actores y por qué importa</td><td>350 palabras</td></tr>
+<tr><td>2. Pregunta y marco</td><td>Pregunta, componentes de la Práctica Social y fundamentos</td><td>400 palabras</td></tr>
+<tr><td>3. Diseño metodológico mixto</td><td>Diseño elegido, muestreo e instrumentos</td><td>500 palabras</td></tr>
+<tr><td>4. Ciclo de intervención</td><td>Seis etapas, técnicas, cronograma y entregables</td><td>600 palabras</td></tr>
+<tr><td>5. Análisis, ética y devolución</td><td>Plan de codificación, consentimiento, anonimato</td><td>400 palabras</td></tr>
+<tr><td>6. Indicadores y sostenibilidad</td><td>Proceso y resultado, y qué queda al terminar</td><td>350 palabras</td></tr>
+<tr><td>7. Límites y posicionamiento</td><td>Reflexión sobre tu lugar y lo que el diseño no puede resolver</td><td>250 palabras</td></tr>
+</table></div>
+<p style="font-size:12px;color:var(--gray);margin-top:8px">Total orientativo: 2,850 palabras, dentro del rango de 2,500 a 3,000 del diseño curricular.</p>
+
+<div class="label">Referencias (APA 7)</div>
+<ul class="refs">
+<li>Bamberger, M., Rugh, J., y Mabry, L. (2012). <i>RealWorld evaluation: Working under budget, time, data, and political constraints</i> (2.ª ed.). SAGE.</li>
+<li>boyd, d., y Crawford, K. (2012). Critical questions for big data: Provocations for a cultural, technological, and scholarly phenomenon. <i>Information, Communication &amp; Society, 15</i>(5), 662–679. https://doi.org/10.1080/1369118X.2012.678878</li>
+<li>Bourdieu, P., y Wacquant, L. (1992). <i>An invitation to reflexive sociology</i>. University of Chicago Press.</li>
+<li>Chambers, R. (1994). The origins and practice of participatory rural appraisal. <i>World Development, 22</i>(7), 953–969. https://doi.org/10.1016/0305-750X(94)90141-4</li>
+<li>Cornwall, A., y Jewkes, R. (1995). What is participatory research? <i>Social Science &amp; Medicine, 41</i>(12), 1667–1676. https://doi.org/10.1016/0277-9536(95)00127-S</li>
+<li>Funnell, S. C., y Rogers, P. J. (2011). <i>Purposeful program theory: Effective use of theories of change and logic models</i>. Jossey-Bass.</li>
+<li>Haraway, D. (1988). Situated knowledges: The science question in feminism and the privilege of partial perspective. <i>Feminist Studies, 14</i>(3), 575–599. https://doi.org/10.2307/3178066</li>
+<li>Pink, S., Horst, H., Postill, J., Hjorth, L., Lewis, T., y Tacchi, J. (2016). <i>Digital ethnography: Principles and practice</i>. SAGE.</li>
+<li>Schein, E. H. (2010). <i>Organizational culture and leadership</i> (4.ª ed.). Jossey-Bass.</li>
+</ul>
+</div>
+<script>
+document.querySelectorAll('.tab').forEach(function(t){t.onclick=function(){
+document.querySelectorAll('.tab,.panel').forEach(function(e){e.classList.remove('on')});
+t.classList.add('on');document.getElementById(t.dataset.p).classList.add('on')}});
+</script>
+<script src="../curso.js"></script>
+</body>
+</html>

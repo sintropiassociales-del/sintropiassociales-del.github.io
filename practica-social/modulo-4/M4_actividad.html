@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 4 — Actividad evaluable · Sintropía Social</title>
+<link href="https://fonts.cdnfonts.com/css/open-sauce-sans" rel="stylesheet">
+<style>
+:root{--purple:#5C1BDE;--orange:#FF5C1A;--mint:#00EDAA;--dark:#0D0D1A;--light:#F5F3FF;--gray:#8885A0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sauce Sans',sans-serif;background:var(--dark);color:var(--light);line-height:1.6;padding-bottom:60px}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px}
+header{padding:48px 0 24px}
+.tag{display:inline-block;color:var(--mint);border:1px solid rgba(0,237,170,.3);background:rgba(0,237,170,.1);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:14px}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.15}h1 em{font-style:normal;color:var(--orange)}
+.intro{color:var(--gray);margin-top:10px;font-size:14.5px}
+.q{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px 26px;margin-top:22px}
+.q h2{font-size:17px;margin-bottom:4px}
+.pts{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.q p.s{font-size:14px;color:rgba(245,243,255,.8);margin-bottom:12px}
+label.o{display:block;padding:10px 14px;margin:6px 0;border:1px solid rgba(255,255,255,.1);border-radius:10px;cursor:pointer;font-size:14px}
+label.o:hover{border-color:var(--orange)}
+label.o input{margin-right:8px;accent-color:var(--orange)}
+.row{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px;flex-wrap:wrap}
+.row span{flex:1 1 280px}
+select,textarea{background:#17172b;color:var(--light);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 10px;font:14px 'Open Sauce Sans',sans-serif}
+select{min-width:230px;max-width:100%}
+textarea{width:100%;min-height:78px;margin:4px 0 10px;resize:vertical}
+.fl{font-size:12px;color:var(--mint);letter-spacing:1px;text-transform:uppercase}
+.fb{margin-top:12px;font-size:13.5px;padding:10px 14px;border-radius:10px;display:none}
+.fb.ok{display:block;background:rgba(0,237,170,.1);border-left:3px solid var(--mint)}
+.fb.no{display:block;background:rgba(255,92,26,.1);border-left:3px solid var(--orange)}
+button.go{background:var(--orange);color:#fff;border:0;border-radius:12px;padding:14px 28px;font:700 15px 'Open Sauce Sans',sans-serif;cursor:pointer;margin-top:28px}
+button.sec{background:transparent;color:var(--light);border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:12px 22px;font:14px 'Open Sauce Sans',sans-serif;cursor:pointer;margin-top:10px}
+#res{display:none;margin-top:28px;background:linear-gradient(135deg,rgba(92,27,222,.25),rgba(255,92,26,.12));border:1px solid rgba(92,27,222,.5);border-radius:16px;padding:26px}
+#res .big{font-size:40px;font-weight:800;color:var(--mint)}
+.refs{margin-top:44px;font-size:12.5px;color:rgba(245,243,255,.65)}
+.refs li{list-style:none;margin:0 0 8px 20px;text-indent:-20px;padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="tag">Módulo 4 · Actividad evaluable</div>
+  <h1>El Ciclo <em>"Del Contexto al Significado"</em></h1>
+  <p class="intro">5 preguntas · 100 puntos (65 se califican automáticamente; 35 los revisa el/la facilitador/a con rúbrica). Puedes consultar la infografía y la lectura.</p>
+</header>
+<form id="f" onsubmit="return false">
+
+<div class="q" data-k="1"><h2>1. Ubica cada actividad en su etapa</h2><div class="pts">15 puntos (2.5 por actividad)</div>
+<p class="s">Elige la etapa del ciclo a la que corresponde principalmente cada descripción.</p>
+<div class="row"><span>Se mapean normas, instituciones y relaciones de poder.</span><select name="q1a"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div><div class="row"><span>Se revisan aprendizajes y tensiones y se ajusta el plan.</span><select name="q1b"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div><div class="row"><span>Se levanta una lectura del territorio y sus narrativas.</span><select name="q1c"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div><div class="row"><span>Se acompañan talleres para que el colectivo decida y actúe.</span><select name="q1d"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div><div class="row"><span>Se facilitan diálogos para dar nuevo sentido a las prácticas.</span><select name="q1e"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div><div class="row"><span>Se inventarían medios materiales y simbólicos disponibles.</span><select name="q1f"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="2"><h2>2. Técnica y etapa</h2><div class="pts">20 puntos (5 por técnica)</div>
+<p class="s">¿En qué etapa se usa principalmente cada técnica?</p>
+<div class="row"><span>Cartografía social del barrio con vecinas y vecinos.</span><select name="q2a"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div><div class="row"><span>Inventario de saberes, oficios y redes locales.</span><select name="q2b"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div><div class="row"><span>Círculo de diálogo con devolución de resultados.</span><select name="q2c"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div><div class="row"><span>Entrevistas a informantes clave sobre quién decide y cómo.</span><select name="q2d"><option value="">Elegir…</option><option value="1">1. Reconocimiento del Contexto</option><option value="2">2. Análisis de Recursos</option><option value="3">3. Identificación de Estructuras</option><option value="4">4. Activación de la Agencia</option><option value="5">5. Construcción de Significados</option><option value="6">6. Retroalimentación y Resignificación</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="3"><h2>3. Caso: decidir el siguiente paso</h2><div class="pts">15 puntos</div>
+<p class="s">Un equipo llega a una cooperativa de costureras y, en la primera semana, propone un programa de capacitación ya diseñado. Las socias dicen que "eso ya lo intentaron y no funcionó porque nadie en la mesa directiva lo apoyó". ¿Qué debería hacer el equipo?</p>
+<label class="o"><input type="radio" name="q3" value="a">Mantener el programa y reforzar la convocatoria.</label>
+<label class="o"><input type="radio" name="q3" value="b">Volver al reconocimiento del contexto y a la identificación de estructuras para entender la historia de ese intento y la dinámica de la mesa directiva.</label>
+<label class="o"><input type="radio" name="q3" value="c">Pasar directamente a la etapa 5 para cambiar la narrativa de las socias.</label>
+<label class="o"><input type="radio" name="q3" value="d">Cancelar la intervención porque la cooperativa es resistente.</label>
+<div class="fb"></div></div>
+
+<div class="q" data-k="4"><h2>4. Proceso o resultado</h2><div class="pts">15 puntos (3 por indicador)</div>
+<p class="s">Clasifica cada indicador.</p>
+<div class="row"><span>Número de talleres realizados.</span><select name="q4a"><option value="">—</option><option value="p">De proceso</option><option value="r">De resultado</option></select></div><div class="row"><span>El colectivo asume por sí mismo la coordinación de la ruta de acción.</span><select name="q4b"><option value="">—</option><option value="p">De proceso</option><option value="r">De resultado</option></select></div><div class="row"><span>Personas que asistieron a las sesiones de devolución.</span><select name="q4c"><option value="">—</option><option value="p">De proceso</option><option value="r">De resultado</option></select></div><div class="row"><span>Normas internas modificadas por la organización tras el diagnóstico.</span><select name="q4d"><option value="">—</option><option value="p">De proceso</option><option value="r">De resultado</option></select></div><div class="row"><span>Entrevistas aplicadas durante el reconocimiento.</span><select name="q4e"><option value="">—</option><option value="p">De proceso</option><option value="r">De resultado</option></select></div>
+<div class="fb"></div></div>
+
+<div class="q" data-k="5"><h2>5. Plan de intervención con el ciclo completo</h2><div class="pts">35 puntos · revisión manual (rúbrica en la Guía del Facilitador)</div>
+<p class="s">Con un caso real o ficticio de tu entorno, completa en 2–4 líneas por campo.</p>
+<span class="fl">Caso y pregunta guía</span><textarea name="m1"></textarea>
+<span class="fl">Etapas 1 a 3: técnicas, actores y entregables</span><textarea name="m2"></textarea>
+<span class="fl">Etapas 4 y 5: cómo participan los actores y qué decidirían</span><textarea name="m3"></textarea>
+<span class="fl">Etapa 6 y cronograma aproximado (semanas por etapa)</span><textarea name="m4"></textarea>
+<span class="fl">Un indicador de proceso y uno de resultado por etapa (resumen)</span><textarea name="m5"></textarea>
+</div>
+</form>
+<button class="go" id="send">Calificar actividad</button>
+<div id="res">
+  <div class="big" id="score"></div>
+  <p id="detail" style="margin-top:6px"></p>
+  <p style="margin-top:12px;font-size:13px;color:var(--gray)">La Pregunta 5 (35 pts) se suma después de la revisión del/la facilitador/a. La calificación se calcula en tu navegador y no se guarda automáticamente en ninguna plataforma.</p>
+  <button class="sec" id="copy">Copiar mis respuestas</button>
+</div>
+<div class="refs"><strong>Referencias (APA 7)</strong>
+<ul>
+<li>Arnstein, S. R. (1969). A ladder of citizen participation. <i>Journal of the American Institute of Planners, 35</i>(4), 216–224. https://doi.org/10.1080/01944366908977225</li>
+<li>Bourdieu, P. (1986). The forms of capital. En J. G. Richardson (Ed.), <i>Handbook of theory and research for the sociology of education</i> (pp. 241–258). Greenwood Press.</li>
+<li>Fals Borda, O. (1987). The application of participatory action-research in Latin America. <i>International Sociology, 2</i>(4), 329–347. https://doi.org/10.1177/026858098700200401</li>
+<li>Funnell, S. C., y Rogers, P. J. (2011). <i>Purposeful program theory: Effective use of theories of change and logic models</i>. Jossey-Bass.</li>
+<li>Schön, D. A. (1983). <i>The reflective practitioner: How professionals think in action</i>. Basic Books.</li>
+</ul></div>
+</div>
+<script>
+var F=document.getElementById('f');
+var K1={"q1a": "3", "q1b": "6", "q1c": "1", "q1d": "4", "q1e": "5", "q1f": "2"},K2={"q2a": "1", "q2b": "2", "q2c": "5", "q2d": "3"},K4={"q4a": "p", "q4b": "r", "q4c": "p", "q4d": "r", "q4e": "p"};
+function v(n){var e=F.elements[n];return e&&e.value||''}
+function cnt(K){var n=0;for(var k in K){if(v(k)===K[k])n++}return n}
+function fb(k,ok,msg){var b=document.querySelector('[data-k="'+k+'"] .fb');b.className='fb '+(ok?'ok':'no');b.innerHTML=msg}
+document.getElementById('send').onclick=function(){
+var s=0,d=[];
+var n1=cnt(K1),p1=n1*2.5;s+=p1;
+fb(1,n1===6,'Aciertos: '+n1+'/6. Orden correcto: Contexto → Recursos → Estructuras → Agencia → Significados → Retroalimentación. Recuerda que la etapa 6 reabre la lectura del contexto.');
+d.push('P1: '+p1+'/15');
+var n2=cnt(K2),p2=n2*5;s+=p2;
+fb(2,n2===4,'Aciertos: '+n2+'/4. Cartografía social: etapa 1; inventario de saberes y oficios: etapa 2; entrevistas sobre quién decide: etapa 3; círculo de diálogo con devolución: etapa 5.');
+d.push('P2: '+p2+'/20');
+var ok=v('q3')==='b',p3=ok?15:0;s+=p3;
+fb(3,ok,ok?'Correcto. El hallazgo indica una estructura (la mesa directiva) y una historia previa que no se leyeron. El ciclo permite volver atrás; imponer el programa o culpar a la cooperativa ignora lo que las socias ya saben.':'Revisa: llegar con un programa ya diseñado salta las etapas 1 a 3. Lo que dicen las socias es un dato de contexto y de estructura que obliga a volver a ellas.');
+d.push('P3: '+p3+'/15');
+var n4=cnt(K4),p4=n4*3;s+=p4;
+fb(4,n4===5,'Aciertos: '+n4+'/5. De proceso: talleres realizados, asistencia a devoluciones y entrevistas aplicadas. De resultado: el colectivo asume la coordinación y la organización modifica normas internas.');
+d.push('P4: '+p4+'/15');
+document.getElementById('score').textContent=s+' / 65 automáticos';
+document.getElementById('detail').textContent=d.join(' · ')+' · P5: pendiente de revisión (35 pts)';
+document.getElementById('res').style.display='block';
+document.getElementById('res').scrollIntoView({behavior:'smooth'});
+};
+document.getElementById('copy').onclick=function(){
+var t='MÓDULO 4 — Respuestas\n';
+Array.prototype.forEach.call(F.elements,function(e){if(e.name&&(e.type!=='radio'||e.checked))t+=e.name+': '+e.value+'\n'});
+var b=document.getElementById('copy');
+if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){b.textContent='Copiado'},function(){b.textContent='No se pudo copiar'})}else{b.textContent='No se pudo copiar'}};
+</script>
+<script src="../curso.js"></script>
+</body>
+</html>

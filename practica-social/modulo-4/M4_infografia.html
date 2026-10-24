@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 4 — Ciclo Del Contexto al Significado · Sintropía Social</title>
+<link href="https://fonts.cdnfonts.com/css/open-sauce-sans" rel="stylesheet">
+<style>
+:root{--purple:#5C1BDE;--orange:#FF5C1A;--mint:#00EDAA;--dark:#0D0D1A;--light:#F5F3FF;--gray:#8885A0;--amber:#F59E0B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sauce Sans',sans-serif;background:var(--dark);color:var(--light);overflow-x:hidden;line-height:1.6}
+.header{background:linear-gradient(160deg,#0A0025,#1A0550 60%,var(--dark));padding:60px 48px 50px;position:relative;overflow:hidden}
+.header::before{content:'04';font-size:260px;font-weight:800;color:rgba(92,27,222,.07);position:absolute;right:-20px;top:-40px;line-height:1}
+.tag{display:inline-block;background:rgba(0,237,170,.1);border:1px solid rgba(0,237,170,.3);color:var(--mint);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:20px}
+h1{font-size:clamp(28px,4.5vw,52px);font-weight:800;line-height:1.1;max-width:760px;position:relative}
+h1 em{font-style:normal;color:var(--orange)}
+.sub{color:var(--gray);margin-top:14px;max-width:640px;position:relative}
+.main{max-width:1100px;margin:0 auto;padding:56px 40px}
+.label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:10px;margin:48px 0 24px}
+.label:first-child{margin-top:0}
+.label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,92,26,.5),transparent)}
+.box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:26px 30px;font-size:14.5px;color:rgba(245,243,255,.82)}
+.box strong{color:var(--mint)}
+.cyc{display:grid;grid-template-columns:minmax(280px,420px) 1fr;gap:30px;align-items:start}
+@media(max-width:820px){.cyc{grid-template-columns:1fr}.header{padding:40px 20px}.main{padding:36px 18px}}
+svg{width:100%;height:auto;display:block}
+svg text{font-family:'Open Sauce Sans',sans-serif}
+.node{cursor:pointer}
+.node circle{transition:all .2s}
+.node:hover circle,.node.on circle{fill:var(--orange);stroke:#fff}
+#det{background:rgba(92,27,222,.1);border:1px solid rgba(92,27,222,.45);border-radius:16px;padding:26px 28px;min-height:320px}
+#det h3{font-size:22px;margin-bottom:4px}
+#det .comp{color:var(--mint);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.kv{margin-top:12px;font-size:14px}
+.kv b{display:block;color:var(--orange);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+th{color:var(--orange);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 18px;font-size:13.5px}
+.card b{display:block;color:var(--orange);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.warn{border-left:3px solid var(--amber);padding:14px 18px;background:rgba(245,158,11,.07);border-radius:0 10px 10px 0;font-size:13.5px;margin-top:18px}
+.refs li{list-style:none;margin:0 0 12px 22px;text-indent:-22px;padding-left:22px;font-size:13px;color:rgba(245,243,255,.75)}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="tag">Módulo 4 · 5 horas</div>
+  <h1>El Ciclo <em>"Del Contexto al Significado"</em></h1>
+  <p class="sub">Seis etapas para pasar de leer un territorio a intervenir con las personas, no sobre ellas.</p>
+</div>
+<div class="main">
+
+<div class="label">El ciclo en una imagen</div>
+<div class="box">El ciclo operacionaliza los cinco componentes de la Práctica Social en un proceso de intervención. Cada etapa tiene un componente dominante, pero <strong>ninguna se cierra del todo</strong>: la etapa 6 devuelve aprendizajes que reabren la lectura del contexto. Haz clic en cada etapa para ver sus preguntas, técnicas y entregables.</div>
+
+<div class="label" style="margin-top:32px">Explora las seis etapas</div>
+<div class="cyc">
+  <svg viewBox="0 0 400 400" role="img" aria-label="Ciclo de seis etapas" id="ring">
+    <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="2" stroke-dasharray="4 6"/>
+    <text x="200" y="196" text-anchor="middle" fill="#8885A0" font-size="12">Del</text>
+    <text x="200" y="214" text-anchor="middle" fill="#F5F3FF" font-size="14" font-weight="700">Contexto al</text>
+    <text x="200" y="232" text-anchor="middle" fill="#F5F3FF" font-size="14" font-weight="700">Significado</text>
+  </svg>
+  <div id="det"></div>
+</div>
+
+<div class="label">Indicadores: de proceso y de resultado</div>
+<div class="box tw"><table>
+<tr><th>Etapa</th><th>Indicador de proceso (qué hicimos)</th><th>Indicador de resultado (qué cambió)</th></tr>
+<tr><td>1 Contexto</td><td>N.º de recorridos y entrevistas realizadas</td><td>Mapa de actores validado por informantes locales</td></tr>
+<tr><td>2 Recursos</td><td>Recursos inventariados por categoría</td><td>Recursos locales incorporados al plan</td></tr>
+<tr><td>3 Estructuras</td><td>Instituciones y normas mapeadas</td><td>Barreras y aliados estructurales priorizados</td></tr>
+<tr><td>4 Agencia</td><td>Asistencia y rotación de quienes facilitan talleres</td><td>Acciones decididas y asumidas por el colectivo</td></tr>
+<tr><td>5 Significados</td><td>Sesiones de diálogo y devolución realizadas</td><td>Narrativa compartida que el grupo reconoce como suya</td></tr>
+<tr><td>6 Retroalimentación</td><td>Sesiones de aprendizaje documentadas</td><td>Ajustes al plan derivados de la evaluación</td></tr>
+</table></div>
+<p style="font-size:12px;color:var(--gray);margin-top:8px">Ejemplos orientativos; los indicadores definitivos se acuerdan con los actores de cada caso.</p>
+
+<div class="label">Tres cuidados al intervenir</div>
+<div class="grid">
+  <div class="card"><b>Participación real</b>Arnstein (1969) distingue grados de participación, desde la manipulación hasta el control ciudadano. Pregunta quién decide en cada etapa.</div>
+  <div class="card"><b>Reflexividad</b>El equipo también es parte del contexto. Registrar decisiones y dudas permite aprender de la práctica (Schön, 1983).</div>
+  <div class="card"><b>Devolución</b>Los resultados se regresan a quienes los produjeron, en un lenguaje que puedan usar. Sin devolución no hay etapa 5.</div>
+</div>
+<div class="warn"><strong>Ojo:</strong> las etapas son una guía de secuencia, no un cronograma rígido. En campo se avanza, se vuelve y se traslapan.</div>
+
+<div class="label">Referencias (APA 7)</div>
+<ul class="refs">
+<li>Arnstein, S. R. (1969). A ladder of citizen participation. <i>Journal of the American Institute of Planners, 35</i>(4), 216–224. https://doi.org/10.1080/01944366908977225</li>
+<li>Bourdieu, P. (1986). The forms of capital. En J. G. Richardson (Ed.), <i>Handbook of theory and research for the sociology of education</i> (pp. 241–258). Greenwood Press.</li>
+<li>Chambers, R. (1994). The origins and practice of participatory rural appraisal. <i>World Development, 22</i>(7), 953–969. https://doi.org/10.1016/0305-750X(94)90141-4</li>
+<li>Emirbayer, M., y Mische, A. (1998). What is agency? <i>American Journal of Sociology, 103</i>(4), 962–1023. https://doi.org/10.1086/231294</li>
+<li>Fals Borda, O. (1987). The application of participatory action-research in Latin America. <i>International Sociology, 2</i>(4), 329–347. https://doi.org/10.1177/026858098700200401</li>
+<li>Funnell, S. C., y Rogers, P. J. (2011). <i>Purposeful program theory: Effective use of theories of change and logic models</i>. Jossey-Bass.</li>
+<li>Geertz, C. (1973). <i>The interpretation of cultures</i>. Basic Books.</li>
+<li>Giddens, A. (1984). <i>The constitution of society</i>. Polity Press.</li>
+<li>Schön, D. A. (1983). <i>The reflective practitioner: How professionals think in action</i>. Basic Books.</li>
+</ul>
+</div>
+<script>
+var E=[
+{n:"Reconocimiento del Contexto",c:"Contexto",q:"¿Dónde estamos, con quién y con qué historia?",t:"Recorridos del territorio, observación participante, cartografía social, revisión documental.",e:"Lectura del territorio: mapa de actores y narrativas locales."},
+{n:"Análisis de Recursos",c:"Recursos",q:"¿Qué medios materiales y simbólicos tienen a su alcance?",t:"Inventario de activos, entrevistas, mapeo de capitales (económico, social, cultural, simbólico; Bourdieu, 1986).",e:"Inventario de recursos culturales y comunitarios."},
+{n:"Identificación de Estructuras",c:"Estructura",q:"¿Qué normas, instituciones y relaciones de poder organizan la acción?",t:"Análisis institucional, mapeo de poder, entrevistas a informantes clave.",e:"Diagnóstico de estructuras formales e informales, con barreras y aliados."},
+{n:"Activación de la Agencia",c:"Agencia",q:"¿Qué pueden y quieren decidir los actores dentro de sus márgenes?",t:"Talleres de co-creación, grupos de reflexión, investigación-acción participativa (Fals Borda, 1987).",e:"Acciones y acuerdos co-diseñados con el colectivo."},
+{n:"Construcción de Significados",c:"Significado",q:"¿Qué sentido le damos ahora a lo que hacemos y por qué?",t:"Círculos de diálogo, narrativas, devolución de resultados, codificación participativa.",e:"Narrativa compartida y prácticas resignificadas."},
+{n:"Retroalimentación y Resignificación",c:"Todos los componentes",q:"¿Qué cambió, qué aprendimos y qué tensiones aparecieron?",t:"Sesiones de aprendizaje, evaluación participativa, revisión de indicadores.",e:"Informe de aprendizajes y ajustes al ciclo."}];
+var svg=document.getElementById('ring'),NS='http://www.w3.org/2000/svg';
+function show(i){var d=E[i];document.getElementById('det').innerHTML='<div class="comp">Etapa '+(i+1)+' · Componente: '+d.c+'</div><h3>'+d.n+'</h3><div class="kv"><b>Pregunta guía</b>'+d.q+'</div><div class="kv"><b>Técnicas</b>'+d.t+'</div><div class="kv"><b>Entregable</b>'+d.e+'</div>';
+document.querySelectorAll('.node').forEach(function(n,j){n.classList.toggle('on',j===i)})}
+E.forEach(function(d,i){var a=-Math.PI/2+i*Math.PI/3,x=200+140*Math.cos(a),y=200+140*Math.sin(a);
+var g=document.createElementNS(NS,'g');g.setAttribute('class','node');g.setAttribute('tabindex','0');g.setAttribute('role','button');g.setAttribute('aria-label','Etapa '+(i+1)+': '+d.n);
+g.innerHTML='<circle cx="'+x+'" cy="'+y+'" r="26" fill="#5C1BDE" stroke="rgba(255,255,255,.3)" stroke-width="2"/><text x="'+x+'" y="'+(y+6)+'" text-anchor="middle" fill="#fff" font-size="18" font-weight="800">'+(i+1)+'</text>';
+g.onclick=function(){show(i)};g.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();show(i)}};svg.appendChild(g)});
+show(0);
+</script>
+<script src="../curso.js"></script>
+</body>
+</html>
