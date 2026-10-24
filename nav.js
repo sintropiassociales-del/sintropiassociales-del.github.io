@@ -68,6 +68,8 @@ var SS_AUTH = (function(){
 // navegación de página, destruyendo la sesión de admin.html.
 
 // ── Nav bar markup ──
+// Nota: el nav tiene dos versiones de los items según sea admin o usuario normal.
+// _sintroRenderUserState() actualiza los items de nav según el rol.
 var SINTRO_NAV_HTML = `
 <nav class="ss-nav">
   <a href="index.html" class="ss-nav-logo">
@@ -77,7 +79,8 @@ var SINTRO_NAV_HTML = `
   <ul class="ss-nav-links" id="ss-nav-links">
     <li><a href="index.html" data-navkey="inicio">Inicio</a></li>
 
-    <li>
+    <!-- Item para usuarios normales -->
+    <li id="ss-nav-herr-li">
       <div class="ss-dd" id="dd-herr">
         <button class="ss-dd-btn" onclick="ssDD('dd-herr')" data-navkey="herramientas">Herramientas
           <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -88,7 +91,29 @@ var SINTRO_NAV_HTML = `
         </div>
       </div>
     </li>
-    <li><a href="servicios.html" data-navkey="servicios">Servicios</a></li>
+
+    <!-- Item "Cursos" para admin (reemplaza Herramientas) -->
+    <li id="ss-nav-admin-cursos-li" style="display:none;">
+      <div class="ss-dd" id="dd-admin-cursos">
+        <button class="ss-dd-btn" onclick="ssDD('dd-admin-cursos')" data-navkey="cursos">Cursos
+          <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="ss-dd-panel">
+          <a href="admin.html?tab=cursos#inscritos" data-navkey="cursos">Usuarios inscritos</a>
+          <a href="admin.html?tab=cursos#acceso" data-navkey="cursos">Enviar liga de acceso</a>
+          <a href="admin.html?tab=cursos#completados" data-navkey="cursos">Quién ya terminó</a>
+          <a href="cursos.html" target="_blank" data-navkey="cursos">Ver elementos del curso</a>
+          <a href="admin.html?tab=cursos#constancias" data-navkey="cursos">Constancias automáticas</a>
+        </div>
+      </div>
+    </li>
+
+    <!-- Servicios para usuarios normales -->
+    <li id="ss-nav-servicios-li"><a href="servicios.html" data-navkey="servicios">Servicios</a></li>
+
+    <!-- "Salud y crecimiento" para admin (reemplaza Servicios) -->
+    <li id="ss-nav-admin-salud-li" style="display:none;"><a href="admin.html?tab=salud" data-navkey="salud">Salud y crecimiento</a></li>
+
     <li><a href="blog.html" data-navkey="blog">Newsletter</a></li>
     <li><a href="contribuir.html" data-navkey="contribuir">Contribuir</a></li>
     <li id="ss-nav-internal-li" style="display:none;"><a href="admin.html" data-navkey="admin-interna">Área interna</a></li>
@@ -226,6 +251,7 @@ function ssToast(msg,type){
 // SS_AUTH (nuevo), ss_user legado, Auth de config.js (admin.html)
 function _sintroRenderUserState(){
   var u = ssGetUser();
+  var isAdmin = ssIsAdmin();
 
   var el = document.getElementById('ss-nav-user');
   if(el){
@@ -241,8 +267,46 @@ function _sintroRenderUserState(){
   // "Área interna" — visible para admins (usa ssIsAdmin() que lee ambos sistemas)
   var internalLi = document.getElementById('ss-nav-internal-li');
   if(internalLi){
-    internalLi.style.display = ssIsAdmin() ? '' : 'none';
+    internalLi.style.display = isAdmin ? '' : 'none';
   }
+
+  // Nav items: admin vs usuario normal
+  // Admin: muestra "Cursos" y "Salud y crecimiento" en lugar de "Herramientas" y "Servicios"
+  var herrLi = document.getElementById('ss-nav-herr-li');
+  var adminCursosLi = document.getElementById('ss-nav-admin-cursos-li');
+  var serviciosLi = document.getElementById('ss-nav-servicios-li');
+  var adminSaludLi = document.getElementById('ss-nav-admin-salud-li');
+  if(herrLi) herrLi.style.display = isAdmin ? 'none' : '';
+  if(adminCursosLi) adminCursosLi.style.display = isAdmin ? '' : 'none';
+  if(serviciosLi) serviciosLi.style.display = isAdmin ? 'none' : '';
+  if(adminSaludLi) adminSaludLi.style.display = isAdmin ? '' : 'none';
+
+  // Footer "Panel interno" — inyectar dinámicamente cuando hay sesión (admin o usuario)
+  _sintroInjectFooterLink(u, isAdmin);
+}
+
+// Inyecta el link "Panel interno" en el footer de la página cuando hay sesión
+function _sintroInjectFooterLink(u, isAdmin){
+  // Solo actuar si hay sesión
+  if(!u && !isAdmin) return;
+  // Buscar footer en la página
+  var footer = document.querySelector('footer');
+  if(!footer) return;
+  // No duplicar
+  if(document.getElementById('ss-footer-panel-link')) return;
+
+  var href = isAdmin ? 'admin.html' : 'usuario.html';
+  var label = isAdmin ? 'Panel interno' : 'Mi panel';
+  var link = document.createElement('a');
+  link.id = 'ss-footer-panel-link';
+  link.href = href;
+  link.textContent = label;
+  link.style.cssText = 'font-size:.75rem;color:rgba(255,255,255,.45);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;padding:4px 12px;border:1px solid rgba(255,255,255,.12);border-radius:999px;transition:all .2s;';
+  link.onmouseover = function(){ this.style.color='#fff'; this.style.borderColor='rgba(99,30,235,.5)'; };
+  link.onmouseout = function(){ this.style.color='rgba(255,255,255,.45)'; this.style.borderColor='rgba(255,255,255,.12)'; };
+  // Prefijar con un ícono
+  link.innerHTML = (isAdmin ? '⚙️ ' : '👤 ') + label;
+  footer.appendChild(link);
 }
 
 // ── Active-link marking ──

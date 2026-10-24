@@ -346,11 +346,11 @@ body { font-family:var(--font-body); background:var(--surface); color:var(--fg);
       </div>
     </div>
 
-    <!-- Tabs -->
+    <!-- Tabs — etiquetas cambian según admin o usuario normal -->
     <div class="tabs-wrap">
-      <button class="tab-btn active" onclick="uShowTab('citas',this)">📚 Mis citas propuestas</button>
-      <button class="tab-btn" onclick="uShowTab('contribuciones',this)">📝 Mis contribuciones</button>
-      <button class="tab-btn" onclick="uShowTab('cuenta',this)">⚙️ Mi cuenta</button>
+      <button class="tab-btn active" id="tab-btn-citas" onclick="uShowTab('citas',this)">Mis citas propuestas</button>
+      <button class="tab-btn" id="tab-btn-contribuciones" onclick="uShowTab('contribuciones',this)">Mis contribuciones</button>
+      <button class="tab-btn" id="tab-btn-cuenta" onclick="uShowTab('cuenta',this)">Mi cuenta</button>
     </div>
 
     <!-- ─ Tab: Citas ─ -->
@@ -405,6 +405,18 @@ body { font-family:var(--font-body); background:var(--surface); color:var(--fg);
         <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;">Eliminar tu cuenta borra todos tus datos y citas propuestas. Las ya aprobadas permanecen en el repositorio como anónimas.</p>
         <button onclick="uEliminarCuenta()" style="background:none;border:1px solid rgba(220,38,38,.3);color:var(--red);padding:7px 16px;border-radius:var(--radius-pill);cursor:pointer;font-size:.82rem;font-family:var(--font-body);">Eliminar mi cuenta</button>
       </div>
+
+      <!-- Zona peligrosa ADMIN: Dormir el sitio (solo visible para admin) -->
+      <div id="zona-admin-dormir" class="cuenta-card" style="display:none;border-color:rgba(99,30,235,.2);background:rgba(99,30,235,.03);">
+        <h3 style="color:var(--purple);">Modo mantenimiento</h3>
+        <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;">
+          <strong>Despublicar / Dormir el sitio:</strong> Activa un modo de mantenimiento que muestra una pantalla de "próximamente" para todos los visitantes. Solo tú (como admin) podrás acceder al panel. El sitio vuelve a publicarse cuando lo reactives.
+        </p>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;">
+          <button id="btn-dormir-sitio" onclick="uToggleDormirSitio()" style="background:var(--purple);color:#fff;padding:9px 22px;border-radius:var(--radius-pill);border:none;cursor:pointer;font-size:.87rem;font-weight:600;font-family:var(--font-body);">😴 Dormir el sitio</button>
+          <span id="estado-dormir" style="font-size:.78rem;color:var(--muted);"></span>
+        </div>
+      </div>
     </div>
 
   </div><!-- /ui-perfil -->
@@ -436,7 +448,7 @@ function uToast(msg){
   clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},3200);
 }
 
-/* ════ NAV — sesión ════ */
+/* ════ NAV — sesión — botón simple "Label · Salir" (sin dropdown) ════ */
 function updateNavUser(user){
   var el=document.getElementById('ss-nav-user');
   if(!el)return;
@@ -444,47 +456,32 @@ function updateNavUser(user){
     el.innerHTML='<a class="ss-nav-login-btn" href="registro.html">Iniciar sesión</a>';
     return;
   }
-  var inicial=(user.nombre||user.email||'U')[0].toUpperCase();
-  el.innerHTML=
-    '<div style="position:relative;">'+
-      '<button class="ss-nav-user-btn" onclick="toggleNavDropdown()" id="nav-user-toggle">'+
-        '<span class="ss-nav-avatar">'+esc(inicial)+'</span>'+
-        '<span>'+esc(user.nombre||user.email||'Mi perfil')+'</span>'+
-        '<span style="font-size:.65rem;opacity:.6;">▾</span>'+
-      '</button>'+
-      '<div class="ss-nav-dropdown" id="nav-dropdown">'+
-        '<a href="usuario.html">👤 Mi perfil</a>'+
-        '<hr/>'+
-        '<button onclick="cerrarSesion()">🚪 Cerrar sesión</button>'+
-      '</div>'+
-    '</div>';
+  var label=esc(user.nombre||user.email.split('@')[0]||'Usuario');
+  el.innerHTML='<button onclick="cerrarSesion()" style="background:#631EEB;color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
 }
-
-function toggleNavDropdown(){
-  var dd=document.getElementById('nav-dropdown');
-  if(dd) dd.classList.toggle('open');
-}
-document.addEventListener('click',function(e){
-  if(!e.target.closest('#ss-nav-user')){
-    var dd=document.getElementById('nav-dropdown');
-    if(dd) dd.classList.remove('open');
-  }
-});
 
 function cerrarSesion(){
-  localStorage.removeItem('ss_user');
-  localStorage.removeItem('sintropia_usuario_actual');
-  localStorage.removeItem('ss_admin');
-  updateNavUser(null);
+  ['ss_user','ss_user_v2','sintropia_usuario_actual','ss_admin','ss_admin_v2'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
   window.location.href='index.html';
 }
 
-/* ════ SESIÓN ════ */
+/* ════ SESIÓN — lee ambos sistemas de auth ════ */
 function ssGetUser(){
+  // Sistema nuevo (nav.js): ss_user_v2 con TTL 8h
+  try{
+    var v2=JSON.parse(localStorage.getItem('ss_user_v2')||'null');
+    if(v2&&v2.data&&(!v2.expires||Date.now()<v2.expires)) return v2.data;
+  }catch(e){}
+  // Sistema legacy: ss_user / sintropia_usuario_actual
   var u=null;
   try{u=JSON.parse(localStorage.getItem('ss_user')||'null');}catch(e){}
   if(!u) try{u=JSON.parse(localStorage.getItem('sintropia_usuario_actual')||'null');}catch(e){}
   return u;
+}
+function ssIsAdminUser(){
+  try{var v2=JSON.parse(localStorage.getItem('ss_admin_v2')||'null');if(v2&&v2.data&&v2.data.token&&(!v2.expires||Date.now()<v2.expires))return true;}catch(e){}
+  try{var a=JSON.parse(localStorage.getItem('ss_admin')||'null');if(a&&a.token)return true;}catch(e){}
+  return false;
 }
 
 /* ════ JSONP API ════ */
@@ -507,26 +504,40 @@ function uAPI(action, params){
 }
 
 /* ════ INIT ════ */
-var _uCitasPool=[], _uFiltro='TODAS', _uUser=null;
+var _uCitasPool=[], _uFiltro='TODAS', _uUser=null, _uIsAdmin=false;
 
 (function init(){
   var u=ssGetUser();
+  _uIsAdmin=ssIsAdminUser();
   document.getElementById('ui-loading').style.display='none';
-  updateNavUser(u);
-  if(!u){
+  updateNavUser(u||(_uIsAdmin?{nombre:'Admin',email:'admin'}:null));
+  if(!u && !_uIsAdmin){
     document.getElementById('ui-login').style.display='block';
     return;
   }
-  _uUser=u;
+  _uUser=u||{nombre:'Administrador',email:'admin'};
   document.getElementById('ui-perfil').style.display='block';
+
+  /* Si es admin, personalizar tabs y mostrar zona admin */
+  if(_uIsAdmin){
+    var btnCitas=document.getElementById('tab-btn-citas');
+    var btnContrib=document.getElementById('tab-btn-contribuciones');
+    if(btnCitas) btnCitas.textContent='Revisar citas de usuarios';
+    if(btnContrib) btnContrib.textContent='Revisar contribuciones de usuarios';
+    var zonaAdmin=document.getElementById('zona-admin-dormir');
+    if(zonaAdmin) zonaAdmin.style.display='';
+    /* Cargar estado actual de dormir */
+    _uCargarEstadoDormir();
+  }
+
   /* Rellenar hero */
-  var inicial=(u.nombre||u.email||'?')[0].toUpperCase();
+  var inicial=((_uUser.nombre||_uUser.email||'?')[0]||'?').toUpperCase();
   document.getElementById('p-avatar').textContent=inicial;
-  document.getElementById('p-nombre').textContent=u.nombre||u.email||'Usuario';
-  document.getElementById('p-email').textContent=u.email||'';
-  if(u.fechaRegistro){
+  document.getElementById('p-nombre').textContent=_uUser.nombre||_uUser.email||'Usuario';
+  document.getElementById('p-email').textContent=_uUser.email||'';
+  if(_uUser.fechaRegistro){
     try{
-      var d=new Date(u.fechaRegistro);
+      var d=new Date(_uUser.fechaRegistro);
       document.getElementById('p-fecha-registro').textContent=
         'Miembro desde '+d.toLocaleDateString('es-MX',{month:'long',year:'numeric'});
     }catch(e){}
@@ -535,13 +546,45 @@ var _uCitasPool=[], _uFiltro='TODAS', _uUser=null;
   var cn=document.getElementById('cu-nombre');
   var co=document.getElementById('cu-org');
   var ce=document.getElementById('cu-email');
-  if(cn) cn.value=u.nombre||'';
-  if(co) co.value=u.organizacion||'';
-  if(ce) ce.value=u.email||'';
+  if(cn) cn.value=_uUser.nombre||'';
+  if(co) co.value=_uUser.organizacion||'';
+  if(ce) ce.value=_uUser.email||'';
   /* Cargar datos */
   uLoadCitas();
   uLoadContrib();
 })();
+
+/* ════ DORMIR SITIO (admin) ════ */
+var SITE_SLEEP_KEY='ss_site_sleeping';
+function _uCargarEstadoDormir(){
+  var el=document.getElementById('estado-dormir');
+  var btn=document.getElementById('btn-dormir-sitio');
+  try{
+    var sleeping=localStorage.getItem(SITE_SLEEP_KEY)==='1';
+    if(sleeping){
+      if(el) el.textContent='⚠️ El sitio está en modo mantenimiento actualmente.';
+      if(btn){ btn.textContent='🌞 Despertar el sitio'; btn.style.background='#16a34a'; }
+    } else {
+      if(el) el.textContent='El sitio está activo y visible para todos.';
+      if(btn){ btn.textContent='😴 Dormir el sitio'; btn.style.background='var(--purple)'; }
+    }
+  }catch(e){}
+}
+function uToggleDormirSitio(){
+  try{
+    var sleeping=localStorage.getItem(SITE_SLEEP_KEY)==='1';
+    if(!sleeping){
+      if(!confirm('¿Activar modo mantenimiento? El sitio mostrará una pantalla de "próximamente" para todos los visitantes hasta que lo reactives.'))return;
+      localStorage.setItem(SITE_SLEEP_KEY,'1');
+      uToast('Sitio en modo mantenimiento. Solo tú (admin) puedes acceder.');
+    } else {
+      localStorage.removeItem(SITE_SLEEP_KEY);
+      uToast('✓ Sitio reactivado. Visible para todos los visitantes.');
+    }
+    _uCargarEstadoDormir();
+  }catch(e){ uToast('Error al cambiar el estado.'); }
+}
+window.uToggleDormirSitio=uToggleDormirSitio;
 
 /* ════ TABS ════ */
 function uShowTab(name, btn){

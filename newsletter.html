@@ -416,8 +416,17 @@ document.addEventListener('click',function(e){
   if(!e.target.closest('#ss-nav-user'))document.getElementById('nav-dropdown')&&document.getElementById('nav-dropdown').classList.remove('open');
 });
 
-/* ── Nav usuario ── */
+/* ── Nav usuario — homologado a "Label · Salir" sin dropdown ── */
 function _esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function _ssIsAdminLocal(){
+  try{var v2=JSON.parse(localStorage.getItem('ss_admin_v2')||'null');if(v2&&v2.data&&v2.data.token&&(!v2.expires||Date.now()<v2.expires))return true;}catch(e){}
+  try{var a=JSON.parse(localStorage.getItem('ss_admin')||'null');if(a&&a.token)return true;}catch(e){}
+  return false;
+}
+function cerrarSesion(){
+  ['ss_user','ss_user_v2','sintropia_usuario_actual','ss_admin','ss_admin_v2'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+  window.location.href='index.html';
+}
 function updateNavUser(user){
   var el=document.getElementById('ss-nav-user');
   if(!el)return;
@@ -425,37 +434,18 @@ function updateNavUser(user){
     el.innerHTML='<a href="registro.html" class="ss-nav-cta">Únete gratis</a>';
     return;
   }
-  var inicial=(user.nombre||user.email||'U')[0].toUpperCase();
-  el.innerHTML=
-    '<div style="position:relative;">'+
-      '<button class="ss-nav-user-btn" onclick="toggleNavDropdown()" id="nav-user-toggle">'+
-        '<span class="ss-nav-avatar">'+_esc(inicial)+'</span>'+
-        '<span>'+_esc(user.nombre||user.email||'Mi perfil')+'</span>'+
-        '<span style="font-size:.65rem;opacity:.6;">▾</span>'+
-      '</button>'+
-      '<div class="ss-nav-dropdown" id="nav-dropdown">'+
-        '<a href="usuario.html">👤 Mi perfil</a>'+
-        '<hr/>'+
-        '<button onclick="cerrarSesion()">🚪 Cerrar sesión</button>'+
-      '</div>'+
-    '</div>';
+  var label=_esc(user.nombre||user.email.split('@')[0]||'Usuario');
+  el.innerHTML='<button onclick="cerrarSesion()" style="background:#631EEB;color:#fff;padding:.42rem .95rem;border-radius:999px;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:600;">'+label+' · Salir</button>';
 }
-function toggleNavDropdown(){
-  var dd=document.getElementById('nav-dropdown');
-  if(dd)dd.classList.toggle('open');
-}
-function cerrarSesion(){
-  localStorage.removeItem('ss_user');
-  localStorage.removeItem('sintropia_usuario_actual');
-  localStorage.removeItem('ss_admin');
-  updateNavUser(null);
-  window.location.href='index.html';
-}
-/* Inicializar nav con sesión actual */
+/* Inicializar nav con sesión actual (lee ambos sistemas) */
 (function(){
   try{
-    var raw=localStorage.getItem('ss_user');
-    if(raw){var u=JSON.parse(raw);updateNavUser(u);}
+    var v2=JSON.parse(localStorage.getItem('ss_user_v2')||'null');
+    if(v2&&v2.data&&(!v2.expires||Date.now()<v2.expires)){updateNavUser(v2.data);return;}
+  }catch(e){}
+  try{
+    var raw=localStorage.getItem('ss_user')||localStorage.getItem('sintropia_usuario_actual');
+    if(raw){updateNavUser(JSON.parse(raw));return;}
   }catch(e){}
 })();
 </script>
