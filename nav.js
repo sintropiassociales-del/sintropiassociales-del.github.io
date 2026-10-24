@@ -102,7 +102,7 @@ var SINTRO_NAV_HTML = `
           <a href="admin.html?tab=cursos#inscritos" data-navkey="cursos">Usuarios inscritos</a>
           <a href="admin.html?tab=cursos#acceso" data-navkey="cursos">Enviar liga de acceso</a>
           <a href="admin.html?tab=cursos#completados" data-navkey="cursos">Quién ya terminó</a>
-          <a href="cursos.html" target="_blank" data-navkey="cursos">Ver elementos del curso</a>
+          <a href="admin.html?tab=cursos#contenido" data-navkey="cursos">Elementos del curso</a>
           <a href="admin.html?tab=cursos#constancias" data-navkey="cursos">Constancias automáticas</a>
         </div>
       </div>
@@ -114,9 +114,9 @@ var SINTRO_NAV_HTML = `
     <!-- "Salud y crecimiento" para admin (reemplaza Servicios) -->
     <li id="ss-nav-admin-salud-li" style="display:none;"><a href="admin.html?tab=salud" data-navkey="salud">Salud y crecimiento</a></li>
 
-    <li><a href="blog.html" data-navkey="blog">Newsletter</a></li>
+    <li><a href="newsletter.html" data-navkey="blog">Newsletter</a></li>
     <li><a href="contribuir.html" data-navkey="contribuir">Contribuir</a></li>
-    <li id="ss-nav-internal-li" style="display:none;"><a href="admin.html" data-navkey="admin-interna">Área interna</a></li>
+    
   </ul>
   <div class="ss-nav-end">
     <span id="ss-nav-user">

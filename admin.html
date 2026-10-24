@@ -289,6 +289,8 @@
     .modal .btn { width: auto; }
   </style>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Open+Sauce+One:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<!-- Sesión unificada (todas las páginas) -->
+<script src="sesion.js"></script>
 </head>
 <body>
 <div id="sintro-nav"></div>
@@ -1177,8 +1179,6 @@
       try {
         // Generate SHA-256 hash of password
         var passHash = await sha256(password);
-        console.log('Email:', email);
-        console.log('Password hash:', passHash);
         
         var result = await api('loginAdmin', {
           email: email,
@@ -1208,6 +1208,7 @@
       document.getElementById('login-container').style.display = 'none';
       document.getElementById('admin-panel').classList.add('active');
       loadAdminData();
+      setTimeout(function(){ if(typeof _ssDeepLink==='function') _ssDeepLink(); }, 0);
     }
 
     // Escapa texto proveniente de usuarios/formularios antes de insertarlo como HTML,
@@ -1223,7 +1224,7 @@
         .replace(/'/g, '&#39;');
     }
 
-    async function loadAdminData() {
+    async function _loadAdminDataBase() {   // (renombrada: antes se pisaba con la de abajo y entraba en bucle infinito)
       var token = Auth.getToken();
       
       // Load all data in parallel
@@ -1245,10 +1246,11 @@
       document.getElementById('admin-stat-pendientes').textContent = adminData.pendientes.length;
       
       // Render tables
-      renderPendientes();
-      renderCitas();
-      renderUsuarios();
-      renderBlogPosts();
+      // Algunas tablas antiguas ya no existen (las sustituyó la vista nueva);
+      // si una falla, las demás siguen cargando.
+      [renderPendientes, renderCitas, renderUsuarios, renderBlogPosts].forEach(function(fn){
+        try{ fn(); }catch(e){ console.warn('Vista omitida:', fn.name, e.message); }
+      });
       // Cargar suscriptores (stat en dashboard y lista en tab Blog)
       loadSuscriptores();
     }
@@ -1739,7 +1741,7 @@
     }
 
     // ── OVERRIDE loadAdminData to populate new UI ──
-    var _origLoadAdminData = typeof loadAdminData === 'function' ? loadAdminData : function(){};
+    var _origLoadAdminData = _loadAdminDataBase;
     function loadAdminData(){
       _origLoadAdminData();
       // Load citas
@@ -1777,6 +1779,8 @@
       if(tabId==='usuarios') { if(typeof filtrarUsuariosAdmin==='function') filtrarUsuariosAdmin(); }
       if(tabId==='citas') { if(typeof filtrarCitasAdmin==='function') filtrarCitasAdmin(); }
       if(tabId==='pdfcitas') loadPDFPendientes();
+      if(tabId==='salud' && typeof saludLoad==='function') saludLoad();
+      if(tabId==='cursos' && typeof cLoadInscritos==='function') cLoadInscritos();
     }
     // Replace all tab button onclick to use hooks
     document.addEventListener('DOMContentLoaded', function(){
@@ -1957,12 +1961,9 @@
       setTimeout(function(){ t.style.opacity='0'; }, 3000);
     }
 
-    // Load PDF pendientes when tab is shown
-    var origShowTab = showTab;
-    function showTab(tabId) {
-      origShowTab(tabId);
-      if (tabId === 'pdfcitas') loadPDFPendientes();
-    }
+    // (Se eliminó una segunda declaración de showTab que se llamaba a sí misma
+    //  y rompía TODAS las pestañas con "Maximum call stack size exceeded".
+    //  La carga de PDF pendientes ya ocurre dentro de showTab original.)
   </script>
 
 <script>SintroNav.render('#sintro-nav','admin');
@@ -1990,15 +1991,32 @@
     return null;
   }
 
+  /* Todas las llamadas de Cursos/Salud van por JSONP (api() de config.js),
+     igual que el resto del panel. Antes usaban fetch POST con JSON, que
+     Apps Script rechaza por CORS y siempre daba "Error de conexión". */
+  function _cApi(action, params){
+    params = params || {};
+    params.adminToken = _adminToken();
+    params.token = params.adminToken;
+    return api(action, params).then(function(d){
+      if(d && d.ok === false && /acci[oó]n|action|desconocid|unknown|no v[aá]lid/i.test(d.error||'')){
+        d.error = 'El servidor (Apps Script) todavía no tiene la acción "'+action+'". Hay que agregarla en Code.gs.';
+      }
+      return d;
+    });
+  }
+  function _cErr(d, fallback){
+    return (d && d.ok === false) ? '<p style="color:var(--error);">'+_esc(d.error||'Error del servidor')+'</p>' : fallback;
+  }
+
   function cLoadInscritos(){
     var el=document.getElementById('c-inscritos-list');
     if(!el) return;
     el.innerHTML='<span style="color:var(--tx-light);">Cargando usuarios inscritos...</span>';
-    fetch(API+'?action=getInscritos&token='+encodeURIComponent(_adminToken()||''))
-      .then(function(r){return r.json();})
+    _cApi('getInscritos',{})
       .then(function(d){
         if(!d||!d.inscritos||!d.inscritos.length){
-          el.innerHTML='<p style="color:var(--tx-light);">Sin usuarios inscritos aún.</p>'; return;
+          el.innerHTML=_cErr(d,'<p style="color:var(--tx-light);">Sin usuarios inscritos aún.</p>'); return;
         }
         var rows=d.inscritos.map(function(u){
           return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);">'
@@ -2015,11 +2033,10 @@
     var el=document.getElementById('c-completados-list');
     if(!el) return;
     el.innerHTML='<span style="color:var(--tx-light);">Cargando...</span>';
-    fetch(API+'?action=getCompletados&token='+encodeURIComponent(_adminToken()||''))
-      .then(function(r){return r.json();})
+    _cApi('getCompletados',{})
       .then(function(d){
         if(!d||!d.completados||!d.completados.length){
-          el.innerHTML='<p style="color:var(--tx-light);">Nadie ha completado el curso aún.</p>'; return;
+          el.innerHTML=_cErr(d,'<p style="color:var(--tx-light);">Nadie ha completado el curso aún.</p>'); return;
         }
         var rows=d.completados.map(function(u){
           return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);">'
@@ -2044,9 +2061,7 @@
     var st=document.getElementById('ca-status');
     if(!nombre||!email){ if(st) st.innerHTML='<span style="color:var(--error);">Nombre y correo son obligatorios.</span>'; return; }
     if(st) st.innerHTML='<span style="color:var(--tx-light);">Enviando...</span>';
-    fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'registrarCurso',token:_adminToken(),nombre:nombre+' '+apellidos,email:email,institucion:institucion,curso:curso,duracion:duracion})})
-      .then(function(r){return r.json();})
+    _cApi('registrarCurso',{nombre:nombre+' '+apellidos,email:email,institucion:institucion,curso:curso,duracion:duracion})
       .then(function(d){
         if(d&&d.ok){
           if(st) st.innerHTML='<span style="color:#16a34a;">✓ Registro enviado. Se mandó la liga de acceso a '+_esc(email)+'</span>';
@@ -2066,9 +2081,7 @@
     var st=document.getElementById('cc-status');
     if(!email){ if(st) st.innerHTML='<span style="color:var(--error);">El correo es obligatorio.</span>'; return; }
     if(st) st.innerHTML='<span style="color:var(--tx-light);">Generando constancia...</span>';
-    fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'enviarConstancia',token:_adminToken(),email:email,nombre:nombre,curso:curso,fecha:fecha})})
-      .then(function(r){return r.json();})
+    _cApi('enviarConstancia',{email:email,nombre:nombre,curso:curso,fecha:fecha})
       .then(function(d){
         if(d&&d.ok){
           if(st) st.innerHTML='<span style="color:#16a34a;">✓ Constancia enviada a '+_esc(email)+'</span>';
@@ -2082,8 +2095,7 @@
   /* ── SALUD Y CRECIMIENTO ── */
   function saludLoad(){
     // Cargar métricas de la API
-    fetch(API+'?action=getMetrics&token='+encodeURIComponent(_adminToken()||''))
-      .then(function(r){return r.json();})
+    _cApi('getMetrics',{})
       .then(function(d){
         if(!d) return;
         if(d.visitasHoy!=null) document.getElementById('kpi-hoy').textContent=d.visitasHoy;
@@ -2128,18 +2140,23 @@
     }catch(e){}
   }
 
-  /* Auto-load salud when tab opens */
-  (function(){
-    var origShow = typeof showTab === 'function' ? showTab : null;
-    if(origShow){
-      window._showTabOrig2 = origShow;
-      window.showTab = function(id){
-        window._showTabOrig2(id);
-        if(id==='salud') saludLoad();
-        if(id==='cursos') cLoadInscritos();
-      };
+  /* ── LIGAS DIRECTAS: admin.html?tab=cursos#acceso, ?tab=salud, etc. ──
+     Las usa el menú "Cursos" y "Salud y crecimiento" de la barra superior. */
+  function _ssDeepLink(){
+    var panel=document.getElementById('admin-panel');
+    if(!panel || !panel.classList.contains('active')) return;
+    var tab=new URLSearchParams(location.search).get('tab');
+    var sub=(location.hash||'').replace('#','');
+    if(!tab) return;
+    if(!document.getElementById('tab-'+tab)) return;
+    if(typeof showTabWithHooks==='function') showTabWithHooks(tab); else showTab(tab);
+    if(tab==='cursos' && sub){
+      var btn=document.querySelector('.ctab[onclick*="ctab-'+sub+'"]');
+      if(btn) showCursoTab(btn,'ctab-'+sub);
     }
-  })();
+    window.scrollTo({top:0});
+  }
+  window.addEventListener('hashchange', _ssDeepLink);
 
   /* ── CURSOS TAB ── */
   function showCurso(btn, id) {
