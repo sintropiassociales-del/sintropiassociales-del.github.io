@@ -1954,10 +1954,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   var user = Auth.getUser();
   updateNavUser(user);
   if (!user) { document.getElementById('guest-banner').style.display = 'flex'; }
+  setupLoginForm();          // primero: así "Entrar" funciona aunque las citas tarden
   setupFilterListeners();
   await loadCitas();
-  setupPayPal();
-  setupLoginForm();
+  try { setupPayPal(); } catch(e) { console.warn('PayPal no disponible:', e.message); }
   // Abrir modal de login si se llegó desde otra página con ?login=1
   if (window.location.search.indexOf('login=1') !== -1) {
     openLoginModal();
@@ -2024,6 +2024,7 @@ function setupLoginForm() {
         closeLoginModal(); updateNavUser(Auth.getUser());
         document.getElementById('guest-banner').style.display = 'none';
         filterCitas();
+        location.reload(); // aplica menú de admin / pie de página (sesion.js)
       } else {
         errorEl.textContent = result.error || 'Credenciales incorrectas';
         errorEl.style.display = 'block';
@@ -2076,6 +2077,7 @@ async function handleGoogleLogin(response) {
       updateNavUser(Auth.getUser());
       document.getElementById('guest-banner').style.display = 'none';
       filterCitas();
+      location.reload(); // aplica menú de admin / pie de página (sesion.js)
     } else {
       // Si Apps Script no tiene loginConGoogle, creamos sesión local con Google
       Auth.setUser({
@@ -2091,6 +2093,7 @@ async function handleGoogleLogin(response) {
       updateNavUser(Auth.getUser());
       document.getElementById('guest-banner').style.display = 'none';
       filterCitas();
+      location.reload();
     }
   } catch(err) {
     if (errorEl) { errorEl.textContent = 'Error al iniciar sesión con Google'; errorEl.style.display = 'block'; }
