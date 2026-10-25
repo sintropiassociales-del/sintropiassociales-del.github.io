@@ -273,8 +273,8 @@
     d.id = 'ssx-sleep';
     d.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0e0c18;color:#f0eef8;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;font-family:inherit;';
     d.innerHTML = '<div style="max-width:440px;"><div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:#FF7929;font-weight:700;margin-bottom:.8rem;">Sintropía Social</div>'+
-      '<h1 style="font-size:1.8rem;margin:0 0 .8rem;">Volvemos pronto</h1>'+
-      '<p style="color:rgba(240,238,248,.6);line-height:1.6;margin:0;">Estamos haciendo mejoras en la plataforma. Gracias por tu paciencia.</p></div>';
+      '<h1 style="font-size:1.8rem;margin:0 0 .8rem;">La plataforma está en reposo</h1>'+
+      '<p style="color:rgba(240,238,248,.6);line-height:1.6;margin:0;">Regresa mañana desde temprano: ya estará abierta. Gracias por tu paciencia.</p></div>';
     document.body.appendChild(d);
     document.documentElement.style.overflow = 'hidden';
   }

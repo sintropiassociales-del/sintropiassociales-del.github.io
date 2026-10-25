@@ -579,7 +579,7 @@ function _uPintarDormir(msgExtra){
   var el=document.getElementById('estado-dormir');
   var btn=document.getElementById('btn-dormir-sitio');
   if(_uDormido){
-    if(el) el.textContent='El sitio está dormido: los visitantes ven "Volvemos pronto".'+(msgExtra||'');
+    if(el) el.textContent='El sitio está dormido: los visitantes ven "La plataforma está en reposo".'+(msgExtra||'');
     if(btn){ btn.textContent='Despertar el sitio'; btn.style.background='#16a34a'; }
   } else {
     if(el) el.textContent='El sitio está activo y visible para todos.'+(msgExtra||'');
@@ -594,7 +594,7 @@ function _uCargarEstadoDormir(){
 }
 function uToggleDormirSitio(){
   var nuevo=!_uDormido;
-  if(nuevo && !confirm('¿Dormir el sitio? Los visitantes verán una pantalla de "Volvemos pronto" hasta que lo despiertes. Tú, como admin, lo seguirás viendo.'))return;
+  if(nuevo && !confirm('¿Dormir el sitio? Los visitantes verán el aviso "La plataforma está en reposo, regresa mañana" hasta que lo despiertes. Tú, como admin, lo seguirás viendo.'))return;
   var btn=document.getElementById('btn-dormir-sitio'); if(btn){btn.disabled=true;}
   uAPI('setEstadoSitio',{adminToken:uAdminToken(),dormido:nuevo?'1':'0'}).then(function(r){
     if(btn) btn.disabled=false;

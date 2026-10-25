@@ -1,5 +1,6 @@
 // ============================================================
 //  SINTROPÍA SOCIAL — curso.js (Metodología de Práctica Social)
+//  Carpeta en el repo: practica-social/ (raíz).
 //  Va en TODAS las páginas del curso:  <script src="../curso.js"></script>
 //  (en la portada: <script src="curso.js"></script>)
 //
@@ -19,7 +20,7 @@
   var API = 'https://script.google.com/macros/s/AKfycby0B5nxI1nNybyp7UqtCB4ld8MC_NFg9tvEgamV3lTFVUxzLoDjyEIwh4l_leGYNQ_FiQ/exec';
   var SCRIPT = document.currentScript;
   var BASE = SCRIPT ? SCRIPT.src.replace(/curso\.js(\?.*)?$/, '') : '';
-  var SITIO = BASE.replace(/cursos\/[^/]+\/$/, '');
+  var SITIO = BASE.replace(/(cursos\/)?[^/]+\/$/, '');   // funciona en /practica-social/ o /cursos/practica-social/
   var m = location.pathname.match(/modulo-(\d)/);
   var MOD = m ? parseInt(m[1], 10) : 0;
   var ES_ACTIVIDAD = /_actividad\.html$/i.test(location.pathname);
@@ -165,7 +166,7 @@
 
   // ── Arranque ──
   function iniciar(){
-    if(!T && ES_ADMIN){ bar('Admin'); if(!MOD) portada([]); if(ES_ACTIVIDAD) vigilarActividad(); return; }
+    if(!T && ES_ADMIN){ bar(((rd('ss_user')||{}).nombre || 'Admin').split(' ')[0]); if(!MOD) portada([]); if(ES_ACTIVIDAD) vigilarActividad(); return; }
     if(!T){ gate('Abre la liga personal que te llegó por correo desde contacto@sintropiasocial.com.'); return; }
     var cache = rd('cx_val_' + T, sessionStorage);
     var p = (cache && Date.now() - cache.at < 600000) ? Promise.resolve(cache.r) : jsonp('validarAccesoCurso', { t: T });
