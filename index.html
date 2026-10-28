@@ -619,6 +619,57 @@ body {
 }
 .copy-apa-btn:hover { background: var(--purple); color: #fff; }
 
+/* ─── CITATION FOOTER ACTIONS ─── */
+.citation-footer-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+/* Badge "PDF disponible" en tarjetas para usuarios sin sesión */
+.tag-pdf-public {
+  background: rgba(99,30,235,.12);
+  color: var(--purple);
+  border: 1px solid rgba(99,30,235,.25);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+/* Botón descargar PDF — con sesión */
+.pdf-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .7rem;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  text-decoration: none;
+  transition: opacity .15s;
+}
+.pdf-download-btn:hover { opacity: .85; }
+/* Botón PDF bloqueado — sin sesión */
+.pdf-locked-btn {
+  background: transparent;
+  border: 1.5px solid rgba(99,30,235,.35);
+  color: var(--fg-muted);
+  padding: 5px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .7rem;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  transition: all .15s;
+}
+.pdf-locked-btn:hover { border-color: var(--purple); color: var(--purple); }
+
 /* ─── LOADING / ERROR ─── */
 .loading {
   text-align: center;
@@ -2243,6 +2294,7 @@ function renderCitas(citas, totalCount) {
     var publicacion = c['Publicacion'] || c['Publicación'] || '';
     var pagina = c['Pagina'] || c['Página'] || '';
     var citaApa = c['Cita Apa'] || c['Cita APA'] || '';
+    var pdfLink  = String(c['Link'] || '').trim();
     var shortQuote = cita.length > 180 ? cita.substring(0, 180) + '...' : cita;
     var shortComment = comentarios && comentarios.length > 120 ? comentarios.substring(0, 120) + '...' : comentarios;
     var card = document.createElement('div');
@@ -2251,6 +2303,10 @@ function renderCitas(citas, totalCount) {
     if (categoria) html += '<span class="citation-tag tag-categoria">' + categoria + '</span>';
     if (year) html += '<span class="citation-tag tag-year">' + year + '</span>';
     if (poblacion) html += '<span class="citation-tag tag-poblacion">' + poblacion + '</span>';
+    // Badge PDF visible solo si hay link y el usuario NO tiene sesión (acceso público parcial)
+    if (pdfLink && (!user || !user.token)) {
+      html += '<span class="citation-tag tag-pdf-public" title="PDF disponible — inicia sesión para descargarlo">PDF disponible</span>';
+    }
     html += '</div>';
     html += '<blockquote class="citation-quote">' + shortQuote + '</blockquote>';
     html += '<p class="citation-author">— <strong>' + autor + '</strong>';
@@ -2261,7 +2317,17 @@ function renderCitas(citas, totalCount) {
     var apaText = citaApa || autor + ' (' + year + '). ' + publicacion + '.';
     html += '<div class="citation-footer">';
     html += '<p class="citation-apa">' + apaText.substring(0, 80) + (apaText.length > 80 ? '...' : '') + '</p>';
+    html += '<div class="citation-footer-actions">';
     html += '<button class="copy-apa-btn" onclick="copyAPA(this, \'' + escapeQuotes(apaText) + '\')">Copiar APA</button>';
+    // Botón PDF: con sesión → link directo; sin sesión → invitación a registrarse
+    if (pdfLink) {
+      if (user && user.token) {
+        html += '<a class="pdf-download-btn" href="' + escapeQuotes(pdfLink) + '" target="_blank" rel="noopener">⬇ PDF</a>';
+      } else {
+        html += '<button class="pdf-locked-btn" onclick="openLoginModal()" title="Inicia sesión para descargar el PDF">🔒 PDF</button>';
+      }
+    }
+    html += '</div>';
     html += '</div>';
     card.innerHTML = html;
     grid.appendChild(card);
