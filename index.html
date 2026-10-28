@@ -1999,6 +1999,7 @@ const MARQUEE_ITEMS = [
 <script>
 var allCitas = [];
 var filteredCitas = [];
+var citasVisibles = [];  // citas que realmente se muestran (respeta límite de guest/usuario)
 var paymentCompleted = false;
 
 document.addEventListener('DOMContentLoaded', async function() {
@@ -2228,6 +2229,7 @@ function filterCitas() {
     var limit = Math.max(1, Math.floor(filteredCitas.length * 0.10));
     displayCitas = filteredCitas.slice(0, limit);
   }
+  citasVisibles = displayCitas;  // guardar para modal y descarga
   renderCitas(displayCitas, filteredCitas.length);
 }
 
@@ -2371,7 +2373,7 @@ function descargarYRegistrar() {
 
 function registrarDescargaEnServidor() {
   var user = Auth.getUser();
-  var count = filteredCitas.length > 0 ? filteredCitas.length : allCitas.length;
+  var count = citasVisibles.length > 0 ? citasVisibles.length : (filteredCitas.length > 0 ? filteredCitas.length : allCitas.length);
   if (user && user.token) {
     api('registrarDescarga', { userToken: user.token, tipoPago: 'libre', monto: '0', filtros: document.getElementById('download-filters').textContent, cantidadCitas: count }).catch(function(){});
   }
@@ -2380,7 +2382,7 @@ function registrarDescargaEnServidor() {
 function descargarPDF() {
   var { jsPDF } = window.jspdf;
   var doc = new jsPDF();
-  var dataToExport = filteredCitas.length > 0 ? filteredCitas : allCitas;
+  var dataToExport = citasVisibles.length > 0 ? citasVisibles : (filteredCitas.length > 0 ? filteredCitas : allCitas);
   var pageWidth = doc.internal.pageSize.getWidth();
   var margin = 15; var yPos = 20; var lineHeight = 6;
   doc.setFontSize(18); doc.setTextColor(99,30,235); doc.text('Sintropía Social', margin, yPos); yPos += 8;
@@ -2487,7 +2489,7 @@ function openDownloadModal() {
   var autor = document.getElementById('filter-autor').value;
   var year = document.getElementById('filter-year').value;
   if (!categoria && !indicador && !autor && !year) { alert('Por favor selecciona al menos un filtro antes de descargar.'); return; }
-  document.getElementById('download-count').textContent = filteredCitas.length;
+  document.getElementById('download-count').textContent = citasVisibles.length;
   var filtersText = [];
   if (categoria) filtersText.push('Categoría: ' + categoria);
   if (indicador) filtersText.push('Indicador: ' + indicador);
