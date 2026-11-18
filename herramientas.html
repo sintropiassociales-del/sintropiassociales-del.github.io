@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Herramientas — Sintropía Social</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23631EEB'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='central' font-family='Montserrat,sans-serif' font-weight='900' font-size='16' fill='%23FF7929'%3ES%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Montserrat:wght@400;600;700;800;900&display=swap">
 <style>
 /* ═══════════════════════════════════════════════
@@ -229,6 +230,16 @@ body { padding-top: 64px; }
 }
 .hero-meta .label-upper { color: rgba(255,255,255,0.5); }
 .hero-meta p { color: rgba(255,255,255,0.7); font-size: 0.875rem; max-width: 220px; }
+.hero-logo-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: logo-spin-slow 24s linear infinite;
+}
+@keyframes logo-spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 .hero-rule {
   width: 100%;
   height: 1px;
@@ -446,6 +457,30 @@ body { padding-top: 64px; }
 }
 .tool-link:hover { background: var(--purple-dk); }
 .tool-link svg { width: 12px; height: 12px; }
+
+/* Contact-required card variant */
+.tool-card-contact {
+  border-color: var(--purple);
+  background: rgba(99,30,235,0.04);
+}
+.tool-contact-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(99,30,235,0.08);
+  border: 1px solid rgba(99,30,235,0.2);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  margin: 12px 0;
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+.tool-contact-notice svg { flex-shrink: 0; margin-top: 1px; }
+.tool-link-contact {
+  background: var(--purple);
+}
+.tool-link-contact:hover { background: var(--purple-dk); }
 
 /* Task Live featured card */
 .tool-card-featured {
@@ -773,8 +808,19 @@ document.addEventListener('click',function(e){
         <span class="line-orange">social aplicada</span>
       </h1>
       <div class="hero-meta">
-        <span class="label-upper">Sintropía Social</span>
-        <p>Instrumentos gratuitos para investigar, diagnosticar y actuar.</p>
+        <div class="hero-logo-circle" aria-label="Sintropía Social">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="160" height="160">
+            <!-- Círculo exterior manuscrito (trazos irregulares) -->
+            <circle cx="100" cy="100" r="82" fill="none" stroke="#631EEB" stroke-width="3.5" stroke-dasharray="8 2 14 1 6 3 12 2 9 1 7 2" opacity="0.9"/>
+            <circle cx="100" cy="100" r="76" fill="none" stroke="#631EEB" stroke-width="2" stroke-dasharray="12 3 8 1 10 2 6 3 14 1" opacity="0.6"/>
+            <circle cx="100" cy="100" r="88" fill="none" stroke="#631EEB" stroke-width="1.5" stroke-dasharray="6 4 10 2 8 3 12 1 7 2" opacity="0.3"/>
+            <!-- Texto SINTROPÍA SOCIAL -->
+            <text x="100" y="108" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700" font-size="17" letter-spacing="1" fill="#FF7929">SINTROPÍA</text>
+            <text x="100" y="128" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="700" font-size="17" letter-spacing="1" fill="#FF7929">SOCIAL</text>
+          </svg>
+        </div>
+        <span class="label-upper" style="margin-top:12px;">Instrumentos gratuitos</span>
+        <p>Para investigar, diagnosticar y actuar.</p>
       </div>
     </div>
     <div class="hero-rule"></div>
@@ -1049,6 +1095,90 @@ document.addEventListener('click',function(e){
           <a href="https://sintropiassociales-del.github.io/tasklive/" target="_blank" class="tool-link">Abrir Task Live <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
+     06 · NUEVAS HERRAMIENTAS
+════════════════════════ -->
+<section class="tools-section section">
+  <div class="container">
+    <div class="section-eyebrow">
+      <span class="eyebrow-num">06</span>
+      <span class="eyebrow-line"></span>
+      <span class="eyebrow-text">Nuevas herramientas</span>
+    </div>
+    <div class="tools-header">
+      <h2 class="display-md">Suite Sintropía</h2>
+      <p class="tools-header-desc body-lg">Herramientas especializadas para transcribir, escuchar, monitorear y dar seguimiento a proyectos de investigación social aplicada.</p>
+    </div>
+    <div class="tools-grid">
+
+      <!-- Trazo -->
+      <div class="tool-card" id="hc-trazo">
+        <div class="tool-card-head" onclick="toggleTool('hc-trazo')">
+          <span class="tool-name">Trazo — Bitácora de campo digital</span>
+          <span class="tool-arrow"></span>
+        </div>
+        <div class="tool-body">
+          <p class="tool-desc">Herramienta para investigadores en campo: transcribe textos escritos a mano, convierte bocetos y esquemas en propuestas descargables, y crea tipografía personalizada a partir de tu propia letra. Ideal para diarios de campo, notas etnográficas y documentación de procesos.</p>
+          <a href="https://sintropiassociales-del.github.io/diario_campo/" target="_blank" class="tool-link">Da clic aquí para abrir Trazo <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Pulso -->
+      <div class="tool-card" id="hc-pulso">
+        <div class="tool-card-head" onclick="toggleTool('hc-pulso')">
+          <span class="tool-name">Pulso — Estudio abierto del mercado laboral</span>
+          <span class="tool-arrow"></span>
+        </div>
+        <div class="tool-body">
+          <p class="tool-desc">Instrumento de diagnóstico sobre el mercado laboral en México. Recopila percepciones, condiciones y tendencias de empleo desde la perspectiva de quienes buscan trabajo y de quienes contratan. Un pulso colectivo y abierto del mundo del trabajo.</p>
+          <a href="https://sintropiassociales-del.github.io/elpulsolaboral/" target="_blank" class="tool-link">Da clic aquí para participar en Pulso <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Sintro Track -->
+      <div class="tool-card" id="hc-sintro">
+        <div class="tool-card-head" onclick="toggleTool('hc-sintro')">
+          <span class="tool-name">Sintro — Seguimiento de proyectos</span>
+          <span class="tool-arrow"></span>
+        </div>
+        <div class="tool-body">
+          <p class="tool-desc">Plataforma de seguimiento integral para proyectos de investigación social: registra actividades, entregables, bitácora de sesiones, indicadores de avance y roles del equipo en un solo espacio. Mantén el hilo de cada proyecto sin perder ningún detalle.</p>
+          <a href="https://sintropiassociales-del.github.io/SP/" target="_blank" class="tool-link">Da clic aquí para abrir Sintro <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Seguimiento a Proyecto (acceso por contacto) -->
+      <div class="tool-card tool-card-contact" id="hc-seguimiento">
+        <div class="tool-card-head" onclick="toggleTool('hc-seguimiento')">
+          <span class="tool-name">Seguimiento a Proyecto — Versión completa</span>
+          <span class="tool-arrow"></span>
+        </div>
+        <div class="tool-body">
+          <p class="tool-desc">La versión completa de la herramienta de seguimiento incluye módulos avanzados de reportería, tableros compartidos con clientes y exportación de informes en PDF con la identidad de Sintropía Social.</p>
+          <div class="tool-contact-notice">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#631EEB" stroke-width="1.5"/><path d="M8 7v4M8 5h.01" stroke="#631EEB" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Para acceder a la herramienta completa, comunícate con el equipo de Sintropía:</span>
+          </div>
+          <a href="mailto:contacto@sintropiasocial.com" class="tool-link tool-link-contact">Escribir a contacto@sintropiasocial.com <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Voces -->
+      <div class="tool-card" id="hc-voces">
+        <div class="tool-card-head" onclick="toggleTool('hc-voces')">
+          <span class="tool-name">Voces — Transcripción e interpretación</span>
+          <span class="tool-arrow"></span>
+        </div>
+        <div class="tool-body">
+          <p class="tool-desc">Herramienta especializada para la transcripción de entrevistas y grupos focales, con traducción entre español y lenguas indígenas de Chiapas y Oaxaca. Diseñada para proyectos de investigación comunitaria e intercultural que requieren fidelidad lingüística y cultural.</p>
+          <a href="https://sintropiassociales-del.github.io/voces/" target="_blank" class="tool-link">Da clic aquí para abrir Voces <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>

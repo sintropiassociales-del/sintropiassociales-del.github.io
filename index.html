@@ -805,6 +805,26 @@ body {
 }
 .apoyo-check-item::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
 
+/* ─── PULSO EMBED ─── */
+.pulso-embed-band {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 40px;
+  align-items: start;
+  background: var(--bg-dark);
+  border-radius: var(--r-lg);
+  padding: 36px;
+  margin-bottom: 48px;
+  border: 1px solid rgba(99,30,235,0.3);
+}
+.pulso-embed-intro h3 { color: #fff; margin-bottom: 10px; }
+.pulso-embed-intro p { color: rgba(255,255,255,0.65); font-size: .875rem; line-height: 1.65; max-width: 28ch; }
+.pulso-embed-frame { border: 1px solid rgba(99,30,235,0.25); border-radius: 10px; overflow: hidden; }
+@media (max-width: 860px) {
+  .pulso-embed-band { grid-template-columns: 1fr; }
+  .pulso-embed-intro p { max-width: none; }
+}
+
 /* ─── SERVICIOS ─── */
 .servicios-section { background: var(--bg); }
 .servicios-intro { text-align: center; margin-bottom: 48px; }
@@ -1730,6 +1750,27 @@ document.addEventListener('click',function(e){if(!e.target.closest('.ss-dd'))doc
       <span class="label-upper">Servicios profesionales</span>
       <h2 class="display-md">Herramientas y Servicios</h2>
       <p class="body-lg" style="max-width:44ch;margin:12px auto 0;">Investigación, educación, comunidad y empleabilidad — para organizaciones con impacto social real.</p>
+    </div>
+
+    <!-- Pulso Laboral — encuesta integrada -->
+    <div class="pulso-embed-band">
+      <div class="pulso-embed-intro">
+        <span class="label-upper" style="display:block;margin-bottom:8px;">Estudio abierto</span>
+        <h3 class="display-sm">Pulso Laboral México</h3>
+        <p>Participa en nuestro estudio abierto del mercado laboral. Tu perspectiva —  como trabajador o empleador — contribuye a la investigación social aplicada de Sintropía Social.</p>
+        <a href="https://sintropiassociales-del.github.io/elpulsolaboral/" target="_blank" class="btn-primary" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;">
+          Abrir encuesta Pulso en nueva ventana →
+        </a>
+      </div>
+      <div class="pulso-embed-frame">
+        <iframe
+          src="https://sintropiassociales-del.github.io/elpulsolaboral/"
+          title="Pulso Laboral — Sintropía Social"
+          loading="lazy"
+          allow="clipboard-write"
+          style="width:100%;height:520px;border:none;border-radius:8px;background:#fff;"
+        ></iframe>
+      </div>
     </div>
 
     <!-- Suscripción -->
